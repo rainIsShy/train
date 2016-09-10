@@ -511,7 +511,8 @@ angular.module('IOne-Production', []);
 angular.module('IOne-Auth', []);
 
 angular.module('IOne-Constant').constant('Constant', {
-    BACKEND_BASE: 'http://admin:123@localhost:8081',
+    // TODO: get url from application.yaml
+    BACKEND_BASE: 'http://project.benchmarkchina.com:10011',
 
     INVALID_VALUE: {
         STRING: 'NA',
