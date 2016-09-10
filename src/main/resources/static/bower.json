@@ -1,0 +1,46 @@
+{
+    "name": "ione",
+    "version": "0.0.1",
+    "authors": [
+        "ethan"
+    ],
+    "description": "ione",
+    "moduleType": [
+        "amd",
+        "es6",
+        "globals",
+        "node",
+        "yui"
+    ],
+    "dependencies": {
+        "jquery": "~1.11.3",
+        "angular": "~1.4.x",
+        "angular-animate": "~1.4.x",
+        "angular-aria": "~1.4.x",
+        "angular-route": "~1.4.x",
+        "angular-resource": "~1.4.x",
+        "angular-cookies": "~1.4.x",
+        "angular-messages": "^1.4.x",
+        "angular-material": "~0.x.x",
+        "toastr": "~2.x.x",
+        "jquery-ui": "~1.x.x",
+        "components-font-awesome": "~4.x.x",
+        "ng-file-upload": "~5.x.x",
+        "moment": "~2.x.x",
+        "angular-material-data-table": "*",
+        "angular-ui-tree": "*",
+        "angular-material-icons": "*",
+        "ScrollToFixed": "*"
+    },
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "resolutions": {
+        "angular": "~1.4.x"
+    }
+}

@@ -1,0 +1,12 @@
+<md-content layout="row" layout-padding class="prod">
+    <div layout="column" ng-if="extendDetail.customizeFlag == 1">
+        <div ng-repeat="custom in orderExtendDetail2List">
+            <div class="property">
+                <span class="name">{{custom.itemCustom.name}}</span>
+                <span class="value">
+                    <span ng-repeat="item in custom.informationUuids track by $index">{{allCustomsScopes[custom.itemCustom.uuid][item].name}}&nbsp;&nbsp;</span>
+                </span>
+            </div>
+        </div>
+    </div>
+</md-content>

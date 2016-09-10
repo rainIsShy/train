@@ -1,0 +1,27 @@
+<md-dialog style="padding: 30px;" class="prod">
+    <md-content>
+        <form name="addCustomForm" novalidate>
+            <div layout="row">
+                <md-input-container  layout="row" >
+                    <label class="label">产品定制描述：</label>
+                    <input type="text" ng-model="selectedOrderExtendDetail.productCustomizeDescription">
+                </md-input-container>
+                <md-input-container  layout="row" >
+                    <label class="label">定制备注：</label>
+                    <input type="text" ng-model="selectedOrderExtendDetail.customizeRemark">
+                </md-input-container>
+                <md-input-container  layout="row" >
+                    <label class="label">备注：</label>
+                    <input type="text" ng-model="selectedOrderExtendDetail.remark">
+                </md-input-container>
+            </div>
+
+            <div layout="row">
+                <md-button ng-click="hideDlg()">
+                    <i class="fa fa-check"></i>&nbsp;确定
+                </md-button>
+                <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+            </div>
+        </form>
+    </md-content>
+</md-dialog>

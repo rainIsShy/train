@@ -1,0 +1,25 @@
+<md-dialog style="padding: 30px;min-width: 400px;max-height: 700px;">
+    <md-content layout="column">
+        <div>
+            <md-input-container>
+                <label class="label">订单号：</label>
+                <input type="text" ng-disabled="true" type="text" ng-model="deliveryInput.tid">
+            </md-input-container>
+            <md-input-container>
+                <label class="label">物流公司编码：</label>
+                <input type="text" ng-model="deliveryInput.companyCode">
+            </md-input-container>
+            <md-input-container>
+                <label class="label">物流单号：</label>
+                <input name="text"  ng-model="deliveryInput.outSid">
+            </md-input-container>
+        </div>
+
+        <div layout="row">
+            <md-button ng-click="hideDlg()">
+                <i class="fa fa-check"></i>&nbsp;确定
+            </md-button>
+            <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+        </div>
+    </md-content>
+</md-dialog>

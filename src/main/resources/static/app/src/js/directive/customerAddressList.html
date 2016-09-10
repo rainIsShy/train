@@ -1,0 +1,34 @@
+<div layout="row" layout-padding><!--ng-if="customerAddressList != null && customerAddressList.size() > 0">-->
+    请选择收货人信息：
+</div>
+<!--<div layout="row" layout-padding ng-if="customerAddressList.size() <= 0">
+    未查询到其他客户地址
+</div>-->
+
+<div layout="row" layout-wrap class="prod" layout-padding>
+    <div flex="50" flex-md="100" flex-sm="100" ng-repeat="customerAddress in customerAddressList"
+         style="position: relative;"
+         class="prod-item" layout-padding ng-click="selectAddressCallbackHandler(customerAddress)">
+        <div class="content">
+            <div class="name">收货人:</div>
+            <div class="value">{{customerAddress.receiveName}}</div>
+
+            <div class="name">收货地址:</div>
+            <div class="value">
+                {{customerAddress.district1.name}}{{customerAddress.district2.name}}{{customerAddress.district3.name}}{{customerAddress.receiveAddress}}
+            </div>
+
+            <div class="name">收货电话:</div>
+            <div class="value">{{customerAddress.receivePhone}}</div>
+
+            <!--<div>-->
+            <!--<span class="quick-button" style="left: 0px; right: auto;" ng-click="buttonCallbackHandler(customerAddress)" ng-show="buttonName && ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY">{{buttonName}}</span>-->
+            <!--<div class="quick-button" ng-click="openQuickView($event, customerAddress)">-->
+            <!--<span>QUICK VIEW</span>-->
+            <!--</div>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+
+<div pagination option="pageOption" callback="refreshCustomerAddress()"></div>

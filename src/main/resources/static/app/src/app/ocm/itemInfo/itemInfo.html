@@ -1,0 +1,125 @@
+<div layout-fill class="right-container">
+    <md-content>
+        <md-tabs md-selected="$parent.selectedTabIndex" md-border-bottom md-dynamic-height md-center-tabs="false">
+            <md-tab md-on-select="listTabSelected()">
+                <md-tab-label>{{listTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <div ocm-list-menu></div>
+                        <div ng-include=" 'app/src/app/ocm/itemInfo/itemInfoList.html' "></div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+            <md-tab md-on-select="formTabSelected()">
+                <md-tab-label>{{formTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content class="formList">
+                        <form name="mainForm" novalidate>
+                            <div ng-if="selectedItem != null" form-menu></div>
+                            <div ng-if="selectedItem != null" ocm-form-menu></div>
+                            <div layout-margin layout-padding class="md-whiteframe-z1"
+                                 ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                                <p style="color: red;">请从清单列表中选择一个商品。</p>
+                            </div>
+                            <div layout="row" layout-margin layout-padding layout-md="column" layout-sm="column"
+                                 layout-align="space-around left"
+                                 ng-show="ui_status != UI_STATUS.EDIT_UI_STATUS_MODIFY && ui_status != UI_STATUS.EDIT_UI_STATUS_ADD">
+                                <md-input-container>
+                                    <label>渠道店/直营店：</label>
+                                    <input aria-label="..." ng-model="selectedItem.name" ng-disabled="true"/>
+                                </md-input-container>
+
+                                <md-input-container>
+                                    <label>商品名称：</label>
+                                    <input aria-label="..." ng-model="itemName"/>
+                                </md-input-container>
+
+
+                                <md-button class="md-raised" aria-label="..."
+                                           ng-if="ocmListMenuDisplayOption['600-query'].display"
+                                           ng-click="searchchannelInfoWithPaging()"
+                                           style="margin-top: 22px;height: 20px;"> 查找
+                                </md-button>
+                            </div>
+                            <div align="center"><span ng-if="logining"><img style="width: 20px;padding-top: 13px;"
+                                                                            src="app/img/spinner.gif"/></span></div>
+                            <div ng-if="selectedItem != null">
+                                <div layout="row" ng-if="selectedItem != null">
+                                    <div align="center" flex="5" class=" table-head"
+                                         ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                    </div>
+                                    <div align="center" flex="10" class=" table-head">商品名称</div>
+                                    <div align="center" flex="10" class=" table-head">商品编号</div>
+                                    <div align="center" flex="10" class=" table-head">规格</div>
+                                    <div align="center" flex="10" class=" table-head">停售状态</div>
+                                    <div align="center" flex="10" class=" table-head">销售价格</div>
+                                    <div align="center" flex="10" class=" table-head">标准价格</div>
+                                    <div align="center" flex="10" class=" table-head">销售单位</div>
+                                </div>
+
+                                <div ng-repeat="channelInfo in ChannelInfoList.content ">
+                                    <div layout="row">
+                                        <div flex="5" class=" table-item"
+                                             ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                            <md-checkbox aria-label="..." ng-checked="exists(channelInfo, selected)"
+                                                         ng-click="toggle(channelInfo, selected)">
+                                            </md-checkbox>
+
+                                        </div>
+                                        <div align="center" flex="10" class=" table-item"
+                                             ng-init="listFilterItem.itemUuids.push(channelInfo.item.uuid)">
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelInfo.item.name }}</div>
+                                        </div>
+                                        <div align="center" flex="10" class=" table-item">
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelInfo.item.no }}</div>
+                                        </div>
+                                        <div align="center" flex="10" class=" table-item">
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelInfo.item.standard }}
+                                            </div>
+                                        </div>
+                                        <div align="center" flex="10" class=" table-item">
+                                            <md-input-container>
+                                                <md-select ng-model="channelInfo.stopSaleFlag"
+                                                           ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS || channelInfo.confirm == 2">
+                                                    <md-option ng-value="opt.value" ng-repeat="opt in STOP_SALE_FLAG">
+                                                        {{ opt.name }}
+                                                    </md-option>
+                                                </md-select>
+                                            </md-input-container>
+                                        </div>
+                                        <div align="center" flex="10" class="table-item">
+                                            <md-input-container>
+                                                <input type="number" aria-label="..." string-to-number
+                                                       ng-model="channelInfo.salePrice" min="0" step="0.01"
+                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS || channelInfo.confirm == 2">
+                                            </md-input-container>
+                                        </div>
+
+                                        <div align="center" flex="10" class="table-item">
+                                            <md-input-container>
+                                                <input type="number" aria-label="..." string-to-number
+                                                       ng-model="channelInfo.standardPrice" min="0" step="0.01"
+                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS || channelInfo.confirm == 2">
+                                            </md-input-container>
+                                        </div>
+
+                                        <div align="center" flex="10" class="table-item">
+                                            <md-input-container>
+                                                <input type="text" aria-label="..."
+                                                       ng-model="channelInfo.saleUnit"
+                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS || channelInfo.confirm == 2">
+                                            </md-input-container>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div pagination option="pageOptionOfchannelInfo"
+                                     callback="querychannelInfoWithPaging()"
+                                     ng-show="ui_status != UI_STATUS.EDIT_UI_STATUS_ADD"></div>
+                            </div>
+                        </form>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

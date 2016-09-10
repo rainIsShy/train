@@ -1,0 +1,90 @@
+<md-dialog style="padding:20px;max-width:900px;" class="prod">
+    <md-content>
+        <form flex name="addCustomForm" novalidate ng-if="!isChangingProduction">
+            <div flex layout="row" layout-align="start end">
+                <div flex flex-offset="80">
+                    选择上层单身：
+                </div>
+                <div flex layout="row">
+                    <md-button class="md-fab md-accent" ng-click="hideDlg()" ng-disabled="addCustomForm.$invalid">
+                        <i class="fa fa-check"></i>
+                    </md-button>
+                    <md-button class="md-fab md-warn" ng-click="cancelDlg()">
+                        <i class="fa fa-times"></i>
+                    </md-button>
+                </div>
+            </div>
+            <md-radio-group ng-model="addOrderDetailExtend.selectedOrderDetailUuid" required>
+                <md-radio-button ng-repeat="orderDetail in allOrderDetail.content"
+                                 ng-value="orderDetail.uuid"
+                                 ng-click="selectedOrderDetail(orderDetail.uuid,orderDetail.item.uuid)">
+                    商品：{{orderDetail.item.name}}&nbsp;&nbsp;
+                    规格：{{orderDetail.item.standard}}&nbsp;&nbsp;
+                    数量：{{orderDetail.orderQuantity}}
+                </md-radio-button>
+            </md-radio-group>
+            <md-divider style="margin: 10px 5px 10px 5px;"></md-divider>
+            <md-button class="md-raised md-accent" ng-click="showChangingProductionPanel()">选择新增料件</md-button>
+            <div flex layout="row">
+                <md-input-container flex="25">
+                    <label class="label">品号：</label>
+                    <input type="text" ng-model="addOrderDetailExtend.selectedBom.no" disabled>
+                </md-input-container>
+                <md-input-container flex="25">
+                    <label class="label">品名：</label>
+                    <input type="text" ng-model="addOrderDetailExtend.selectedBom.name" disabled>
+                </md-input-container>
+                <md-input-container flex="25">
+                    <label class="label">规格：</label>
+                    <input type="text" ng-model="addOrderDetailExtend.selectedBom.standard" disabled>
+                </md-input-container>
+                <md-input-container flex="25">
+                    <label class="label">标准价：</label>
+                    <input type="text" ng-model="addOrderDetailExtend.selectedBom.standardPrice" disabled>
+                </md-input-container>
+            </div>
+            <span flex>请输入：</span>
+            <div flex layout="row">
+                <md-input-container flex="25">
+                    <label class="label">订单数量</label>
+                    <input type="text" ng-model="addOrderDetailExtend.orderQuantity" required>
+                </md-input-container>
+                <md-input-container flex="25">
+                    <label class="label">商品属性：</label>
+                    <input type="text" ng-model="addOrderDetailExtend.itemAttribute">
+                </md-input-container>
+                <md-input-container flex="50">
+                    <label class="label">备注：</label>
+                    <input type="text" ng-model="addOrderDetailExtend.remark">
+                </md-input-container>
+            </div>
+<!--            <div flex layout="row">
+                <md-input-container flex="25">
+                    <label class="label">税前金额：</label>
+                    <input type="text" ng-model="addOrderDetailExtend.originalOrderAmount" required>
+                </md-input-container>
+                <md-input-container flex="25">
+                    <label class="label">项次：</label>
+                    <input type="text" ng-model="addOrderDetailExtend.no">
+                </md-input-container>
+                <md-input-container flex="25">
+                    <label class="label">订单单价：</label>
+                    <input type="text" ng-model="addOrderDetailExtend.orderPrice" required>
+                </md-input-container>
+                <md-input-container flex="25">
+                    <label class="label">税后金额：</label>
+                    <input type="text" ng-model="addOrderDetailExtend.originalOrderAmountTax" required>
+                </md-input-container>
+                <md-input-container flex="25">
+                    <label class="label">标准金额：</label>
+                    <input type="text" ng-model="addOrderDetailExtend.standardAmount" required>
+                </md-input-container>
+            </div>-->
+        </form>
+        <md-button  ng-if="isChangingProduction" class="md-fab md-primary" ng-click="hideChangingProductionPanel()">
+            <i class="fa fa-times"></i>
+        </md-button>
+        <div flex="50" ng-if="isChangingProduction" production-List select-item-callback="selectBom(production)"
+             param="itemSearchParam" style="max-height: 500px; overflow-y: auto; overflow-x: hidden;"></div>
+    </md-content>
+</md-dialog>

@@ -1,0 +1,46 @@
+<md-dialog style="padding: 30px;opacity: 1;max-height: 500px;">
+    <md-content>
+        <div layout="row" ng-hide="searching">
+            <form name="selectedDataForm" novalidate>
+
+                <md-input-container ng-if="selectedSysCpt.objectFlag == '1'">
+                    <label>数据</label>
+                    <md-select ng-model="selectedData.valueUuid">
+                        <md-option ng-repeat="data in dataList" value="{{data['uuid']}}">
+                            {{data['name']}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container ng-if="selectedSysCpt.objectFlag == '2'">
+                    <label>数据</label>
+                    <input type="text" ng-model="selectedData.valueUuid">
+                </md-input-container>
+
+                <div layout="row">
+                    <md-button ng-click="searching = true" ng-show="selectedSysCpt.objectFlag == '1'">
+                        <i class="fa fa-search"></i>&nbsp;查询
+                    </md-button>
+                    <md-button ng-click="hideDlg()" ng-disabled="selectedDataForm.$invalid">
+                        <i class="fa fa-check"></i>&nbsp;确定
+                    </md-button>
+                    <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+                </div>
+            </form>
+        </div>
+
+        <div ng-show="searching">
+            <md-input-container>
+                <label>输入查询信息:</label>
+                <input type="text" ng-model="searchKeyword">
+            </md-input-container>
+            <md-list-item class="md-2-line" ng-repeat="item in dataList" ng-click="selectAction(item)"
+                          ng-show="!searchKeyword || (item.name && item.name.indexOf(searchKeyword) != -1)">
+                <div class="md-list-item-text">
+                    <p style="color: rgba(0,0,0,0.54);"> {{item.name}} </p>
+                </div>
+                <md-divider ></md-divider>
+            </md-list-item>
+        </div>
+    </md-content>
+</md-dialog>

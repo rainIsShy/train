@@ -1,0 +1,66 @@
+<md-dialog style="min-width: 700px;">
+    <md-content layout="column"
+                ng-if="datasource == 'LOGISTICS_SERVICE_PROVIDER' || datasource == 'INSTALLATION_SERVICE_PROVIDER'">
+        <div>
+            <form name="search" novalidate="">
+                <div layout="row">
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancelDlg()">
+                        <ng-md-icon icon="close"></ng-md-icon>
+                    </md-button>
+                </div>
+                <div style="margin: 0px 30px;">
+                    <div layout="row">
+                        <md-input-container flex>
+                            <label>{{title}}</label>
+                            <!--<input name="no" type="text" ng-model="searchKeyword" md-maxlength="20">-->
+
+                        </md-input-container>
+
+                    </div>
+                    <md-list-item class="md-2-line" ng-repeat="data in dataList" ng-click="select(data)">
+                        <div class="md-list-item-text">
+                            <h3> {{data.no}}&nbsp;|&nbsp;{{ data.name }} </h3>
+                        </div>
+                        <md-divider></md-divider>
+                    </md-list-item>
+                    <div pagination option="pageOption" callback="queryAction()"></div>
+                </div>
+            </form>
+        </div>
+    </md-content>
+    <md-content layout="column" ng-if="datasource == 'PSO_SO_MST'">
+        <form name="search" novalidate="">
+            <div layout="row">
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancelDlg()">
+                    <ng-md-icon icon="close"></ng-md-icon>
+                </md-button>
+            </div>
+            <div style="margin: 0px 30px;">
+                <div layout="row">
+                    <md-input-container flex>
+                        <label>{{title}}</label>
+                        <input name="no" type="text" ng-model="salesOrderMasterNo" md-maxlength="20">
+                        <md-button class="md-icon-button close-btn float-right"
+                                   style="color: gray;margin-top: 15px;" aria-label="More"
+                                   ng-click="queryAction(salesOrderMasterNo)">
+                            <ng-md-icon icon="search"></ng-md-icon>
+                        </md-button>
+                    </md-input-container>
+                </div>
+                <md-list-item class="md-2-line" ng-repeat="data in dataList" ng-click="select(data)">
+                    <div flex="100" layout="row">
+                        <span>{{data.no}}&nbsp;&nbsp;/</span>
+                        <span>{{data.customer.name}}&nbsp;&nbsp;/</span>
+                        <span>{{data.orderDate | date:'yyyy-MM-dd'}}&nbsp;&nbsp;/</span>
+                        <span>￥:{{data.nationalOrderAmountTax}}</span>
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
+                <div pagination option="pageOption" callback="queryAction()"></div>
+            </div>
+        </form>
+    </md-content>
+
+</md-dialog>

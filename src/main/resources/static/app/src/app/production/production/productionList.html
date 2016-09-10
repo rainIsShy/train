@@ -1,0 +1,54 @@
+<div layout="row" layout-md="column" layout-sm="column" class="menu" style="margin-top: -20px;">
+    <md-input-container>
+        <md-select placeholder="" ng-model="pageOption.displayModel" class="select">
+            <md-option ng-value="0">缩略图</md-option>
+            <md-option ng-value="1">列表</md-option>
+        </md-select>
+    </md-input-container>
+
+    <md-input-container>
+        <label>商品编号</label>
+        <input type="text" ng-model="searchQuery.no">
+    </md-input-container>
+    <md-input-container>
+        <label>商品名称</label>
+        <input type="text" ng-model="searchQuery.name">
+    </md-input-container>
+    <md-button style="margin-top: 22px;height: 20px;" class="md-raised" ng-click="refreshProduction()">搜索</md-button>
+</div>
+
+<div layout="row" layout-wrap>
+    <div flex="{{pageOption.displayModel == 0 ? 33 : 25}}" flex-md="50" flex-sm="100" ng-repeat="production in allProductionsData.content"
+         class="prod-item" ng-click="editItem(production)">
+        <div layout="row" class="content">
+            <div flex="{{pageOption.displayModel == 0 ? 55 : 100}}" class="left" ng-class="pageOption.displayModel == 0 ? '' : 'centre'">
+                <img ng-class="pageOption.displayModel == 0 ? 'prod-sm-img' : 'prod-sm-img-big'" src="{{getImageFullPath(production.path)}}">
+            </div>
+            <div flex="{{pageOption.displayModel == 0 ? 45 : 0 }}" class="left" ng-show="pageOption.displayModel == 0">
+                <div class="name">商品名称:</div>
+                <div class="value">{{production.name}}</div>
+
+                <div class="name">商品编号:</div>
+                <div class="value">{{production.no}}</div>
+
+                <div class="name">商品品牌:</div>
+                <div class="value">{{production.brand.name}}</div>
+
+                <div class="name">商品规格:</div>
+                <div class="value">{{production.standard}}</div>
+
+                <div class="quick-button" ng-click="openQuickView($event, production)">
+                    <span>QUICK VIEW</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div layout="row">
+    <div flex class="add-new" ng-click="preAddMenuAction()">
+        <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增商品</a>
+    </div>
+</div>
+
+<div pagination option="pageOption" callback="refreshProduction()"></div>

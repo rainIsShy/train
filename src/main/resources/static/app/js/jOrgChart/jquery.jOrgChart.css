@@ -1,0 +1,181 @@
+/* Basic styling */
+/* Draw the lines */
+.jOrgChart {
+    margin: 10px;
+    padding: 20px;
+}
+
+.jOrgChart .line {
+    height                : 20px;
+    width                 : 4px;
+}
+
+.jOrgChart .down {
+    background-color 		: black;
+    margin 				: 0px auto;
+}
+
+.jOrgChart .top {
+    border-top          : 3px solid black;
+}
+
+.jOrgChart .left {
+    border-right          : 2px solid black;
+}
+
+.jOrgChart .right {
+    border-left           : 2px solid black;
+}
+
+/* node cell */
+.jOrgChart td {
+    text-align            : center;
+    vertical-align        : top;
+    padding               : 0;
+}
+
+/* The node */
+.jOrgChart .node {
+    background-color 		: whitesmoke;
+    display               : inline-block;
+    border: 3px solid #FFFFFF;
+    border-radius: 3px;
+    font-size: 14px;
+    position: relative;
+    width: 120px;
+    height : 60px;
+    padding: 5px;
+}
+
+/* jQuery drag 'n drop */
+
+.drag-active {
+    border-style			: dotted !important;
+}
+
+.drop-hover {
+    border-style			: solid !important;
+    border-color 			: #E05E00 !important;
+}
+
+.jOrgChart .vp {background-color 	: #eeeeee;}
+.jOrgChart .cio {background-color 	: #2DE7EF;}
+.jOrgChart > table{
+    float: left;
+    margin-right: 100px;
+}
+.node p{
+    font-family 	: tahoma;
+    font-size 		: 10px;
+    line-height 	: 11px;
+    padding 		: 2px;
+}
+
+.node:hover {
+    background-color: #C0BDBD;
+    cursor: pointer;;
+}
+
+.hidden {
+    display: none;
+}
+.temp{
+    border: dotted 2px #869baf !important;
+}
+.add {
+    background: url(/app/img/plus_circle.png) no-repeat 50% 50%;
+}
+.del {
+    background: url(/app/img/del_circle.png) no-repeat 50% 50%;
+}
+.edit {
+    background: url(/app/img/edit_squere.png) no-repeat 50% 50%;
+}
+.exp-col {
+    background: url(/app/img/col.png) no-repeat 50% 50%;
+    position: absolute;
+    left: 44%;
+    top: 70px;
+}
+.contracted .exp-col {
+    background: url(/app/src/img/exp.png) no-repeat 50% 50%;
+}
+
+.edit, .del, .add, .exp, .col, .exp-col{
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 0;
+}
+
+.del, .delete{
+    margin-right: 10px;
+    margin-left: 0;
+}
+.jOrgChart .nrow{
+    background-color: #F4E8F6;
+}
+.jOrgChart .firow{
+    background-color: wheat;
+}
+.jOrgChart .serow{
+    background-color: #aad3d3;
+}
+.jOrgChart .throw{
+    background-color: #f7ea7d;
+}
+.jOrgChart .forow{
+    background-color: #debcef;
+}
+.jOrgChart .sirow{
+    background-color: #e9d6e9;
+}
+.jOrgChart .norow{
+    background-color: #d1e6c7;
+}
+.opciones{
+    position: absolute;
+    right: 0;
+    top: 95px;
+}
+.root .opciones{
+    padding-right: 10px;
+}
+.details {
+    background: none repeat scroll 0 0 #936E40;
+    border: 1px solid #FFFFFF;
+    color: #FFFFFF;
+    display: none;
+    height: auto;
+    left: 140px;
+    position: absolute;
+    top: -21px;
+    width: 125px;
+}
+.details:after, .details:before {
+    right: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.details:after {
+    border-color: rgba(147, 110, 64, 0);
+    border-right-color: #936E40;
+    border-width: 5px;
+    margin-top: -5px;
+}
+.details:before {
+    border-color: rgba(255, 255, 255, 0);
+    border-right-color: #fff;
+    border-width: 6px;
+    margin-top: -6px;
+}
+#org
+{
+    display:none;
+}

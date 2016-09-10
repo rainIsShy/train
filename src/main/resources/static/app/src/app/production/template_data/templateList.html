@@ -1,0 +1,50 @@
+<md-dialog style="padding: 20px;min-width: 400px;min-height: 400px;">
+    <md-content layout="column">
+
+        <md-tabs md-border-bottom md-dynamic-height>
+            <md-tab>
+                <md-tab-label>未绑定数据的模板</md-tab-label>
+                <md-tab-body>
+                    <md-content style="max-height: 500px;">
+                        <div ng-repeat="template in catalogueTemplates.content" layout="column"
+                             ng-if="template.details.length > 0 && (selectedTemplateData[template.uuid][0] == null || selectedTemplateData[template.uuid][0].length == 0)" >
+                            <div layout="row" class="md-whiteframe-z1 template-item select-template" layout-margin layout-padding ng-click="hideDlg($index)">
+                                <div flex="15" layout="column" class="template_item_left">
+                                    <div class="template-item-no" >{{template.no}}</div>
+                                    <div class="template-item-name" >{{template.name}}</div>
+                                </div>
+
+                                <div layout="row" flex class="template-item-content">
+                                    <md-chips ng-model="template.details" readonly="true">
+                                        <input type="text" placeholder="Enter a new node">
+                                        <md-chip-template>{{$chip.no}}&nbsp;{{$chip.name}}</md-chip-template>
+                                    </md-chips>
+                                </div>
+                            </div>
+                        </div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+            <md-tab>
+                <md-tab-label>已绑定数据的模板</md-tab-label>
+                <md-tab-body>
+                    <md-content style="max-height: 500px;">
+                        <div ng-repeat="template in catalogueTemplates.content" layout="column"
+                             ng-if="template.details.length > 0 && selectedTemplateData[template.uuid][0].length > 0" >
+                            <div layout="row" class="md-whiteframe-z1 template-item select-template" layout-margin layout-padding ng-click="hideDlg($index)">
+                                <div layout="row" flex class="template-item-content">
+                                    <span class="chip" ng-repeat="node in template.details">
+                                        <span>{{node.no}}&nbsp;{{node.name}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+        <div>
+            <md-button class="md-raised" style="float: right;" ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+        </div>
+    </md-content>
+</md-dialog>

@@ -1,0 +1,59 @@
+<div ng-repeat="template in catalogueTemplates.content" layout="column" ng-if="template.display && selectedTemplateData[template.uuid][0].length > 0">
+    <div layout="row" class="md-whiteframe-z1 template-item" layout-margin layout-padding ng-click="editItem($event, template)">
+        <!--<div flex="15" layout="column" class="template_item_left">-->
+            <!--<div class="template-item-no" >{{template.no}}</div>-->
+            <!--<div class="template-item-name" >{{template.name}}</div>-->
+        <!--</div>-->
+
+        <div layout="row" layout-wrap flex class="template-item-content">
+            <span class="chip" ng-repeat="node in template.details">
+                <span>{{node.no}}&nbsp;{{node.name}}</span>
+            </span>
+        </div>
+
+        <!--<div flex="10" layout="column" class="template_item_right">-->
+            <!--<span>模板状态：</span>-->
+            <!--<span>{{STATUS[template.status].name}}</span>-->
+            <!--<span>{{CONFIRM[template.confirm].name}}</span>-->
+            <!--<span>{{RELEASE[template.release].name}}</span>-->
+        <!--</div>-->
+
+        <!--<div flex="10" layout="column" class="template_item_right">-->
+            <!--<span>模板数据状态：</span>-->
+            <!--<span>{{STATUS[template.dataStatus].name}}</span>-->
+            <!--<span>{{CONFIRM[template.dataConfirm].name}}</span>-->
+            <!--<span>{{RELEASE[template.dataRelease].name}}</span>-->
+        <!--</div>-->
+
+        <div flex="5" layout="column" class="template_item_right edit" style="color: grey;padding-top: 25px;" ng-click="toggleItem($event, template)" ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS">
+            <i class="fa fa-angle-double-down" style="font-size: 20px" ng-show="template.open"></i>
+            <i class="fa fa-angle-double-up" style="font-size: 20px" ng-show="!template.open"></i>
+        </div>
+    </div>
+
+    <div layout="column" ng-show="template.open" layout-margin style="background-color: rgba(245, 245, 245, 0.26);margin-top: 0px;padding: 18px">
+        <table class="template-data" border="0">
+            <tr>
+                <th ng-repeat="node in template.details">
+                    <span class="title">{{node.no}}&nbsp;{{node.name}}</span>
+                </th>
+            </tr>
+            <tr>
+                <td ng-repeat="data in selectedTemplateData[template.uuid]">
+                    <div class="item" ng-repeat="item in data"
+                          ng-click="nodeDataClickHandler(template, template.details[$parent.$index], data, item)"
+                          ng-class="item.selected ? 'selected-item':''">{{item.name}}</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<div>
+    <div class="add-new" ng-click="preAddMenuAction()">
+        <i class="fa fa-plus"></i>&nbsp;&nbsp;点击创建目录模板数据</a>
+    </div>
+</div>
+
+<!--<div pagination option="pageOption" callback="refreshAllTemplate()"></div>-->

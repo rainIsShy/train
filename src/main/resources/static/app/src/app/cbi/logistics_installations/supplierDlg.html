@@ -1,0 +1,66 @@
+<md-dialog style="padding: 30px;min-width:400px; max-width:900px; max-height:600px; ">
+    <div layout="row">
+        <div flex="100" ng-show="!chosenSupplier">
+            <form name="itemEditor" novalidate>
+                <div flex layout="row" layout-align="start end">
+                    <div flex="50">
+                        <md-button class="md-raised md-accent" ng-click="showLogisticsPanel()">选择物流服务商</md-button>
+                    </div>
+                    <div flex>
+                        <md-button class="md-raised md-accent" ng-click="showInstallationsPanel()">选择安装服务商</md-button>
+                    </div>
+                </div>
+
+                <div layout="row" layout-wrap layout-margin>
+                    <md-input-container flex="50">
+                        <label>物流服务商：</label>
+                        <input name="text" type="text" ng-model="editingItem.logistic.supplier.name" disabled required>
+                    </md-input-container>
+                    <md-input-container flex="50">
+                        <label>安装服务商：</label>
+                        <input name="text" type="text" ng-model="editingItem.installation.supplier.name" disabled required>
+                    </md-input-container>
+                </div>
+
+                <div layout="row" layout-wrap layout-margin>
+                    <div flex="50"></div>
+                    <md-input-container flex="50">
+                        <label class="label">安装日期：</label>
+                        <input type="date" ng-model="editingItem.installation.installationDate" required>
+                    </md-input-container>
+                </div>
+
+
+            </form>
+            <div layout="row">
+                <md-button ng-click="saveSupplier()" ng-disabled="itemEditor.$invalid"><i class="fa fa-check"></i>&nbsp;确认</md-button>
+                <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+            </div>
+        </div>
+
+        <div flex="100" ng-show="chosenSupplier">
+            <form name="searchSupplier" novalidate="">
+                <div layout="row" layout-align="start center">
+                    <md-input-container flex>
+                        <label>查询供应商</label>
+                        <input name="no" type="text" ng-model="searchKeyword" md-maxlength="20">
+                    </md-input-container>
+                    <md-button ng-click="queryAction()" ng-disabled="searchSupplier.$invalid" class="md-icon-button">
+                        <i class="fa fa-search"></i>
+                    </md-button>
+                    <md-button ng-click="backAction()" class="md-icon-button">
+                        <i class="fa fa-times"></i>
+                    </md-button>
+                </div>
+                <md-list-item class="md-2-line" ng-repeat="supplier in allSupplier.content | orderBy:'no'"
+                              ng-click="selectSupplier(supplier)">
+                    <div class="md-list-item-text">
+                        <h3> {{supplier.no}}&nbsp;|&nbsp;{{ supplier.name }} </h3>
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
+            </form>
+            <div pagination option="pageOption" callback="refreshArea()"></div>
+        </div>
+    </div>
+</md-dialog>

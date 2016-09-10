@@ -1,0 +1,48 @@
+<md-content layout-padding>
+    <div layout="row" layout-wrap>
+        <div flex="100">
+            <div layout="row" layout-wrap ng-repeat="unit in selectedItem.unitList" layout-padding>
+                <div flex="15">
+                    <div class="name">换算率分子:</div>
+                    <div class="value">{{unit.numerator}}</div>
+                </div>
+                <div flex="15">
+                    <div class="name">换算单位:</div>
+                    <div class="value">{{unit.unit}}</div>
+                </div>
+                <div flex="15">
+                    <div class="name">换算率分母:</div>
+                    <div class="value">{{unit.denominator}}</div>
+                </div>
+                <div flex="15">
+                    <div class="name">商品单位:</div>
+                    <div class="value">{{selectedItem.unit}}</div>
+                </div>
+                <div flex="15">
+                    <div class="name">有效码:</div>
+                    <div class="value">{{UNIT_STATUS[unit.status].name}}</div>
+                </div>
+
+                <div flex="25">
+                    <md-button class="md-raised" ng-click="openUnitEditDlg(selectedItem, unit)"
+                               ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                        编辑
+                    </md-button>
+                    <md-button class="md-raised" ng-click="deleteUnit(unit)"
+                               ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                        删除
+                    </md-button>
+                </div>
+            </div>
+
+        </div>
+
+        <div>
+            <div class="add-new" ng-click="openUnitEditDlg(selectedItem, null)"
+                 ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD">
+                <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增换算率</a>
+            </div>
+        </div>
+    </div>
+
+</md-content>

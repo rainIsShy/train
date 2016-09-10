@@ -1,0 +1,53 @@
+<style>
+
+    .show-scroll-bar {
+        overflow-y: auto;
+    }
+
+    .hide-scroll-bar {
+        overflow-y: hidden;
+    }
+
+</style>
+
+<md-dialog style="padding: 30px;opacity: 1;max-height: 500px;">
+    <md-content ng-class="searching ? 'show-scroll-bar':'hide-scroll-bar'">
+        <form name="addSysCptDlg" novalidate>
+            <div layout="column" ng-hide="searching">
+                <md-input-container>
+                    <label>名称:</label>
+                    <input type="text" required ng-model="sysCpt.name">
+                </md-input-container>
+                <md-input-container>
+                    <label>字段</label>
+                    <md-select ng-model="sysCpt.value">
+                        <md-option ng-repeat="(key, value) in allSysCptNames" value="{{value.value}}" title="{{value.name}}-{{key}}">{{value.name}}-{{key}}</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div layout="column" ng-show="searching">
+                <md-input-container>
+                    <label>输入字段信息:</label>
+                    <input type="text" ng-model="searchKeyword">
+                </md-input-container>
+                <md-list-item class="md-2-line" ng-repeat="(key, value) in allSysCptNames" ng-click="selectAction(value)"
+                              ng-show="!searchKeyword || key.indexOf(searchKeyword) != -1 || value.name.indexOf(searchKeyword) != -1">
+                    <div class="md-list-item-text">
+                        <h3> {{ key }} </h3>
+                        <p style="color: rgba(0,0,0,0.54);"> {{ value.name }} </p>
+                    </div>
+                    <md-divider ></md-divider>
+                </md-list-item>
+            </div>
+            <div layout="row" ng-hide="searching">
+                <md-button ng-click="searching = !searching">
+                    <i class="fa fa-search"></i>
+                </md-button>
+                <md-button ng-click="hideDlg()" ng-disabled="addSysCptDlg.$invalid">
+                    <i class="fa fa-check"></i>&nbsp;确定
+                </md-button>
+                <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+            </div>
+        </form>
+    </md-content>
+</md-dialog>

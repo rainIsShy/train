@@ -1,0 +1,28 @@
+<div ng-repeat="template in catalogueTemplates.content" layout="row" layout-margin layout-padding  ng-click="editItem(template)"
+     class="md-whiteframe-z1 template-item" ng-show="template.display">
+    <!--ng-if="template.status == selectedStatus && template.confirm == selectedConfirm && template.release == selectedRelease">-->
+    <!--<div flex="15" layout="column" class="template_item_left">-->
+        <!--<div class="template-item-no" >{{template.no}}</div>-->
+        <!--<div class="template-item-name" >{{template.name}}</div>-->
+    <!--</div>-->
+
+    <div layout="row" layout-wrap flex class="template-item-content">
+        <span class="chip" ng-repeat="node in template.details">
+            <span>{{node.no}}&nbsp;{{node.name}}</span>
+        </span>
+    </div>
+
+    <!--<div layout="column" class="template_item_right">-->
+        <!--<span>{{STATUS[template.status].name}}</span>-->
+        <!--<span>{{CONFIRM[template.confirm].name}}</span>-->
+        <!--<span>{{RELEASE[template.release].name}}</span>-->
+    <!--</div>-->
+</div>
+
+<div>
+    <div class="add-new" ng-click="preAddMenuAction()">
+        <i class="fa fa-plus"></i>&nbsp;&nbsp;点击创建目录模板</a>
+    </div>
+</div>
+
+<div pagination option="pageOption" callback="refreshAllTemplate()"></div>

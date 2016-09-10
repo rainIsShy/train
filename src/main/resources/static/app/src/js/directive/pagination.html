@@ -1,0 +1,34 @@
+<style>
+    .pagination {
+        padding: 5px;
+        /*text-align: right;*/
+    }s
+    .pagination-button {
+        cursor: pointer;
+    }
+
+    .pagination .md-button {
+        min-width: 0px;
+    }
+</style>
+
+<div class="pagination" ng-show="option.totalElements > 0">
+    <!--<a class="pagination-button" ng-click="firstPage()">首页</a>-->
+    <button class="md-button" ng-click="firstPage()">
+        <ng-md-icon icon="skip_previous"></ng-md-icon>
+    </button>
+    <button class="md-button" ng-click="prePage()">
+        <ng-md-icon icon="chevron_left"></ng-md-icon>
+    </button>
+    <button class="md-button" ng-click="nextPage()">
+        <ng-md-icon icon="chevron_right"></ng-md-icon>
+    </button>
+    <button class="md-button" ng-click="lastPage()">
+        <ng-md-icon icon="skip_next"></ng-md-icon>
+    </button>
+    <!--<a class="pagination-button" ng-click="prePage()">上一页</a>-->
+    <!--<a class="pagination-button" ng-click="nextPage()">下一页</a>-->
+    <!--<a class="pagination-button" ng-click="lastPage()">末页</a>-->
+    <span>{{option.currentPage+1}}/{{option.totalPage}}</span>
+    <span>&nbsp;总数: {{option.totalElements}}</span>
+</div>

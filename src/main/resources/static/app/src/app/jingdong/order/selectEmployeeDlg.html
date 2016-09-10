@@ -1,0 +1,30 @@
+<md-dialog style="padding: 30px;min-width: 400px;max-height: 500px;">
+    <md-content layout="column">
+        <div>
+            <form name="searchEmployee" novalidate="">
+                <div layout="row" layout-align="start center">
+                    <md-input-container flex>
+                        <label>请输入姓名或工号</label>
+                        <input name="no" type="text" ng-model="searchKeyword" md-maxlength="256">
+                    </md-input-container>
+                    <md-button ng-click="refreshEmployeeList()" ng-disabled="searchEmployee.$invalid"
+                               class="md-icon-button">
+                        <i class="fa fa-search"></i>
+                    </md-button>
+                    <md-button ng-click="cancelDlg()" class="md-icon-button">
+                        <i class="fa fa-times"></i>
+                    </md-button>
+                </div>
+                <md-list-item class="md-2-line" ng-repeat="employee in employeeList | orderBy:'department.name'"
+                              ng-click="selectEmployee(employee)">
+                    <div class="md-list-item-text">
+                        <h3> {{employee.department.name}}&nbsp;|&nbsp;{{employee.name}}&nbsp;|&nbsp;{{ employee.no
+                            }} </h3>
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
+            </form>
+            <div pagination option="pageOption" callback="refreshEmployeeList()"></div>
+        </div>
+    </md-content>
+</md-dialog>

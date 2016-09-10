@@ -1,0 +1,24 @@
+<div layout="row" layout-wrap style="margin-top: 5px;">
+    <div flex="100" ng-repeat="extendDetail in selectedItem.extendDetailList| orderBy:'no'" ng-click="" class="prod-item">
+        <div layout="row" class="height: 100%;">
+            <div flex="10" layout-align="start center" style="text-align: center"><h3>{{extendDetail.no}}</h3></div>
+            <div flex="45">
+                <div layout-padding>产品单身项次： <span>{{extendDetail.returnSalesOrderDetail.no}}</span></div>
+                <div layout-padding>套件商品： <span>{{extendDetail.parentItem.name}}</span></div>
+                <div layout-padding>商品： <span>{{extendDetail.item.name}}</span></div>
+                <div layout-padding>销退数量： <span>{{extendDetail.returnQuantity}}</span></div>
+                <div layout-padding>税前退货金额： <span>{{extendDetail.originalReturnOrderAmount | currency:"￥":2}}</span></div>
+                <div layout-padding>含税退货金额： <span>{{extendDetail.originalReturnOrderAmountTax | currency:"￥":2}}</span></div>
+            </div>
+            <div flex>
+                <div layout-padding>预订单单号： <span>{{extendDetail.psoSoMstNo}}</span></div>
+                <div layout-padding>预订单子项次： <span>{{extendDetail.psoSoExtDtlNo}}</span></div>
+                <div layout-padding>销售订单单号： <span>{{extendDetail.psoOrderMstNo}}</span></div>
+                <div layout-padding>销售退货单子项次： <span>{{extendDetail.psoReturnOrderExtDtlNo}}</span></div>
+                <div layout-padding>退货抛转流水号： <span>{{extendDetail.returnTransferNo}}</span></div>
+                <div layout-padding>备注： <span>{{extendDetail.remark}}</span></div>
+            </div>
+        </div>
+        <md-divider style="margin-top: 3px"></md-divider>
+    </div>
+</div>

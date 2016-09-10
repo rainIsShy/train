@@ -1,0 +1,96 @@
+<div layout="row">
+    <div flex layout="row">
+        <div flex="5"></div>
+        <div flex layout="row">
+            <div flex="35">
+                已选中单据数：&nbsp;{{ selectedItemsCount }}
+            </div>
+            <div flex="35">
+                汇总金额：&nbsp;{{ selectedItemsTotalPrice|currency:'￥'}}
+            </div>
+        </div>
+    </div>
+</div>
+<div flex ng-repeat="orderMaster in OrderMasterList.content"
+     layout="row" layout-margin>
+    <div flex layout="row">
+        <div flex="5">
+            <md-checkbox ng-checked="exists(orderMaster, selected)" ng-click="toggle(orderMaster, selected)"
+                         aria-label="checkbox">
+            </md-checkbox>
+        </div>
+        <div flex="95" layout="column" layout-padding class="md-whiteframe-z1 order-item-background">
+            <div layout="row">
+                <div flex="30">品牌店：&nbsp;{{orderMaster.sellerNick}}</div>
+                <div flex="30">交易订单号：&nbsp;{{orderMaster.tid}}</div>
+                <div flex="15">订单旗帜：&nbsp;{{SELLER_FLAG[orderMaster.sellerFlag].name}}</div>
+                <div flex>成交日期：&nbsp;{{orderMaster.created|date:'yyyy-MM-dd'}}</div>
+            </div>
+            <md-divider style="margin: 10px 5px 10px 5px;"></md-divider>
+
+            <div flex layout="row">
+                <div flex="75" layout="column">
+                    <div flex layout="row" ng-repeat="orderDetail in orderMaster.orderDetailList">
+                        <div flex="20">
+                            <img class="img" ng-if="orderDetail.picPath != null" src={{orderDetail.picPath}}>
+                        </div>
+                        <div flex="55" style="margin: 0px 20px 0px 10px;">
+                            <div flex="25">商品：&nbsp;{{orderDetail.title}}</div>
+                            <div flex="25">商家编码：&nbsp;{{orderDetail.outerSkuId}}</div>
+                            <div flex="25">商品属性：&nbsp;{{orderDetail.skuPropertiesName}}</div>
+                            <div flex="25">状态：<font color="red">&nbsp;{{orderDetail.status}}</font></div>
+                        </div>
+                        <div flex>
+                            <div flex>单价：&nbsp;{{orderDetail.payment|currency:'￥'}}</div>
+                            <div flex>数量：&nbsp;{{orderDetail.num}}</div>
+                            <!--<div flex>退款状态：&nbsp;{{REFUND_STATUS[orderDetail.refundStatus].name}}</div>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="verticalLine" layout-margin></div>
+                <div flex>
+                    <div>客户名称：&nbsp;{{orderMaster.buyerNick}}</div>
+                    <div>审核状态：&nbsp;{{CONFIRM[orderMaster.confirm].name}}</div>
+                    <div>订单状态：&nbsp;{{TAOBAO_STATUS[orderMaster.status].name}}</div>
+                    <div>订单合计金额：&nbsp;{{orderMaster.payment|currency:'￥'}}</div>
+                    <div>退款状态：&nbsp;{{REFUND_STATUS[orderMaster.orderDetailList[0].refundStatus].name}}</div>
+                </div>
+            </div>
+            <md-divider style="margin: 5px 5px 10px 5px;"></md-divider>
+
+            <div layout="row">
+                <div layout="column" flex="20">
+                    <div>已付款：&nbsp;{{orderMaster.stepPaidFee|currency:'￥'}}</div>
+                    <div>未付款：&nbsp;{{orderMaster.availableConfirmFee|currency:'￥'}}</div>
+                </div>
+                <div class="verticalLine" layout-margin></div>
+                <div layout="column">
+                    <div>买家备注：&nbsp;{{orderMaster.buyerMessage}}</div>
+                    <div>卖家备注：&nbsp;{{orderMaster.sellerMemo}}</div>
+                </div>
+            </div>
+            <md-divider style="margin: 10px 5px 10px 5px;"></md-divider>
+            <div layout=column" ng-repeat="amountDetail in orderMaster.amountDetailList">
+                <div layout="row" ng-if="amountDetail.numIid == '521023075868'|| amountDetail.numIid == '521023327429'">
+                    <div flex="60">服务：&nbsp;{{NUM_IID[amountDetail.numIid].name}}</div>
+                    <div flex="20">单价：&nbsp;{{amountDetail.payment|currency:'￥'}}</div>
+                    <div flex>数量：&nbsp;{{amountDetail.num}}</div>
+                </div>
+            </div>
+            <!--<md-divider style="margin: 10px 5px 10px 5px;"></md-divider>-->
+            <div layout="row">
+                <div flex="55">送货地址：&nbsp;{{orderMaster.receiverCity}} {{orderMaster.receiverDistrict}}
+                    {{orderMaster.receiverAddress}}
+                </div>
+                <div class="verticalLine" style="margin: 0px 5px 0px 5px;"></div>
+                <div flex="15">收货人：&nbsp;{{orderMaster.receiverName}}</div>
+                <div class="verticalLine" style="margin: 0px 5px 0px 5px;"></div>
+                <div flex>联系电话：&nbsp;{{orderMaster.receiverMobile}}</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div pagination option="pageOption" callback="queryMenuActionWithPaging()"></div>
+

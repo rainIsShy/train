@@ -1,0 +1,55 @@
+<md-dialog style="padding: 30px;min-width: 400px;max-height: 500px;">
+    <div layout="row" layout-align="end center">
+        <md-button ng-click="cancelDlg()" class="md-icon-button">
+            <i class="fa fa-times"></i>
+        </md-button>
+    </div>
+    <md-content layout="column">
+        <form name="searchEmployee" novalidate="">
+            <div ng-if="workingDetail.transferSource == '1'">
+                <table md-data-table md-row-select="selected">
+                    <thead>
+                    <tr>
+                        <th style="width:auto;"><span class="md-subhead">群组</span></th>
+                        <th style="width:auto;"><span class="md-subhead">职能</span></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="data in groupFunctionDataList" ng-click="selectItem(data)">
+                        <td style="width:auto;"><span class="table-item">{{data.group.name}}</span></td>
+                        <td style="width:auto;"><span class="table-item">{{data.function.name}}</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div ng-if="workingDetail.transferSource == '2'">
+                <table md-data-table md-row-select="selected">
+                    <thead>
+                    <tr>
+                        <th><span class="md-subhead">渠道类型</span></th>
+                        <th><span class="md-subhead">渠道编号</span></th>
+                        <th><span class="md-subhead">渠道名称</span></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="data in channelDataList" ng-click="selectItem(data)">
+                        <td><span class="table-item">{{WORKFLOW_CHANNEL_FLAG[data.channelFlag].name}}</span></td>
+                        <td><span class="table-item">{{data.no}}</span></td>
+                        <td><span class="table-item">{{data.name}}</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div pagination option="channelPageOption" callback="refreshChannelList()"></div>
+            </div>
+            <div flex="100" ng-if="workingDetail.transferSource == '3'">
+                <md-list-item class="md-2-line" ng-repeat="data in employeeDataList">
+                    <div class="md-list-item-text" ng-click="selectItem(data)">
+                        <h3> {{data.no}}&nbsp;|&nbsp;{{ data.name }} </h3>
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
+                <div pagination option="employeePageOption" flex="100" callback="refreshEmployeeList()"></div>
+            </div>
+        </form>
+    </md-content>
+</md-dialog>

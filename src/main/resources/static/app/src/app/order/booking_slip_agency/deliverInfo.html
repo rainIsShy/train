@@ -1,0 +1,87 @@
+<md-content style="overflow: scroll;">
+    <div layout="row" layout-align="left center">
+
+
+        <div align="center" flex="5" class=" table-head">操作</div>
+        <div align="center" flex="5" class=" table-head">项次</div>
+        <div align="center" flex="15" class=" table-head">套件品名</div>
+        <div align="center" flex="15" class=" table-head">品名</div>
+        <div align="center" flex="15" class=" table-head">定制</div>
+        <div align="center" flex="15" class=" table-head">商品属性</div>
+        <div align="center" flex="15" class=" table-head">产品定制描述</div>
+        <div align="center" flex="15" class=" table-head">定制备注</div>
+        <div align="center" flex="15" class=" table-head">单包定制费</div>
+        <div align="center" flex="15" class=" table-head">订单数量</div>
+        <div align="center" flex="10" class=" table-head">出货数量</div>
+        <div align="center" flex="10" class=" table-head">欠货数量</div>
+        <div align="center" flex="15" class=" table-head">销售单位</div>
+        <div align="center" flex="15" class=" table-head">标准价</div>
+        <div align="center" flex="15" class=" table-head">最低出货折扣率</div>
+        <div align="center" flex="15" class=" table-head">最低出货价</div>
+
+        <div align="center" flex="10" class=" table-head">特价单价</div>
+        <div align="center" flex="10" class=" table-head">促销折扣率</div>
+        <div align="center" flex="10" class=" table-head">促销单价</div>
+
+        <div align="center" flex="15" class=" table-head">成交价折扣率</div>
+        <div align="center" flex="15" class=" table-head">订单单价</div>
+        <div align="center" flex="15" class=" table-head">税前金额</div>
+        <div align="center" flex="15" class=" table-head">税后金额</div>
+        <div align="center" flex="15" class=" table-head">标准金额</div>
+        <div align="center" flex="15" class=" table-head">折扣金额</div>
+
+        <div align="center" flex="15" class=" table-head">来源单号</div>
+        <div align="center" flex="15" class=" table-head">来源子单身项次</div>
+        <div align="center" flex="15" class=" table-head">备注</div>
+    </div>
+    <div ng-repeat="orderExtendDetail in OrderExtendDetailList | orderBy:'no'">
+        <div layout="row" layout-align="left center">
+            <div flex="5" class=" table-item">
+                <div layout="row" layout-sm="column" layout-align="center center">
+                    <div ng-show="selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.orderTransferNo == null" ng-click="orderExtendDetailEditMenuAction(orderExtendDetail)"><i
+                            class="fa fa-pencil-square-o"></i>&nbsp;{{itemOperationMenuDisplayOption['500-item-edit'].name}}
+                    </div>
+                </div>
+            </div>
+
+
+            <div align="center" flex="5" class=" table-item">{{orderExtendDetail.no}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.parentItem.name}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.item.name}}</div>
+            <!--<div  align="center" flex="15" class="verticalLine table-item"> {{CUSTOMIZE_FLAG[orderExtendDetail.customizeFlag].name}} </div>-->
+
+            <div align="center" flex="15" class=" table-item" layout="row" style="padding:0px 0px 0px 0px;">
+                <md-checkbox style=" padding: 0px 0px 0px 0px;" ng-model="orderExtendDetail.customizeFlag" ng-disabled="true"
+                             aria-label="定制" ng-true-value="'1'" ng-false-value="'2'"></md-checkbox>
+                </md-input-container>
+                <md-button style="min-width:10px;max-width:60px"
+                           ng-disabled="selectedItem.confirm !=1 || orderExtendDetail.customizeFlag ==2"
+                           ng-click="editItemCustom(orderExtendDetail)">详情
+                </md-button>
+            </div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.itemAttribute}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.productCustomizeDescription}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.customizeRemark}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.perCustomizePrice}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.orderQuantity}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderDetail.transferOrderQuantity}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderDetail.untransferOrderQuantity}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.item.unit}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.standardPrice}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.saleDiscountRate}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.salePrice}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderDetail.specialPrice}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderDetail.promotionDiscountRate}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderDetail.promotionPrice}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.discountRate}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.originalOrderPrice}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.originalOrderAmount}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.originalOrderAmountTax}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.originalStandardAmount}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.originalDiscountAmount}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.psoOrderMstNo}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.psoOrderExtDtlNo}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.remark}}</div>
+        </div>
+    </div>
+</md-content>

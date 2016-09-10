@@ -1,0 +1,24 @@
+<div layout="row" style="background-color:white;" layout-margin layout-align="center center">
+    <div align="center" flex="33">导购员</div>
+    <div align="center" flex="33">客户</div>
+    <div align="center" flex="10">购物数</div>
+    <div align="center" flex="20"></div>
+</div>
+
+
+<div ng-repeat="shoppingCartItem in shoppingCartList.content">
+    <div layout="row" layout-align="center center">
+        <div align="center" flex="33" class="table-item">{{shoppingCartItem.employeeName}}</div>
+
+        <div align="center" flex="33" class="table-item">{{shoppingCartItem.customerName}}</div>
+
+        <div align="center" flex="10" class="table-item">{{shoppingCartItem.totalCount}}</div>
+        <div align="center" flex="20">
+            <md-button class="md-raised" style="float: left;"
+                       ng-click="editItem(shoppingCartItem)">&nbsp;查看详情
+            </md-button>
+        </div>
+    </div>
+</div>
+
+<div pagination option="pageOption" callback="searchShoppingCartList(true)"></div>

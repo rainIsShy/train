@@ -1,0 +1,43 @@
+<md-dialog style="min-width: 500px;max-height: 500px;padding: 30px;opacity: 1;">
+    <md-content>
+        <!--<div layout="row">-->
+        <!--<form name="selectedDataForm" novalidate>-->
+        <!--<div flex="100">-->
+        <!--<md-input-container>-->
+        <!--<label class="label">跟进内容：</label>-->
+        <!--&lt;!&ndash;<input type="textarea" ng-model="followUpContent" required>&ndash;&gt;-->
+        <!--<textarea ng-model="followUpContent" required ></textarea>-->
+        <!--</md-input-container>-->
+        <!--</div>-->
+        <!--<div layout="row">-->
+        <!--<md-button ng-click="hideDlg()">-->
+        <!--<i class="fa fa-check"></i>&nbsp;确定-->
+        <!--</md-button>-->
+        <!--<md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>-->
+        <!--</div>-->
+        <!--</form>-->
+        <!--</div>-->
+        <div>
+            <form name="selectedDataForm" novalidate>
+                <div layout="row" style="height: 100%;">
+                    <div flex="100">
+                        <md-input-container>
+                            <label class="label">跟进内容：</label>
+                            <!--<input type="textarea" ng-model="followUpContent" required>-->
+                            <textarea ng-model="followUpContent" required></textarea>
+                        </md-input-container>
+                    </div>
+                </div>
+                <div layout="row" style="height: 100%;">
+
+                    <div flex="100">
+                        <md-button ng-click="hideDlg('save')">
+                            <i class="fa fa-check"></i>&nbsp;确定
+                        </md-button>
+                        <md-button ng-click="hideDlg('cancel')"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </md-content>
+</md-dialog>

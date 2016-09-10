@@ -1,0 +1,44 @@
+<md-dialog style="padding: 30px;">
+    <md-content layout="column">
+        <div>
+            <form name="copyTemplateForm" novalidate>
+                <md-input-container>
+                    <label>部门编号</label>
+                    <input type="text" ng-model="data.no" required md-maxlength="20">
+                </md-input-container>
+
+                <md-input-container>
+                    <label>部门名称</label>
+                    <input type="text" ng-model="data.name" required md-maxlength="20">
+                </md-input-container>
+
+                <md-input-container>
+                    <label>上级部门</label>
+                    <input type="text" ng-model="parentName" required md-maxlength="20"
+                           disabled>
+                    <!--<md-button ng-click="openDepartmentsDlg()"
+                               class="md-icon-button" style="position:absolute;right:0;bottom:15px;">
+                        <i class="fa fa-search"></i>
+                    </md-button>-->
+                </md-input-container>
+
+                <md-switch ng-model="data.confirm" aria-label="Switch 1" class="md-block"
+                           ng-true-value="'2'" ng-false-value="'1'" ng-click="releaseClickAction($event, item)">
+                    审核
+                </md-switch>
+
+                <md-switch ng-model="data.status" aria-label="Switch 1" class="md-block"
+                           ng-true-value="'1'" ng-false-value="'2'" ng-click="releaseClickAction($event, item)">
+                    启用
+                </md-switch>
+
+                <div layout="row">
+                    <md-button ng-click="hideDlg()">
+                        <i class="fa fa-check"></i>&nbsp;创建
+                    </md-button>
+                    <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+                </div>
+            </form>
+        </div>
+    </md-content>
+</md-dialog>

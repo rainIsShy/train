@@ -1,0 +1,137 @@
+<div layout-fill class="right-container prod-link catalogue-template">
+    <md-content>
+        <md-tabs md-selected="$parent.selectedTabIndex"  md-border-bottom md-dynamic-height md-center-tabs="false">
+            <md-tab md-on-select="listTabSelected()">
+                <md-tab-label>{{listTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <div list-menu></div>
+                        <md-divider style="margin: 10px 7px 20px 7px;"></md-divider>
+                        <div layout="row">
+                            <div flex>
+                                <div ng-repeat="template in catalogueTemplates.content" layout="column"
+                                     ng-if="template.display && selectedTemplateData[template.uuid][0].length > 0" ng-click="editItem($event, template)">
+                                    <div layout="row" class="md-whiteframe-z1 template-item" layout-margin layout-padding class="template-item">
+                                        <div layout="row" layout-wrap flex class="template-item-content">
+                                            <md-select ng-model="selectedTemplateNodeDataUuid" ng-repeat="detail in template.details" style="margin: 0px;" ng-disabled="isRefreshing"
+                                                       ng-change="nodeDataChangeHandler(template, detail, selectedTemplateData[template.uuid][$index], selectedTemplateNodeDataUuid)"
+                                                       ng-click="nodeDataClickHandler($event)" placeholder="{{selectedTemplateNodeDataUI[template.uuid][$index]}}">
+                                                <!--<label class="circle-select">{{selectedTemplateNodeDataUI[template.uuid][$index]}}</label>-->
+                                                <md-option ng-repeat="nodeData in selectedTemplateData[template.uuid][$parent.$index]" ng-value="nodeData.uuid">{{nodeData.name}}</md-option>
+                                            </md-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="add-new" ng-click="preAddMenuAction()">
+                                        <i class="fa fa-plus"></i>&nbsp;&nbsp;点击关联商品到更多模板</a>
+                                    </div>
+                                </div>
+                                <!--<div pagination option="pageOption" callback="refreshAllTemplate()"></div>-->
+                            </div>
+
+                            <div flex="35" ng-if="selectedTemplateNodeData">
+                                <div layout="row" layout-wrap class="prod">
+                                    <div flex="100" layout="column">
+                                        <div layout="row">
+                                            <md-input-container flex="50" style="padding-bottom: 26px">
+                                                <label>商品编号</label>
+                                                <input type="text" ng-model="searchQuery.no">
+                                            </md-input-container>
+                                            <md-input-container flex="50" style="padding-bottom: 26px">
+                                                <label>商品名称</label>
+                                                <input type="text" ng-model="searchQuery.name">
+                                            </md-input-container>
+                                        </div>
+
+                                        <div layout="column">
+                                            <md-button class="md-raised" ng-click="refreshProduction(selectedTemplateNodeData.uuid)">搜索</md-button>
+                                        </div>
+                                    </div>
+                                    <div flex="50" flex-sm="100" ng-repeat="production in linkData.content"
+                                         class="prod-item" layout-padding ng-click="">
+                                        <div class="content">
+                                            <img class="prod-sm-img" src="{{getImageFullPath(production.item.path)}}" >
+
+                                            <div class="name">商品名称:</div>
+                                            <div class="value">{{production.item.name}}</div>
+
+                                            <div class="name">商品编号:</div>
+                                            <div class="value">{{production.item.no}}</div>
+
+                                            <div>
+                                                <div class="quick-button" ng-click="openQuickView($event, production.item)">
+                                                    <span>QUICK VIEW</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div pagination option="pageOptionForProd" callback="refreshProduction(selectedTemplateNodeDataUuid)"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+            <md-tab md-on-select="formTabSelected()">
+                <md-tab-label>{{formTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content class="formList">
+                        <div form-menu></div>
+
+                        <div layout-margin layout-padding class="md-whiteframe-z1" ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                            <p style="color: red;">请从清单列表中选择一个模板。</p>
+                        </div>
+
+                        <div layout="row">
+                            <div flex layout="column" layout-margin layout-padding class="md-whiteframe-z1" ng-if="selectedItem != null">
+                                <div layout="row" class="md-whiteframe-z1 template-item" layout-margin layout-padding class="template-item">
+                                    <div layout="row" layout-wrap flex class="template-item-content">
+                                        <md-select ng-model="selectedTemplateNodeDataUuid" ng-repeat="detail in selectedItem.details" style="margin: 0px;" ng-disabled="isRefreshing"
+                                                   ng-change="nodeDataChangeHandler(selectedItem, detail, selectedTemplateData[selectedItem.uuid][$index], selectedTemplateNodeDataUuid)"
+                                                   placeholder="{{selectedTemplateNodeDataUI[selectedItem.uuid][$index]}}">
+                                            <!--<md-select-label class="circle-select">{{selectedTemplateNodeDataUI[selectedItem.uuid][$index]}}</md-select-label>-->
+                                            <md-option ng-repeat="nodeData in selectedTemplateData[selectedItem.uuid][$parent.$index]" ng-value="nodeData.uuid">{{nodeData.name}}</md-option>
+                                        </md-select>
+                                    </div>
+                                </div>
+
+                                <div ng-if="selectedTemplateNodeData && linkData">
+                                    <div layout="row" layout-wrap class="prod">
+                                        <div flex="33" flex-gt-lg="25" flex-sm="100" ng-repeat="production in linkData.content" ng-click="selectProductionInLink(production)"
+                                             class="prod-item" layout-padding style="position: relative;"
+                                                ng-class="production.selected ? 'highlight-prod': ''">
+                                            <div class="content">
+                                                <img class="prod-sm-img" src="{{getImageFullPath(production.item.path)}}" >
+
+                                                <div class="name">商品名称:</div>
+                                                <div class="value">{{production.item.name}}</div>
+
+                                                <div class="name">商品编号:</div>
+                                                <div class="value">{{production.item.no}}</div>
+
+                                                <div>
+                                                    <span class="quick-button" style="left: 0px; right: auto;" ng-click="deleteCatalogueDetail(production)" ng-show="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY">删除</span>
+                                                    <div class="quick-button" ng-click="openQuickView($event, production.item)">
+                                                        <span>QUICK VIEW</span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div pagination option="pageOptionForProd" callback="refreshProduction(selectedTemplateNodeDataUuid)"></div>
+                                </div>
+                            </div>
+
+                            <div flex="50" flex-gt-lg="40" production-List button-name="添加" button-Callback="addCatalogueDetail(production)" param="itemSearchParam" ng-show="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY"></div>
+                        </div>
+
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

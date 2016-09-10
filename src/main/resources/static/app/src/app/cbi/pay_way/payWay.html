@@ -1,0 +1,276 @@
+<div class="main-panel">
+    <div ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS">
+        <!-- title -->
+        <div layout="row" class="top-title">
+            <!-- detail info title -->
+            <div flex="70" hide-sm hide-md class="left-title" ng-show="selectedItem" style="position: relative;">
+                <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
+                           ng-if="showEditButton()" ng-disabled="!canEditItem(selectedItem)"
+                           ng-click="editItemAction(selectedItem, 'CBI_BASE_PAY_WAY', '付款方式编号: ' + selectedItem.no)">
+                    <ng-md-icon icon="edit"></ng-md-icon>
+                </md-button>
+                <md-menu>
+                    <md-button class="md-icon-button close-btn" aria-label="More" style="float: left;"
+                               ng-click="$mdOpenMenu($event)">
+                        <ng-md-icon icon="menu"></ng-md-icon>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item ng-if="showConfirmMenuItem(selectedItem)">
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="confirmAction($event, selectedItem)">
+                                <ng-md-icon icon="lock"></ng-md-icon>
+                                &nbsp;{{menuDisplayOption['101-confirm'].name}}
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item ng-if="showCancelConfirmMenuItem(selectedItem)">
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="cancelConfirmAction($event, selectedItem)">
+                                <ng-md-icon icon="lock_open"></ng-md-icon>
+                                &nbsp;{{menuDisplayOption['102-cancelConfirm'].name}}
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item ng-if="showEnableStatusMenuItem(selectedItem)">
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="enableStatusAction($event, selectedItem)">
+                                <ng-md-icon icon="lock"></ng-md-icon>
+                                &nbsp;{{menuDisplayOption['103-enableStatus'].name}}
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item ng-if="showDisableStatusMenuItem(selectedItem)">
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="disableStatusAction($event, selectedItem)">
+                                <ng-md-icon icon="lock_open"></ng-md-icon>
+                                &nbsp;{{menuDisplayOption['104-disableStatus'].name}}
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item ng-if="showDeleteMenuItem()">
+                            <md-button class="md-button" aria-label="More" ng-disabled="!canDeleteItem(selectedItem)"
+                                       ng-click="deleteItemAction($event, selectedItem)">
+                                <ng-md-icon icon="delete"></ng-md-icon>
+                                &nbsp;{{menuDisplayOption['105-delete'].name}}
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+                <span>付款方式详细信息</span>
+                <md-button class="md-icon-button close-btn float-right" aria-label="More"
+                           ng-click="hideItemDetailsAction($event)">
+                    <ng-md-icon icon="chevron_left"></ng-md-icon>
+                </md-button>
+            </div>
+            <!-- list info title -->
+            <div flex class="right-title">
+                <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
+                           ng-click="preAddItemAction({}, 'CBI_BASE_PAY_WAY', '添加新付款方式')">
+                    <ng-md-icon icon="add"></ng-md-icon>
+                </md-button>
+                <span>付款方式列表</span>
+                <md-menu ng-if="showBatchMenu()">
+                    <md-button class="md-icon-button close-btn float-right" aria-label="More"
+                               ng-click="$mdOpenMenu($event)">
+                        <ng-md-icon icon="menu"></ng-md-icon>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item ng-if="showBatchConfirmMenuItem()">
+                            <md-button class="md-button" aria-label="More" ng-disabled="!canBatchConfirm()"
+                                       ng-click="batchConfirm($event)">
+                                <ng-md-icon icon="lock"></ng-md-icon>
+                                &nbsp;{{menuDisplayOption['201-batchConfirm'].name}}
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item ng-if="showBatchCancelConfirmMenuItem()">
+                            <md-button class="md-button" aria-label="More" ng-disabled="!canBatchCancelConfirm()"
+                                       ng-click="batchCancelConfirm($event)">
+                                <ng-md-icon icon="lock_open"></ng-md-icon>
+                                &nbsp;{{menuDisplayOption['202-batchCancelConfirm'].name}}
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item ng-if="showBatchEnableStatusMenuItem()">
+                            <md-button class="md-button" aria-label="More" ng-disabled="!canBatchEnableStatus()"
+                                       ng-click="batchEnableStatus($event)">
+                                <ng-md-icon icon="lock"></ng-md-icon>
+                                &nbsp;{{menuDisplayOption['203-batchEnableStatus'].name}}
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item ng-if="showBatchDisableStatusMenuItem()">
+                            <md-button class="md-button" aria-label="More" ng-disabled="!canBatchDisableStatus()"
+                                       ng-click="batchDisableStatus($event)">
+                                <ng-md-icon icon="lock_open"></ng-md-icon>
+                                &nbsp;{{menuDisplayOption['204-batchDisableStatus'].name}}
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+        </div>
+
+        <!-- body -->
+        <div layout="row" class="main-body border">
+            <!-- detail info body -->
+            <div flex="70" hide-sm hide-md layout="column" class="left-body" ng-show="selectedItem">
+                <div flex="100" layout-padding>
+                    <div layout="row" layout-padding style="font-size: 20px;padding-top: 2px; font-weight: bold;">
+                        <span flex>付款方式编号: {{selectedItem.no}}</span>
+                    </div>
+                    <md-divider></md-divider>
+                    <div layout="row" layout-wrap layout-margin>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">付款方式说明</span>
+                            <span class="item-content">{{selectedItem.name}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">支付方式类型</span>
+                            <span class="item-content">{{PAY_TYPE[selectedItem.payType].name}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">启用状态</span>
+                            <span class="item-content">{{STATUS[selectedItem.status].name}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">审核状态</span>
+                            <span class="item-content">{{AUDIT[selectedItem.confirm].name}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">分摊方式</span>
+                            <span class="item-content">{{APPORTION_TYPE[selectedItem.apportionType].name}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">分摊标识</span>
+                            <span class="item-content">{{selectedItem.apportion.name}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">分摊优先级</span>
+                            <span class="item-content">{{selectedItem.apportionLevel}}</span>
+                        </span>
+                     </div>
+                </div>
+            </div>
+
+            <!-- list info body -->
+            <div flex class="right-body">
+                <!-- search bar -->
+                <div flex layout="row" style="position: relative" layout-align="start start">
+                    <span style="position: absolute; top: 15px; left: 10px;">
+                        <md-checkbox ng-model="selectAllFlag" aria-label="Checkbox"
+                                     ng-change="selectAllAction()">
+                        </md-checkbox>
+                    </span>
+                    <md-input-container flex="20" style="margin-left: 50px;" ng-show="selectedItem == null">
+                        <label>启用状态</label>
+                        <md-select ng-model="listFilterOption.select.status">
+                            <md-option ng-repeat="(key, value) in STATUS" ng-value="key">{{value.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex="20" ng-show="selectedItem == null">
+                        <label>审核状态</label>
+                        <md-select ng-model="listFilterOption.select.confirm">
+                            <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex="20" ng-show="selectedItem == null">
+                        <label>付款方式编号</label>
+                        <input ng-model="listFilterOption.no" ng-keypress="queryEnter($event)">
+                    </md-input-container>
+                    <md-input-container flex="20" ng-show="selectedItem == null">
+                        <label>付款方式说明</label>
+                        <input ng-model="listFilterOption.name" ng-keypress="queryEnter($event)">
+                    </md-input-container>
+                    <md-input-container flex="70" style="margin-left: 55px;" ng-show="selectedItem != null">
+                        <label>输入关键字查询</label>
+                        <input ng-model="listFilterOption.keyWord" ng-keypress="queryEnter($event)">
+                    </md-input-container>
+                    <!--<md-button class="md-raised" style="margin-top: 22px;height: 20px;"
+                               ng-if="showQueryButton()"
+                               ng-click="refreshList()"> &nbsp;{{menuDisplayOption['106-query'].name}}
+                    </md-button>-->
+                </div>
+                <!-- status panel -->
+                <div layout="row" layout-warp layout-padding layout-margin ng-show="!selectedItem"
+                     style="margin: 20px 0px 20px 0px; padding-left: 60px;background-color: whitesmoke;position: relative;height: 50px;padding-top: 15px;">
+                    <span flex="20">总记录数: {{pageOption.totalElements}}</span>
+                    <span flex="20">已选记录数: {{selectItemCount}} </span>
+                    <md-menu>
+                        <md-button class="md-button close-btn" aria-label="More" ng-click="$mdOpenMenu($event)"
+                                   style="position: absolute;right: 0px;top: 0px;">
+                            <ng-md-icon icon="sort"></ng-md-icon>
+                            排序
+                        </md-button>
+                        <md-menu-content width="2">
+                            <md-menu-item>
+                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('name')">
+                                    <ng-md-icon ng-show="sortByField == 'name'" icon="play_arrow"></ng-md-icon>
+                                    按名称
+                                </md-button>
+                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('no')">
+                                    <ng-md-icon ng-show="sortByField == 'no'" icon="play_arrow"></ng-md-icon>
+                                    按编号
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </div>
+                <!-- item list -->
+                <div ng-repeat="item in itemList | orderBy:sortByField"
+                     ng-class="selectedItem.no == item.no ? 'selected-item':''">
+                    <div class="summary-item">
+                        <div layout="row" layout-wrap>
+                            <span style="position: absolute">
+                                <md-checkbox aria-label="Checkbox"
+                                             ng-checked="exists(item, selected)"
+                                             ng-click="selectItemAction($event, item, selected)">
+                                </md-checkbox>
+                            </span>
+                            <div flex="100" layout="row" style="padding-left: 50px;padding-top: 10px; font-weight: bold;">
+                                <span flex ng-click="showItemDetailsAction(item)" class="summary-item__title">{{item.no}}</span>
+                            </div>
+                            <div flex="100" layout="row" style="padding-left: 50px;padding-top: 10px;font-size: 14px;"
+                                 layout-align="space-between center" ng-hide="selectedItem">
+                                <div flex layout="row" style="color:#7f8fa4">
+                                    <span>付款方式说明:<span style="font-style: italic">{{item.name}}</span></span>
+                                </div>
+                                <div layout="row" layout-align="end center">
+                                    <md-switch ng-model="item.confirm" aria-label="Switch 1" class="md-block"
+                                               ng-true-value="'2'" ng-false-value="'1'"
+                                               ng-click="confirmSwitchAction($event, item)">
+                                        审核
+                                    </md-switch>
+                                    <md-switch ng-model="item.status" aria-label="Switch 1" class="md-block"
+                                               ng-true-value="'1'" ng-false-value="'2'"
+                                               ng-click="statusSwitchAction($event, item)">
+                                        启用
+                                    </md-switch>
+                                </div>
+                            </div>
+                            <div flex="100" style="padding-left: 50px;padding-top: 30px;font-size: 14px;color:#7f8fa4"
+                                 ng-show="selectedItem">
+                                付款方式:<span style="font-style: italic">{{item.name}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <md-divider></md-divider>
+                </div>
+                <!-- page info -->
+                <div pagination option="pageOption" callback="refreshList()"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit mode UI -->
+    <div ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS">
+        <div layout="row" class="top-title">
+            <div flex="100" class="left-title">
+                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="returnToViewUIAction()"
+                           style="float: left; margin-left: 36px;">
+                    <ng-md-icon icon="chevron_left"></ng-md-icon>
+                </md-button>
+                <span>{{desc}}</span>
+                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="saveItemAction()">
+                    <ng-md-icon icon="save"></ng-md-icon>
+                </md-button>
+            </div>
+        </div>
+
+        <object-editor class="object-editor" status="status" source="source" domain="domain"></object-editor>
+    </div>
+
+</div>

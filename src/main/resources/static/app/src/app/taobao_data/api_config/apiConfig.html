@@ -1,0 +1,39 @@
+<div layout-fill class="right-container catalogue-template">
+    <md-content>
+        <md-tabs md-selected="$parent.selectedTabIndex" md-border-bottom md-dynamic-height md-center-tabs="false">
+            <md-tab md-on-select="listTabSelected()">
+                <md-tab-label>{{listTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <div flex class="menu" style="background:#bdbdbd" layout="row" layout-md="column" layout-sm="column" layout-align="space-around left">
+                            <div flex="5" >
+                            </div>
+
+                            <div flex="30" layout="row" layout-md="column" layout-sm="column">
+                                <md-input-container >
+                                    <label>品牌店：</label>
+                                    <input ng-model="shoppingCart.employeeName"type="text"/>
+                                </md-input-container>
+                            </div>
+                            <div flex="30" layout="row" layout-md="column" layout-sm="column">
+                                <md-input-container >
+                                    <label>App Key：</label>
+                                    <input ng-model="shoppingCart.clientName"type="text"/>
+                                </md-input-container>
+                            </div>
+                            <md-button class="md-raised" style="margin-top: 22px;height: 20px;" ng-click="searchApiConfigList()">&nbsp;查询
+                            </md-button>
+                        </div>
+                        <div ng-include="'app/src/app/taobao_data/api_config/apiConfigList.html' "></div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+            <md-tab md-on-select="formTabSelected()">
+                <md-tab-label>{{formTabName}}</md-tab-label>
+                <md-tab-body>
+
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

@@ -1,0 +1,336 @@
+<style>
+    .btn {
+        margin-right: 8px;
+    }
+
+    .angular-ui-tree-handle {
+        /*background: #f8faff;*/
+        /*border: 1px solid #dae2ea;*/
+        /*color: #7c9eb2;*/
+        padding: 10px 10px;
+        font-weight: normal;
+    }
+
+    .angular-ui-tree-handle:hover {
+        color: #438eb9;
+        background: #f4f6f7;
+        border-color: #dce2e8;
+    }
+
+    .angular-ui-tree-placeholder {
+        background: #f0f9ff;
+        border: 2px dashed #bed2db;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+
+    .group-title {
+        background-color: #687074 !important;
+        color: #FFF !important;
+    }
+
+</style>
+
+<div layout-fill class="right-container auth">
+    <md-content>
+        <md-tabs md-selected="$parent.selectedTabIndex" md-border-bottom md-dynamic-height md-center-tabs="false">
+            <md-tab md-on-select="listTabSelected()">
+                <md-tab-label>{{listTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content layout-margin>
+                        <md-tabs md-selected="selectedEntityTabIndex" md-border-bottom md-center-tabs="false" md-dynamic-height>
+                            <md-tab label="职能">
+                                <md-content layout-margin>
+                                    <md-data-table-toolbar>
+                                        <h2 class="md-title">职能权限关联</h2>
+                                        <div flex=""></div>
+                                        <md-input-container style="padding: 10px;">
+                                            <label>请输入编号或名称:</label>
+                                            <input type="text" ng-model="searchKeyword.func">
+                                        </md-input-container>
+                                        <md-button style="margin-top: 22px;height: 20px;" class="md-raised" ng-click="getFunctions()">搜索</md-button>
+                                    </md-data-table-toolbar>
+                                    <md-data-table-container class="scrollable-table">
+                                        <table md-data-table md-row-select="selected" md-progress="deferred">
+                                            <thead>
+                                            <tr>
+                                                <th><span class="md-subhead">编号</span></th>
+                                                <th><span class="md-subhead">名称</span></th>
+                                                <th><span class="md-subhead">类型</span></th>
+                                                <th><span class="md-subhead" style="padding-left: 8px;">操作</span></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="func in allFunctions.content" ng-click="selectEntity(func, 1)" ng-class="selectedItem.uuid == func.uuid ? 'highlight' : ''">
+                                                <td><span class="md-body-1">{{func.no}}</span></td>
+                                                <td><span class="md-body-1">{{func.name}}</span></td>
+                                                <td><span class="md-body-1">{{FUNCTION_TYPE[func.type].name}}</span></td>
+                                                <td>
+                                                    <md-button class="md-raised" ng-click="editItem(func)">编辑</md-button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </md-data-table-container>
+
+                                    <div pagination option="functionPageOption" callback="getFunctions()"></div>
+                                </md-content>
+                            </md-tab>
+                            <md-tab label="角色">
+                                <md-content layout-margin>
+                                    <md-data-table-toolbar>
+                                        <h2 class="md-title">角色权限关联</h2>
+                                        <div flex=""></div>
+                                        <md-input-container style="padding: 10px;">
+                                            <label>请输入编号或名称:</label>
+                                            <input type="text" ng-model="searchKeyword.role">
+                                        </md-input-container>
+                                        <md-button style="margin-top: 22px;height: 20px;" class="md-raised" ng-click="getRoles()">搜索</md-button>
+                                    </md-data-table-toolbar>
+                                    <md-data-table-container class="scrollable-table">
+                                        <table md-data-table md-row-select="selected" md-progress="deferred">
+                                            <thead>
+                                            <tr>
+                                                <th><span class="md-subhead">编号</span></th>
+                                                <th><span class="md-subhead">名称</span></th>
+                                                <th><span class="md-subhead">类型</span></th>
+                                                <th><span class="md-subhead" style="padding-left: 8px;">操作</span></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="role in allRoles.content" ng-click="selectEntity(role, 2)" ng-class="selectedItem.uuid == role.uuid ? 'highlight' : ''">
+                                                <td><span class="md-body-1">{{role.no}}</span></td>
+                                                <td><span class="md-body-1">{{role.name}}</span></td>
+                                                <td><span class="md-body-1">{{ROLE_TYPE[role.type].name}}</span></td>
+                                                <td>
+                                                    <md-button class="md-raised" ng-click="editItem(role)">编辑</md-button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </md-data-table-container>
+
+                                    <div pagination option="rolePageOption" callback="getRoles()"></div>
+                                </md-content>
+                            </md-tab>
+                            <md-tab label="账号">
+                                <md-content layout-margin layout="column">
+                                    <md-data-table-toolbar>
+                                        <h2 class="md-title">账号权限关联</h2>
+                                        <div flex=""></div>
+                                        <md-input-container style="padding: 10px;">
+                                            <label>请输入编号或名称:</label>
+                                            <input type="text" ng-model="searchKeyword.user">
+                                        </md-input-container>
+                                        <md-button style="margin-top: 22px;height: 20px;" class="md-raised" ng-click="getUsers()">搜索</md-button>
+                                    </md-data-table-toolbar>
+
+                                    <md-radio-group ng-model="userType" layout="row" style="margin-bottom: 15px;" ng-change="refreshUsers()">
+                                        <md-radio-button value="1">集团</md-radio-button>
+                                        <md-radio-button value="2">渠道商</md-radio-button>
+                                        <md-radio-button value="3">员工</md-radio-button>
+                                    </md-radio-group>
+
+                                    <md-data-table-container class="scrollable-table">
+                                        <table md-data-table md-row-select="selected" md-progress="deferred">
+                                            <thead>
+                                            <tr>
+                                                <th><span class="md-subhead">编号</span></th>
+                                                <th><span class="md-subhead">姓名</span></th>
+                                                <th><span class="md-subhead">类型</span></th>
+                                                <th><span class="md-subhead" style="padding-left: 8px;">操作</span></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="user in allUsers.content" ng-click="selectEntity(user, 3)" ng-class="selectedItem.uuid == user.uuid ? 'highlight' : ''">
+                                                <td><span class="md-body-1">{{user.details.no}}</span></td>
+                                                <td><span class="md-body-1">{{user.details.name}}</span></td>
+                                                <td><span class="md-body-1">{{USER_TYPE[user.type].name}}</span></td>
+                                                <td>
+                                                    <md-button class="md-raised" ng-click="editItem(user)">编辑</md-button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </md-data-table-container>
+
+                                    <div pagination option="userPageOption" callback="getUsers()"></div>
+                                </md-content>
+                            </md-tab>
+                        </md-tabs>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+            <md-tab md-on-select="formTabSelected()">
+                <md-tab-label>{{formTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content layout-margin>
+                        <div form-menu></div>
+                            <!--funcion-->
+                            <div ng-if="entityType == 1">
+                                <md-content layout-margin>
+                                    <md-data-table-toolbar>
+                                        <h2 class="md-title">职能权限关联</h2>
+                                    </md-data-table-toolbar>
+                                    <md-data-table-container class="scrollable-table">
+                                        <table md-data-table md-row-select="selected" md-progress="deferred">
+                                            <thead>
+                                            <tr>
+                                                <th><span class="md-subhead">编号</span></th>
+                                                <th><span class="md-subhead">名称</span></th>
+                                                <th><span class="md-subhead">类型</span></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr class="highlight">
+                                                <td><span class="md-body-1">{{selectedItem.no}}</span></td>
+                                                <td><span class="md-body-1">{{selectedItem.name}}</span></td>
+                                                <td><span class="md-body-1">{{FUNCTION_TYPE[selectedItem.type].name}}</span></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </md-data-table-container>
+                                </md-content>
+                            </div>
+                            <!--role-->
+                            <div ng-if="entityType == 2">
+                                <md-content layout-margin>
+                                    <md-data-table-toolbar>
+                                        <h2 class="md-title">角色权限关联</h2>
+                                    </md-data-table-toolbar>
+                                    <md-data-table-container class="scrollable-table">
+                                        <table md-data-table md-row-select="selected" md-progress="deferred">
+                                            <thead>
+                                            <tr>
+                                                <th><span class="md-subhead">编号</span></th>
+                                                <th><span class="md-subhead">名称</span></th>
+                                                <th><span class="md-subhead">类型</span></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr class="highlight">
+                                                <td><span class="md-body-1">{{selectedItem.no}}</span></td>
+                                                <td><span class="md-body-1">{{selectedItem.name}}</span></td>
+                                                <td><span class="md-body-1">{{ROLE_TYPE[selectedItem.type].name}}</span></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </md-data-table-container>
+                                </md-content>
+                            </div>
+                            <!--user-->
+                            <div ng-if="entityType == 3">
+                                <md-content layout-margin layout="column">
+                                    <md-data-table-toolbar>
+                                        <h2 class="md-title">账号权限关联</h2>
+                                    </md-data-table-toolbar>
+
+                                    <md-data-table-container class="scrollable-table">
+                                        <table md-data-table md-row-select="selected" md-progress="deferred">
+                                            <thead>
+                                            <tr>
+                                                <th><span class="md-subhead">编号</span></th>
+                                                <th><span class="md-subhead">姓名</span></th>
+                                                <th><span class="md-subhead">类型</span></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr class="highlight">
+                                                <td><span class="md-body-1">{{selectedItem.details.no}}</span></td>
+                                                <td><span class="md-body-1">{{selectedItem.details.name}}</span></td>
+                                                <td><span class="md-body-1">{{USER_TYPE[selectedItem.type].name}}</span></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </md-data-table-container>
+                                </md-content>
+                            </div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+        <div layout="row" class="top-border tree-panel" ng-if="selectedItem">
+            <div flex="35" ng-include=" 'app/src/app/auth/config/resTree.html' " class="right-border"></div>
+            <div flex="65">
+                <md-tabs md-border-bottom md-dynamic-height md-center-tabs="false">
+                    <md-tab label="功能菜单">
+                        <md-content class="body-detail">
+                            <div layout="column">
+                                <div layout="row" layout-padding class="bottom-border">
+                                    <div flex="25">菜单</div>
+                                    <!--<div flex="25">是否可见</div>-->
+                                </div>
+                                <div layout="row">
+                                    <div flex="25" class="right-border">
+                                        <div ng-repeat="menu in menuList.content" class="data-item" layout-padding ng-click="menuClickHandler(entityType, menu)">
+                                            <md-checkbox ng-disabled="!isEditing" style="display: inline;" ng-click="menuCheckBoxHandler(menu)" aria-label="checkbox" ng-model="menu.checked"></md-checkbox>
+                                            <span ng-class="menu.uuid == selectedSysMenu.uuid ? 'highlight':''">{{menu.name}}</span>
+                                        </div>
+                                        <div class="data-item" layout-padding ng-if="!menuList || menuList.content.length == 0">无</div>
+                                    </div>
+                                    <!--<div flex="25" class="right-border layout-padding">-->
+                                        <!--<div layout-padding ng-if="detailMenus && detailMenus.content.length > 0">是</div>-->
+                                        <!--<div layout-padding ng-if="detailMenus && detailMenus.content.length == 0">否</div>-->
+                                        <!--<div layout-padding ng-if="detailMenus == null || detailMenus == undefined">未知</div>-->
+                                    <!--</div>-->
+                                </div>
+                            </div>
+                        </md-content>
+                    </md-tab>
+                    <md-tab label="元件数据">
+                        <md-content class="body-detail">
+                            <div layout="column">
+                                <div layout="row" layout-padding class="bottom-border">
+                                    <div flex="25">元件</div>
+                                    <div flex="25">允许数据</div>
+                                    <div flex="25">禁止数据</div>
+                                    <!--<div flex="25">是否可见</div>-->
+                                </div>
+                                <div layout="row">
+                                    <div flex="25" class="right-border">
+                                        <div ng-repeat="cpt in cptList" class="data-item" layout-padding ng-click="cptClickHandler(entityType, cpt)">
+                                            <md-checkbox ng-disabled="!isEditing" style="display: inline;" ng-click="cptCheckBoxHandler(cpt)" aria-label="checkbox" ng-model="cpt.checked"></md-checkbox>
+                                            <span ng-class="cpt.uuid == selectedSysCpt.uuid ? 'highlight':''">{{cpt.name}}</span>
+                                            <button class="md-button delete-data-btn" ng-click="deleteSysCpt(cpt)" ng-show="isEditing">
+                                                <ng-md-icon icon="clear"></ng-md-icon>
+                                            </button>
+                                        </div>
+                                        <div class="data-item" layout-padding ng-if="!cptList || cptList.length == 0">无</div>
+                                        <md-button class="md-raised" ng-click="addSysCpt()" ng-show="isEditing">新增</md-button>
+                                    </div>
+                                    <div flex="25" class="right-border">
+                                        <div ng-repeat="data in permitDataList" class="data-item" layout-padding>
+                                            {{data.name || data.NAME || data.valueUuid}}
+                                            <button class="md-button delete-data-btn" ng-click="deletePermitData(data)" ng-show="isEditing">
+                                                <ng-md-icon icon="clear"></ng-md-icon>
+                                            </button>
+                                        </div>
+                                        <div class="data-item" layout-padding ng-if="!permitDataList || permitDataList.length == 0">无</div>
+                                        <md-button class="md-raised" ng-click="addPermitData()" ng-show="canAddPermitBanData()">新增</md-button>
+                                    </div>
+                                    <div flex="25">
+                                        <div ng-repeat="data in banDataList" class="data-item" layout-padding>
+                                            {{data.name || data.NAME || data.valueUuid}}
+                                            <button class="md-button delete-data-btn" ng-click="deleteBanData(data)" ng-show="isEditing">
+                                                <ng-md-icon icon="clear"></ng-md-icon>
+                                            </button>
+                                        </div>
+                                        <div class="data-item" layout-padding ng-if="!banDataList || banDataList.length == 0">无</div>
+                                        <md-button class="md-raised" ng-click="addBanData()" ng-show="canAddPermitBanData()">新增</md-button>
+                                    </div>
+                                    <!--<div flex="25" class="right-border">-->
+                                        <!--<div layout-padding ng-if="detailCpts && detailCpts.content.length > 0">是</div>-->
+                                        <!--<div layout-padding ng-if="detailCpts && detailCpts.content.length == 0">否</div>-->
+                                        <!--<div layout-padding ng-if="detailCpts == null || detailCpts == undefined">未知</div>-->
+                                    <!--</div>-->
+                                </div>
+                            </div>
+                        </md-content>
+                    </md-tab>
+                </md-tabs>
+            </div>
+        </div>
+    </md-content>
+</div>

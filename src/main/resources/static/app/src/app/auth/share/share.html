@@ -1,0 +1,157 @@
+<div layout-fill class="right-container auth">
+    <md-content>
+        <md-tabs md-selected="$parent.selectedTabIndex" md-border-bottom md-dynamic-height md-center-tabs="false">
+            <md-tab md-on-select="listTabSelected()">
+                <md-tab-label>{{listTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <div layout="row" layout-sm="column">
+                            <div list-menu flex="50"></div>
+                            <div flex="50" class="menu-right" layout="row" layout-align="end center">
+                                <md-input-container style="padding: 10px;">
+                                    <label>编号或者名称</label>
+                                    <input type="text" ng-model="searchKeyword">
+                                </md-input-container>
+                                <md-button style="margin-top: 22px;height: 20px;" class="md-raised" ng-click="refreshAllEntities()">搜索</md-button>
+                                <md-button style="margin-top: 22px;height: 20px;" class="md-raised" ng-click="preAddMenuAction()">新建</md-button>
+                            </div>
+                        </div>
+                        <md-divider style="margin-bottom:5px;"></md-divider>
+                        <md-data-table-toolbar>
+                            <h2 class="md-title">资源树列表</h2>
+                            <!--<md-button style="position: absolute;right: 30px; top: 10px;" class="md-raised" ng-click="preAddMenuAction()">新建</md-button>-->
+                        </md-data-table-toolbar>
+                        <md-data-table-container>
+                            <table md-data-table md-row-select="selected" md-progress="deferred">
+                                <thead>
+                                <tr>
+                                    <th><span class="md-subhead">编号</span></th>
+                                    <th><span class="md-subhead">名称</span></th>
+                                    <th><span class="md-subhead">数据</span></th>
+                                    <th><span class="md-subhead">是否有效</span></th>
+                                    <th><span class="md-subhead" style="padding-left: 8px;">操作</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="shareTree in allShareTree" ng-click="" ng-class="selectedItem.uuid == shareTree.uuid ? 'highlight' : ''">
+                                    <td><span class="md-body-1">{{shareTree.no}}</span></td>
+                                    <td><span class="md-body-1">{{shareTree.name}}</span></td>
+                                    <td><span class="md-body-1">{{shareTree.sysTable.name}}</span></td>
+                                    <td><span class="md-body-1">{{shareTree.status == '1' ? '是' : '否'}}</span></td>
+                                    <td>
+                                        <md-button class="md-raised" ng-click="editItem(shareTree)">编辑</md-button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </md-data-table-container>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+            <md-tab md-on-select="formTabSelected()">
+                <md-tab-label>{{formTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content layout-margin>
+                        <form name="mainForm" novalidate>
+                            <div form-menu></div>
+
+                            <div layout-margin layout-padding class="md-whiteframe-z1" ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                                <p style="color: red;">请从清单列表中选择一个资源树。</p>
+                            </div>
+
+                            <div class="panel" ng-show="selectedItem">
+                                <div class="header">
+                                    <span>基本信息</span>
+                                </div>
+                                <div layout="row" layout-wrap>
+                                    <div flex="25" flex-sm="100">
+                                        <md-input-container>
+                                            <label>编号:</label>
+                                            <input type="text" required ng-model="selectedItem.no" ng-disabled="!isEditing">
+                                        </md-input-container>
+                                    </div>
+                                    <div flex="25" flex-sm="100">
+                                        <md-input-container>
+                                            <label>名称:</label>
+                                            <input type="text" required ng-model="selectedItem.name" ng-disabled="!isEditing">
+                                        </md-input-container>
+                                    </div>
+                                    <div flex="25" flex-sm="100">
+                                        <md-input-container>
+                                            <label>数据</label>
+                                            <md-select required ng-model="selectedItem.sysTable.uuid"
+                                                        ng-disabled="ui_status != UI_STATUS.EDIT_UI_STATUS_ADD">
+                                                <md-option ng-selected="sysTable.uuid == selectedItem.sysTable.uuid" ng-repeat="sysTable in allSysTable" ng-value="sysTable.uuid">{{sysTable.name}}</md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                    </div>
+                                    <div flex="25" flex-sm="100">
+                                        <md-input-container>
+                                            <label>生效</label>
+                                            <md-select required ng-model="selectedItem.status" ng-disabled="!isEditing">
+                                                <md-option ng-value="1">是</md-option>
+                                                <md-option ng-value="2">否</md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel" ng-show="selectedItem">
+                                <div class="header">
+                                    <span>资源树</span>
+                                </div>
+                                <div layout="row" layout-wrap>
+                                    <div flex="100" style="overflow-x: auto;" org-chart source="source" callback="changeTree(source, dest)" select-callback="selectCallback(uuid)" source-update-flag="sourceUpdateFlag"></div>
+                                    <div flex="100">
+                                        <div class="panel" ng-show="selectedItem && currentSelectedNode && (currentSelectedNode.parentUuid || displayType == 1)">
+                                            <div class="header">
+                                                <span>节点信息</span>
+                                            </div>
+                                            <div layout="row" layout-wrap>
+                                                <div flex="25" flex-sm="100">
+                                                    <md-input-container>
+                                                        <label>编号:</label>
+                                                        <input type="text" ng-model="currentSelectedNode.no" ng-disabled="!isEditing">
+                                                    </md-input-container>
+                                                </div>
+                                                <div flex="25" flex-sm="100">
+                                                    <md-input-container>
+                                                        <label>名称:</label>
+                                                        <input type="text" ng-model="currentSelectedNode.name" ng-disabled="!isEditing">
+                                                    </md-input-container>
+                                                </div>
+                                                <div flex="25" flex-sm="100">
+                                                    <md-input-container>
+                                                        <label>是否共享</label>
+                                                        <md-select ng-model="currentSelectedNode.aamFlag" ng-disabled="!isEditing">
+                                                            <md-option ng-value="1">是</md-option>
+                                                            <md-option ng-value="2">否</md-option>
+                                                        </md-select>
+                                                    </md-input-container>
+                                                </div>
+                                                <div flex="25" flex-sm="100">
+                                                    <md-input-container ng-show="currentSelectedNode.channel">
+                                                        <label>渠道:</label>
+                                                        <input type="text" ng-model="currentSelectedNode.channel.name" ng-disabled="true">
+                                                    </md-input-container>
+                                                </div>
+                                                <div flex="100">
+                                                    <md-button class="md-raised" ng-click="searchChannel()" ng-show="isEditing && currentSelectedNode.channel">查询渠道</md-button>
+                                                    <md-button class="md-raised" ng-click="updateNodeHandler()"  ng-show="isEditing && (currentSelectedNode.parentUuid || displayType == 1)">修改</md-button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>
+
+
+

@@ -1,0 +1,36 @@
+<md-dialog style="padding: 30px;opacity: 1;">
+    <md-content>
+        <div layout="row">
+            <form name="selectedDataForm" novalidate>
+                <div>
+                    <!--
+                    <md-input-container flex>
+                        <label>映射所属系统</label>
+                        <input ng-model="selectedItem.mappedAccount.sysType" readonly>
+                    </md-input-container>
+                    <md-input-container flex>
+                        <label>映射所属模块</label>
+                        <input ng-model="selectedItem.mappedAccount.moduleType" readonly>
+                    </md-input-container>
+                    <md-input-container flex>
+                        <label>来源值所属表</label>
+                        <input ng-model="selectedItem.mappedAccount.sourceTable" readonly>
+                    </md-input-container>
+                    -->
+                    <md-input-container flex>
+                        <label>映射账号</label>
+                        <input ng-model="selectedItem.mappedAccount.targetValue" required>
+                    </md-input-container>
+                    <md-button ng-click="hideDlg()" ng-disabled="selectedDataForm.$invalid">
+                        <i class="fa fa-check"></i>&nbsp;确定
+                    </md-button>
+                    <md-button ng-click="cancelDlg()"
+                               ng-disabled="selectedItem.isModifyMappedAccount == true
+                               && selectedItem.mappedAccount.targetValue==null">
+                        <i class="fa fa-times"></i>&nbsp;取消
+                    </md-button>
+                </div>
+            </form>
+        </div>
+    </md-content>
+</md-dialog>

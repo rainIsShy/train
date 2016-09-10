@@ -1,0 +1,49 @@
+<div layout="row" layout-md="column" layout-sm="column" layout-align="end center" style="padding: 10px 0px 0px 0px;">
+
+    <md-button class="md-raised" ng-click="ecommerceOrderListMenuAction(411, $event)"
+               ng-if="ecommerceFormMenuDisplayOption['411-audit'].display && (menuAuthDataMap[ecommerceFormMenuDisplayOption['411-audit'].uuid] || isAdmin() || !ecommerceFormMenuDisplayOption['411-audit'].uuid)"
+               ng-disabled="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || audit_button_disabled == 1"
+               style="margin-top: 0px;height: 20px;" aria-label="审核">
+        &nbsp;{{ecommerceFormMenuDisplayOption['411-audit'].name}}
+    </md-button>
+
+    <md-button class="md-raised" ng-click="ecommerceOrderListMenuAction(411, $event)"
+               ng-if="ecommerceFormMenuDisplayOption['419-supervisorAudit'].display && (menuAuthDataMap[ecommerceFormMenuDisplayOption['419-supervisorAudit'].uuid] || isAdmin() || !ecommerceFormMenuDisplayOption['419-supervisorAudit'].uuid)"
+               ng-disabled="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || supervisorAudit_button_disabled == 1"
+               style="margin-top: 0px;height: 20px;" aria-label="主管审核">
+        &nbsp;{{ecommerceFormMenuDisplayOption['419-supervisorAudit'].name}}
+    </md-button>
+
+    <md-button class="md-raised" ng-click="ecommerceOrderListMenuAction(416, $event)"
+               ng-if="ecommerceFormMenuDisplayOption['416-revertAudit'].display && (menuAuthDataMap[ecommerceFormMenuDisplayOption['416-revertAudit'].uuid] || isAdmin() || !ecommerceFormMenuDisplayOption['416-revertAudit'].uuid)"
+               ng-disabled="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || revert_audit_button_disabled == 1"
+               style="margin-top: 0px;height: 20px;" aria-label="取消审核">
+        &nbsp;{{ecommerceFormMenuDisplayOption['416-revertAudit'].name}}
+    </md-button>
+
+    <md-button class="md-raised" ng-click="ecommerceOrderListMenuAction(413, $event)"
+               ng-if="ecommerceFormMenuDisplayOption['413-throw'].display && (menuAuthDataMap[ecommerceFormMenuDisplayOption['413-throw'].uuid] || isAdmin() || !ecommerceFormMenuDisplayOption['413-throw'].uuid)"
+               ng-disabled="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || throw_button_disabled == 1"
+               style="margin-top: 0px;height: 20px;" aria-label="抛转预订单">
+        &nbsp;{{ecommerceFormMenuDisplayOption['413-throw'].name}}
+    </md-button>
+
+    <md-button class="md-raised" ng-click="ecommerceOrderListMenuAction(417, $event)"
+               ng-if="ecommerceFormMenuDisplayOption['417-cancelthrow'].display && (menuAuthDataMap[ecommerceFormMenuDisplayOption['417-cancelthrow'].uuid] || isAdmin() || !ecommerceFormMenuDisplayOption['417-cancelthrow'].uuid)"
+               ng-disabled="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || revert_throw_button_disabled == 1"
+               style="margin-top: 0px;height: 20px;" aria-label="取消抛转预订单">
+        &nbsp;{{ecommerceFormMenuDisplayOption['417-cancelthrow'].name}}
+    </md-button>
+
+    <md-button class="md-raised" ng-click="ecommerceOrderListMenuAction(418, $event)"
+               ng-if="ecommerceFormMenuDisplayOption['418-print'].display && (menuAuthDataMap[ecommerceFormMenuDisplayOption['418-print'].uuid] || isAdmin() || !ecommerceFormMenuDisplayOption['418-print'].uuid)"
+               ng-disabled="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || revert_throw_button_disabled == 1"
+               style="margin-top: 0px;height: 20px;" aria-label="打印">
+        &nbsp;{{ecommerceFormMenuDisplayOption['418-print'].name}}
+    </md-button>
+
+</div>
+
+
+
+

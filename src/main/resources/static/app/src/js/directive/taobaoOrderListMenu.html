@@ -1,0 +1,119 @@
+<div layout="column">
+    <div flex layout="column" class="order-item-background" ng-if="taobaoOrderListMenu.showQueryBar">
+        <div class="menu" layout="row" layout-md="column" layout-sm="column" layout-align="start center">
+            <md-radio-group layout="row" ng-model="taobaoOrderListMenu.dateType" flex="20">
+                <md-radio-button value="created">成交日期</md-radio-button>
+                <md-radio-button value="payTime">支付日期</md-radio-button>
+            </md-radio-group>
+            <md-input-container flex="20" style="margin-left: 10px;">
+                <label>起始日期：</label>
+                <input type="date" ng-model="taobaoOrderListMenu.startDate"/>
+            </md-input-container>
+            <md-input-container flex="20">
+                <label>截止日期：</label>
+                <input type="date" ng-model="taobaoOrderListMenu.endDate"/>
+            </md-input-container>
+            <md-input-container flex="20">
+                <label>员工号：</label>
+                <input ng-model="taobaoOrderListMenu.employeeID"/>
+            </md-input-container>
+            <md-input-container flex>
+                <label>客户名称：</label>
+                <input ng-model="taobaoOrderListMenu.buyerNick"/>
+            </md-input-container>
+        </div>
+
+        <div class="menu" layout="row" layout-md="column" layout-sm="column">
+            <div flex="20" layout="row" layout-md="column" layout-sm="column" style="margin-left: 10px;">
+                <label class="label">订单类型：</label>
+                <md-select placeholder="全部" ng-model="taobaoOrderListMenu.orderFlag" class="select">
+                    <md-option ng-repeat="(key, value) in ORDER_FLAG" ng-value="key">{{value.name}}</md-option>
+                </md-select>
+            </div>
+            <div flex="35" layout="row" layout-md="column" layout-sm="column">
+                <label class="label">订单状态：</label>
+                <md-select placeholder="" ng-model="taobaoOrderListMenu.taobao_status" class="select" aria-label="status">
+                    <md-option ng-repeat="(key, value) in TAOBAO_STATUS" ng-value="value.value">
+                        {{value.name}}
+                    </md-option>
+                </md-select>
+            </div>
+            <div flex="20" layout="row" layout-md="column" layout-sm="column">
+                <label class="label">订单旗帜：</label>
+                <md-select placeholder="" ng-model="taobaoOrderListMenu.seller_flag" class="select" aria-label="flag">
+                    <md-option ng-repeat="(key, value) in SELLER_FLAG" ng-value="key">
+                        {{value.name}}
+                    </md-option>
+                </md-select>
+            </div>
+            <div flex="20" layout="row" layout-md="column" layout-sm="column">
+                <label class="label">审核状态：</label>
+                <md-select placeholder="全部" ng-model="taobaoOrderListMenu.confirm" class="select">
+                    <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
+                </md-select>
+            </div>
+        </div>
+        <div class="menu" layout="row" layout-md="column" layout-sm="column" style="margin-left: 10px;">
+            <md-input-container flex="20">
+                <label>销售单号：</label>
+                <input ng-model="taobaoOrderListMenu.orderId"/>
+            </md-input-container>
+            <md-input-container flex="20">
+                <label>买家备注：</label>
+                <input ng-model="taobaoOrderListMenu.buyerMessage"/>
+            </md-input-container>
+            <md-input-container flex="20">
+                <label>卖家备注：</label>
+                <input ng-model="taobaoOrderListMenu.sellerMemo"/>
+            </md-input-container>
+            <md-button flex="10" class="md-raised"
+                       ng-if="taobaoOrderListMenuDisplayOption['405-query'].display
+                       && (menuAuthDataMap[taobaoOrderListMenuDisplayOption['405-query'].uuid] || isAdmin() || !taobaoOrderListMenuDisplayOption['405-query'].uuid)"
+                       style="margin: 22px 0px 0px 50px;height: 20px;"
+                       ng-click="taobaoOrderListMenuAction(405, $event)">&nbsp;{{taobaoOrderListMenuDisplayOption['405-query'].name}}
+            </md-button>
+        </div>
+    </div>
+
+
+    <div flex style="padding: 20px 0px 0px 0px;" layout="row" layout-md="column" layout-sm="column" layout-align="space-around left">
+        <div flex="70" layout="row" layout-md="column" layout-sm="column">
+            <md-checkbox ng-model="taobaoOrderListMenu.selectAll" ng-change="taobaoOrderListMenuAction(400, $event)"
+                         ng-if="taobaoOrderListMenuDisplayOption['400-selectAll'].display && (menuAuthDataMap[taobaoOrderListMenuDisplayOption['400-selectAll'].uuid] || isAdmin() || !taobaoOrderListMenuDisplayOption['400-selectAll'].uuid)"
+                         aria-label="全选" ng-true-value="true" ng-false-value="false"> &nbsp;{{taobaoOrderListMenuDisplayOption['400-selectAll'].name}}
+            </md-checkbox>
+        </div>
+        <div flex layout="row" layout-align="end center">
+            <md-button class="md-raised" ng-click="taobaoOrderListMenuAction(403, $event)"
+                       ng-if="taobaoOrderListMenuDisplayOption['403-throw'].display
+                   && (menuAuthDataMap[taobaoOrderListMenuDisplayOption['403-throw'].uuid]
+                   || isAdmin() || !taobaoOrderListMenuDisplayOption['403-throw'].uuid)"
+                       ng-disabled="audit_button_disabled == 1"
+                       style="margin-top: 0px;height: 20px;" aria-label="审核"> &nbsp;{{taobaoOrderListMenuDisplayOption['403-throw'].name}}
+            </md-button>
+            <md-button class="md-raised" ng-click="taobaoOrderListMenuAction(408, $event)"
+                       ng-if="taobaoOrderListMenuDisplayOption['408-unConfirm'].display
+                   && (menuAuthDataMap[taobaoOrderListMenuDisplayOption['408-unConfirm'].uuid]
+                   || isAdmin() || !taobaoOrderListMenuDisplayOption['408-unConfirm'].uuid)"
+                       ng-disabled="revert_audit_button_disabled == 1"
+                       style="margin-top: 0px;height: 20px;" aria-label="取消审核"> &nbsp;{{taobaoOrderListMenuDisplayOption['408-unConfirm'].name}}
+            </md-button>
+            <md-button class="md-raised" ng-click="taobaoOrderListMenuAction(407, $event)"
+                       ng-if="taobaoOrderListMenuDisplayOption['407-merge'].display
+                   && (menuAuthDataMap[taobaoOrderListMenuDisplayOption['407-merge'].uuid]
+                   || isAdmin() || !taobaoOrderListMenuDisplayOption['407-merge'].uuid)"
+                       style="margin-top: 0px;height: 20px;" aria-label="合并"> &nbsp;{{taobaoOrderListMenuDisplayOption['407-merge'].name}}
+            </md-button>
+            <md-button class="md-raised" ng-click="taobaoOrderListMenuAction(409, $event)"
+                       ng-if="taobaoOrderListMenuDisplayOption['409-delivery'].display
+                   && (menuAuthDataMap[taobaoOrderListMenuDisplayOption['407-merge'].uuid]
+                   || isAdmin() || !taobaoOrderListMenuDisplayOption['409-delivery'].uuid)"
+                       style="margin-top: 0px;height: 20px;" aria-label="发货"> &nbsp;{{taobaoOrderListMenuDisplayOption['409-delivery'].name}}
+            </md-button>
+        </div>
+    </div>
+</div>
+
+
+
+

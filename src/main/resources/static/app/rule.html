@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html ng-app="IOne-Test" ng-cloak ng-controller="RuleSQLController">
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>IOne - SQL</title>
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+</head>
+<style>
+    body{
+        font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif,"宋体";
+    }
+
+    td {
+        border: 1px solid gray;
+    }
+</style>
+<body>
+
+<div layout="row">
+    <md-input-container flex>
+        <label>Rule UUID:</label>
+        <input type="text" ng-model="ruleUUID">
+    </md-input-container>
+    <md-button ng-click="search()">Query</md-button>
+</div>
+
+<div layout="row">
+    <md-input-container flex>
+        <label>Main table UUID:</label>
+        <input type="text" ng-model="mainUUID">
+    </md-input-container>
+    <md-button ng-click="run()">Run</md-button>
+    <span style="margin-top: 28px;"><input type="checkbox" ng-model="insertOrUpdate">Update</md-checkbox></span>
+</div>
+
+<div ng-repeat="sql in sqlList">
+    <md-content>
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="SQL">
+                <md-content class="md-padding">
+                    <h2>SELECT</h2>
+
+                    <p>{{::sql[0]}}</p>
+                    <md-button class="md-raised" ng-click="runSql(sql[0])">Run Select</md-button>
+
+                    <h2>INSERT</h2>
+
+                    <p>{{::sql[1]}}</p>
+
+                    <h2>DELETE</h2>
+
+                    <p>{{::sql[2]}}</p>
+                </md-content>
+            </md-tab>
+            <md-tab label="Data">
+                <md-content class="md-padding">
+                    <table>
+                        <thead>
+                        <tr>
+                            <td ng-repeat="key in keys">{{::key}}</td>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr ng-repeat="record in data">
+                            <td ng-repeat="(key, value) in record">
+                                {{::value}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </md-content>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+    <md-divider></md-divider>
+    <br/>
+    <br/>
+</div>
+
+
+<!--Third part Javascript libraries-->
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/angular-route/angular-route.min.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+<script src="bower_components/angular-aria/angular-aria.min.js"></script>
+<script src="bower_components/angular-material/angular-material.js"></script>
+<script src="bower_components/toastr/toastr.min.js"></script>
+
+
+<script src="app/src/app.js"></script>
+</body>
+</html>

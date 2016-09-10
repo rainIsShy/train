@@ -1,0 +1,15 @@
+{
+    "name": "IOne",
+    "version": "0.0.1",
+    "devDependencies": {
+        "jquery": "^1.11.3",
+        "angular": "^1.4.x",
+        "angular-animate": "^1.4.x",
+        "angular-aria": "^1.4.x",
+        "angular-route": "^1.4.x",
+        "angular-resource": "^1.4.x",
+        "angular-material": "^0.9.x",
+        "toastr": "^2.x.x",
+        "flexslider": "^2.5.x"
+    }
+}

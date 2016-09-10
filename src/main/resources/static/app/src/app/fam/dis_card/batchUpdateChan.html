@@ -1,0 +1,26 @@
+<md-dialog style="padding: 30px;opacity: 1;">
+    <md-content>
+        <div layout="row">
+            <form name="selectedDataForm" novalidate>
+
+                <md-input-container>
+                    <md-datepicker ng-model="batStartTime" md-max-date="batOverTime"
+                                   md-placeholder="开始时间"></md-datepicker>
+
+                </md-input-container>
+                <md-input-container>
+                    <md-datepicker ng-model="batOverTime" md-placeholder="结束时间"
+                                   md-min-date="batStartTime"></md-datepicker>
+
+                </md-input-container>
+
+                <div layout="row">
+                    <md-button ng-click="saveDetail()">
+                        <i class="fa fa-check"></i>&nbsp;确定
+                    </md-button>
+                    <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+                </div>
+            </form>
+        </div>
+    </md-content>
+</md-dialog>

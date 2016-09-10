@@ -1,0 +1,90 @@
+<div layout-fill class="right-container catalogue-template">
+    <md-content class="formList">
+        <form name="mainForm" novalidate>
+            <div class="menu">
+                <md-content>
+                    <div class="menu-bar" layout="row" layout-sm="column" layout-align="center left">
+                        <md-button ng-click="changeToEditMode()"
+                                   ng-if="formMenuDisplayOption['102-edit'].display && (menuAuthDataMap[formMenuDisplayOption['102-edit'].uuid] || isAdmin() || !formMenuDisplayOption['102-edit'].uuid)"
+                                   ng-disabled="ui_status == UI_STATUS.EDIT_UI_STATUS">
+                            <i class="fa fa-plus"></i>&nbsp;{{formMenuDisplayOption['102-edit'].name}}
+                        </md-button>
+                        <md-button ng-click="updateNodeData()"
+                                   ng-if="formMenuDisplayOption['302-save'].display && (menuAuthDataMap[formMenuDisplayOption['302-save'].uuid] || isAdmin() || !formMenuDisplayOption['302-save'].uuid)"
+                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || selectedItem == null">
+                            <i class="fa fa-floppy-o"></i>{{formMenuDisplayOption['302-save'].name}}
+                        </md-button>
+                        <md-button ng-click="cancelModification(303)"
+                                   ng-if="formMenuDisplayOption['303-cancel'].display && (menuAuthDataMap[formMenuDisplayOption['303-cancel'].uuid] || isAdmin() || !formMenuDisplayOption['303-cancel'].uuid)"
+                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                            <i class="fa fa-reply"></i>&nbsp;{{formMenuDisplayOption['303-cancel'].name}}
+                        </md-button>
+                        <md-button ng-click="quitEditMode()"
+                                   ng-if="formMenuDisplayOption['304-quit'].display && (menuAuthDataMap[formMenuDisplayOption['304-quit'].uuid] || isAdmin() || !formMenuDisplayOption['304-quit'].uuid)"
+                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                            <i class="fa fa-times"></i>&nbsp;{{formMenuDisplayOption['304-quit'].name}}
+                        </md-button>
+                    </div>
+                </md-content>
+            </div>
+
+
+            <table class="template-data">
+                <tr>
+                    <th ng-repeat="header in headers">
+                        <span class="title">{{header.name}}</span>
+                    </th>
+                </tr>
+                <tr>
+                    <td ng-repeat="header in headers">
+                        <div class="item" ng-repeat="item in selectedTemplateData[header.type]"
+                             ng-click="nodeDataClickHandler(header.type, item)"
+                             ng-class="item.selected ? 'selected-item':''">
+                            <span>{{item.name}}</span>
+                            <span ng-click="deleteNodeData($event, item)"
+                                  style="width: 20px;float: right;padding: 0px 5px 0px 5px;color:grey;"
+                                  ng-if="ui_status == UI_STATUS.EDIT_UI_STATUS">
+                                <i class="fa fa-times">-</i>
+                            </span>
+                        </div>
+                        <div class="item plus" ng-click="addNodeData(header.type)"
+                             ng-if="ui_status == UI_STATUS.EDIT_UI_STATUS && header.showAddButton">
+                            <i class="fa fa-plus">+</i>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <div id="templateNodeContainer" class="editor-container">
+                <md-divider style="margin: 40px 0px 10px 0px;"></md-divider>
+
+                <md-input-container>
+                    <label>层级</label>
+                    <input type="text" ng-model="selectedItem.type" required md-maxlength="20" disabled>
+                </md-input-container>
+
+                <md-input-container>
+                    <label>编号</label>
+                    <input type="text" ng-model="selectedItem.no" required md-maxlength="20"
+                           ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || selectedItem == null">
+                </md-input-container>
+
+                <md-input-container>
+                    <label>名称</label>
+                    <input type="text" ng-model="selectedItem.name" required md-maxlength="20"
+                           ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || selectedItem == null">
+                </md-input-container>
+
+                <md-input-container>
+                    <label>UUID</label>
+                    <input type="text" ng-model="selectedItem.uuid" required md-maxlength="20" disabled>
+                </md-input-container>
+
+                <md-input-container>
+                    <label>上级UUID</label>
+                    <input type="text" ng-model="selectedItem.parentUuid" required md-maxlength="20" disabled>
+                </md-input-container>
+            </div>
+        </form>
+    </md-content>
+</div>

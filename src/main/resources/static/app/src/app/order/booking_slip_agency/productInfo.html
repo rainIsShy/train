@@ -1,0 +1,119 @@
+<md-content  style="overflow: scroll;">
+    <div >
+        <md-button ng-show="selectedItem.orderTransferNo == null" ng-click="openOrderItemsDlg()" class="md-raised">
+            <i class="fa fa-plus">新增产品</i>
+        </md-button>
+    </div>
+    <div layout="row"    >
+        <!--<div flex="5"  class="verticalLine table-head"></div>-->
+        <div align="center" flex="5"  class=" table-head"  >操作</div>
+        <div align="center" flex="5"  class=" table-head">项次</div>
+        <div align="center" flex="10"  class=" table-head">品名</div>
+        <div align="center" flex="10"  class=" table-head">规格</div>
+        <div align="center" flex="10"  class=" table-head">品牌</div>
+        <div align="center" flex="10"  class=" table-head">品牌名称</div>
+        <!--//modify-->
+        <div align="center" flex="10"  class=" table-head">是否定制</div>
+        <!--3、	商品属性：pso_so_dtl.item_attribute，不可修改，若是抛转的单据沿用来源单据的值，若为新增，
+        则值由品名pso_so_dtl.plm_base_item_file_uuid关联的所有子单身品名plm_base_item_file.name+pso_so_ext_dtl.item_attribute回写-->
+        <div align="center" flex="10"  class=" table-head">商品属性</div>
+        <!--//modify-->
+        <div align="center" flex="10"  class=" table-head">销售类型</div>
+        <div align="center" flex="10"  class=" table-head">订单数量</div>
+        <div align="center" flex="10"  class=" table-head">出货数量</div>
+        <div align="center" flex="10"  class=" table-head">欠货数量</div>
+        <div align="center" flex="10"  class=" table-head">销售单位</div>
+        <div align="center" flex="10"  class=" table-head">标准价</div>
+        <div align="center" flex="10" class=" table-head">最低出货折扣率</div>
+        <div align="center" flex="10" class=" table-head">最低出货价</div>
+        <div align="center" flex="10" class=" table-head">特价单价</div>
+        <div align="center" flex="10"  class=" table-head">促销折扣率</div>
+        <div align="center" flex="10"  class=" table-head">促销单价</div>
+        <div align="center" flex="10" class=" table-head">订单折扣率</div>
+        <div align="center" flex="10"  class=" table-head">订单单价</div>
+        <div align="center" flex="10"  class=" table-head">含税金额</div>
+        <div align="center" flex="10"  class=" table-head">税后金额</div>
+        <div align="center" flex="15"  class=" table-head">来源抛转流水号</div>
+        <div align="center" flex="15"  class=" table-head">销售单单号</div>
+        <div align="center" flex="10"  class=" table-head">来源单身项次</div>
+
+        <div align="center" flex="10"  class=" table-head">送货日期</div>
+        <div align="center" flex="10"  class=" table-head">原始送货日期</div>
+        <!--<div align="center" flex="10"  class=" table-head">特价单价</div>-->
+        <!--<div align="center" flex="10"  class=" table-head">退货否</div>-->
+        <!--<div align="center" flex="10"  class=" table-head">退货金额</div>-->
+
+        <!--<div align="center" flex="10"  class=" table-head">状态码</div>-->
+        <!--<div align="center" flex="10"  class=" table-head">审核码</div>-->
+        <!--<div align="center" flex="10"  class=" table-head">抛转预订单否</div>-->
+        <div align="center" flex="10"  class=" table-head">备注</div>
+
+
+
+
+    </div>
+    <div ng-repeat="orderDetail in OrderDetailList.content"  >
+        <div  layout="row"   >
+            <!--<div flex="5"  style="padding:0px 0px 0px 0px;"    layout-align="center"  class=" table-item" >-->
+                <!--<md-checkbox ng-checked="exists(orderDetail, selectedDetail)" ng-click="toggleDetail(orderDetail, selectedDetail)">-->
+                <!--</md-checkbox>-->
+            <!--</div>-->
+
+            <!--<div  flex="5" class=" table-item"   >-->
+                <!--<div layout="row" layout-sm="column" layout-align="center center">-->
+                <!--<div ng-show="orderDetail.salesOrderMaster.orderTransferNo != null &&orderDetail.confirm == 1 && orderDetail.status == 1 " align="center"-->
+                     <!--ng-click="orderDetailEditMenuAction(orderDetail)"  ><i class="fa fa-pencil-square-o"></i>&nbsp;{{itemOperationMenuDisplayOption['500-item-edit'].name}}</div>-->
+                <!--<div ng-show="orderDetail.salesOrderMaster.orderTransferNo != null && orderDetail.confirm == 1 && orderDetail.status == 1 " align="center"-->
+                     <!--ng-click="orderDetailDeleteMenuAction(orderDetail)"><i class="fa fa-times">&nbsp;{{itemOperationMenuDisplayOption['500-item-delete'].name}}<</i>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <div  flex="5" class=" table-item"   >
+                <div layout="row" layout-sm="column" layout-align="center center">
+                    <div ng-show="selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.orderTransferNo == null" align="center"
+                         ng-click="orderDetailEditMenuAction(orderDetail)"><i class="fa fa-pencil-square-o"></i>&nbsp;{{itemOperationMenuDisplayOption['500-item-edit'].name}}
+                    </div>
+                    <div ng-show=" selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.orderTransferNo == null" align="center"
+                         ng-click="orderDetailDeleteMenuAction(orderDetail)"><i class="fa fa-times"></i>&nbsp;{{itemOperationMenuDisplayOption['500-item-delete'].name}}
+                    </div>
+                </div>
+            </div>
+
+            <div  align="center" flex="5" class=" table-item">{{orderDetail.no}} </div>
+            <div   align="center" flex="10" class=" table-item">{{orderDetail.item.name}} </div>
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.item.standard}} </div>
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.item.brand.no}} </div>
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.item.brand.name}} </div>
+            <div  align="center" flex="10" class=" table-item">{{CUSTOMIZE_FLAG[orderDetail.customizeFlag].name}}</div>
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.itemAttribute}} </div>
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.saleType.name}} </div>
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.orderQuantity}} </div>
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.transferOrderQuantity}} </div>
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.untransferOrderQuantity}} </div>
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.item.unit}} </div>
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.standardPrice}} </div>
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.saleDiscountRate}} </div>
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.salePrice}} </div>
+            <div align="center" flex="10" class=" table-item">{{orderDetail.specialPrice}}</div>
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.promotionDiscountRate}} </div>
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.promotionPrice}} </div>
+            <div align="center" flex="10" class=" table-item">{{orderDetail.discountRate}}</div>
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.originalOrderPrice}} </div>
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.originalOrderAmount}} </div>
+
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.originalOrderAmountTax}} </div>
+            <div align="center" flex="15" class=" table-item">{{orderDetail.orderTransferNo}}</div>
+            <div align="center" flex="15" class=" table-item"> {{orderDetail.psoOrderMstNo}}</div>
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.psoOrderDtlNo}} </div>
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.deliverDate | date:'yyyy-MM-dd'}} </div>
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.originalDeliverDate | date:'yyyy-MM-dd'}} </div>
+            <!--<div  align="center" flex="10" class=" table-item">{{orderDetail.specialPrice}} </div>-->
+            <!--<div  align="center" flex="10" class=" table-item">{{CUSTOMIZE_FLAG[orderDetail.returnFlag].name}}</div>-->
+            <!--<div  align="center" flex="10" class=" table-item">{{orderDetail.returnAmount}} </div>-->
+            <!--<div  align="center" flex="10" class=" table-item">{{STATUS[orderDetail.status].name}}</div>-->
+            <!--<div  align="center" flex="10" class=" table-item">{{AUDIT[orderDetail.confirm].name}}</div>-->
+            <!--<div  align="center" flex="10" class=" table-item">{{TRANSFER_PSO_FLAG[orderDetail.transferPsoFlag].name}}</div>-->
+            <div  align="center" flex="10" class=" table-item">{{orderDetail.remark}} </div>
+        </div>
+    </div>
+</md-content>

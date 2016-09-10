@@ -1,0 +1,27 @@
+<md-dialog style="padding: 30px;min-width: 400px;max-height: 500px;">
+    <md-content layout="column">
+        <div>
+            <form name="searchData" novalidate="">
+                <div layout="row" layout-align="start center">
+                    <md-input-container flex>
+                        <label>查询淘宝客户</label>
+                        <input name="no" type="text" ng-model="searchKeyword" md-maxlength="20">
+                    </md-input-container>
+                    <md-button ng-click="refreshData()" ng-disabled="searchData.$invalid" class="md-icon-button">
+                        <i class="fa fa-search"></i>
+                    </md-button>
+                    <md-button ng-click="cancelDlg()" class="md-icon-button">
+                        <i class="fa fa-times"></i>
+                    </md-button>
+                </div>
+                <md-list-item class="md-2-line" ng-repeat="data in allData.content" ng-click="selectData(data)">
+                    <div class="md-list-item-text">
+                        <h3> {{ data.buyerNick }} | {{data.buyerEmail }} </h3>
+                    </div>
+                    <md-divider ></md-divider>
+                </md-list-item>
+            </form>
+            <div pagination option="pageOption" callback="refreshData()"></div>
+        </div>
+    </md-content>
+</md-dialog>

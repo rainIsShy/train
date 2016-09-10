@@ -1,0 +1,232 @@
+<div layout-fill class="right-container sales-slip">
+    <md-content>
+        <md-tabs md-selected="$parent.selectedTabIndex" md-border-bottom md-dynamic-height md-center-tabs="false">
+            <md-tab md-on-select="listTabSelected()">
+                <md-tab-label>{{listTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <div flex layout="column" class="order-item-background">
+
+                            <div class="menu" layout="row" layout-md="column" layout-sm="column">
+                                <div layout="row" layout-md="column" layout-sm="column" style="margin-left: 10px;">
+                                    <md-input-container style="" ng-show="selectedItem == null">
+                                        <label>工作流名称：</label>
+                                        <input type="text" ng-model="listFilterOption.workflowName"
+                                               ng-keypress="queryEnter($event)">
+                                    </md-input-container>
+                                </div>
+
+                                <div layout="row" layout-md="column" layout-sm="column" style="margin-left: 10px;">
+                                    <label class="label">审核状态：</label>
+                                    <md-select placeholder="全部" ng-model="listFilterOption.confirm"
+                                               class="select">
+                                        <md-option ng-repeat="(key, value) in AUDIT" ng-value="key">{{value.name}}
+                                        </md-option>
+                                    </md-select>
+                                </div>
+
+                                <!--查詢按鈕，先隱藏-->
+                                <!--<md-button class="md-raised"-->
+                                <!--style="margin-top: 20px;height: 20px;" ng-click="formMenuAction(106, $event)"-->
+                                <!--ng-if="formMenuDisplayOption['106-query'].display">-->
+                                <!--&nbsp;{{formMenuDisplayOption['106-query'].name}}-->
+                                <!--</md-button>-->
+
+                                <md-button class="md-raised"
+                                           style="margin-top: 20px;height: 20px;" ng-click="formMenuAction(100)"
+                                           ng-if="formMenuDisplayOption['100-add'].display">
+                                    &nbsp;{{formMenuDisplayOption['100-add'].name}}
+                                </md-button>
+                            </div>
+                        </div>
+                        <div layout="row" style="padding: 10px 0px 10px 0px;">
+                            <div flex="10" layout="row" layout-md="column" layout-sm="column">
+                                <md-checkbox ng-model="menuList.selectAll"
+                                             ng-change="selectAllMenuAction()"
+                                             aria-label="全选" ng-true-value="true" ng-false-value="false">
+                                    &nbsp;{{formMenuDisplayOption['105-selectAll'].name}}
+                                </md-checkbox>
+                            </div>
+                            <div flex layout="row" layout-align="end center">
+                                <md-button class="md-raised" ng-click="formMenuAction(103, $event)"
+                                           ng-if="formMenuDisplayOption['103-audit'].display"
+                                           ng-disabled="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || audit_button_disabled == 1"
+                                           style="margin-top: 0px;height: 20px;" aria-label="审核">
+                                    &nbsp;{{formMenuDisplayOption['103-audit'].name}}
+                                </md-button>
+
+
+                                <md-button class="md-raised" ng-click="formMenuAction(104, $event)"
+                                           ng-if="formMenuDisplayOption['104-revertAudit'].display"
+                                           ng-disabled="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || revert_audit_button_disabled == 1"
+                                           style="margin-top: 0px;height: 20px;" aria-label="取消审核">
+                                    &nbsp;{{formMenuDisplayOption['104-revertAudit'].name}}
+                                </md-button>
+                            </div>
+                        </div>
+                        <md-divider></md-divider>
+                        <div ng-include=" 'app/src/app/ass/workflow/workflowList.html' "></div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+            <md-tab md-on-select="formTabSelected()">
+                <md-tab-label>{{formTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <form name="mainForm" novalidate>
+                            <div class="menu">
+                                <md-content>
+                                    <div class="menu-bar" layout="row" layout-sm="column" layout-align="center left"
+                                         ng-if="ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        <md-button ng-click="formMenuAction(202)"
+                                                   ng-if="formMenuDisplayOption['202-add'].display">
+                                            <i class="fa fa-plus"></i>&nbsp;{{formMenuDisplayOption['202-add'].name}}
+                                        </md-button>
+                                        <!--Go back to view status after deleting current object-->
+                                        <md-button ng-click="formMenuAction(101)"
+                                                   ng-if="formMenuDisplayOption['101-delete'].display">
+                                            <i class="fa fa-times"></i>&nbsp;{{formMenuDisplayOption['101-delete'].name}}
+                                        </md-button>
+                                        <md-button ng-click="formMenuAction(102)"
+                                                   ng-if="formMenuDisplayOption['102-edit'].display">
+                                            <i class="fa fa-pencil-square-o"></i>&nbsp;{{formMenuDisplayOption['102-edit'].name}}
+                                        </md-button>
+                                    </div>
+                                    <div class="menu-bar" layout="row" layout-sm="column" layout-align="center left"
+                                         ng-if="ui_status == UI_STATUS.EDIT_UI_STATUS_ADD">
+                                        <md-button ng-click="formMenuAction(200)"
+                                                   ng-if="formMenuDisplayOption['200-cancel'].display">
+                                            <i class="fa fa-plus"></i>&nbsp;{{formMenuDisplayOption['200-cancel'].name}}
+                                        </md-button>
+                                        <md-button ng-click="formMenuAction(201)"
+                                                   ng-if="formMenuDisplayOption['201-save'].display"
+                                                   ng-disabled="mainForm.$invalid">
+                                            <i class="fa fa-times"></i>&nbsp;{{formMenuDisplayOption['201-save'].name}}
+                                        </md-button>
+                                    </div>
+                                    <div class="menu-bar" layout="row" layout-sm="column" layout-align="center left"
+                                         ng-if="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY">
+                                        <md-button ng-click="formMenuAction(302)"
+                                                   ng-if="formMenuDisplayOption['302-save'].display"
+                                                   ng-disabled="mainForm.$invalid">
+                                            <i class="fa fa-floppy-o"></i>&nbsp;{{formMenuDisplayOption['302-save'].name}}
+                                        </md-button>
+                                        <md-button ng-click="formMenuAction(303)"
+                                                   ng-if="formMenuDisplayOption['303-cancel'].display"
+                                                   ng-disabled="cancelModifyDisabled">
+                                            <i class="fa fa-reply"></i>&nbsp;{{formMenuDisplayOption['303-cancel'].name}}
+                                        </md-button>
+                                        <md-button ng-click="formMenuAction(304)"
+                                                   ng-if="formMenuDisplayOption['304-quit'].display">
+                                            <i class="fa fa-times"></i>&nbsp;{{formMenuDisplayOption['304-quit'].name}}
+                                        </md-button>
+                                    </div>
+                                </md-content>
+                            </div>
+
+                            <div layout="row" style="padding: 10px 0px 10px 0px;" ng-if="selectedItem != null">
+                                <div flex layout="row" layout-align="end center">
+                                    <md-button class="md-raised" ng-click="formMenuAction(203, $event)"
+                                               ng-if="formMenuDisplayOption['203-audit'].display"
+                                               ng-disabled="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || selectedItem.confirm != 1"
+                                               style="margin-top: 0px;height: 20px;" aria-label="审核">
+                                        &nbsp;{{formMenuDisplayOption['203-audit'].name}}
+                                    </md-button>
+
+
+                                    <md-button class="md-raised" ng-click="formMenuAction(204, $event)"
+                                               ng-if="formMenuDisplayOption['204-revertAudit'].display"
+                                               ng-disabled="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || selectedItem.confirm != 2"
+                                               style="margin-top: 0px;height: 20px;" aria-label="取消审核">
+                                        &nbsp;{{formMenuDisplayOption['204-revertAudit'].name}}
+                                    </md-button>
+                                </div>
+                            </div>
+                            <div layout-margin layout-padding class="md-whiteframe-z1"
+                                 ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                                <p style="color: red;">请从清单列表中选择一个订单并点击查看详情。</p>
+                            </div>
+
+                            <div class="md-whiteframe-z1"
+                                 ng-show="selectedItem != null || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD">
+                                <div layout="row">
+                                    <div flex="100" layout="row" layout-padding>
+                                        <div flex="33">
+                                            <md-input-container flex="33">
+                                                <label class="label">工作流名称：</label>
+                                                <input type="text" ng-model="selectedItem.workflowName" required
+                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                            </md-input-container>
+                                        </div>
+
+                                        <div flex="33">
+                                            <md-input-container>
+                                                <label class="label">工作流模版：</label>
+
+                                                <input type="text" ng-model="selectedItem.workflowTemplate" disabled
+                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
+                                                       required>
+
+                                                <md-button class="md-icon-button close-btn float-right"
+                                                           style="color: gray;margin-top: 15px;" aria-label="More"
+                                                           ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
+                                                           ng-click="openDlg('ASS_FLOW_TEMPLATE_MST', '工作流模版', 'workflowTemplate')">
+                                                    <ng-md-icon icon="search"></ng-md-icon>
+                                                </md-button>
+                                            </md-input-container>
+                                        </div>
+                                        <div flex="33">
+                                            <md-input-container>
+                                                <label class="label">渠道：</label>
+                                                <input type="text" ng-model="selectedItem.channel" required
+                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+
+                                                <md-button class="md-icon-button close-btn float-right"
+                                                           style="color: gray;margin-top: 15px;" aria-label="More"
+                                                           ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
+                                                           ng-click="openDlg('OCM_BASE_CHAN', '渠道', 'channel')">
+                                                    <ng-md-icon icon="search"></ng-md-icon>
+                                                </md-button>
+                                            </md-input-container>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div layout="row">
+                                    <div flex="33" layout="row" layout-padding>
+                                        <md-input-container>
+                                            <label class="label">工作流类型：</label>
+                                            <md-select placeholder="" ng-model="selectedItem.workFlowType"
+                                                       class="select"
+                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                <md-option ng-repeat="(key, value) in WORKFLOW_TYPE" ng-value="key">
+                                                    {{value.name}}
+                                                </md-option>
+                                            </md-select>
+                                        </md-input-container>
+
+                                    </div>
+                                </div>
+                                <div>
+                                    <md-content flex>
+                                        <md-tabs md-selected="selectedSubTab.index" md-border-bottom md-dynamic-height
+                                                 md-center-tabs="false">
+                                            <md-tab label="流程明细" md-on-select="prodInfoTabSelected()">
+                                                <div ng-include=" 'app/src/app/ass/workflow/workflowDetailList.html' "></div>
+                                            </md-tab>
+                                        </md-tabs>
+                                    </md-content>
+                                </div>
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
+                            </div>
+
+                        </form>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

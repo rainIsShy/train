@@ -1,0 +1,79 @@
+<div layout="row" >
+    <div flex layout="row">
+        <div flex="5"></div>
+        <div flex layout="row">
+            <div flex="35">
+                已选中单据数：&nbsp;{{ selectedItemsCount }}
+            </div>
+            <div flex="35">
+                汇总金额：&nbsp;{{ selectedItemsTotalPrice }}
+            </div>
+        </div>
+    </div>
+</div>
+<div flex ng-repeat="orderMaster in OrderMasterList.content"
+     layout="row" layout-margin>
+    <div flex layout="row">
+        <div flex="5">
+            <md-checkbox ng-checked="exists(orderMaster, selected)" ng-click="toggle(orderMaster, selected)">
+            </md-checkbox>
+        </div>
+        <div flex="95" layout="column"  layout-padding  class="md-whiteframe-z1 order-item-background">
+            <div layout="row">
+                <div flex="50">订单编号：&nbsp;{{orderMaster.no}}</div>
+                <div flex align="right">销售单号：&nbsp;{{orderMaster.psoOrderMstNo}}</div>
+            </div>
+            <md-divider style="margin: 10px 7px 20px 7px;"></md-divider>
+
+            <div layout="row">
+                <div layout="column" flex="25">
+                    <div ng-if="orderMaster.customer == null">
+                        <div >渠道/直营店编号：&nbsp;{{orderMaster.channel.no}}</div>
+                        <div >渠道/直营店名称：&nbsp;{{orderMaster.channel.name}}</div>
+                    </div>
+                    <div ng-if="orderMaster.customer != null">
+                        <div >客户编号：&nbsp;{{orderMaster.customer.no}}</div>
+                        <div >客户名称：&nbsp;{{orderMaster.customer.name}}</div>
+                    </div>
+                </div>
+
+                <div flex  layout="column" flex="25">
+                    <div >客户昵称：&nbsp;{{orderMaster.buyerNick}}</div>
+                    <div >联系电话：&nbsp;{{orderMaster.receivePhone}}</div>
+                </div>
+
+<!--                <div class="verticalLine" offset-gt-md="5"></div>-->
+
+                <div flex="25" layout="column">
+
+                    <div ng-if="orderMaster.deliverDate == null || orderMaster.deliverDate == 'Invalid date'">
+                        <div >开单日期：&nbsp;{{orderMaster.orderDate| date:'yyyy-MM-dd'}}</div>
+                    </div>
+
+                    <div ng-if="orderMaster.deliverDate != null && orderMaster.deliverDate != 'Invalid date'">
+                        <div >送货日期：&nbsp;{{orderMaster.deliverDate| date:'yyyy-MM-dd'}}</div>
+                    </div>
+
+                    <div >商品种类：&nbsp;{{orderMaster.orderDetailCount}}</div>
+                </div>
+
+                <div flex  layout="column">
+                    <div >审核状态：&nbsp;{{AUDIT[orderMaster.confirm].name}}</div>
+                    <div >启用状态：&nbsp;{{STATUS[orderMaster.status].name}}</div>
+                    <div >抛转状态：&nbsp;{{TRANSFER_PSO_FLAG[orderMaster.transferPsoFlag].name}}</div>
+                </div>
+            </div>
+            <md-divider style="margin: 10px 7px 20px 7px;"></md-divider>
+            <div layout="row">
+                <div flex="50">总价：{{orderMaster.originalOrderAmount}}</div>
+                <div flex="50" align="right">
+                    <md-button class="md-raised"  ng-disabled = "false"
+                               ng-click="editItem(orderMaster)">&nbsp;查看详情
+                    </md-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div pagination option="pageOption" callback="queryMenuActionWithPaging()"></div>

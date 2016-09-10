@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style type="text/css">
+        @font-face {
+            font-family:SimSun, 'Microsoft Yahei', '微软雅黑';
+            -fs-pdf-font-embed: embed;
+            -fs-pdf-font-encoding: Identity-H;
+        }
+
+        @page {
+            size: 24cm 26cm;
+            margin-left: 2.5cm;
+            margin-right: 2.5cm;
+            margin-top: 7cm;
+
+            @top-center {
+                content: element(header);
+                vertical-align: top;
+        }
+        }
+
+        div.header {
+            display: block;
+            padding-top: 20px;
+            padding-left: 10px;
+            padding-right: 10px;
+            position: running(header);
+        }
+
+        .header-cell {
+            display: table-cell;
+            width: 50%;
+        }
+
+        .header-cell > div {
+            padding-top: 2px;
+        }
+
+        /*break before h1*/
+        h1 {
+            page-break-before: always;
+        }
+
+        /*Don't break after header*/
+        h1, h2, h3, h4, h5 {
+            page-break-after: avoid;
+        }
+
+        .list {
+        }
+
+        .list table {
+            page-break-inside: avoid;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .list td {
+            border:1px solid black;
+            padding: 5px;
+        }
+
+        * {
+            font-family:SimSun, 'Microsoft Yahei', '微软雅黑';
+            font-size: 14px;
+        }
+
+        h2 {
+            font-size: 24px;
+            width: 100%;
+        }
+
+        .tick {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border: 1px solid black;
+            margin-right: 10px;
+            background:  url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAM5SURBVGje7djLixxVFMfxTz1mxqCJGXQhEl+YhStfEV+4UdSImOBWxBdo3BpE0U30DxAVBTULVwpqstDsRBA1oONOwUfQqCD4iAZUMHHidFddF9Xz6q6qDDW5PQvn1K6r6N/33HPOr25d1mM9/heRNN9KxyCeIFu73BMTTlsrhART3vWTG5G3lSJO5HhJ0FfYjWwMJR+Sf1DQ09cTvG7D4NexRIarzQpKQakn+NzWcSEkOMs3gkIYXD3BX3YYx+xJ8fZAdPHqKwRPxkfIsWdEPgzW4x9b4iLkuGPZ4odlZXiLmAOZ4mK/1wIUgkOmYwIkmPSJoD8iXwqO2yaqK+Z4ubb6FdIDoo5hjodqs6+QXowrn+GaBesZzf6gfPBujBKV9Xzb2HxHXCjq8KV4p6H6heA20av/VIN8b+B+keV3tFjPflFHL8VWRxur/7XNIlvPlJkW67myW/4rHZgcr7RYz/06VT+RSFYwNDl2tVjPC93kU2yw8aRLl+FaJxqt56Nu1pNi2ozfbGvlT3C2w43N96sLdLCeFBt9LAj+cH0LQooDtdUvFYLtXZY/xZT3B3vZ4JibMFHzZI6nW6zniS7yiUS2JKtCMGt7DUKOnS3Ws0+H0au6ft+yrAqlf+0cQli0nrK2+l85UwfrSfCqYG7oD0uFu5YgVNbzaaP1HHNFl/xTPDMiXyEUgvsWEHLsbbGee7tVn0k/NFhKqS/YhVyOh1ua7/ku8vMrcKe5wQjVIzwCrmuxng9l3Xc9KW53oqG3q6+7R53h+0br+cX5VrXrmcDNjjcilGZ9V3u3VCjdatXv/Rw3+LOxF4qGEvUEj3et/ijCVY42IDRbz5urz34pwqWONCLUNd+X3aynDeESP64IobKey09d/osIFzncMO/D+d8jwp43wxaHToLQEzwXQ34e4RyftSD0BR+sxnpWgjBtRvP3zs/OE/WDK8MmB2sQKk+4RfQz0BSne28EoSd4zFgO3VKJSQeWvap7gjfiZ78UIbN/AaEv+MImUQ+bhhFSidcEcwrB3y4bX/5VVDvGvYP87zbGU99FhAzPCvashfz8KqTOlY7/5H8pwlgOm9tijeXXYz1OcfwHu571fJvuYg8AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTUtMDItMTVUMTA6MjA6MDctMDY6MDBLTWJTAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE1LTAyLTE1VDEwOjIwOjA3LTA2OjAwOhDa7wAAAGN0RVh0c3ZnOmNvbW1lbnQAIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMi4xLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgGIza9wAAAABJRU5ErkJggg==');
+            background-size: 10px 10px;
+        }
+
+        .empty-space {
+            display: inline-block;
+            width: 22px;
+        }
+
+        .under-line {
+            border-bottom: 1px solid black;
+        }
+
+        .title-image {
+            position: absolute;
+            width: 150px;
+            left: 10px;
+            top: 40px;
+        }
+
+        .center {
+            text-align: center;
+        }
+        .page-info {
+            padding-left: 15px;
+        }
+        .page-info:after {
+            content: counter(page) "/" counter(pages);
+        }
+
+        .sign td {
+            padding-top: 10px;
+        }
+
+        .sign-right {
+            border-bottom: 1px solid black;
+            width: 200px;
+        }
+    </style>
+    <title></title>
+</head>
+<body>
+
+<div class="header">
+    <div>
+        <img class="title-image" src="/app/assets/report/img/image.png"/>
+        <h2 class="center" style="margin-bottom: -7px;">倍安生活</h2>
+        <h4 class="center">销售合同单</h4>
+        <br/>
+
+        <div>
+            <span>打印日期: {{currentTime}}</span>
+            <span style="float: right;">导购员：{{PSO_ORDER_MST.employee.name}}<span class="page-info">页次：</span></span>
+        </div>
+
+        <hr/>
+    </div>
+
+
+    <div style="display: table;width: 100%;">
+        <div class="header-cell">
+            <div>开单日期：{{orderDate}}</div>
+            <div>客户姓名：{{PSO_ORDER_MST.customerAddress.receiveName}}</div>
+            <div>联系电话：{{PSO_ORDER_MST.customerAddress.receivePhone}}</div>
+            <div>送货地址：{{PSO_ORDER_MST.customerAddress.receiveAddress}}</div>
+            <div>备注说明：{{PSO_ORDER_MST.remark}}</div>
+        </div>
+        <div class="header-cell">
+            <div>交货日期：{{deliverDate}}</div>
+            <div>销售单号：{{PSO_ORDER_MST.no}}</div>
+            <div>销售合同号：{{PSO_ORDER_MST.contractNo}}</div>
+            <div>门店名称：{{PSO_ORDER_MST.channel.name}}</div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <br/>
+
+    <div class="list">
+        <table style="width: 100%; border: 1px solid black;">
+            <thead>
+            <tr>
+                <td>料件编号</td>
+                <td>品名/规格</td>
+                <td>颜色</td>
+                <td>数量</td>
+                <td>单位</td>
+                <td>单价</td>
+                <td>金额</td>
+                <td>备注</td>
+            </tr>
+            </thead>
+            <tbody>
+            {{#PSO_ORDER_DTL}}
+            <tr style="border: 1px solid black;">
+                <td>{{item.no}}</td>
+                <td>{{item.name}}<br/>{{item.standard}}</td>
+                <td>{{itemAttribute}}</td>
+                <td>{{orderQuantity}}</td>
+                <td>{{item.unit}}</td>
+                <td>{{orderPrice}}</td>
+                <td>{{originalOrderAmount}}</td>
+                <td>{{remark}}</td>
+            </tr>
+            {{/PSO_ORDER_DTL}}
+            <tr>
+                <td colspan="6">合计金额：{{orderAmount}}</td>
+                <td colspan="2">{{orderAmountCurrency}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <br/>
+    <div>
+        <p>说明：</p>
+        <p>第一条 家具基本情况 （请逐项填写，勿写“同样品”）</p>
+        <p>第二条 付款方式：</p>
+        <p>
+            {{#unpaidAmountCheck}}
+            <span class="tick"></span>
+            1. 买方在签约时一次性付清全款 <span class="under-line">{{PSO_ORDER_MST.paidAmount}}</span> 元。
+            {{/unpaidAmountCheck}}
+            {{^unpaidAmountCheck}}
+            <span class="empty-space"></span>
+            1. 买方在签约时一次性付清全款 <span>________________</span> 元。
+            {{/unpaidAmountCheck}}
+        </p>
+        <p>
+            {{#unpaidAmountCheck}}
+            <span class="empty-space"></span>
+            2. 买方应在签约时支付订金 <span>________________</span> 元（不低于全部货款的{{depositRate}}%）， 余额 <span>________________</span>
+            元，必须在发货前三天付清。
+            {{/unpaidAmountCheck}}
+            {{^unpaidAmountCheck}}
+            <span class="tick"></span>
+            2. 买方应在签约时支付订金 <span class="under-line">{{PSO_ORDER_MST.paidAmount}}</span> 元（不低于全部货款的{{depositRate}}%）， 余额
+            <span class="under-line">{{PSO_ORDER_MST.unpaidAmount}}</span> 元，必须在发货前三天付清。
+            {{/unpaidAmountCheck}}
+        </p>
+
+    </div>
+
+    <table class="sign">
+        <tbody>
+        <tr>
+            <td>客户签名：</td>
+            <td class="sign-right"></td>
+        </tr>
+        <tr>
+            <td>销售员：</td>
+            <td class="sign-right center">{{PSO_ORDER_MST.employee.name}}</td>
+        </tr>
+        <tr>
+            <td>店长审核：</td>
+            <td class="sign-right"></td>
+        </tr>
+        <tr>
+            <td>往来会计审核：</td>
+            <td class="sign-right"></td>
+        </tr>
+        <tr>
+            <td>售后审核：</td>
+            <td class="sign-right"></td>
+        </tr>
+        <tr>
+            <td>财务库管审核：</td>
+            <td class="sign-right"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+</body>
+</html>

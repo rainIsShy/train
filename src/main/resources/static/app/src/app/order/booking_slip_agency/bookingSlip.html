@@ -1,0 +1,249 @@
+<div layout-fill class="right-container sales-slip" >
+    <md-content>
+        <md-tabs md-selected="$parent.selectedTabIndex" md-border-bottom md-dynamic-height md-center-tabs="false">
+            <md-tab  md-on-select="listTabSelected()">
+                <md-tab-label>{{listTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <form name="listForm" novalidate>
+                            <div order-list-menu></div>
+                            <md-divider style="margin: 0px 0px 20px 7px;"></md-divider>
+                            <div ng-include=" 'app/src/app/order/booking_slip_agency/bookingSlipList.html' "></div>
+                        </form>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+            <md-tab md-on-select="formTabSelected()">
+                <md-tab-label>{{formTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <form name="mainForm" novalidate>
+                            <div ng-if="selectedItem != null" form-menu></div>
+                            <div ng-if="selectedItem != null" order-form-menu></div>
+                            <div layout-margin layout-padding class="md-whiteframe-z1" ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                                <p style="color: red;">请从清单列表中选择一个订单并点击查看详情。</p>
+                            </div>
+
+                            <div class="md-whiteframe-z1"  ng-if="selectedItem != null">
+                                <div layout="row" >
+                                    <div flex="33"  layout="column" layout-padding>
+                                        <md-input-container >
+                                            <label class="label">经销商：</label>
+                                            <input type="text"  aria-label="..." ng-model="selectedItem.channel.name"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"  ng-click="openOrderChannelDlg()">
+                                        </md-input-container>
+                                        <md-input-container >
+                                            <label class="label">客户姓名：</label>
+                                            <input type="text" aria-label="..."  ng-model="selectedItem.customer.name"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS" ng-click="openOrderCustomerDlg()">
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <label class="label">收货人姓名：</label>
+                                            <input type="text" ng-model="selectedItem.receiveName"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <label class="label">收货人电话：</label>
+                                            <input type="text" ng-model="selectedItem.receivePhone"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                        <md-input-container layout="row" style=" height: 79px;">
+                                            <div style=" padding: 25px 0px 0px 0px;"><label>送货方式：</label></div>
+                                            <md-select placeholder="" ng-model="selectedItem.deliverWayUuid"
+                                                       class="select"
+                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                <md-option ng-selected="deliverWay.uuid == selectedItem.deliverWay.uuid"
+                                                           ng-repeat="deliverWay in deliverWays"
+                                                           value="{{deliverWay.uuid}}">{{deliverWay.name}}
+                                                </md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <label class="label">收货人地区：</label>
+                                            <input type="text" ng-model="selectedItem.receiveDistrict"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <label class="label">收货人地址：</label>
+                                            <input type="text" ng-model="selectedItem.receiveAddress"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                        <md-input-container >
+                                            <label class="label">开单日期：</label>
+                                            <input type="date"  aria-label="..." ng-model="selectedItem.orderDate"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                        <md-input-container >
+                                            <label class="label">送货日期：</label>
+                                            <input type="date"  aria-label="..."  ng-model="selectedItem.deliverDate"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+
+                                        <!--<md-input-container   layout="row" style=" height: 70px;">-->
+                                            <!--<div class ="md-input-has-value"  style=" padding: 20px 0px 0px 0px;"><label>币种：</label></div>-->
+                                            <!--<md-select placeholder=""  aria-label="..." ng-model="selectedItem.channelCurrencyUuid" class="select" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">-->
+                                                <!--<md-option ng-selected="channelCurrency.uuid == selectedItem.channelCurrency.currency.uuid" ng-repeat="channelCurrency in channelCurrencies"-->
+                                                           <!--value="{{channelCurrency.uuid}}" >{{channelCurrency.name}}</md-option>-->
+                                            <!--</md-select>-->
+                                        <!--</md-input-container>-->
+
+                                        <!--<md-input-container   layout="row" style=" height: 70px;">-->
+                                            <!--<div class ="md-input-has-value"  style=" padding: 20px 0px 0px 0px;"><label>税率：</label></div>-->
+                                            <!--<md-select placeholder=""  aria-label="..." ng-model="selectedItem.channelTaxUuid" class="select" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">-->
+                                                <!--<md-option ng-selected="channelTax.uuid == selectedItem.channelTax.tax.uuid" ng-repeat="channelTax in channelTaxs"-->
+                                                           <!--value="{{channelTax.uuid}}" >{{channelTax.taxRate}}</md-option>-->
+                                            <!--</md-select>-->
+                                        <!--</md-input-container>-->
+
+                                        <md-input-container >
+                                            <label class="label">备注：</label>
+                                            <input type="text"  aria-label="..." ng-model="selectedItem.remark"   md-maxlength="20"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                    </div>
+                                    <div flex="33" layout="column" layout-padding>
+                                        <md-input-container >
+                                            <label class="label">预订订单单号：</label>
+                                            <input type="text" aria-label="..."  ng-model="selectedItem.no"    ng-disabled = "true"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                        <md-input-container >
+                                            <label class="label">员工：</label>
+                                            <input type="text"  aria-label="..." ng-model="selectedItem.employee.name" ng-disabled = "true"   >
+                                        </md-input-container>
+                                        <md-input-container >
+                                            <label class="label">部门：</label>
+                                            <input type="text"  aria-label="..." ng-model="selectedItem.employee.department.name" ng-disabled = "true"   >
+                                        </md-input-container>
+                                        <md-input-container >
+                                            <label class="label">买家昵称：</label>
+                                            <input type="text"  aria-label="..." ng-model="selectedItem.buyerNick" ng-disabled = "true"   >
+                                        </md-input-container>
+
+                                        <md-input-container >
+                                            <label class="label">标准金额：</label>
+                                            <input type="text"  aria-label="..." ng-model="selectedItem.originalStandardAmount"   ng-disabled = "true">
+                                        </md-input-container>
+                                        <md-input-container >
+                                            <label class="label">折扣金额：</label>
+                                            <input type="text"  aria-label="..." ng-model="selectedItem.originalDiscountAmount"    ng-disabled = "true">
+                                        </md-input-container>
+                                        <md-input-container >
+                                            <label class="label">折后金额：</label>
+                                            <input type="text"  aria-label="..." ng-model="selectedItem.originalOrderAmount"   ng-disabled = "true">
+                                        </md-input-container>
+
+                                        <md-input-container >
+                                            <label class="label">折扣率：</label>
+                                            <input type="text"  aria-label="..."  string-to-number ng-model="selectedItem.discountRate"    max="1" min="0"   step="0.01"
+                                                   ng-disabled = "true">
+                                        </md-input-container>
+
+                                    </div>
+                                    <div flex="33" layout="column" layout-padding>
+                                        <md-input-container>
+                                            <label class="label">商场合同号：</label>
+                                            <input type="text" ng-model="selectedItem.contractNo"
+                                                   md-maxlength="20"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                        <md-input-container >
+                                            <label class="label">来源抛转流水号：</label>
+                                            <input type="text"  aria-label="..." ng-model="selectedItem.orderTransferNo"
+                                                   ng-disabled = "true">
+                                        </md-input-container>
+                                        <md-input-container >
+                                            <label class="label">来源单号：</label>
+                                            <input type="text"  aria-label="..." ng-model="selectedItem.psoOrderMstNo"
+                                                   ng-disabled = "true">
+                                        </md-input-container>
+
+                                        <md-input-container >
+                                            <label class="label">抛转日期：</label>
+                                            <input type="date" aria-label="..."  ng-model="selectedItem.transferDate"
+                                                   ng-disabled = "true">
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <label class="label">赠品金额：</label>
+                                            <input type="text" ng-model="selectedItem.presentAmount"
+                                                   md-maxlength="20"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                        <md-input-container layout="row" style=" height: 79px;">
+                                            <div class="md-input-has-value" style=" padding: 25px 0px 0px 0px;"><label>审核状态：</label>
+                                            </div>
+                                            <md-select placeholder="" aria-label="..."  ng-model="selectedItem.confirm" class="select"  ng-disabled="true">
+                                                <md-option value="1">未审核</md-option>
+                                                <md-option value="2">已审核</md-option>
+                                                <md-option value="3">审核中</md-option>
+                                                <md-option value="4">退回</md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                        <md-input-container layout="row" style=" height: 79px;">
+                                            <div class="md-input-has-value" style=" padding: 25px 0px 0px 0px;"><label>启用状态：</label>
+                                            </div>
+                                            <md-select placeholder="" aria-label="..." ng-model="selectedItem.status"
+                                                       class="select" ng-disabled="true">
+                                                <md-option value="1">有效</md-option>
+                                                <md-option value="2">无效</md-option>
+                                            </md-select>
+                                        </md-input-container>
+
+                                        <!--<div flex="50" layout="column" style="padding-right: 10px;">-->
+                                            <!--<label>自定义属性:</label>-->
+                                            <!--<md-select placeholder="" ng-model="selectedCustomUuid" class="select" ng-change="customChangeHandler(selectedCustomUuid)" ng-disabled="op == 'modify'">-->
+                                                <!--<md-option ng-selected="custom.uuid == selectedCustom.itemCustom.uuid" ng-repeat="custom in allCustoms" ng-value="custom.uuid">{{custom.name}}</md-option>-->
+                                            <!--</md-select>-->
+                                        <!--</div>-->
+
+                                        <md-input-container layout="row" style=" height: 79px;">
+                                            <md-checkbox style=" padding: 0px 0px 0px 25px;"
+                                                         ng-model="selectedItem.transferPsoFlag" ng-disabled="true"
+                                                         aria-label="抛转预订单否"  ng-true-value="'1'" ng-false-value="'2'" > 抛转预订单否</md-checkbox>
+                                        </md-input-container>
+
+                                        <!--<md-input-container layout="row" style=" height: 79px;">
+                                            <md-switch style=" padding: 0px 0px 0px 25px;"
+                                                       ng-model="selectedItem.status" ng-disabled="true"
+                                                        aria-label="失效作废" ng-true-value="'1'" ng-false-value="'2'"   >&nbsp;失效作废
+                                            </md-switch>
+                                        </md-input-container>-->
+
+                                    </div>
+                                </div>
+
+
+                                <div >
+                                    <md-content flex >
+                                        <md-tabs md-selected="selectedSubTab.index" md-border-bottom md-dynamic-height md-center-tabs="false">
+                                            <md-tab label="产品信息" md-on-select="prodInfoTabSelected()">
+                                                <div ng-include=" 'app/src/app/order/booking_slip_agency/productInfo.html' "></div>
+                                            </md-tab>
+
+                                            <md-tab label="出货" md-on-select="deliverInfoTabSelected()">
+                                                <div ng-include=" 'app/src/app/order/booking_slip_agency/deliverInfo.html' "></div>
+                                            </md-tab>
+
+                                            <md-tab label="商品自定义"  md-on-select="customTabSelected()">
+                                                <div ng-include=" 'app/src/app/order/booking_slip_agency/custom_tab.html' "></div>
+                                            </md-tab>
+
+                                            <!--<md-tab label="收款明细" md-on-select="receiptInfoTabSelected()">-->
+                                            <!--<div ng-include=" 'app/src/app/order/booking_slip_agency/receiptInfo.html' "></div>-->
+                                            <!--</md-tab>-->
+                                        </md-tabs>
+                                    </md-content>
+                                </div>
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
+                            </div>
+
+                        </form>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

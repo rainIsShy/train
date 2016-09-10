@@ -1,0 +1,56 @@
+<div layout="row" >
+    <div flex layout="row">
+        <div flex="5"></div>
+        <div flex layout="row">
+            <div flex="35">
+                已选中单据数：&nbsp;{{ selectedItemsCount }}
+            </div>
+            <div flex="35">
+                汇总金额：&nbsp;{{ selectedItemsTotalPrice|currency:'￥'}}
+            </div>
+        </div>
+    </div>
+</div>
+<div flex ng-repeat="orderMaster in OrderMasterList.content"
+     layout="row" layout-margin>
+    <div flex layout="row">
+        <div flex="5">
+            <md-checkbox ng-checked="exists(orderMaster, selected)" ng-click="toggle(orderMaster, selected)"  aria-label="checkbox">
+            </md-checkbox>
+        </div>
+        <div flex="95" layout="column"  layout-padding  class="md-whiteframe-z1 order-item-background">
+            <div >订单编号：&nbsp;{{orderMaster.no}}</div>
+            <md-divider style="margin: 10px 7px 20px 7px;"></md-divider>
+            <div layout="row">
+                <div layout="column" flex="30">
+                    <div>平台：&nbsp;{{orderMaster.channel.mall.name}}</div>
+                    <div>客户账号：&nbsp;{{orderMaster.taobaoCustomer.buyerAlipayNo}}</div>
+                </div>
+                <div layout="column" flex="30">
+                    <div>品牌店：&nbsp;{{orderMaster.channel.name}}</div>
+                    <div>客户名称：&nbsp;{{orderMaster.taobaoCustomer.buyerNick}}</div>
+                </div>
+                <div layout="column" flex="20">
+                    <div>订单类型：&nbsp;{{orderMaster.orderFlag}}</div>
+                    <div>交易日期：&nbsp;{{orderMaster.orderDate| date:'yyyy-MM-dd'}}</div>
+                </div>
+                <div layout="column" flex>
+                    <div>客服人员：&nbsp;{{orderMaster.groupUser.name}}</div>
+                    <div>合计金额：&nbsp;{{orderMaster.orderAmount|currency:'￥'}}</div>
+                </div>
+            </div>
+
+            <md-divider style="margin: 10px 5px 10px 5px;"></md-divider>
+            <div layout="row">
+                <div flex>备注：{{orderMaster.remark}}</div>
+                <div flex="30" align="right">
+                    <md-button class="md-raised"
+                               ng-click="editItem(orderMaster)">&nbsp;查看详情
+                    </md-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div pagination option="pageOption" callback="queryMenuActionWithPaging()"></div>

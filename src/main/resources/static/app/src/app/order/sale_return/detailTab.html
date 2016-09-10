@@ -1,0 +1,63 @@
+<div layout="row" layout-wrap style="margin-top: 5px;">
+    <div flex="100" ng-repeat="detail in selectedItem.detailList" ng-click="" class="prod-item"
+         style="position: relative;padding-bottom: 0px; min-height: 150px;">
+        <div layout="row" class="height: 100%;">
+            <div flex="5">
+                <md-checkbox ng-model="detail.selected" aria-label="Checkbox" style="margin-left: 18px;"
+                             ng-click="selectDetailItemAction($event, detail)"></md-checkbox>
+            </div>
+            <div flex="35">
+                <div layout-padding>项次: <span>{{detail.no}}</span></div>
+                <div layout-padding>销退日期: <span>{{detail.returnDate | date:'yyyy-MM-dd'}}</span></div>
+                <div layout-padding>商品名称: <span>{{detail.item.name}}</span></div>
+                <div layout-padding>规格: <span>{{detail.item.standard}}</span></div>
+                <div layout-padding>销退原因: <span>{{detail.returnReason.name}}</span></div>
+                <div layout-padding>备注: <span>{{detail.remark}}</span></div>
+            </div>
+            <div flex="35">
+                <div layout-padding>销退数量: <span>{{detail.returnQuantity}}</span></div>
+                <div layout-padding>销售订单单号: <span>{{detail.psoOrderMstNo}}</span></div>
+                <div layout-padding>销售订单项次: <span>{{detail.psoOrderDtlNo}}</span></div>
+                <div layout-padding>状态码: <span>{{STATUS[detail.status].name}}</span></div>
+            </div>
+            <div flex>
+                <div layout-padding>订单单价: <span>{{detail.orderDetail.orderPrice}}</span></div>
+                <div layout-padding>税前金额: <span>￥{{detail.originalReturnAmount}}</span></div>
+                <div layout-padding>含税金额: <span>￥{{detail.originalReturnAmountTax}}</span></div>
+                <div layout-padding>审核码: <span>{{AUDIT[detail.confirm].name}}</span></div>
+                <div layout-padding>抛转否:<span>{{TRANSFER_PSO_FLAG[detail.transferReturnFlag].name}}</span></div>
+            </div>
+            <div layout="row" style="position: absolute; right: -5px; bottom: 2px;">
+                <div ng-if="menuDisplayOption['detail2Confirm'].display && (menuAuthDataMap[menuDisplayOption['detail2Confirm'].uuid] || isAdmin() || !menuDisplayOption['detail2Confirm'].uuid) && detail.confirm != '2'">
+                    <md-button ng-show="detail.confirm != '2'" class="md-button close-btn"
+                               ng-click="confirmDetailClickAction($event, selectedItem, '2', detail)">
+                        <span><ng-md-icon icon="visibility" size="20"></ng-md-icon>审核</span>
+                    </md-button>
+                </div>
+                <div ng-if="menuDisplayOption['detail2RevertConfirm'].display && (menuAuthDataMap[menuDisplayOption['detail2RevertConfirm'].uuid] || isAdmin() || !menuDisplayOption['detail2RevertConfirm'].uuid) && detail.confirm == '2'">
+                    <md-button ng-show="detail.confirm == '2'" class="md-button close-btn"
+                               ng-click="confirmDetailClickAction($event, selectedItem, '1', detail)"
+                               ng-disabled="detail.transferReturnFlag == '1'">
+                        <span><ng-md-icon icon="visibility_off" size="20"></ng-md-icon>取审</span>
+                    </md-button>
+                </div>
+                <div ng-if="menuDisplayOption['detail2Transfer'].display && (menuAuthDataMap[menuDisplayOption['detail2Transfer'].uuid] || isAdmin() || !menuDisplayOption['detail2Transfer'].uuid)">
+                    <md-button class="md-button close-btn"
+                               ng-click="transferDetailClickAction($event, selectedItem, detail)"
+                               ng-disabled="detail.transferReturnFlag == '1' || detail.confirm != '2'">
+                        <span><ng-md-icon icon="send" size="20"></ng-md-icon>抛转</span>
+                    </md-button>
+                </div>
+            </div>
+        </div>
+        <!-- detail panel -->
+        <!--<div layout="row" ng-show="detail.showMorePanel">
+            <div layout-margin>Have more stuff here....</div>
+        </div>-->
+        <md-divider style="margin-top: 3px;margin-bottom: 3px;"></md-divider>
+    </div>
+    <!--<div flex="100" class="add-new" style="margin: 10px 0 0 0;"
+         ng-click="preAddItemAction({}, 'PSO_ORDER_DTL', '新增订单')">
+        <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
+    </div>-->
+</div>

@@ -1,0 +1,388 @@
+<div class="main-panel">
+    <div ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS">
+        <div layout="row" class="top-title">
+            <div flex="70" hide-sm hide-md class="left-title" ng-show="selectedItem" style="position: relative;">
+                <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
+                           ng-disabled="selectedItem.isProgress"
+                           ng-click="editItemAction(selectedItem, 'PSO_ORDER_MST', '订单: ' + selectedItem.no)"
+                           ng-if="formMenuDisplayOption['102-edit'].display">
+                    <ng-md-icon icon="edit"></ng-md-icon>
+                </md-button>
+                <md-menu>
+                    <md-button class="md-icon-button close-btn" aria-label="More" style="float: left;"
+                               ng-click="$mdOpenMenu($event)">
+                        <ng-md-icon icon="menu"></ng-md-icon>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="deleteClickAction($event, selectedItem)"
+                                       ng-if="formMenuDisplayOption['103-delete'].display">
+                                <ng-md-icon icon="delete"></ng-md-icon>
+                                {{formMenuDisplayOption['103-delete'].name}}
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+                <span>售后单详细信息</span>
+                <md-button class="md-icon-button close-btn float-right" aria-label="More"
+                           ng-click="selectedItem = null">
+                    <ng-md-icon icon="chevron_left"></ng-md-icon>
+                </md-button>
+            </div>
+            <div flex class="right-title">
+                <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
+                           ng-click="preAddItemAction({}, 'ass_form_mst')"
+                           ng-if="formMenuDisplayOption['100-add'].display">
+                    <ng-md-icon icon="add"></ng-md-icon>
+                </md-button>
+                <span>售后单列表</span>
+                <md-menu>
+                    <md-button class="md-icon-button close-btn float-right" aria-label="More"
+                               ng-click="$mdOpenMenu($event)">
+                        <ng-md-icon icon="menu"></ng-md-icon>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More" ng-click="deleteAllClickAction($event)"
+                                       ng-if="formMenuDisplayOption['104-batchDelete'].display">
+                                <ng-md-icon icon="delete"></ng-md-icon>
+                                {{formMenuDisplayOption['104-batchDelete'].name}}
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+        </div>
+
+        <div layout="row" class="main-body border">
+            <div flex="70" hide-sm hide-md layout="column" class="left-body" ng-show="selectedItem">
+
+                <div flex="100" layout-padding>
+                    <div layout="row" layout-padding style="font-size: 20px;padding-top: 2px; font-weight: bold;">
+                        <span flex>预订单单号: {{selectedItem.salesOrderMaster.no}}</span>
+                    </div>
+                    <md-divider></md-divider>
+                    <div layout="row">
+                        <div flex="60">
+                            <div image-slider photos="selectedItemPics" index="currentSmallImageIndex"
+                                 style="padding: 10px; height: 300px;"></div>
+                        </div>
+                        <div flex="40" layout="row" layout-wrap layout-margin>
+                            <span flex="100" flex-sm="100" layout-padding>
+                                <span class="item-name">客户</span>
+                                <span class="item-content">{{selectedItem.customer.name}}</span>
+                            </span>
+                            <span flex="100" flex-sm="100" layout-padding>
+                                <span class="item-name">填单日期</span>
+                                <span class="item-content">{{selectedItem.createDate | date:'yyyy-MM-dd'}}</span>
+                            </span>
+                            <span flex="100" flex-sm="100" layout-padding>
+                                <span class="item-name">问题描述</span>
+                                <span class="item-content">{{selectedItem.description}}</span>
+                            </span>
+                            <span flex="100" flex-sm="100" layout-padding>
+                                <span class="item-name">服务类型</span>
+                                <span class="item-content">{{ASSFORM_SERVICE_TYPE[selectedItem.serviceType].name}}</span>
+                            </span>
+                            <span flex="100" flex-sm="100" layout-padding>
+                                <span class="item-name">退款金额</span>
+                                <span class="item-content">{{selectedItem.refundAmount}}</span>
+                            </span>
+                            <span flex="100" flex-sm="100" layout-padding>
+                                <span class="item-name">安装服务商</span>
+                                <span class="item-content">{{selectedItem.installationServiceProviderName}}</span>
+                            </span>
+                            <span flex="100" flex-sm="100" layout-padding>
+                                <span class="item-name">物流服务商</span>
+                                <span class="item-content">{{selectedItem.logisticsServiceProviderName}}</span>
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <md-tabs md-dynamic-height md-border-bottom style="padding-top: 30px;">
+                        <md-tab label="预订单">
+                            <div class=" md-layout-row" style="background-color:whitesmoke">
+                                <md-checkbox ng-model="selectDetailAllFlag" aria-label="Checkbox"
+                                             ng-hide="selectedItem.isProgress"
+                                             ng-change="selectDetailAllAction()"></md-checkbox>
+                                <button class="md-button md-default-theme"
+                                        ng-click="deleteDetailAllAction(detailSelected)"
+                                        ng-if="formMenuDisplayOption['105-subBatchDelete'].display"
+                                        ng-disabled="detailSelected.length<=0">
+
+                                    <span class="ng-scope">{{formMenuDisplayOption['105-subBatchDelete'].name}}</span>
+                                </button>
+                            </div>
+                            <div layout="row" layout-wrap style="margin-top: 20px;">
+                                <div flex="100" ng-repeat="subItem in selectedItem.detailList">
+                                    <div layout="row">
+                                        <div flxe="5" layout-align="center center">
+                                            <md-checkbox aria-label="Checkbox" ng-hide="selectedItem.isProgress"
+                                                         ng-checked="exists(subItem, detailSelected)"
+                                                         ng-click="selectDetailItemAction($event, subItem, detailSelected)"></md-checkbox>
+
+                                        </div>
+                                        <div flex="45">
+                                            <div layout-padding>品名 :
+                                                <span>{{subItem.salesOrderExtendDetail.item.name}}</span></div>
+                                            <div layout-padding>规格 : <span>{{subItem.salesOrderExtendDetail.item.standard}}</span>
+                                            </div>
+                                        </div>
+                                        <div flex="45">
+                                            <div layout-padding>订单数量: <span>{{subItem.salesOrderExtendDetail.orderQuantity}}</span>
+                                            </div>
+                                            <div layout-padding>含税金额: <span>{{subItem.salesOrderExtendDetail.originalOrderAmountTax}}</span>
+                                            </div>
+                                        </div>
+
+                                        <div flex="10">
+                                            <md-button class="md-button close-btn" aria-label="More"
+                                                       ng-hide="selectedItem.isProgress"
+                                                       ng-click="deleteDetailAction(subItem)">
+                                                <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>
+                                                删除
+                                            </md-button>
+                                        </div>
+                                    </div>
+                                    <md-divider style="margin-top: 5px"></md-divider>
+                                </div>
+                            </div>
+
+                        </md-tab>
+                        <md-tab label="售后单流程">
+                            <div layout="row" layout-wrap style="margin-top: 20px;">
+                                <div flex="100" ng-repeat="flowItem in selectedItem.flowDetailList">
+                                    <div layout="row">
+                                        <div flex="10" layout-align="center center" style="text-align: center"
+                                             ng-style="flowItem.bgColor">
+                                            <h3 flex> {{flowItem.flowNo}}</h3>
+                                        </div>
+                                        <div flex="45">
+                                            <div layout-padding>流程关名字 : <span>{{flowItem.flowName}}</span></div>
+                                            <div layout-padding>流转类型: <span>{{WORKFLOW_TRANSFER_TYPE[flowItem.transferType].name}}</span>
+                                            </div>
+                                            <div layout-padding>操作人: <span>{{flowItem.currentEmplName}}</span></div>
+                                            <div layout-padding>跟进内容: <span>{{flowItem.followUpContent}}</span></div>
+                                        </div>
+                                        <div flex="45">
+                                            <div layout-padding>流转组织/渠道: <span>{{flowItem.transferDataName}}</span>
+                                            </div>
+                                            <div layout-padding>流转角色: <span>{{flowItem.transferRoleName}}</span></div>
+                                            <div layout-padding>跟进日期: <span>{{flowItem.followUpDate | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <md-divider style="margin-top: 5px"></md-divider>
+                                </div>
+                            </div>
+                        </md-tab>
+                    </md-tabs>
+                </div>
+            </div>
+            <div flex class="right-body">
+                <!-- basic search-->
+                <div class="search-bar" layout="row" style="position: relative">
+                    <span style="position: absolute; top: 15px; left: 10px;">
+                        <md-checkbox ng-model="selectAllFlag" aria-label="Checkbox"
+                                     ng-change="selectAllAction()"></md-checkbox>
+                    </span>
+                    <md-input-container flex style="margin-left: 50px;">
+                        <label>预订单号：</label>
+                        <input type="text" ng-model="listFilterOption.no" ng-keypress="queryEnter($event)">
+                    </md-input-container>
+                    <span style="padding-top: 10px;">
+                        <md-button class="md-icon-button" aria-label="Eat cake" ng-click="showAdvancedSearchAction()">
+                            <ng-md-icon icon="expand_more" ng-show="!displayAdvancedSearPanel"></ng-md-icon>
+                            <ng-md-icon icon="expand_less" ng-show="displayAdvancedSearPanel"></ng-md-icon>
+                        </md-button>
+                    </span>
+                </div>
+                <!-- advanced search-->
+                <div layout="row" ng-show="displayAdvancedSearPanel">
+                    <!-- fill more searching here.-->
+                    <!--<div flex>-->
+                    <!--Have you stuff here...-->
+                    <!--</div>-->
+                </div>
+                <!-- status panel-->
+                <div layout="row" layout-warp layout-padding layout-margin ng-show="!selectedItem"
+                     style="margin: 20px 0px 20px 0px; padding-left: 60px;background-color: whitesmoke;position: relative;height: 50px;padding-top: 15px;">
+                    <span flex="20">总记录数: {{pageOption.totalElements}}</span>
+                    <span flex="20">已选记录数: {{selected.length}}</span>
+
+                    <!--<md-menu>-->
+                    <!--<md-button class="md-button close-btn" aria-label="More" ng-click="$mdOpenMenu($event)"-->
+                    <!--style="position: absolute;right: 0px;top: 0px;">-->
+                    <!--<ng-md-icon icon="sort"></ng-md-icon>-->
+                    <!--排序-->
+                    <!--</md-button>-->
+                    <!--<md-menu-content width="2">-->
+                    <!--<md-menu-item>-->
+                    <!--<md-button class="md-button" aria-label="More" ng-click="sortByAction('name')">-->
+                    <!--<ng-md-icon ng-show="sortByField == 'name'" icon="play_arrow"></ng-md-icon>-->
+                    <!--按名称-->
+                    <!--</md-button>-->
+                    <!--<md-button class="md-button" aria-label="More" ng-click="sortByAction('no')">-->
+                    <!--<ng-md-icon ng-show="sortByField == 'no'" icon="play_arrow"></ng-md-icon>-->
+                    <!--按编号-->
+                    <!--</md-button>-->
+                    <!--</md-menu-item>-->
+                    <!--</md-menu-content>-->
+                    <!--</md-menu>-->
+                </div>
+                <div ng-repeat="item in assFormMstList | orderBy:sortByField"
+                     ng-class="selectedItem.no == item.no ? 'selected-item':''">
+                    <div class="summary-item">
+                        <div layout="row" layout-wrap>
+                            <span style="position: absolute">
+                                <md-checkbox aria-label="Checkbox" ng-checked="exists(item, selected)"
+                                             ng-click="selectItemAction($event, item)"></md-checkbox> {{item.selected}}
+                            </span>
+                            <div flex="100" layout="row"
+                                 style="padding-left: 50px;padding-top: 10px; font-weight: bold;">
+                                <span flex ng-click="showDetailPanelAction(item)" class="summary-item__title">{{item.salesOrderMaster.no}}</span>
+                                <span flex class="right-align">￥:{{item.refundAmount}}</span>
+                            </div>
+                            <div flex="100" layout="row" style="padding-left: 50px;padding-top: 10px;font-size: 14px;"
+                                 layout-align="space-between center" ng-hide="selectedItem">
+                                <div flex layout="row" style="color:#7f8fa4">
+                                    <span>客户: <span style="font-style: italic">{{item.customer.name}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                    <span>服务类型: <span style="font-style: italic">{{ASSFORM_SERVICE_TYPE[item.serviceType].name}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                    <span>填单日期: <span style="font-style: italic">{{item.createDate | date:'yyyy-MM-dd'}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                    <span>问题描述: <span style="font-style: italic">{{item.description}}</span></span>
+                                </div>
+                                <div layout="row" layout-align="end center">
+                                    <md-button class="md-button close-btn" aria-label="More"
+                                               ng-click="toggleMorePanelAction(item)"
+                                               style="position: relative;left: 15px;">
+                                        查看更多...
+                                    </md-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div layout="row" layout-wrap ng-show="item.showMorePanel && !selectedItem"
+                         style="font-size: 14px;">
+                        <div flex="100" ng-repeat="detail in item.detailList" style="padding: 10px 20px 0px 20px;">
+                            <md-divider></md-divider>
+                            <div layout="row" style="height: 100%;">
+                                <div flex="5">
+                                    <!--<img style="max-height: 150px;padding-top: 10px;" ng-src="app/img/item.jpeg">-->
+                                </div>
+                                <div flex="45">
+                                    <div layout-padding>品名 : <span>{{detail.salesOrderExtendDetail.item.name}}</span>
+                                    </div>
+                                    <div layout-padding>规格 :
+                                        <span>{{detail.salesOrderExtendDetail.item.standard}}</span></div>
+                                </div>
+                                <div flex="45">
+                                    <div layout-padding>订单数量 :
+                                        <span>{{detail.salesOrderExtendDetail.orderQuantity}}</span></div>
+                                    <div layout-padding>含税金额 : <span>{{detail.salesOrderExtendDetail.originalOrderAmountTax}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <md-divider></md-divider>
+                </div>
+                <div pagination option="pageOption" callback="refreshList()"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS">
+        <div layout="row" class="top-title">
+            <div flex="100" class="left-title">
+                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="listItemAction()"
+                           style="float: left; margin-left: 36px;">
+                    <ng-md-icon icon="chevron_left"></ng-md-icon>
+                </md-button>
+                <span>{{ui_status == UI_STATUS.EDIT_UI_STATUS_ADD  ? '新增':'编辑'}}售后单 </span>
+                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="saveItemAction()"
+                           ng-if="formMenuDisplayOption['101-save'].display">
+                    <ng-md-icon icon="save"></ng-md-icon>
+                </md-button>
+            </div>
+        </div>
+
+        <div layout="row" layout-wrap>
+            <div flex="50">
+                <md-button class="md-raised" ng-if="selectedItemPics && selectedItemPics.length > 0"
+                           ng-click="deleteItemImage()"
+                           ng-hide="ui_status != UI_STATUS.EDIT_UI_STATUS">
+                    删除
+                </md-button>
+                <md-button class="md-raised" ngf-select ngf-change="uploadImage($files, 0)"
+                           ng-hide="ui_status != UI_STATUS.EDIT_UI_STATUS || selectedItemPics.length == 5">
+                    选择上传图片
+                </md-button>
+                <md-progress-linear class="md-accent" md-mode="determinate" value="{{progress.value}}"
+                                    ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"></md-progress-linear>
+                <div image-slider photos="selectedItemPics" index="currentSmallImageIndex"
+                     style="padding-top: 16px; height: 350px;"></div>
+            </div>
+            <div flex="50">
+                <md-input-container>
+                    <label class="label">预订单：</label>
+                    <input type="text" ng-model="selectedItem.salesOrderMasterNo"
+                           ng-disabled="ui_status == UI_STATUS.EDIT_UI_STATUS"
+                           required>
+
+                    <md-button class="md-icon-button close-btn float-right"
+                               style="color: gray;margin-top: 15px;" aria-label="More"
+                               ng-disabled="ui_status == UI_STATUS.EDIT_UI_STATUS"
+                               ng-click="openDlg('PSO_SO_MST', '预订单号')">
+                        <ng-md-icon icon="search"></ng-md-icon>
+                    </md-button>
+                </md-input-container>
+                <md-input-container>
+                    <label class="label">服务类型：</label>
+                    <md-select ng-model="selectedItem.serviceType" requried>
+                        <md-option ng-repeat="(key, value) in ASSFORM_SERVICE_TYPE" ng-value="key">
+                            {{value.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container>
+                    <label class="label">物流服务商：</label>
+                    <input type="text" ng-model="selectedItem.logisticsServiceProviderName" disabled
+                           required>
+
+                    <md-button class="md-icon-button close-btn float-right"
+                               style="color: gray;margin-top: 15px;" aria-label="More"
+                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
+                               ng-click="openDlg('LOGISTICS_SERVICE_PROVIDER', '请选择物流商')">
+                        <ng-md-icon icon="search"></ng-md-icon>
+                    </md-button>
+                </md-input-container>
+                <md-input-container>
+                    <label class="label">安装服务商：</label>
+                    <input type="text" ng-model="selectedItem.installationServiceProviderName" disabled
+                           required>
+
+                    <md-button class="md-icon-button close-btn float-right"
+                               style="color: gray;margin-top: 15px;" aria-label="More"
+                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
+                               ng-click="openDlg('INSTALLATION_SERVICE_PROVIDER', '请选择服务商')">
+                        <ng-md-icon icon="search"></ng-md-icon>
+                    </md-button>
+                </md-input-container>
+                <md-input-container>
+                    <label class="label">退款金额：</label>
+                    <input type="number" ng-model="selectedItem.refundAmount" required>
+                </md-input-container>
+                <md-input-container>
+                    <label class="label">问题描述：</label>
+                    <input type="text" ng-model="selectedItem.description" required
+                           ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                </md-input-container>
+            </div>
+
+        </div>
+    </div>
+</div>

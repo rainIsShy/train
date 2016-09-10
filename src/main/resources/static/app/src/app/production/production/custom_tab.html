@@ -1,0 +1,21 @@
+<md-content layout="row" layout-padding class="prod">
+    <div layout="column">
+        <div ng-repeat="custom in selectedItemCustoms.content">
+            <div class="property">
+                <span class="name">{{custom.itemCustom.name}}</span>
+                <span class="value">
+                    <span ng-repeat="item in custom.informationUuids track by $index">{{allCustomsScopes[custom.itemCustom.uuid][item].name}}&nbsp;&nbsp;</span>
+                </span>
+            </div>
+
+            <div layout="row">
+                <md-button class="md-raised" ng-click="openEditCustomDlg(custom)" ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">编辑</md-button>
+                <md-button class="md-raised" ng-click="deleteItemCustom(custom)" ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">删除</md-button>
+            </div>
+
+        </div>
+        <span class="add-new" ng-click="openAddCustomDlg()" ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD">
+            <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增自定义属性</a>
+        </span>
+    </div>
+</md-content>

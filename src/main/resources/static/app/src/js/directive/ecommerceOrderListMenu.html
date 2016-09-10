@@ -1,0 +1,124 @@
+<div layout="column">
+    <div flex layout="column" class="order-item-background" ng-if="ecommerceOrderListMenu.showQueryBar">
+        <div class="menu" layout="row" layout-md="column" layout-sm="column">
+            <md-input-container>
+                <label>起始日期：</label>
+                <input type="date" ng-model="ecommerceOrderListMenu.startDate"/>
+            </md-input-container>
+            <md-input-container>
+                <label>截止日期：</label>
+                <input type="date" ng-model="ecommerceOrderListMenu.endDate"/>
+            </md-input-container>
+            <md-input-container flex="15">
+                <label>客户名称：</label>
+                <input ng-model="ecommerceOrderListMenu.buyerNick"/>
+            </md-input-container>
+            <md-input-container>
+                <label>销售单号：</label>
+                <input ng-model="ecommerceOrderListMenu.orderId"/>
+            </md-input-container>
+            <md-input-container>
+                <label>O2O经销商：</label>
+                <input ng-model="ecommerceOrderListMenu.o2oChannelName"/>
+            </md-input-container>
+        </div>
+
+        <div class="menu" layout="row" layout-md="column" layout-sm="column">
+            <div layout="row" layout-md="column" layout-sm="column" style="margin-left: 10px;">
+                <label class="label">订单类型：</label>
+                <md-select placeholder="" ng-model="ecommerceOrderListMenu.orderFlag" class="select">
+                    <md-option ng-repeat="(key, value) in ORDER_FLAG" ng-value="key">{{value.name}}</md-option>
+                </md-select>
+            </div>
+            <div layout="row" layout-md="column" layout-sm="column" style="margin-left: 10px;" ng-if="false">
+                <label class="label">启用状态：</label>
+                <md-select placeholder="" ng-model="ecommerceOrderListMenu.status" class="select">
+                    <md-option ng-repeat="(key, value) in STATUS" ng-value="key">{{value.name}}</md-option>
+                </md-select>
+            </div>
+            <div layout="row" layout-md="column" layout-sm="column" style="margin-left: 10px;">
+                <label class="label">审核状态：</label>
+                <md-select placeholder="全部" ng-model="ecommerceOrderListMenu.confirm" class="select">
+                    <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
+                </md-select>
+            </div>
+            <div layout="row" layout-md="column" layout-sm="column" style="margin-left: 10px;">
+                <label class="label">抛转状态：</label>
+                <md-select placeholder="全部" ng-model="ecommerceOrderListMenu.transferPsoFlag" class="select">
+                    <md-option ng-repeat="(key, value) in TRANSFER_PSO_FLAG" ng-value="key">{{value.name}}</md-option>
+                </md-select>
+            </div>
+            <md-button class="md-raised"
+                       ng-if="ecommerceOrderListMenuDisplayOption['405-query'].display && (menuAuthDataMap[ecommerceOrderListMenuDisplayOption['405-query'].uuid] || isAdmin() || !ecommerceOrderListMenuDisplayOption['405-query'].uuid)"
+                       style="margin-top: 20px;height: 20px;" ng-click="ecommerceOrderListMenuAction(405, $event)">
+                &nbsp;{{ecommerceOrderListMenuDisplayOption['405-query'].name}}
+            </md-button>
+            <md-button class="md-raised"
+                       ng-if="ecommerceOrderListMenuDisplayOption['407-add'].display && (menuAuthDataMap[ecommerceOrderListMenuDisplayOption['407-add'].uuid] || isAdmin() || !ecommerceOrderListMenuDisplayOption['407-add'].uuid)"
+                       style="margin-top: 20px;height: 20px;" ng-click="ecommerceOrderListMenuAction(407, $event)">
+                &nbsp;{{ecommerceOrderListMenuDisplayOption['407-add'].name}}
+            </md-button>
+        </div>
+    </div>
+
+    <div flex style="padding: 10px 0px 0px 0px;" layout="row" layout-md="column" layout-sm="column"
+         layout-align="space-around left">
+        <div flex="10" layout="row" layout-md="column" layout-sm="column">
+            <md-checkbox ng-model="ecommerceOrderListMenu.selectAll"
+                         ng-change="ecommerceOrderListMenuAction(400, $event)"
+                         ng-if="ecommerceOrderListMenuDisplayOption['400-selectAll'].display && (menuAuthDataMap[ecommerceOrderListMenuDisplayOption['400-selectAll'].uuid] || isAdmin() || !ecommerceOrderListMenuDisplayOption['400-selectAll'].uuid)"
+                         aria-label="全选" ng-true-value="true" ng-false-value="false">
+                &nbsp;{{ecommerceOrderListMenuDisplayOption['400-selectAll'].name}}
+            </md-checkbox>
+        </div>
+
+        <div flex layout="row" layout-align="end center">
+            <md-button
+                    ng-if="ecommerceOrderListMenuDisplayOption['401-audit'].display && (menuAuthDataMap[ecommerceOrderListMenuDisplayOption['401-audit'].uuid] || isAdmin() || !ecommerceOrderListMenuDisplayOption['401-audit'].uuid)"
+                    ng-disabled="audit_button_disabled == 1"
+                    class="md-raised" ng-click="ecommerceOrderListMenuAction(401, $event)"
+                    style="margin-top: 0px;height: 20px;" aria-label="审核">
+                &nbsp;{{ecommerceOrderListMenuDisplayOption['401-audit'].name}}
+            </md-button>
+            <md-button
+                    ng-if="ecommerceOrderListMenuDisplayOption['408-supervisorAudit'].display && (menuAuthDataMap[ecommerceOrderListMenuDisplayOption['408-supervisorAudit'].uuid] || isAdmin() || !ecommerceOrderListMenuDisplayOption['408-supervisorAudit'].uuid)"
+                    ng-disabled="supervisorAudit_button_disabled == 1"
+                    class="md-raised" ng-click="ecommerceOrderListMenuAction(401, $event)"
+                    style="margin-top: 0px;height: 20px;" aria-label="主管审核">
+                &nbsp;{{ecommerceOrderListMenuDisplayOption['408-supervisorAudit'].name}}
+            </md-button>
+            <md-button
+                    ng-if="ecommerceOrderListMenuDisplayOption['406-revertAudit'].display && (menuAuthDataMap[ecommerceOrderListMenuDisplayOption['406-revertAudit'].uuid] || isAdmin() || !ecommerceOrderListMenuDisplayOption['406-revertAudit'].uuid)"
+                    ng-disabled="revert_audit_button_disabled == 1"
+                    class="md-raised" ng-click="ecommerceOrderListMenuAction(406, $event)"
+                    style="margin-top: 0px;height: 20px;" aria-label="取消审核">
+                &nbsp;{{ecommerceOrderListMenuDisplayOption['406-revertAudit'].name}}
+            </md-button>
+            <md-button
+                    ng-if="ecommerceOrderListMenuDisplayOption['403-throw'].display && (menuAuthDataMap[ecommerceOrderListMenuDisplayOption['403-throw'].uuid] || isAdmin() || !ecommerceOrderListMenuDisplayOption['403-throw'].uuid)"
+                    ng-disabled="throw_button_disabled == 1"
+                    class="md-raised" ng-click="ecommerceOrderListMenuAction(403, $event)"
+                    style="margin-top: 0px;height: 20px;" aria-label="抛转预订单">
+                &nbsp;{{ecommerceOrderListMenuDisplayOption['403-throw'].name}}
+            </md-button>
+            <md-button
+                    ng-if="ecommerceOrderListMenuDisplayOption['408-cancelthrow'].display && (menuAuthDataMap[ecommerceOrderListMenuDisplayOption['408-cancelthrow'].uuid] || isAdmin() || !ecommerceOrderListMenuDisplayOption['408-cancelthrow'].uuid)"
+                    ng-disabled="revert_throw_button_disabled == 1"
+                    class="md-raised" ng-click="ecommerceOrderListMenuAction(408, $event)"
+                    style="margin-top: 0px;height: 20px;" aria-label="取消抛转预订单">
+                &nbsp;{{ecommerceOrderListMenuDisplayOption['408-cancelthrow'].name}}
+            </md-button>
+            <md-button
+                    ng-if="ecommerceOrderListMenuDisplayOption['409-o2oOverdue'].display && (menuAuthDataMap[ecommerceOrderListMenuDisplayOption['409-o2oOverdue'].uuid] || isAdmin() || !ecommerceOrderListMenuDisplayOption['409-o2oOverdue'].uuid)"
+                    ng-disabled="o2o_overdue_button_disabled == 1"
+                    class="md-raised" ng-click="ecommerceOrderListMenuAction(409, $event)"
+                    style="margin-top: 0px;height: 20px;" aria-label="逾期拒绝配送">
+                &nbsp;{{ecommerceOrderListMenuDisplayOption['409-o2oOverdue'].name}}
+            </md-button>
+        </div>
+    </div>
+</div>
+
+
+
+

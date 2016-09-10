@@ -1,0 +1,54 @@
+<md-content style="overflow: scroll;">
+    <div layout="row">
+        <div flex="5" class="verticalLine table-head"></div>
+        <div align="center" flex="5" class=" table-head">操作</div>
+        <div align="center" flex="5" class=" table-head">项次</div>
+        <div align="center" flex="10" class=" table-head">商家编码</div>
+        <div align="center" flex="10" class=" table-head">品名</div>
+        <div align="center" flex="10" class=" table-head">规格</div>
+        <div align="center" flex="10" class=" table-head">品牌</div>
+        <div align="center" flex="10" class=" table-head">品牌名称</div>
+        <div align="center" flex="10" class=" table-head">商品属性</div>
+        <div align="center" flex="10" class=" table-head">数量</div>
+        <div align="center" flex="10" class=" table-head">销售单位</div>
+        <div align="center" flex="10" class=" table-head">标准价</div>
+        <div align="center" flex="10" class=" table-head">订单单价</div>
+        <div align="center" flex="10" class=" table-head">含税金额</div>
+        <div align="center" flex="10" class=" table-head">赠品类型</div>
+        <div align="center" flex="10" class=" table-head">促销类型</div>
+
+    </div>
+    <div ng-repeat="orderDetail in OrderDetailList.content">
+        <div layout="row">
+            <div flex="5" style="padding:0px 0px 0px 0px;" layout-align="center" class=" table-item">
+                <md-checkbox ng-checked="exists(orderDetail, selectedDetail)"
+                             ng-click="toggleDetail(orderDetail, selectedDetail)" aria-label="checkbox">
+                </md-checkbox>
+            </div>
+            <!--操作-->
+            <div flex="5" class=" table-item">
+                <div layout="row" layout-sm="column" layout-align="center center">
+                    <div ng-show="orderDetail.confirm == 1 && orderDetail.status == 1 " align="center"
+                         ng-click="orderDetailEditMenuAction(orderDetail)"><i class="fa fa-pencil-square-o"></i>&nbsp;{{itemOperationMenuDisplayOption['500-item-edit'].name}}
+                    </div>
+                </div>
+            </div>
+            <!--项次-->
+            <div align="center" flex="5" class=" table-item">{{orderDetail.no}}</div>
+            <div align="center" flex="10" class=" table-item">{{}}(未对应)</div>
+            <div align="center" flex="10" class=" table-item">{{orderDetail.item.name}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderDetail.item.standard}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderDetail.item.brand.no}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderDetail.item.brand.name}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderDetail.itemAttribute}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderDetail.orderQuantity}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderDetail.item.unit}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderDetail.standardPrice}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderDetail.orderPrice}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderDetail.originalOrderAmountTax}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderDetail.saleType.name}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderDetail.returnFlag.name}}</div>
+
+        </div>
+    </div>
+</md-content>

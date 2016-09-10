@@ -1,0 +1,97 @@
+<md-content layout="row" layout-padding>
+    <div flex="50">
+        <md-input-container>
+            <label>商品名称:</label>
+            <input type="text" ng-model="selectedItem.name" required ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+        </md-input-container>
+
+        <md-input-container>
+            <label>商品编号:</label>
+            <input type="text" ng-model="selectedItem.no" required ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+        </md-input-container>
+
+        <md-input-container>
+            <label>商品规格:</label>
+            <input type="text" ng-model="selectedItem.standard" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+        </md-input-container>
+
+        <div layout="column" class="select-input">
+            <label>商品产地:</label>
+            <!--<input type="text" ng-model="selectedItem.area" required md-maxlength="20" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">-->
+            <md-select placeholder="" ng-model="selectedItem.areaUuid" class="select" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                <md-option ng-selected="area.uuid == selectedItem.area.uuid" ng-repeat="area in productionAreas.content" ng-value="area.uuid" ng-hide="key == 0">{{area.itemAreaPath}}</md-option>
+            </md-select>
+        </div>
+
+        <div layout="row" >
+            <md-radio-group ng-model="selectedItem.stopProductionFlag" class="select-input" flex="45">
+                <label>是否停产:</label>
+                <md-radio-button value="N" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">否</md-radio-button>
+                <md-radio-button value="Y" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">是</md-radio-button>
+            </md-radio-group>
+            <md-radio-group ng-model="selectedItem.eshopType" class="select-input">
+                <label>是否电商:</label>
+                <md-radio-button value="1" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">否</md-radio-button>
+                <md-radio-button value="2" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">是</md-radio-button>
+            </md-radio-group>
+        </div>
+
+        <!--<div layout="column" class="select-input">-->
+            <!--<label>商品品牌:</label>-->
+            <!--&lt;!&ndash;<input type="text" ng-model="selectedItem.area" required md-maxlength="20" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">&ndash;&gt;-->
+            <!--<md-select placeholder="" ng-model="selectedItem.brandUuid" class="select" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">-->
+                <!--<md-option ng-selected="brand.uuid == selectedItem.brand.uuid" ng-repeat="brand in productionBrands.content" ng-value="brand.uuid" ng-hide="key == 0">{{brand.name}}</md-option>-->
+            <!--</md-select>-->
+        <!--</div>-->
+
+        <div layout="column" class="select-input">
+            <label>采购类型:</label>
+             <md-select placeholder="" ng-model="selectedItem.purchaseType" class="select"
+                        ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                <md-option ng-repeat="(key, value) in PURCHASE_TYPE" ng-value="key" ng-hide="key == 0">{{value.name}}</md-option>
+            </md-select>
+        </div>
+
+    </div>
+
+    <div flex="50">
+        <md-input-container ng-if="selectedItem.suggestPrice != INVALID_VALUE.INTEGER">
+            <label>建议售价:</label>
+            <input type="number" ng-model="selectedItem.suggestPrice" name="suggestPrice" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS" min="0.0001" required>
+            <div ng-messages="mainForm.suggestPrice.$error">
+                <div ng-message="required">建议售价必填</div>
+                <div ng-message="min">建议售价必须大于0</div>
+            </div>
+        </md-input-container>
+
+        <md-input-container>
+            <label>市场售价:</label>
+            <input type="number" ng-model="selectedItem.marketPrice" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+        </md-input-container>
+
+        <md-input-container>
+            <label>成本价格:</label>
+            <input type="number" ng-model="selectedItem.costPrice" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+        </md-input-container>
+
+        <md-input-container>
+            <label>历史最高价:</label>
+            <input type="number" ng-model="selectedItem.highestPrice" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+        </md-input-container>
+
+        <md-input-container>
+            <label>历史最低价:</label>
+            <input type="number" ng-model="selectedItem.lowestPrice" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+        </md-input-container>
+
+        <md-input-container>
+            <label>建议折扣价:</label>
+            <input type="number" ng-model="selectedItem.discountPrice" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+        </md-input-container>
+
+        <md-input-container>
+            <label>备注:</label>
+            <input type="text" ng-model="selectedItem.remark" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+        </md-input-container>
+    </div>
+</md-content>

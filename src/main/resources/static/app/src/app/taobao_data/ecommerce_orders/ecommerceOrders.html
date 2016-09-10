@@ -1,0 +1,162 @@
+<div layout-fill class="right-container ecommerce-orders">
+    <md-content>
+        <md-tabs md-selected="$parent.selectedTabIndex" md-border-bottom md-dynamic-height md-center-tabs="false">
+            <md-tab md-on-select="listTabSelected()">
+                <md-tab-label>{{listTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <div ecommerce-order-list-menu></div>
+                        <md-divider style="margin: 0px 0px 20px 5px;"></md-divider>
+                        <div ng-include=" 'app/src/app/taobao_data/ecommerce_orders/ecommerceOrdersList.html' "></div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+
+            <md-tab md-on-select="formTabSelected()">
+                <md-tab-label>{{formTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <form name="mainForm" novalidate>
+                            <div ng-if="selectedItem != null" form-menu></div>
+                            <div ng-if="selectedItem != null" ecommerce-order-form-menu></div>
+                            <div layout-margin layout-padding class="md-whiteframe-z1"
+                                 ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                                <p style="color: red;">请从清单列表中选择一个订单并点击查看详情。</p>
+                            </div>
+
+                            <div flex class="md-whiteframe-z1" ng-if="selectedItem != null">
+                                <div flex layout="row">
+                                    <div flex="25" layout="column">
+                                        <md-input-container>
+                                            <label class="md-input-has-value">渠道：</label>
+                                            <input type="text" ng-model="selectedItem.channel.name"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
+                                                   readonly>
+                                            <a href ng-click="openChannelDlg()" ng-show="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD">选择渠道</a>
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <label class="md-input-has-value">平台：</label>
+                                            <input type="text" ng-model="selectedItem.channel.mall.name"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
+                                                   readonly>
+                                            <!--                                            <a href ng-click="openMallDlg()">选择平台</a>-->
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <label class="label">订单号：</label>
+                                            <input type="text" ng-model="selectedItem.no" required
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <label>订单类型：</label>
+                                            <md-select placeholder="" ng-model="selectedItem.orderFlag"
+                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                <md-option ng-repeat="(key, value) in ORDER_FLAG" ng-value="key">
+                                                    {{value.name}}
+                                                </md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                    </div>
+                                    <div flex="25" layout="column">
+                                        <md-input-container>
+                                            <label class="label">账号ID：</label>
+                                            <input type="text" ng-model="selectedItem.userId"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <label class="label">买家昵称：</label>
+                                            <input type="text" ng-model="selectedItem.buyerNick"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <label class="md-input-has-value">收货人：</label>
+                                            <input type="text"
+                                                   ng-model="selectedItem.receiveName"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <label class="label">联系人电话：</label>
+                                            <input type="text" ng-model="selectedItem.receivePhone"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                    </div>
+                                    <div flex layout="column">
+                                        <md-input-container>
+                                            <label class="md-input-has-value">送货方式：</label>
+                                            <input type="text" ng-model="selectedItem.deliverWay.name"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
+                                                   readonly required>
+                                            <a href ng-click="openDelivWayDlg()"
+                                               ng-show="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD">选择送货方式</a>
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <label class="label">送货区域：</label>
+                                            <input type="text" ng-model="selectedItem.receiveDistrict.name"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS" readonly>
+                                            <a href ng-click="openAreaDlg()" ng-show="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD">选择区域</a>
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <label class="label">合计金额：</label>
+                                            <input type="number" ng-model="selectedItem.orderAmount"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS" required>
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <label class="label">组装费用：</label>
+                                            <input type="number" ng-model="selectedItem.assembleAmount"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                    </div>
+                                    <div flex layout="column">
+                                        <md-input-container>
+                                            <label class="label">客服人员：</label>
+                                            <input type="text" ng-model="selectedItem.groupUser.name"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS" readonly>
+                                            <a href ng-click="openGroupUserDlg()" ng-show="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD">选择客服</a>
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <label class="label">交易日期：</label>
+                                            <input type="date" ng-model="selectedItem.orderDate"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <label class="label">预计送货日期：</label>
+                                            <input type="date" ng-model="selectedItem.predictDeliverDate"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                                <div flex layout="row">
+                                    <md-input-container flex="50">
+                                        <label class="label">送货地址：</label>
+                                        <input type="text" ng-model="selectedItem.receiveAddress"
+                                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                    </md-input-container>
+                                    <md-input-container flex>
+                                        <label class="label">备注：</label>
+                                        <input type="text" ng-model="selectedItem.remark"
+                                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                    </md-input-container>
+                                </div>
+
+                                <!--单身和子单身-->
+                                <div>
+                                    <md-content flex>
+                                        <md-tabs md-selected="selectedSubTab.index" md-border-bottom md-dynamic-height
+                                                 md-center-tabs="false">
+                                            <md-tab label="产品信息" md-on-select="prodInfoTabSelected()">
+                                                <div ng-include=" 'app/src/app/taobao_data/ecommerce_orders/productInfo.html' "></div>
+                                            </md-tab>
+
+                                            <md-tab label="出货" md-on-select="deliverInfoTabSelected()">
+                                                <div ng-include=" 'app/src/app/taobao_data/ecommerce_orders/deliverInfo.html' "></div>
+                                            </md-tab>
+                                        </md-tabs>
+                                    </md-content>
+                                </div>
+                            </div>
+                        </form>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

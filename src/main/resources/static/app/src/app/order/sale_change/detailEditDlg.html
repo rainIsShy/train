@@ -1,0 +1,28 @@
+<md-dialog style="padding: 30px;min-width:400px; max-width: 800px;max-height: 500px;">
+    <div layout="column">
+        <form name="editOrderChangeProduct" novalidate>
+            <md-input-container>
+                <label class="label">数量：</label>
+                <input type="text" ng-model="detail.orderQuantity">
+            </md-input-container>
+            <md-input-container>
+                <label class="label">送货日期：</label>
+                <input type="date" ng-model="detail.deliverDate">
+            </md-input-container>
+
+            <div layout="row" layout-align="end center">
+                <md-switch ng-model="detail.status" aria-label="Switch 1" class="md-block"
+                           ng-true-value="'1'" ng-false-value="'2'">
+                    启用
+                </md-switch>
+            </div>
+        </form>
+    </div>
+
+    <div layout="row">
+        <md-button ng-click="saveDetail()">
+            <i class="fa fa-check"></i>&nbsp;确定
+        </md-button>
+        <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+    </div>
+</md-dialog>

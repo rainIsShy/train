@@ -1,0 +1,53 @@
+<md-dialog style="padding: 30px;max-width: 600px;" class="prod">
+    <div layout="row">
+        <div flex>
+            <form name="addBomForm" novalidate>
+                <div layout="row" layout-wrap>
+                    <div flex="50">
+                        <md-input-container>
+                            <label>换算率分子</label>
+                            <input type="text" ng-model="workingUnit.numerator" required md-maxlength="20">
+                        </md-input-container>
+                    </div>
+
+                    <div flex="50">
+                        <md-input-container>
+                            <label>换算单位</label>
+                            <input type="text" ng-model="workingUnit.unit" required md-maxlength="20">
+                        </md-input-container>
+                    </div>
+
+                    <div flex="50">
+                        <md-input-container>
+                            <label>换算率分母</label>
+                            <input type="text" ng-model="workingUnit.denominator" required md-maxlength="20">
+                        </md-input-container>
+                    </div>
+
+                    <div flex="50">
+                        <md-input-container>
+                            <label>商品单位</label>
+                            <input type="text" ng-model="selectedItem.unit" ng-disabled="true">
+                        </md-input-container>
+                    </div>
+
+                    <div flex="50">
+                        <md-switch ng-model="workingUnit.status" ng-true-value="'2'" ng-false-value="'1'"
+                                   aria-label="失效作废">
+                            失效作废
+                        </md-switch>
+                    </div>
+
+                    <div flex="50">
+                        <div layout="row">
+                            <md-button ng-click="hideDlg()">
+                                <i class="fa fa-check"></i>&nbsp;确定
+                            </md-button>
+                            <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</md-dialog>

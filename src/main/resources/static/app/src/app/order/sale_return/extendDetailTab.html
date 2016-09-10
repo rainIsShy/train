@@ -1,0 +1,23 @@
+<div layout="row" layout-wrap style="margin-top: 5px;">
+    <div flex="100" ng-repeat="extendDetail in selectedItem.extendDetailList" ng-click=""
+         class="prod-item"
+         style="position: relative;padding-bottom: 0px; min-height: 200px;margin-top: 10px;">
+        <div layout="row" class="height: 100%;">
+            <div flex="33">
+                <div layout-padding>子项次： <span>{{extendDetail.no}}</span></div>
+                <div layout-padding>套件商品： <span>{{extendDetail.parentItem.name}}</span></div>
+                <div layout-padding>商品： <span>{{extendDetail.item.name}}</span></div>
+            </div>
+            <div flex="33" style="margin-bottom: 45px;">
+                <div layout-padding>销退数量： <span>{{extendDetail.returnQuantity}}</span></div>
+                <div layout-padding>税前金额： <span>￥{{extendDetail.originalReturnAmount}}</span></div>
+                <div layout-padding>含税金额： <span>￥{{extendDetail.originalReturnAmountTax}}</span></div>
+            </div>
+            <div flex="33" style="margin-bottom: 45px;">
+                <div layout-padding>销售订单单号： <span>{{extendDetail.psoOrderMstNo}}</span></div>
+                <div layout-padding>销售订单子项次： <span>{{extendDetail.psoOrderExtDtlNo}}</span></div>
+            </div>
+        </div>
+        <md-divider style="margin-top: 3px"></md-divider>
+    </div>
+</div>

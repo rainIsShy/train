@@ -1,0 +1,60 @@
+<md-content  style="overflow: scroll;">
+    <div layout="row"   layout-align="left center"  >
+        <div align="center" flex="5"  >操作</div>
+        <div align="center" flex="5"  >项次</div>
+        <div align="center" flex="15"  >品名</div>
+        <div align="center" flex="15"  >规格</div>
+        <div align="center" flex="15"  >品牌</div>
+        <div align="center" flex="15"  >品牌名称</div>
+        <div align="center" flex="15"  >定制</div>
+        <div align="center" flex="15"  >商品属性</div>
+        <div align="center" flex="15"  >销售类型</div>
+        <div align="center" flex="15"  >销售单位</div>
+        <div align="center" flex="15"  >订单数量</div>
+        <div align="center" flex="15"  >出货数量</div>
+        <div align="center" flex="15"  >欠货数量</div>
+        <div align="center" flex="15"  >标准价</div>
+        <div align="center" flex="15"  >默认出货折扣</div>
+        <div align="center" flex="15"  >默认出货价</div>
+        <div align="center" flex="15"  >促销折扣</div>
+        <div align="center" flex="15"  >促销单价</div>
+        <div align="center" flex="15"  >成交价折扣</div>
+        <div align="center" flex="15"  >单价</div>
+        <div align="center" flex="15"  >税前金额</div>
+        <div align="center" flex="15"  >税后金额</div>
+        <div align="center" flex="15"  >抛转流水号</div>
+        <div align="center" flex="15"  >销售单单号</div>
+        <div align="center" flex="15"  >销售单产品项次</div>
+        <div align="center" flex="15"  >备注</div>
+    </div>
+    <div ng-repeat="prodInfo in bookingSlipGroupList.content"  >
+        <div  layout="row"  layout-align="left center"  >
+            <div  align="center" flex="5" class="verticalLine table-item"item-operation-menu> </div>
+            <div  align="center" flex="5" class="verticalLine table-item">1000 </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.color}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.color}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.color}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+        </div>
+    </div>
+</md-content>

@@ -1,0 +1,88 @@
+<div layout="row" layout-wrap style="margin-top: 5px;">
+    <div flex="100" ng-repeat="detail in selectedItem.detailList | orderBy:'no'" ng-click=""
+         class="prod-item" style="position: relative;padding-bottom: 0px;margin-top: 5px;">
+        <div layout="row" layout-margin>
+            <div flex="5" layout="column" layout-align="start center" style="text-align: center">
+                <md-checkbox ng-model="detail.selected" aria-label="Checkbox" style="margin-left: 20px;"
+                             ng-click="selectDetailItemAction($event, detail)"></md-checkbox>
+                <h3>{{detail.no}}</h3>
+            </div>
+            <div flex="40">
+                <!--<div layout-padding>项次： <span>{{detail.no}}</span></div>-->
+                <div layout-padding>品名： <span>{{detail.salesOrderDetail.item.name}}</span></div>
+                <div layout-padding>规格： <span>{{detail.salesOrderDetail.item.standard}}</span></div>
+                <div layout-padding>是否定制： <span>{{CUSTOMIZE_FLAG[detail.salesOrderDetail.customizeFlag].name}}</span></div>
+                <div layout-padding>商品属性： <span>{{detail.salesOrderDetail.itemAttribute}}</span></div>
+                <div layout-padding>订单数量： <span>{{detail.salesOrderDetail.orderQuantity}}</span></div>
+                <div layout-padding>退款凭证： <span>{{detail.psoSoMreturnOrderstNo}}</span></div>
+                <div layout-padding>审核状态： <span>{{AUDIT[detail.confirm].name}}</span></div>
+            </div>
+            <div flex="35">
+                <div layout-padding>销退原因： <span>{{detail.returnReason.name}}</span></div>
+                <div layout-padding>销退数量： <span>{{detail.returnQuantity}}</span></div>
+                <div layout-padding>税前退货金额： <span>{{detail.originalReturnOrderAmount | currency:"￥":2}}</span></div>
+                <div layout-padding>含税退货金额： <span>{{detail.originalReturnOrderAmountTax | currency:"￥":2}}</span></div>
+                <div layout-padding>销退日期： <span>{{detail.returnDate | date:'yyyy-MM-dd'}}</span></div>
+                <div layout-padding>退货抛转流水号： <span>{{detail.returnTransferNo}}</span></div>
+                <div layout-padding>抛转状态： <span>{{TRANSFER_PSO_FLAG[detail.transferReturnFlag].name}}</span></div>
+            </div>
+            <div flex align="right">
+                <div ng-if="menuDisplayOption['detail2Confirm'].display && (menuAuthDataMap[menuDisplayOption['detail2Confirm'].uuid] || isAdmin() || !menuDisplayOption['detail2Confirm'].uuid) && detail.confirm != '2'">
+                    <md-button class="md-fab md-mini" ng-click="confirmDetailClickAction($event, selectedItem, '2', detail)">
+                        <span>审核</span>
+                    </md-button>
+                </div>
+                <div ng-if="menuDisplayOption['detail2RevertConfirm'].display && (menuAuthDataMap[menuDisplayOption['detail2RevertConfirm'].uuid] || isAdmin() || !menuDisplayOption['detail2RevertConfirm'].uuid) && detail.confirm == '2'">
+                    <md-button class="md-fab md-mini md-primary" ng-click="confirmDetailClickAction($event, selectedItem, '1', detail)"
+                               ng-disabled="detail.transferReturnFlag == '1'">
+                        <span>取审</span>
+                    </md-button>
+                </div>
+                <div  ng-if="menuDisplayOption['detail2Transfer'].display && (menuAuthDataMap[menuDisplayOption['detail2Transfer'].uuid] || isAdmin() || !menuDisplayOption['detail2Transfer'].uuid)">
+                    <md-button class="md-fab md-mini" ng-disabled="detail.confirm != '2' || detail.transferReturnFlag == '1'"
+                               ng-click="transferDetailClickAction($event, selectedItem, detail)">
+                        <span>抛转</span>
+                    </md-button>
+                </div>
+                <div>
+                    <md-button class="md-fab md-mini md-primary" ng-click="toggleDetailMorePanelAction(detail)">
+                        <span>更多</span>
+                    </md-button>
+                </div>
+            </div>
+        </div>
+        <!--<div align="right">
+            <md-button class="md-button" aria-label="More" ng-click="toggleDetailMorePanelAction(detail)">
+                查看更多...
+            </md-button>
+            <md-button class="md-button" aria-label="More" ng-click="deleteDetailAction(detail)">
+                <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>删除
+            </md-button>
+            <md-button class="md-button" aria-label="More"
+                       ng-click="editItemAction(detail, 'PSO_ORDER_DTL', '订单: ' + selectedItem.no + ' / ' + '产品信息: ' + detail.no)">
+                <ng-md-icon icon="edit" size="20"></ng-md-icon>编辑
+            </md-button>
+        </div>-->
+        <div layout="row" layout-margin ng-show="detail.showMorePanel">
+            <div flex="5"></div>
+            <div flex="40">
+                <div layout-padding>品牌： <span>{{detail.salesOrderDetail.item.brand.no}}</span></div>
+                <div layout-padding>品牌名称： <span>{{detail.salesOrderDetail.item.brand.name}}</span></div>
+                <div layout-padding>品号： <span>{{detail.salesOrderDetail.item.no}}</span></div>
+                <div layout-padding>仓库： <span>{{detail.warehouse.name}}</span></div>
+                <div layout-padding>备注： <span>{{detail.remark}}</span></div>
+            </div>
+            <div flex="35">
+                <div layout-padding>预订单单号： <span>{{detail.psoSoMstNo}}</span></div>
+                <div layout-padding>预订单项次： <span>{{detail.psoSoDtlNo}}</span></div>
+                <div layout-padding>销售订单单号： <span>{{detail.psoOrderMstNo}}</span></div>
+                <div layout-padding>销售退货单项次： <span>{{detail.psoReturnOrderDtlNo}}</span></div>
+                <div layout-padding>生效状态： <span>{{STATUS[detail.status].name}}</span></div>
+            </div>
+        </div>
+        <md-divider></md-divider>
+    </div>
+    <!--<div flex="100" class="add-new" style="margin: 10px 0 0 0;" ng-click="preAddItemAction({}, '', '新增')">
+        <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
+    </div>-->
+</div>

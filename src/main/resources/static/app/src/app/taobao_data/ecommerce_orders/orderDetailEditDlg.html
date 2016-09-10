@@ -1,0 +1,62 @@
+<md-dialog style="padding:20px;max-width:900px;" class="prod">
+    <md-content>
+        <form name="addCustomForm" novalidate ng-if="!isChangingProduction">
+            <div flex layout="row" layout-align="start end">
+                <div flex flex-offset="80">
+                    <md-button class="md-raised md-accent" ng-click="showChangingProductionPanel()">修改商品</md-button>
+                </div>
+                <div flex layout="row">
+                    <md-button class="md-fab md-accent" ng-click="hideDlg()" ng-disabled="addCustomForm.$invalid">
+                        <i class="fa fa-check"></i>
+                    </md-button>
+                    <md-button class="md-fab md-warn" ng-click="cancelDlg()">
+                        <i class="fa fa-times"></i>
+                    </md-button>
+                </div>
+            </div>
+            <div flex layout="row">
+                <md-input-container flex="25">
+                    <label class="label">品号：</label>
+                    <input type="text" ng-model="selectedOrderDetail.item.no" disabled>
+                </md-input-container>
+                <md-input-container flex="25">
+                    <label class="label">品名：</label>
+                    <input type="text" ng-model="selectedOrderDetail.item.name" disabled>
+                </md-input-container>
+                <md-input-container flex="25">
+                    <label class="label">品牌：</label>
+                    <input type="text" ng-model="selectedOrderDetail.item.brand.name" disabled>
+                </md-input-container>
+                <md-input-container flex="25">
+                    <label class="label">标准价</label>
+                    <input type="text" ng-model="selectedOrderDetail.item.standardPrice" disabled>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container flex="25">
+                    <label class="label">数量：</label>
+                    <input type="text" ng-model="selectedOrderDetail.orderQuantity" required>
+                </md-input-container>
+                <md-input-container flex="25">
+                    <label class="label">单价：</label>
+                    <input type="text" ng-model="selectedOrderDetail.orderPrice" ng-disabled="disableOrderPrice">
+                </md-input-container>
+                <md-input-container flex="25">
+                    <label>销售类型：</label>
+                    <md-select ng-model="selectedOrderDetail.saleTypeUuid" class="select">
+                        <md-option ng-selected="saleType.uuid == selectedOrderDetail.saleType.uuid"
+                                   ng-repeat="saleType in saleTypes" value="{{saleType.uuid}}"
+                                   ng-click="setZero(saleType)">
+                            {{saleType.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+        </form>
+        <md-button ng-if="isChangingProduction" class="md-fab md-primary" ng-click="hideChangingProductionPanel()">
+            <i class="fa fa-times"></i>
+        </md-button>
+        <div ng-if="isChangingProduction" flex="50" production-List select-item-callback="selectBom(production)"
+             param="itemSearchParam" style="max-height: 500px; overflow-y: auto; overflow-x: hidden;"></div>
+    </md-content>
+</md-dialog>

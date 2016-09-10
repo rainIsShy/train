@@ -1,0 +1,93 @@
+<div layout="column">
+    <div flex layout="column" class="order-item-background"  ng-if="ecommerceChangeListMenu.showQueryBar">
+        <div  class="menu"  layout="row" layout-md="column" layout-sm="column">
+            <md-input-container >
+                <label >起始日期：</label>
+                <input type="date"  ng-model="ecommerceChangeListMenu.startDate" />
+            </md-input-container>
+            <md-input-container >
+                <label >截止日期：</label>
+                <input  type="date" ng-model="ecommerceChangeListMenu.endDate" />
+            </md-input-container>
+            <md-input-container flex="15">
+                <label >客户名称：</label>
+                <input  ng-model="ecommerceChangeListMenu.buyerNick" />
+            </md-input-container>
+            <md-input-container >
+                <label >销售单号：</label>
+                <input  ng-model="ecommerceChangeListMenu.orderId" />
+            </md-input-container>
+       </div>
+        <div class="menu"  layout="row" layout-md="column" layout-sm="column">
+            <div layout="row" layout-md="column" layout-sm="column" style="margin-left: 10px;">
+                <label class="label">订单类型：</label>
+                <md-select placeholder="" ng-model="ecommerceChangeListMenu.orderFlag" class="select">
+                    <md-option ng-repeat="(key, value) in ORDER_FLAG" ng-value="key">{{value.name}}</md-option>
+                </md-select>
+            </div>
+            <div layout="row" layout-md="column" layout-sm="column" style="margin-left: 10px;"  ng-if="false">
+                <label class="label">启用状态：</label>
+                <md-select placeholder="" ng-model="ecommerceChangeListMenu.status" class="select">
+                    <md-option ng-repeat="(key, value) in STATUS" ng-value="key">{{value.name}}</md-option>
+                </md-select>
+            </div>
+            <div layout="row" layout-md="column" layout-sm="column" style="margin-left: 10px;">
+                <label class="label">审核状态：</label>
+                <md-select placeholder="全部" ng-model="ecommerceChangeListMenu.confirm" class="select">
+                    <md-option ng-repeat="(key, value) in AUDIT" ng-value="key">{{value.name}}</md-option>
+                </md-select>
+            </div>
+            <!--<div layout="row" layout-md="column" layout-sm="column" style="margin-left: 10px;"  >-->
+                <!--<label class="label">抛转状态：</label>-->
+                <!--<md-select placeholder="全部" ng-model="ecommerceChangeListMenu.transferPsoFlag" class="select">-->
+                    <!--<md-option ng-repeat="(key, value) in TRANSFER_PSO_FLAG" ng-value="key">{{value.name}}</md-option>-->
+                <!--</md-select>-->
+            <!--</div>-->
+            <md-button class="md-raised"
+                       ng-if="ecommerceChangeListMenuDisplayOption['405-query'].display && (menuAuthDataMap[ecommerceChangeListMenuDisplayOption['405-query'].uuid] || isAdmin() || !ecommerceChangeListMenuDisplayOption['405-query'].uuid)"
+                       style="margin-top: 22px;height: 20px;"  ng-click="ecommerceChangeListMenuAction(405, $event)">&nbsp;{{ecommerceChangeListMenuDisplayOption['405-query'].name}}
+            </md-button>
+        </div>
+    </div>
+
+
+    <div flex style="padding: 20px 0px 0px 0px;"   layout="row" layout-md="column" layout-sm="column" layout-align="space-around left" >
+        <div flex="10" layout="row"  layout-md="column" layout-sm="column" >
+            <md-checkbox ng-model="ecommerceChangeListMenu.selectAll"   ng-change="ecommerceChangeListMenuAction(400, $event)"
+                         ng-if="ecommerceChangeListMenuDisplayOption['400-selectAll'].display && (menuAuthDataMap[ecommerceChangeListMenuDisplayOption['400-selectAll'].uuid] || isAdmin() || !ecommerceChangeListMenuDisplayOption['400-selectAll'].uuid)"
+                         aria-label="全选"  ng-true-value="true" ng-false-value="false"> &nbsp;{{ecommerceChangeListMenuDisplayOption['400-selectAll'].name}}</md-checkbox>
+        </div>
+        <div flex="25" layout="row"  layout-md="column" layout-sm="column" >
+            <md-switch ng-model="ecommerceChangeListMenu.effectiveType"  ng-change="ecommerceChangeListMenuAction(404, $event)"
+                       ng-if="false && ecommerceChangeListMenuDisplayOption['404-effective'].display && (menuAuthDataMap[ecommerceChangeListMenuDisplayOption['404-effective'].uuid] || isAdmin() || !ecommerceChangeListMenuDisplayOption['404-effective'].uuid)"
+                       aria-label="失效作废" ng-true-value="'1'" ng-false-value="'2'" ng-disabled="effectiveType_disabled == 1" >&nbsp;{{ecommerceChangeListMenuDisplayOption['404-effective'].name}}</md-switch>
+        </div>
+
+        <div flex layout="row" layout-md="column" layout-sm="column"  layout-align="end center">
+            <md-button ng-if="ecommerceChangeListMenuDisplayOption['401-audit'].display && (menuAuthDataMap[ecommerceChangeListMenuDisplayOption['401-audit'].uuid] || isAdmin() || !ecommerceChangeListMenuDisplayOption['401-audit'].uuid)"
+                       class="md-raised" ng-click="ecommerceChangeListMenuAction(401, $event)"
+                       style="margin-top: 0px;height: 20px;"  aria-label="审核" ng-disabled="audit_button_disabled == 1" > &nbsp;{{ecommerceChangeListMenuDisplayOption['401-audit'].name}}</md-button>
+        </div>
+        <!--<div flex="15" layout="row" layout-md="column" layout-sm="column"-->
+             <!--ng-if="ecommerceChangeListMenuDisplayOption['402-return'].display && (menuAuthDataMap[ecommerceChangeListMenuDisplayOption['402-return'].uuid] || isAdmin() || !ecommerceChangeListMenuDisplayOption['402-return'].uuid)">-->
+            <!--<md-button class="md-raised"ng-click="ecommerceChangeListMenuAction(402, $event)"-->
+                       <!--style="margin-top: 0px;height: 20px;"  aria-label="退回" ng-disabled="return_button_disabled == 1" > &nbsp;{{ecommerceChangeListMenuDisplayOption['402-return'].name}}</md-button>-->
+        <!--</div>-->
+        <!--<div flex="15" layout="row" layout-md="column" layout-sm="column"-->
+             <!--ng-if="ecommerceChangeListMenuDisplayOption['406-revertAudit'].display && (menuAuthDataMap[ecommerceChangeListMenuDisplayOption['406-revertAudit'].uuid] || isAdmin() || !ecommerceChangeListMenuDisplayOption['406-revertAudit'].uuid)">-->
+            <!--<md-button class="md-raised" ng-click="ecommerceChangeListMenuAction(406, $event)"-->
+                       <!--style="margin-top: 0px;height: 20px;"  aria-label="取消审核" ng-disabled="revert_audit_button_disabled == 1" > &nbsp;{{ecommerceChangeListMenuDisplayOption['406-revertAudit'].name}}</md-button>-->
+        <!--</div>-->
+
+        <!--<div flex layout="row" layout-md="column" layout-sm="column"-->
+             <!--ng-if="ecommerceChangeListMenuDisplayOption['403-throw'].display && (menuAuthDataMap[ecommerceChangeListMenuDisplayOption['403-throw'].uuid] || isAdmin() || !ecommerceChangeListMenuDisplayOption['403-throw'].uuid)">-->
+            <!--<md-button class="md-raised" ng-click="ecommerceChangeListMenuAction(403, $event)"-->
+                       <!--style="margin-top: 0px;height: 20px;"  aria-label="抛转预订单" ng-disabled="throw_button_disabled == 1"> &nbsp;{{ecommerceChangeListMenuDisplayOption['403-throw'].name}}</md-button>-->
+        <!--</div>-->
+
+    </div>
+</div>
+
+
+
+

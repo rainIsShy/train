@@ -1,0 +1,155 @@
+<div layout-fill class="right-container catalogue-template">
+    <md-content>
+        <md-tabs md-selected="$parent.selectedTabIndex" md-border-bottom md-dynamic-height md-center-tabs="false">
+            <md-tab md-on-select="listTabSelected()">
+                <md-tab-label>{{listTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <div list-menu list-filter-option="listFilterOption"
+                             status-Change-Action="listMenuFilterHandler()"
+                             confirm-Change-Action="listMenuFilterHandler()"
+                             release-Change-Action="listMenuFilterHandler()"></div>
+                        <md-divider style="margin: 10px 7px 20px 7px;"></md-divider>
+                        <div ng-include=" 'app/src/app/production/template_data/templateDataList.html' "></div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+            <md-tab md-on-select="formTabSelected()">
+                <md-tab-label>{{formTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content class="formList">
+                        <form name="mainForm" novalidate>
+                            <div form-menu></div>
+                            <div layout-margin layout-padding class="md-whiteframe-z1" ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                                <p style="color: red;">请从清单列表中选择一个模板。</p>
+                            </div>
+
+                            <div ng-if="selectedItem != null">
+                                <div layout="row" class="md-whiteframe-z1 template-item" layout-margin layout-padding
+                                     ng-click="selectedItem.open = !selectedItem.open">
+                                    <!--<div flex="15" layout="column" class="template_item_left">-->
+                                        <!--<div class="template-item-no" >{{selectedItem.no}}</div>-->
+                                        <!--<div class="template-item-name" >{{selectedItem.name}}</div>-->
+                                    <!--</div>-->
+
+                                    <!--<div layout="row" flex class="template-item-content" md-dynamic-height>-->
+                                        <!--<md-chips ng-model="selectedItem.details" readonly="true">-->
+                                            <!--<md-chip-template>-->
+                                                <!--{{$chip.no}}&nbsp;{{$chip.name}}-->
+                                            <!--</md-chip-template>-->
+                                        <!--</md-chips>-->
+                                    <!--</div>-->
+
+                                    <div layout="row" layout-wrap flex class="template-item-content">
+                                        <span class="chip" ng-repeat="node in selectedItem.details">
+                                            <span>{{node.no}}&nbsp;{{node.name}}</span>
+                                        </span>
+                                    </div>
+
+                                    <!--<div flex="10" layout="column" class="template_item_right">-->
+                                        <!--<span>模板状态：</span>-->
+                                        <!--<span>{{STATUS[selectedItem.status].name}}</span>-->
+                                        <!--<span>{{CONFIRM[selectedItem.confirm].name}}</span>-->
+                                        <!--<span>{{RELEASE[selectedItem.release].name}}</span>-->
+                                    <!--</div>-->
+
+                                    <!--<div flex="10" layout="column" class="template_item_right">-->
+                                        <!--<span>模板数据状态：</span>-->
+                                        <!--<span>{{STATUS[selectedItem.dataStatus].name}}</span>-->
+                                        <!--<span>{{CONFIRM[selectedItem.dataConfirm].name}}</span>-->
+                                        <!--<span>{{RELEASE[selectedItem.dataRelease].name}}</span>-->
+                                    <!--</div>-->
+                                </div>
+                                <div layout="column" ng-show="selectedItem.open" layout-margin layout-padding style="background-color: rgba(245, 245, 245, 0.26);margin-top: 0px;padding: 18px">
+                                    <table class="template-data">
+                                        <tr>
+                                            <th ng-repeat="node in selectedItem.details">
+                                                <span class="title">{{node.no}}&nbsp;{{node.name}}</span>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td ng-repeat="node in selectedItem.details">
+                                                <div class="item" ng-repeat="item in selectedTemplateData[selectedItem.uuid][node.index]"
+                                                     ng-click="nodeDataClickHandler(selectedItem, selectedItem.details[$parent.$index], selectedTemplateData[selectedItem.uuid][$parent.$index], item)"
+                                                     ng-class="item.selected ? 'selected-item':''">
+                                                    <span>{{item.name}}</span>
+                                                    <span ng-click="deleteNodeData($event, selectedTemplateData[selectedItem.uuid][$parent.$index], $index, item, node)" style="width: 20px;float: right;padding: 0px 5px 0px 5px;color:grey;" ng-show="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY">
+                                                        <i class="fa fa-times"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="item plus" ng-click="addNodeData(selectedItem, selectedItem.details[$index])"
+                                                     ng-show="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY && (selectedTemplateNode.index >= node.index-1 || node.index == 0)">
+                                                    <i class="fa fa-plus"></i>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <div id="templateNodeContainer" class="editor-container" ng-if="selectedTemplateNodeData">
+                                        <md-input-container>
+                                            <label>模板编号</label>
+                                            <input type="text" ng-model="selectedItem.no" required md-maxlength="20" disabled>
+                                        </md-input-container>
+
+                                        <md-input-container>
+                                            <label>模板名称</label>
+                                            <input type="text" ng-model="selectedItem.name" required md-maxlength="20" disabled>
+                                        </md-input-container>
+
+                                        <md-input-container>
+                                            <label>模板节点编号</label>
+                                            <input type="text" ng-model="selectedTemplateNode.no" required md-maxlength="20" disabled>
+                                        </md-input-container>
+
+                                        <md-input-container>
+                                            <label>模板节点名称</label>
+                                            <input type="text" ng-model="selectedTemplateNode.name" required md-maxlength="20" disabled>
+                                        </md-input-container>
+
+                                        <md-input-container>
+                                            <label>模板节点数据编号</label>
+                                            <input type="text" ng-model="selectedTemplateNodeData.no" required md-maxlength="20" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+
+                                        <md-input-container>
+                                            <label>模板节点数据名称</label>
+                                            <input type="text" ng-model="selectedTemplateNodeData.name" required md-maxlength="20" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+
+                                        <md-input-container ng-show="selectedTemplateNode.index > 0">
+                                            <label>上层目录模板节点</label>
+                                            <input type="text" ng-model="selectedTemplateNode.parentName" value="{{selectedTemplateNode.parentName = (selectedTemplateNode.index > 0 ? selectedItem.details[selectedTemplateNode.index - 1].no + '  ' + selectedItem.details[selectedTemplateNode.index - 1].name : '')}}" disabled>
+                                        </md-input-container>
+
+                                        <md-switch ng-model="selectedTemplateNode.defaultFlag" ng-true-value="'Y'" ng-false-value="'N'" aria-label="默认APP目录" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                            默认APP目录
+                                        </md-switch>
+
+                                        <md-switch ng-model="selectedItem.dataStatus" ng-true-value="'1'" ng-false-value="'2'" aria-label="失效作废" ng-change="modifyFromPanelHandler()">
+                                            失效作废
+                                        </md-switch>
+
+                                        <md-switch ng-model="selectedItem.dataConfirm" ng-true-value="'2'" ng-false-value="'1'" aria-label="审核状态" ng-change="modifyFromPanelHandler()">
+                                            审核状态
+                                        </md-switch>
+
+                                        <md-switch ng-model="selectedItem.dataRelease" ng-true-value="'2'" ng-false-value="'1'" aria-label="发布状态" ng-change="modifyFromPanelHandler()">
+                                            发布状态
+                                        </md-switch>
+                                        <div ng-if="selectedTemplateNodeData.path">
+                                            <img class="catalogue-img" ng-src="{{getImageFullPath(selectedTemplateNodeData.path)}}"/>
+                                        </div>
+                                        <div ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                            <md-button class="md-raised" ngf-select ngf-change="uploadImage($files)" ngf-multiple="multiple">选择上传图片</md-button>
+                                            <md-progress-linear class="md-accent" md-mode="determinate" value="{{progress.value}}"></md-progress-linear>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

@@ -1,0 +1,51 @@
+<md-dialog style="padding: 30px;min-width: 1000px;max-height: 800px;">
+    <md-content layout="column">
+        <div>
+            <form name="searchOrder" novalidate="">
+                <div layout="row" layout-align="start center">
+                    <md-input-container flex="20">
+                        <label>启用状态</label>
+                        <md-select ng-model="orderStatus">
+                            <md-option ng-repeat="(key, value) in STATUS" ng-value="key">{{value.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex="20">
+                        <label>审核状态</label>
+                        <md-select ng-model="orderConfirm">
+                            <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex="20">
+                        <label>抛转状态</label>
+                        <md-select ng-model="orderTransferPsoFlag">
+                            <md-option ng-repeat="(key, value) in TRANSFER_PSO_FLAG" ng-value="key">{{value.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex="20">
+                        <label>销售单号</label>
+                        <input ng-model="orderNo">
+                    </md-input-container>
+                    <md-button ng-click="refreshOrderList()" ng-disabled="searchEmployee.$invalid"
+                               class="md-icon-button">
+                        <i class="fa fa-search"></i>
+                    </md-button>
+                    <md-button ng-click="cancelDlg()" class="md-icon-button">
+                        <i class="fa fa-times"></i>
+                    </md-button>
+                </div>
+                <md-list-item class="md-2-line" ng-repeat="order in orderList | orderBy:'no'"
+                              ng-click="selectOrder(order)">
+                    <div class="md-list-item-text">
+                        <h3>{{order.no}}&nbsp;|&nbsp;
+                            {{order.customer.name}}&nbsp;|&nbsp;
+                            {{order.channel.name}}
+                        </h3>
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
+            </form>
+            <div pagination option="pageOption" callback="refreshOrderList()"></div>
+        </div>
+    </md-content>
+</md-dialog>

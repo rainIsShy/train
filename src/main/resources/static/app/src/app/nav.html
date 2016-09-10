@@ -1,0 +1,50 @@
+<md-sidenav md-component-id="leftMenu" class="md-sidenav-left" md-is-locked-open="lockMenuFlag">
+    <div>
+        <div class="banner-1" ng-show="lockMenuFlag">
+            <span class="banner-1__title">I ONE 全渠道管理系统</span>
+        </div>
+        <div class="banner-3">
+            <div layout="row" layout-align="center center" class="user-info-panel" layout-padding>
+                <div flex="25">
+                    <md-button class="md-icon-button md-primary">
+                        <i class="fa fa-user-secret avatar"></i>
+                    </md-button>
+                </div>
+                <div flex layout-padding class="md-subhead" layout="row">
+                    <div class="text" style=" padding: 15px 15px 15px 0px;"  layout-align="start left">
+                        <span ng-click="changeCurrentUserPw()" > <i class="fa fa-key"></i></span>
+                    </div>
+                    <div class="text" layout="column" layout-align="start left">
+                        <span flex class="partial-text" title="{{displayName}}({{USER_TYPE[displayType].name}})">用户：{{displayName}}({{USER_TYPE[displayType].name}})</span>
+                        <span flex>编号：{{currentUser}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <md-list style="padding-top: 0px;">
+            <md-divider ></md-divider>
+            <md-list-item class="md-no-sticky menu-title" ng-click="">
+                <i class="fa fa-home" style="font-size: 24px;"></i>
+                <span>&nbsp;&nbsp;首页</span>
+                <span style="position: absolute; right: 0px;" hide-sm>
+                    <md-button class="md-icon-button" aria-label="More" ng-click="lockMenu(false)">
+                        <ng-md-icon icon="chevron_left"></ng-md-icon>
+                    </md-button>
+                </span>
+            </md-list-item>
+            <div ng-repeat="menu in menuList" ng-if="isAdmin() || resDataMap[menu.uuid]">
+                <md-divider ></md-divider>
+                <md-list-item class="md-no-sticky menu-title" ng-click="menu.isOpen = !menu.isOpen;">
+                    <i ng-class="menu.icon"></i><span>&nbsp;&nbsp;{{menu.name}}</span>
+                    <span flex></span>
+                    <i class="fa fa-angle-up" ng-show="menu.isOpen"></i>
+                    <i class="fa fa-angle-down" ng-show="!menu.isOpen"></i>
+                </md-list-item>
+                <md-list-item ng-repeat="subMenu in menu.subList" class="sub-menu" ng-show="menu.isOpen" ng-click="menuAction(menu, subMenu)"  ng-if="isAdmin() || resDataMap[subMenu.uuid]">
+                    <div layout-fill class="sub-menu-item" ng-class="selectedMenuId == subMenu.id ? 'selected' : ''">{{subMenu.name}}<span class="suffix">&nbsp;&nbsp;{{subMenu.suffix}}</span></div>
+                </md-list-item>
+            </div>
+        </md-list>
+    </div>
+</md-sidenav>

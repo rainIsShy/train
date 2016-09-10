@@ -1,0 +1,84 @@
+<div layout="row">
+    <div flex layout="row">
+        <div flex="5"></div>
+        <div flex layout="row">
+            <div flex="35">
+                已选中单据数：&nbsp;{{ selectedItemsCount }}
+            </div>
+            <div flex="35">
+                汇总金额：&nbsp;{{ selectedItemsTotalPrice|currency:'￥'}}
+            </div>
+        </div>
+    </div>
+</div>
+<div flex ng-repeat="orderMaster in OrderMasterList.content"
+     layout="row" layout-margin>
+    <div flex layout="row">
+        <div flex="5">
+            <md-checkbox ng-checked="exists(orderMaster, selected)" ng-click="toggle(orderMaster, selected)"
+                         aria-label="checkbox">
+            </md-checkbox>
+        </div>
+        <div flex="95" layout="column" layout-padding class="md-whiteframe-z1 order-item-background">
+            <div layout="row">
+                <div flex="15">平台：&nbsp;{{orderMaster.channel.mall.name}}</div>
+                <div flex="30">品牌店：&nbsp;{{orderMaster.channel.name}}</div>
+                <div flex="30">交易订单号：&nbsp;{{orderMaster.no}}</div>
+                <div flex>成交日期：&nbsp;{{orderMaster.orderDate| date:'yyyy-MM-dd'}}</div>
+            </div>
+            <md-divider style="margin: 10px 5px 10px 5px;"></md-divider>
+            <div flex layout="row">
+                <div flex="70" layout="column">
+                    <div flex layout="row" ng-repeat="detail in orderMaster.detailList">
+                        <div flex="15">
+                            <img class="img" src="{{getImageFullPath(detail.item.path)}}">
+                        </div>
+                        <div flex="50" style="margin: 0px 20px 0px 10px;">
+                            <div flex="25">电商编码：&nbsp;{{detail.item.no}}</div>
+                            <div flex="25">商品名称：&nbsp;{{detail.item.name}}</div>
+                            <div flex="25">型号：&nbsp;{{detail.item.standard}}</div>
+                        </div>
+                        <div flex>
+                            <div flex>单价：&nbsp;{{detail.orderPrice|currency:'￥'}}</div>
+                            <div flex>数量：&nbsp;{{detail.orderQuantity}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="verticalLine" layout-margin></div>
+                <div flex>
+                    <div>订单类型：&nbsp;{{ORDER_FLAG[orderMaster.orderFlag].name}}</div>
+                    <div>客服人员：&nbsp;{{orderMaster.groupUser.name}}</div>
+                    <div>客户昵称：&nbsp;{{orderMaster.buyerNick}}</div>
+                    <div>合计金额：&nbsp;{{orderMaster.orderAmount|currency:'￥'}}</div>
+                    <div>审核状态：&nbsp;{{CONFIRM[orderMaster.confirm].name}}</div>
+                    <div>抛转状态：&nbsp;{{TRANSFER_PSO_FLAG[orderMaster.transferPsoFlag].name}}</div>
+                    <div>合计金额：&nbsp;{{orderMaster.orderAmount|currency:'￥'}}</div>
+                    <div>组装费用：&nbsp;{{orderMaster.assembleAmount|currency:'￥'}}</div>
+                    <div>单身变更：&nbsp;{{ORDER_CHANGE_FLAG[orderMaster.orderChangeFlag].name}}</div>
+                </div>
+            </div>
+
+            <md-divider style="margin: 10px 5px 10px 5px;"></md-divider>
+            <div layout="row">
+                <div flex="55">送货地址：&nbsp;
+                    {{orderMaster.receiveAddress}}
+                </div>
+                <div class="verticalLine" style="margin: 0px 5px 0px 5px;"></div>
+                <div flex="15">收货人：&nbsp;{{orderMaster.receiveName}}</div>
+                <div class="verticalLine" style="margin: 0px 5px 0px 5px;"></div>
+                <div flex>联系电话：&nbsp;{{orderMaster.receivePhone}}</div>
+            </div>
+            <md-divider style="margin: 10px 5px 10px 5px;"></md-divider>
+            <div layout="row">
+                <div flex>备注：{{orderMaster.remark}}</div>
+                <div flex="20" align="right">
+                    <md-button class="md-raised"
+                               ng-click="editItem(orderMaster)">&nbsp;查看详情
+                    </md-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div pagination option="pageOption" callback="queryMenuActionWithPaging()"></div>

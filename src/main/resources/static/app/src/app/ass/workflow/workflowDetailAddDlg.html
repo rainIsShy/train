@@ -1,0 +1,126 @@
+<md-dialog style="padding:20px;max-width: 900px;" class="prod">
+    <md-content>
+        <form flex name="addCustomForm" novalidate ng-if="!isShowTranSrcPanel">
+            <div>
+                <label class="label">组织结构来源：{{WORKFLOW_TRANSFER_SOURCE[addTransferSource].name}}</label>
+
+            </div>
+            <div flex layout="row" layout-align="start end">
+                <div flex flex-offset="80">
+                    <md-button class="md-raised md-accent" ng-click="openTranSrcDlg()">选择群组/渠道/人员</md-button>
+                </div>
+                <div flex layout="row">
+                    <md-button class="md-fab md-accent" ng-click="hideDlg()" ng-disabled="addCustomForm.$invalid">
+                        <i class="fa fa-check"></i>
+                    </md-button>
+                    <md-button class="md-fab md-warn" ng-click="cancelDlg()">
+                        <i class="fa fa-times"></i>
+                    </md-button>
+                </div>
+            </div>
+            <div flex layout="row">
+                <md-input-container flex="33">
+                    <label class="label">流程序号：</label>
+                    <input type="text" ng-model="addWorflowDetail.flwoNo" required>
+                </md-input-container>
+                <md-input-container flex="33">
+                    <label class="label">流程关名字：</label>
+                    <input type="text" ng-model="addWorflowDetail.flowName" required>
+                </md-input-container>
+                <md-input-container flex="33">
+                    <label class="label">流转群组/渠道/人员：</label>
+                    <input type="text" ng-model="addWorflowDetail.transferDataName" required>
+                </md-input-container>
+
+            </div>
+            <div flex layout="row">
+                <md-input-container flex="50">
+                    <label class="label">流程類型：</label>
+                    <md-select placeholder="" ng-model="addWorflowDetail.transferType" class="select" required>
+                        <md-option ng-repeat="(key, value) in WORKFLOW_TRANSFER_TYPE" ng-value="key">
+                            {{value.name}}
+                        </md-option>
+                    </md-select>
+
+                </md-input-container>
+
+                <md-input-container flex="50">
+                    <label>流转角色：</label>
+                    <md-select ng-model="addWorflowDetail.transferRole" class="select">
+                        <md-option value="">请选择</md-option>
+                        <md-option ng-repeat="role in roleList" value="{{role.uuid}}">
+                            {{role.name}}
+                        </md-option>
+                    </md-select>
+
+                </md-input-container>
+            </div>
+            <div flex layout="row">
+                <md-input-container flex="100">
+                    <label class="label">流转逻辑：</label>
+                    <input type="text" ng-model="addWorflowDetail.transferCondition">
+                </md-input-container>
+
+            </div>
+        </form>
+        <div></div>
+
+        <div ng-if="isShowTranSrcPanel"
+             style="width:400px;max-height: 500px; overflow-y: auto; overflow-x: hidden;width: auto;">
+            <div>
+                <form name="search" novalidate="">
+                    <md-button class="md-fab md-primary" ng-click="hideTranSrcPanel()">
+                        <i class="fa fa-times"></i>
+                    </md-button>
+                    <div ng-if="addWorflowDetail.transferSource == '1'">
+                        <table md-data-table md-row-select="selected">
+                            <thead>
+                            <tr>
+                                <th style="width:auto;"><span class="md-subhead">群组</span></th>
+                                <th style="width:auto;"><span class="md-subhead">职能</span></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="data in groupFunctionDataList" ng-click="selectSourceItem(data)">
+
+                                <td style="width:auto;"><span class="table-item">{{data.group.name}}</span></td>
+                                <td style="width:auto;"><span class="table-item">{{data.function.name}}</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div ng-if="addWorflowDetail.transferSource == '2'">
+                        <table md-data-table md-row-select="selected">
+                            <thead>
+                            <tr>
+                                <th><span class="md-subhead">渠道类型</span></th>
+                                <th><span class="md-subhead">渠道编号</span></th>
+                                <th><span class="md-subhead">渠道名称</span></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="data in chanDataList" ng-click="selectSourceItem(data)">
+                                <td><span class="table-item">{{WORKFLOW_CHANNEL_FLAG[data.channelFlag].name}}</span>
+                                </td>
+                                <td><span class="table-item">{{data.no}}</span></td>
+                                <td><span class="table-item">{{data.name}}</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div pagination option="chanPageOption" callback="refreshChanList()"></div>
+                    </div>
+                    <div flex="100" ng-if="addWorflowDetail.transferSource == '3'">
+                        <md-list-item class="md-2-line" ng-repeat="data in empDataList" ng-click="select(data)">
+                            <div class="md-list-item-text" ng-click="selectSourceItem(data)">
+                                <h3> {{data.no}}&nbsp;|&nbsp;{{ data.name }} </h3>
+                            </div>
+                            <md-divider></md-divider>
+                        </md-list-item>
+                        <div pagination option="empPageOption" flex="100" callback="refreshEmpList()"></div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </md-content>
+</md-dialog>

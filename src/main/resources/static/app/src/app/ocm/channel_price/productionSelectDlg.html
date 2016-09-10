@@ -1,0 +1,28 @@
+<md-dialog style="padding: 30px;min-width: 400px;" class="prod">
+    <md-content>
+        <div layout="row">
+            <div flex>
+                <div ng-repeat="template in catalogueTemplates.content" layout="column"
+                     ng-if="template.display && selectedTemplateData[template.uuid][0].length > 0" ng-click="editItem($event, template)">
+                    <div layout="row" class="md-whiteframe-z1 template-item" layout-margin layout-padding class="template-item">
+                        <div layout="row" layout-wrap flex class="template-item-content">
+                            <md-select ng-model="selectedTemplateNodeDataUuid" ng-repeat="detail in template.details" style="margin: 0px;" ng-disabled="isRefreshing"
+                                       placeholder="{{selectedTemplateNodeDataUI[template.uuid][$index]}}" ng-change="nodeDataChangeHandler(template, detail, selectedTemplateData[template.uuid][$index], selectedTemplateNodeDataUuid)"
+                                       ng-click="nodeDataClickHandler($event)">
+                                <md-select-label class="circle-select">{{selectedTemplateNodeDataUI[template.uuid][$index]}}</md-select-label>
+                                <md-option ng-repeat="nodeData in selectedTemplateData[template.uuid][$parent.$index]" ng-value="nodeData.uuid">{{nodeData.name}}</md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                </div>
+                <div pagination option="pageOption" callback="refreshAllTemplate()"></div>
+            </div>
+        </div>
+        <div layout="row">
+            <md-button ng-click="hideDlg()" ng-disabled="addCustomForm.$invalid">
+                <i class="fa fa-check"></i>&nbsp;确定
+            </md-button>
+            <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+        </div>
+    </md-content>
+</md-dialog>

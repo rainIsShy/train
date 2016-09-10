@@ -1,0 +1,123 @@
+<div layout-fill class="right-container auth">
+    <md-content>
+        <md-tabs md-selected="$parent.selectedTabIndex" md-border-bottom md-dynamic-height md-center-tabs="false">
+            <md-tab md-on-select="listTabSelected()">
+                <md-tab-label>{{listTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <div layout="row" layout-sm="column">
+                            <div list-menu flex="50"></div>
+                            <div flex="50" class="menu-right" layout="row" layout-align="end center">
+                                <md-input-container>
+                                    <label>编号或者名称</label>
+                                    <input type="text" ng-model="searchKeyword">
+                                </md-input-container>
+                                <md-button style="margin-top: 22px;height: 20px;" class="md-raised" ng-click="refreshAllEntities()">搜索</md-button>
+                                <md-button style="margin-top: 22px;height: 20px;" class="md-raised" ng-click="preAddMenuAction()">新建</md-button>
+                            </div>
+                        </div>
+
+                        <md-divider style="margin-bottom:5px;"></md-divider>
+                        <md-data-table-toolbar>
+                            <h2 class="md-title">规则列表</h2>
+                        </md-data-table-toolbar>
+                        <md-data-table-container>
+                            <table md-data-table md-row-select="selected" md-progress="deferred">
+                                <thead>
+                                <tr>
+                                    <th><span class="md-subhead">编号</span></th>
+                                    <th><span class="md-subhead">名称</span></th>
+                                    <th><span class="md-subhead">是否有效</span></th>
+                                    <th><span class="md-subhead">源适配器</span></th>
+                                    <th><span class="md-subhead">目标适配器</span></th>
+                                    <th><span class="md-subhead" style="padding-left: 8px;">操作</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="rule in allEntities.content" ng-class="selectedItem.uuid == rule.uuid ? 'highlight' : ''">
+                                    <td><span class="md-body-1">{{rule.no}}</span></td>
+                                    <td><span class="md-body-1">{{rule.name}}</span></td>
+                                    <td><span class="md-body-1">{{rule.status == '1' ? '是' : '否'}}</span></td>
+                                    <td><span class="md-body-1">{{rule.srcAdaptor}}</span></td>
+                                    <td><span class="md-body-1">{{rule.destAdaptor}}</span></td>
+                                    <td>
+                                        <md-button class="md-raised" ng-click="editItem(group)">编辑</md-button>
+                                    </td>
+                                    <td class="list-detail">
+                                        <div></div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </md-data-table-container>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+            <md-tab md-on-select="formTabSelected()">
+                <md-tab-label>{{formTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content layout-margin>
+                        <form name="mainForm" novalidate>
+                            <div form-menu></div>
+
+                            <div layout-margin layout-padding class="md-whiteframe-z1" ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                                <p style="color: red;">请从清单列表中选择一个规则。</p>
+                            </div>
+
+                            <div class="panel" ng-if="selectedItem">
+                                <div class="header">
+                                    <span>基本信息</span>
+                                </div>
+                                <div layout="row" layout-wrap>
+                                    <div flex="25" flex-sm="100">
+                                        <md-input-container>
+                                            <label>编号:</label>
+                                            <input type="text" required ng-model="selectedItem.no" ng-disabled="!isEditing">
+                                        </md-input-container>
+                                    </div>
+                                    <div flex="25" flex-sm="100">
+                                        <md-input-container>
+                                            <label>名称:</label>
+                                            <input type="text" required ng-model="selectedItem.name" ng-disabled="!isEditing">
+                                        </md-input-container>
+                                    </div>
+                                    <div flex="25" flex-sm="100">
+                                        <md-input-container>
+                                            <label>生效</label>
+                                            <md-select required ng-model="selectedItem.status" ng-disabled="!isEditing">
+                                                <md-option ng-value="1">是</md-option>
+                                                <md-option ng-value="2">否</md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel" ng-if="selectedItem">
+                                <div class="header">
+                                    <span>规则配置</span>
+                                </div>
+                                <div layout="row" layout-wrap>
+                                    <div flex="25" flex-sm="100">
+                                        <md-input-container>
+                                            <label>源适配器</label>
+                                            <md-select required ng-model="selectedItem.srcAdaptor" ng-disabled="!isEditing" ng-change="loadSrcObject()">
+                                                <md-option ng-repeat="adaptor in adaptorList" ng-value="adaptor.value">{{adaptor.name}}</md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <label>源主对象</label>
+                                            <md-select required ng-model="selectedItem.rule.tables.src[0].name" ng-disabled="!isEditing">
+                                                <md-option ng-repeat="srcObject in srcObjectList" ng-value="srcObject.value">{{srcObject.name}}&nbsp;|&nbsp;{{srcObject.value}}</md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

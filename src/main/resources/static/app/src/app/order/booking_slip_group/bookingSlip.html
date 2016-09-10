@@ -1,0 +1,122 @@
+<div layout-fill class="right-container sales-slip" >
+    <md-content>
+        <md-tabs md-selected="$parent.selectedTabIndex" md-border-bottom md-dynamic-height md-center-tabs="false">
+            <md-tab  md-on-select="listTabSelected()">
+                <md-tab-label>{{listTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <div order-list-menu></div>
+                        <md-divider style="margin: 0px 0px 20px 7px;"></md-divider>
+                        <div ng-include=" 'app/src/app/order/booking_slip_group/bookingSlipList.html' "></div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+            <md-tab md-on-select="formTabSelected()">
+                <md-tab-label>{{formTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <form name="mainForm" novalidate>
+                            <div ng-if="selectedItem != null" form-menu></div>
+                            <div ng-if="selectedItem != null" order-list-menu></div>
+                            <div layout-margin layout-padding class="md-whiteframe-z1" ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                                <p style="color: red;">请从清单列表中选择一个商品。</p>
+                            </div>
+
+                            <div class="md-whiteframe-z1"  ng-if="selectedItem != null">
+                                <div layout="row" >
+                                    <div flex="40"  layout-padding layout="column" style="padding-top: 16px;">
+                                        <md-input-container layout="row">
+                                            <label class="label">经销商；</label>
+                                            <input type="text" ng-model="selectedItem.name" required md-maxlength="20"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                        <md-input-container layout="row">
+                                            <label class="label">预定订单单号：</label>
+                                            <input type="text" ng-model="selectedItem.no" required md-maxlength="20"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                        <md-input-container layout="row">
+                                            <label class="label">开单日期：</label>
+                                            <input type="text" ng-model="selectedItem.standard" required
+                                                   md-maxlength="20"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                        <md-input-container layout="row">
+                                            <label class="label">币种：</label>
+                                            <input type="text" ng-model="selectedItem.color" required md-maxlength="20"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                        <md-input-container layout="row">
+                                            <label class="label">税率：</label>
+                                            <input type="text" ng-model="selectedItem.standard" required
+                                                   md-maxlength="20"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                        <md-input-container layout="row">
+                                        <label class="label">备注：</label>
+                                        <input type="text" ng-model="selectedItem.color" required md-maxlength="20"
+                                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        </md-input-container>
+                                    </div>
+                                    <div flex="30" layout="column" layout-padding>
+                                         <md-input-container layout="row">
+                                             <label class="label">合计金额：</label>
+                                             <input type="text" ng-model="selectedItem.color" required md-maxlength="20" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                         </md-input-container>
+                                         <md-input-container layout="row">
+                                             <label class="label">折扣金额：</label>
+                                             <input type="text" ng-model="selectedItem.color" required md-maxlength="20" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                         </md-input-container>
+                                         <md-input-container layout="row">
+                                             <label class="label">折后金额：</label>
+                                             <input type="text" ng-model="selectedItem.color" required md-maxlength="20" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                         </md-input-container>
+                                         <md-input-container layout="row">
+                                             <label class="label">折扣率：</label>
+                                             <input type="text" ng-model="selectedItem.color" required md-maxlength="20" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                         </md-input-container>
+                                         <md-input-container layout="row">
+                                             <label class="label">审核状态：</label>
+                                             <input type="text" ng-model="selectedItem.color" required
+                                                    md-maxlength="20"
+                                                    ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                         </md-input-container>
+                                      </div>
+                                    <div flex="30" layout="column" layout-padding>
+                                        <div layout="row">
+                                            <label class="label">抛转订单否：</label>
+                                            <md-checkbox ng-model=true required ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
+                                                         aria-label="抛转订单否"  ng-true-value="true" ng-false-value="false" > </md-checkbox>
+                                        </div>
+                                         <md-input-container layout="row">
+                                             <label class="label">抛转流水号：</label>
+                                             <input type="number" ng-model="selectedItem.marketPrice" required ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                         </md-input-container>
+                                         <md-input-container layout="row">
+                                             <label class="label">抛转日期：</label>
+                                             <input type="number" ng-model="selectedItem.marketPrice" required ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                         </md-input-container>
+                                    </div>
+                                </div>
+                                <div layout="row">
+                                    <md-content flex >
+                                        <md-tabs md-border-bottom md-dynamic-height md-center-tabs="false">
+                                            <md-tab label="产品信息" md-on-select="prodInfoTabSelected()">
+                                                <div ng-include=" 'app/src/app/order/booking_slip_group/productInfo.html' "></div>
+                                            </md-tab>
+
+                                            <md-tab label="出货" md-on-select="deliverInfoTabSelected()">
+                                                <div ng-include=" 'app/src/app/order/booking_slip_group/deliverInfo.html' "></div>
+                                            </md-tab>
+                                        </md-tabs>
+                                    </md-content>
+                                </div>
+                            </div>
+
+                        </form>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

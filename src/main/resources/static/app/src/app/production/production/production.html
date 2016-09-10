@@ -1,0 +1,193 @@
+<style>
+    .flexslider {
+        width:200px;
+        margin: 0 auto;
+    }
+</style>
+
+<div layout-fill class="right-container prod" >
+    <md-content>
+        <md-tabs md-selected="$parent.selectedTabIndex" md-border-bottom md-dynamic-height md-center-tabs="false">
+            <md-tab md-on-select="listTabSelected()">
+                <md-tab-label>{{listTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <div list-menu></div>
+                        <md-divider style="margin-bottom:5px;"></md-divider>
+                        <div ng-include=" 'app/src/app/production/production/productionList.html' "></div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+            <md-tab md-on-select="formTabSelected()">
+                <md-tab-label>{{formTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content class="formList prod-item detail-view">
+                        <form name="mainForm" novalidate>
+                            <div form-menu></div>
+                            <div layout-margin layout-padding class="md-whiteframe-z1" ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                                <p style="color: red;">请从清单列表中选择一个商品。</p>
+                            </div>
+
+                            <div class="md-whiteframe-z1 column" layout-margin layout-padding  ng-if="selectedItem != null">
+                                <div layout="row">
+                                    <div flex="50">
+                                        <md-button class="md-raised" ng-if="selectedItemPics && selectedItemPics.length > 0" ng-click="deleteItemImage()" ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">删除</md-button>
+                                        <md-button class="md-raised" ngf-select ngf-change="uploadImage($files, 0)" ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">选择上传图片(大图)</md-button>
+                                        <md-button class="md-raised" ngf-select ngf-change="uploadImage($files, 1)" ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">选择上传图片(小图)</md-button>
+                                        <md-progress-linear class="md-accent" md-mode="determinate" value="{{progress.value}}" ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"></md-progress-linear>
+                                        <div image-slider photos="selectedItemPics" index="currentSmallImageIndex" style="padding-top: 16px; height: 350px;"></div>
+                                    </div>
+                                    <div flex="50">
+                                        <div layout="row" layout-padding>
+                                            <div flex="50">
+                                                <md-input-container>
+                                                    <label>商品名称:</label>
+                                                    <input type="text" ng-model="selectedItem.name" required md-maxlength="100" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label>商品编号:</label>
+                                                    <input type="text" ng-model="selectedItem.no" required md-maxlength="100" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label>商品规格:</label>
+                                                    <input type="text" ng-model="selectedItem.standard" md-maxlength="256" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label>包装单位:</label>
+                                                    <input type="text" ng-model="selectedItem.packingUnit"
+                                                           md-maxlength="256"
+                                                           ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label>颜色:</label>
+                                                    <input type="text" ng-model="selectedItem.color" md-maxlength="128" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                </md-input-container>
+                                                <!--<md-button class="md-raised" ngf-select ngf-change="uploadColorImage($files)" ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">上传颜色图片</md-button>-->
+                                                <span layout="column" class="select-input">
+                                                    <label>商品品牌:</label>
+                                                    <md-select placeholder="" required ng-model="selectedItem.brandUuid" class="select" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                        <md-option ng-selected="brand.uuid == selectedItem.brand.uuid" ng-repeat="brand in productionBrands.content" ng-value="brand.uuid" ng-hide="key == 0">{{brand.name}}</md-option>
+                                                    </md-select>
+                                                </span>
+                                                <span layout="column" class="select-input">
+                                                    <label>商品类型:</label>
+                                                    <!--<input type="text" ng-model="selectedItem.type" required md-maxlength="20" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">-->
+                                                    <md-select placeholder="" required ng-model="selectedItem.type" class="select" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                        <md-option ng-repeat="(key, value) in PROD_TYPE" ng-value="key" ng-hide="key == 0">{{value.name}}</md-option>
+                                                    </md-select>
+                                                </span>
+                                                <div>
+                                                    <md-switch ng-model="selectedItem.status" ng-true-value="'1'" ng-false-value="'2'" aria-label="失效作废" ng-change="modifyMenuAction()" ng-disabled='ui_status == UI_STATUS.EDIT_UI_STATUS_ADD'">
+                                                        失效作废
+                                                    </md-switch>
+                                                </div>
+                                                <div>
+                                                    <md-switch ng-model="selectedItem.confirm" ng-true-value="'2'" ng-false-value="'1'" aria-label="审核状态" ng-change="modifyMenuAction()" ng-disabled='ui_status == UI_STATUS.EDIT_UI_STATUS_ADD'>
+                                                        审核状态
+                                                    </md-switch>
+                                                </div>
+                                                <div>
+                                                    <md-switch ng-model="selectedItem.release" ng-true-value="'2'" ng-false-value="'1'" aria-label="发布状态" ng-change="modifyMenuAction()" ng-disabled='ui_status == UI_STATUS.EDIT_UI_STATUS_ADD'>
+                                                        发布状态
+                                                    </md-switch>
+                                                </div>
+                                            </div>
+                                            <div flex="50">
+                                                <md-input-container>
+                                                    <label>商品单价:</label>
+                                                    <input type="number" ng-model="selectedItem.marketPrice" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                </md-input-container>
+
+                                                <md-input-container ng-if="selectedItem.type == PROD_TYPE[1].value">
+                                                    <label>商品包数:</label>
+                                                    <input type="number" ng-model="selectedItemBomsLength" disabled>
+                                                </md-input-container>
+
+                                                <md-input-container>
+                                                    <label>商品外径:</label>
+                                                    <input type="text" ng-model="selectedItem.diameter" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                </md-input-container>
+
+                                                <md-input-container>
+                                                    <label>商品重量:</label>
+                                                    <input type="number" ng-model="selectedItem.weight"
+                                                           ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                </md-input-container>
+
+                                                <md-input-container>
+                                                    <label>包装小单位:</label>
+                                                    <input type="text" ng-model="selectedItem.miniUnit"
+                                                           ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                </md-input-container>
+
+                                                <md-input-container>
+                                                    <label>商品系列:</label>
+                                                    <input type="text" ng-model="selectedItem.series" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                </md-input-container>
+
+                                                <md-input-container>
+                                                    <label>商品单位:</label>
+                                                    <input type="text" ng-model="selectedItem.unit" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                </md-input-container>
+                                                
+                                                <md-radio-group ng-model="selectedItem.assemblingFlag" class="select-input">
+                                                    <label>虚拟件标识:</label>
+                                                    <md-radio-button value="1"
+                                                                     ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                        虚拟件
+                                                    </md-radio-button>
+                                                    <md-radio-button value="0"
+                                                                     ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                        非虚拟件
+                                                    </md-radio-button>
+                                                </md-radio-group>
+
+                                                <md-radio-group ng-model="selectedItem.customizationFlag" class="select-input">
+                                                    <label>能否定制:</label>
+                                                    <md-radio-button value="Y" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">是</md-radio-button>
+                                                    <md-radio-button value="N" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">否</md-radio-button>
+                                                </md-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div layout="row">
+                                    <md-content flex layout-padding layout-margin>
+                                        <md-tabs md-border-bottom md-dynamic-height md-center-tabs="false">
+                                            <md-tab label="商品详细资料">
+                                                <div ng-include=" 'app/src/app/production/production/details_tab.html' "></div>
+                                            </md-tab>
+
+                                            <md-tab label="商品BOM" ng-if="selectedItem.type == PROD_TYPE[1].value">
+                                                <div ng-include=" 'app/src/app/production/production/boms_tab.html' "></div>
+                                            </md-tab>
+
+                                            <md-tab label="商品自定义">
+                                                <div ng-include=" 'app/src/app/production/production/custom_tab.html' "></div>
+                                            </md-tab>
+
+                                            <!--<md-tab label="商品评价">-->
+                                            <!--</md-tab>-->
+
+                                            <!--<md-tab label="历史上下架">-->
+                                            <!--</md-tab>-->
+
+                                            <md-tab label="关联所在目录">
+                                                <div ng-include=" 'app/src/app/production/production/link_tab.html' "></div>
+                                            </md-tab>
+
+                                            <md-tab label="单位换算率">
+                                                <div ng-include=" 'app/src/app/production/production/unit_tab.html' "></div>
+                                            </md-tab>
+                                        </md-tabs>
+                                    </md-content>
+                                </div>
+                            </div>
+                        </form>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

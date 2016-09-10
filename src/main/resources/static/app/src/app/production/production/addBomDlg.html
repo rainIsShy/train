@@ -1,0 +1,35 @@
+<md-dialog style="padding: 30px;max-width: 900px;" class="prod">
+    <div layout="row">
+        <div flex="50">
+            <form name="addBomForm" novalidate>
+                <md-input-container md-no-float>
+                    <label ng-show="bomProduction.name">Bom关联商品</label>
+                    <input name="no" type="text" ng-model="bom.item.name" placeholder="请从右侧选择一个商品" required disabled>
+                </md-input-container>
+
+                <md-input-container>
+                    <label>数量</label>
+                    <input name="number" type="text" ng-model="bom.quantity" required md-maxlength="20">
+                </md-input-container>
+
+                <div class="time-date">
+                    <label>生效时间</label>
+                    <input type="date" ng-model="bom.effectiveDateUI"/>
+                </div>
+                <div class="time-date">
+                    <label>失效时间</label>
+                    <input type="date" ng-model="bom.expiredDateUI"/>
+                </div>
+
+                <div layout="row">
+                    <md-button ng-click="hideDlg()" ng-disabled="addBomForm.$invalid">
+                        <i class="fa fa-check"></i>&nbsp;确定
+                    </md-button>
+                    <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+                </div>
+            </form>
+        </div>
+
+        <div flex="50" production-List select-item-callback="selectBom(production)" param="bomItemSearchParam" style="max-height: 500px; overflow-y: auto; overflow-x: hidden;"></div>
+    </div>
+</md-dialog>

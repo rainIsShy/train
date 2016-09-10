@@ -1,0 +1,110 @@
+<div layout-fill class="right-container catalogue-template">
+    <md-content>
+        <md-tabs md-selected="$parent.selectedTabIndex" md-border-bottom md-dynamic-height md-center-tabs="false">
+            <md-tab md-on-select="listTabSelected()">
+                <md-tab-label>{{listTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content layout-margin>
+                        <div list-menu></div>
+                        <md-divider style="margin: 10px 7px 20px 7px;"></md-divider>
+
+                        <div ng-include=" 'app/src/app/production/template/templateList.html' "></div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+            <md-tab md-on-select="formTabSelected()">
+                <md-tab-label>{{formTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content layout-margin class="formList">
+                        <form name="mainForm" novalidate>
+                            <div form-menu>
+
+                            </div>
+                            <div layout="column" layout-margin layout-padding class="md-whiteframe-z1">
+                                <p ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS" style="color: red;">请从清单列表中选择一个模板。</p>
+
+                                <!--<md-chips name="nodeListChipsID" ng-model="selectedItem.details" readonly="true">-->
+                                    <!--<md-chip-template ng-click="selectNodeHandler($mdChipsCtrl, $chip, $event)"><span>{{$chip.no}}&nbsp;{{$chip.name}}</span></md-chip-template>-->
+                                    <!--<span md-chip-remove class="delete-on-chip" ng-click="deleteNodeMenuAction($event, $chip)" ng-show="ui_status != UI_STATUS.VIEW_UI_STATUS && ui_status != UI_STATUS.PRE_EDIT_UI_STATUS"><i class="fa fa-times"></i></span>-->
+                                <!--</md-chips>-->
+
+                                <div layout="row" layout-wrap flex class="template-item-content">
+                                    <span class="chip" ng-repeat="node in selectedItem.details" ng-click="selectNodeHandler(node)" ng-class="selectedTemplateNode.uuid == node.uuid ? 'highlight-chip' : ''">
+                                        <span>{{node.no}}&nbsp;{{node.name}}</span>
+                                        <span class="chip-remove" ng-click="deleteNodeMenuAction(node)" ng-show="ui_status != UI_STATUS.VIEW_UI_STATUS && ui_status != UI_STATUS.PRE_EDIT_UI_STATUS"><i class="fa fa-times"></i></span>
+                                    </span>
+                                </div>
+
+
+                                <div id="templateContainer" class="editor-container" ng-if="selectedItem && (selectedTemplateNode == null || selectedTemplateNode == undefined )">
+                                    <md-input-container>
+                                        <label>模板编号</label>
+                                        <input type="text" ng-model="selectedItem.no" required md-maxlength="20" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                    </md-input-container>
+
+                                    <md-input-container>
+                                        <label>模板名称</label>
+                                        <input type="text" ng-model="selectedItem.name" required md-maxlength="20" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                    </md-input-container>
+
+                                    <!--<md-switch ng-model="selectedItem.defaultFlag" aria-label="默认APP目录" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">-->
+                                        <!--默认APP目录-->
+                                    <!--</md-switch>-->
+
+                                    <md-switch ng-model="selectedItem.status" ng-true-value="'1'" ng-false-value="'2'" aria-label="失效作废" ng-change="modifyMenuAction()">
+                                        失效作废
+                                    </md-switch>
+
+                                    <md-switch ng-model="selectedItem.confirm" ng-true-value="'2'" ng-false-value="'1'" aria-label="审核状态" ng-change="modifyMenuAction()">
+                                        审核状态
+                                    </md-switch>
+
+                                    <md-switch ng-model="selectedItem.release" ng-true-value="'2'" ng-false-value="'1'" aria-label="发布状态" ng-change="modifyMenuAction()">
+                                        发布状态
+                                    </md-switch>
+                                </div>
+
+                                <div id="templateNodeContainer" class="editor-container" ng-if="selectedTemplateNode">
+                                    <md-input-container>
+                                        <label>模板编号</label>
+                                        <input type="text" ng-model="selectedItem.no" required md-maxlength="20" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                    </md-input-container>
+
+                                    <md-input-container>
+                                        <label>模板名称</label>
+                                        <input type="text" ng-model="selectedItem.name" required md-maxlength="20" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                    </md-input-container>
+
+                                    <md-input-container>
+                                        <label>模板节点编号</label>
+                                        <input type="text" ng-model="selectedTemplateNode.no" required md-maxlength="20" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                    </md-input-container>
+
+                                    <md-input-container>
+                                        <label>模板节点名称</label>
+                                        <input type="text" ng-model="selectedTemplateNode.name" required md-maxlength="20" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                    </md-input-container>
+
+                                    <md-input-container ng-show="selectedTemplateNode.index > 0">
+                                        <label>上层目录模板节点</label>
+                                        <input type="text" ng-model="selectedTemplateNode.parentName" value="{{selectedTemplateNode.parentName = (selectedTemplateNode.index > 0 ? selectedItem.details[selectedTemplateNode.index - 1].no + '  ' + selectedItem.details[selectedTemplateNode.index - 1].name : '')}}" disabled>
+                                    </md-input-container>
+
+                                    <md-switch ng-model="selectedTemplateNode.defaultFlag" ng-true-value="'Y'" ng-false-value="'N'" aria-label="默认APP目录" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                        默认APP目录
+                                    </md-switch>
+
+                                    <p>类型</p>
+                                    <md-radio-group ng-model="selectedTemplateNode.type">
+                                        <md-radio-button value="1" class="md-primary" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">商品</md-radio-button>
+                                        <md-radio-button value="2" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">场景</md-radio-button>
+                                    </md-radio-group>
+                                </div>
+                            </div>
+                        </form>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

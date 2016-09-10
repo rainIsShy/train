@@ -1,0 +1,71 @@
+<md-content style="overflow: scroll;">
+
+    <div flex layout="column"  ng-hide="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || selectedItem.confirm == '2'">
+
+        <div class="menu" layout="row" layout-md="column" layout-sm="column">
+            <md-button ng-click="openAddDetailDlg(null, addTransferSource)" class="md-raised"
+                       style="margin-top: 20px;height: 20px;">
+                <i class="fa fa-plus">新增流程</i>
+            </md-button>
+
+            <div layout="row" layout-md="column" layout-sm="column" style="margin-left: 10px;">
+                <label class="label">组织结构类型&nbsp;&nbsp;</label>
+                <md-select placeholder="" ng-model="addTransferSource" class="select">
+                    <md-option ng-repeat="(key, value) in WORKFLOW_TRANSFER_SOURCE" ng-value="key">
+                        {{value.name}}
+                    </md-option>
+                </md-select>
+            </div>
+        </div>
+    </div>
+    <div layout="row">
+        <!--        <div flex="5" class="verticalLine table-head">选定</div>-->
+        <div align="center" flex="5" class=" table-head"
+             ng-hide="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || selectedItem.confirm == '2'">
+            修改
+        </div>
+        <div align="center" flex="5" class=" table-head"
+             ng-hide="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || selectedItem.confirm == '2'">
+            删除
+        </div>
+        <div align="center" flex="5" class=" table-head">序号</div>
+        <div align="center" flex="20" class=" table-head">流程关名字</div>
+        <div align="center" flex="15" class=" table-head">流转类型</div>
+        <div align="center" flex="20" class=" table-head">流转组织/渠道</div>
+        <div align="center" flex="15" class=" table-head">流转角色</div>
+        <div align="center" flex="15" class=" table-head">转交条件</div>
+
+
+    </div>
+    <div ng-repeat="subitem in selectedItem.detail">
+        <div layout="row">
+
+            <!--操作-->
+            <div flex="5" class=" table-item"
+                 ng-hide="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || selectedItem.confirm == '2'">
+                <div layout="row" layout-sm="column" layout-align="center center">
+                    <div align="center" ng-click="openAddDetailDlg(subitem, subitem.transferSource)">
+                        <i class="fa fa-pencil-square-o"></i>
+                    </div>
+
+                </div>
+            </div>
+            <div flex="5" class=" table-item"
+                 ng-hide="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || selectedItem.confirm == '2'">
+                <div layout="row" layout-sm="column" layout-align="center center">
+                    <div align="center" ng-click="workflowDeleteMenuAction(subitem)">
+                        <i class="fa fa-times"></i>
+                    </div>
+                </div>
+            </div>
+            <!--项次-->
+            <div align="center" flex="5" class=" table-item">{{subitem.flwoNo}}</div>
+            <div align="center" flex="20" class=" table-item">{{subitem.flowName}}</div>
+            <div align="center" flex="15" class=" table-item">{{WORKFLOW_TRANSFER_TYPE[subitem.transferType].name}}</div>
+            <div align="center" flex="20" class=" table-item">{{subitem.transferDataName}}</div>
+            <div align="center" flex="15" class=" table-item">{{subitem.transferRoleName}}</div>
+            <div align="center" flex="15" class=" table-item">{{subitem.transferCondition}}</div>
+
+        </div>
+    </div>
+</md-content>

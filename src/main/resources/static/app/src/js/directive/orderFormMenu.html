@@ -1,0 +1,56 @@
+<div layout="column">
+
+    <div flex style="padding: 20px 0px 0px 0px;"   layout="row" layout-md="column" layout-sm="column" layout-align="space-around left" >
+        <div flex="40" layout="row"  layout-md="column" layout-sm="column" >
+            <md-checkbox ng-model="orderListMenu.selectAll"   ng-change="orderListMenuAction(410, $event)"
+                         ng-if="formMenuDisplayOption['410-selectAll'].display"
+                         aria-label="全选"  ng-true-value="true" ng-false-value="false"> &nbsp;{{formMenuDisplayOption['410-selectAll'].name}}</md-checkbox>
+
+            <md-switch ng-model="orderListMenu.effectiveType"  ng-change="orderListMenuAction(414, $event)"
+                       ng-if="formMenuDisplayOption['414-effective'].display && (menuAuthDataMap[formMenuDisplayOption['414-effective'].uuid] || isAdmin() || !formMenuDisplayOption['414-effective'].uuid)"
+                       aria-label="失效作废" ng-true-value="'1'" ng-false-value="'2'" ng-disabled="effectiveType_disabled == 1" >&nbsp;{{formMenuDisplayOption['414-effective'].name}}</md-switch>
+        </div>
+
+        <div flex layout="row" layout-align="end center">
+            <div ng-if="formMenuDisplayOption['411-audit'].display && (menuAuthDataMap[formMenuDisplayOption['411-audit'].uuid] || isAdmin() || !formMenuDisplayOption['411-audit'].uuid)">
+                <md-button class="md-raised" ng-click="orderListMenuAction(411, $event)"
+                           style="margin-top: 0px;height: 20px;"  aria-label="审核" ng-disabled="audit_button_disabled == 1" > &nbsp;{{formMenuDisplayOption['411-audit'].name}}</md-button>
+            </div>
+            <div ng-if="formMenuDisplayOption['412-return'].display && (menuAuthDataMap[formMenuDisplayOption['412-return'].uuid] || isAdmin() || !formMenuDisplayOption['412-return'].uuid)">
+                <md-button class="md-raised"ng-click="orderListMenuAction(412, $event)"
+                           style="margin-top: 0px;height: 20px;"  aria-label="退回" ng-disabled="return_button_disabled == 1" > &nbsp;{{formMenuDisplayOption['412-return'].name}}</md-button>
+            </div>
+            <div ng-if="formMenuDisplayOption['416-revertAudit'].display && (menuAuthDataMap[formMenuDisplayOption['416-revertAudit'].uuid] || isAdmin() || !formMenuDisplayOption['416-revertAudit'].uuid)">
+                <md-button class="md-raised" ng-click="orderListMenuAction(416, $event)"
+                           style="margin-top: 0px;height: 20px;"  aria-label="取消审核" ng-disabled="revert_audit_button_disabled == 1" > &nbsp;{{formMenuDisplayOption['416-revertAudit'].name}}</md-button>
+            </div>
+            <div ng-if="formMenuDisplayOption['413-throw'].display && (menuAuthDataMap[formMenuDisplayOption['413-throw'].uuid] || isAdmin() || !formMenuDisplayOption['413-throw'].uuid)">
+                <md-button class="md-raised" ng-click="orderListMenuAction(413, $event)"
+                           style="margin-top: 0px;height: 20px;" aria-label="抛转预订单"
+                           ng-disabled="throw_button_disabled == 1"> &nbsp;{{formMenuDisplayOption['413-throw'].name}}
+                </md-button>
+            </div>
+            <div ng-if="formMenuDisplayOption['418-oneOffSync'].display && (menuAuthDataMap[formMenuDisplayOption['418-oneOffSync'].uuid] || isAdmin() || !formMenuDisplayOption['418-oneOffSync'].uuid)">
+                <md-button class="md-raised" ng-click="orderListMenuAction(418, $event)"
+                           style="margin-top: 0px;height: 20px;" aria-label="一键抛转"
+                           ng-disabled="throw_button_disabled == 1"> &nbsp;{{formMenuDisplayOption['418-oneOffSync'].name}}
+                </md-button>
+            </div>
+            <div ng-if="formMenuDisplayOption['419-rollbackTransfer'].display && (menuAuthDataMap[formMenuDisplayOption['419-rollbackTransfer'].uuid] || isAdmin() || !formMenuDisplayOption['419-rollbackTransfer'].uuid)">
+                <md-button class="md-raised" ng-click="orderListMenuAction(419, $event)"
+                           style="margin-top: 0px;height: 20px;" aria-label="抛转还原"
+                           ng-disabled="rollback_transfer_button_disabled == 1"> &nbsp;{{formMenuDisplayOption['419-rollbackTransfer'].name}}
+                </md-button>
+            </div>
+            <div ng-if="formMenuDisplayOption['417-print'].display && (menuAuthDataMap[formMenuDisplayOption['417-print'].uuid] || isAdmin() || !formMenuDisplayOption['417-print'].uuid)">
+                <md-button class="md-raised" ng-click="orderListMenuAction(417, $event)"
+                           style="margin-top: 0px;height: 20px;" aria-label="打印"> &nbsp;{{formMenuDisplayOption['417-print'].name}}
+                </md-button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

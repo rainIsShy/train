@@ -1,0 +1,19 @@
+<md-dialog style="padding: 20px;">
+    <md-content layout="column">
+        <md-content style="max-height: 500px;">
+            <div ng-repeat="template in catalogueTemplates.content" layout="column" ng-if="template.details.length > 0">
+                <div layout="row" class="md-whiteframe-z1 template-item select-template" layout-margin layout-padding ng-click="hideDlg($index)">
+                    <div layout="row" flex class="template-item-content">
+                        <md-chips ng-model="template.details" readonly="true">
+                            <input type="text" placeholder="Enter a new node">
+                            <md-chip-template>{{$chip.no}}&nbsp;{{$chip.name}}</md-chip-template>
+                        </md-chips>
+                    </div>
+                </div>
+            </div>
+        </md-content>
+        <div>
+            <md-button class="md-raised" style="float: right;" ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+        </div>
+    </md-content>
+</md-dialog>

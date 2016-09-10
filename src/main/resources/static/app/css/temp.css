@@ -1,0 +1,116 @@
+.main-panel {
+
+}
+
+.object-editor .md-select-value > label,
+.object-editor md-input-container > label,
+.object-editor label{
+    color: #2B4CF9;;
+}
+
+.required-field {
+    color:rgb(244,67,54) !important;
+}
+
+.right-align {
+    text-align: right;
+}
+
+.selected-item {
+    background-color: #E2F2F7;
+}
+
+.close-btn {
+    float: right;
+    position: relative;
+    right: 25px;
+}
+
+.close-btn:hover {
+    cursor: pointer;
+}
+
+.search-bar {
+    height: 60px;
+    text-align: left;
+}
+
+.fix-to-top {
+    position: fixed;
+    top: 0;
+}
+
+.float-right {
+    position: absolute;
+    right: 0px;
+}
+
+.main-panel .item-name {
+    color: black;
+}
+
+.main-panel .item-name:after {
+    content: ' : ';
+}
+
+.main-panel .item-content {
+    color: black;
+}
+
+.main-panel .top-title {
+    height: 60px;
+    background-color: whitesmoke;
+    font-size: 18px;
+    /*padding-top: 18px;*/
+    text-align: center;
+    padding-top: 5px;
+}
+
+.top-title input {
+    border-bottom-width: 0px;
+}
+
+.main-panel .top-title > .left-title {
+    border-right: 1px solid lightgray;
+}
+
+.main-panel .top-title > .right-title {
+
+}
+
+.main-panel .top-title > .left-title > span, .main-panel .top-title > .right-title > span {
+    position: relative;
+    top: 15px;
+    left: -40px;
+}
+.main-panel .main-body {
+    min-height: 300px;
+
+}
+
+.main-panel .main-body > .left-body {
+    border-right: 1px solid lightgray;
+    padding: 0px 10px;
+}
+
+.main-panel .main-body > .right-body {
+}
+
+.sub-title .left {
+    position: relative;
+    top: 16px;
+    left: 10px;
+}
+
+.summary-item {
+    height: 100px;
+    padding: 10px;
+}
+
+.summary-item:hover {
+    background-color: #ECF5F7;
+}
+
+.summary-item__title:hover {
+    cursor: pointer;
+}

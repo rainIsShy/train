@@ -1,0 +1,22 @@
+<div layout-fill class="right-container taobao-orders">
+    <md-content>
+        <md-tabs md-selected="$parent.selectedTabIndex" md-border-bottom md-dynamic-height md-center-tabs="false">
+            <md-tab md-on-select="listTabSelected()">
+                <md-tab-label>{{listTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <div taobao-order-list-menu></div>
+
+                        <md-divider style="margin: 0px 0px 20px 7px;"></md-divider>
+                        <div ng-include=" 'app/src/app/taobao_data/order/taobaoOrdersList.html' "></div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+            <!--<md-tab md-on-select="formTabSelected()">
+                <md-tab-label>{{formTabName}}</md-tab-label>
+                <md-tab-body>
+                </md-tab-body>
+            </md-tab>-->
+        </md-tabs>
+    </md-content>
+</div>

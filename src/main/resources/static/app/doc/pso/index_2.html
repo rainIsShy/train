@@ -1,0 +1,3609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.2">
+<meta name="author" content="BenchmarkChina">
+<title>销售变更单</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400">
+<style>
+/* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
+/* Remove the comments around the @import statement below when using this as a custom stylesheet */
+/*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400";*/
+article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block}
+audio,canvas,video{display:inline-block}
+audio:not([controls]){display:none;height:0}
+[hidden],template{display:none}
+script{display:none!important}
+html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
+body{margin:0}
+a{background:transparent}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0}
+h1{font-size:2em;margin:.67em 0}
+abbr[title]{border-bottom:1px dotted}
+b,strong{font-weight:bold}
+dfn{font-style:italic}
+hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}
+mark{background:#ff0;color:#000}
+code,kbd,pre,samp{font-family:monospace;font-size:1em}
+pre{white-space:pre-wrap}
+q{quotes:"\201C" "\201D" "\2018" "\2019"}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-.5em}
+sub{bottom:-.25em}
+img{border:0}
+svg:not(:root){overflow:hidden}
+figure{margin:0}
+fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0}
+button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}
+button,input{line-height:normal}
+button,select{text-transform:none}
+button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}
+button[disabled],html input[disabled]{cursor:default}
+input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}
+input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}
+input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+table{border-collapse:collapse;border-spacing:0}
+*,*:before,*:after{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
+html,body{font-size:100%}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;font-weight:400;font-style:normal;line-height:1;position:relative;cursor:auto}
+a:hover{cursor:pointer}
+img,object,embed{max-width:100%;height:auto}
+object,embed{height:100%}
+img{-ms-interpolation-mode:bicubic}
+#map_canvas img,#map_canvas embed,#map_canvas object,.map_canvas img,.map_canvas embed,.map_canvas object{max-width:none!important}
+.left{float:left!important}
+.right{float:right!important}
+.text-left{text-align:left!important}
+.text-right{text-align:right!important}
+.text-center{text-align:center!important}
+.text-justify{text-align:justify!important}
+.hide{display:none}
+.antialiased,body{-webkit-font-smoothing:antialiased}
+img{display:inline-block;vertical-align:middle}
+textarea{height:auto;min-height:50px}
+select{width:100%}
+p.lead,.paragraph.lead>p,#preamble>.sectionbody>.paragraph:first-of-type p{font-size:1.21875em;line-height:1.6}
+.subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0;direction:ltr}
+a{color:#2156a5;text-decoration:underline;line-height:inherit}
+a:hover,a:focus{color:#1d4b8f}
+a img{border:none}
+p{font-family:inherit;font-weight:400;font-size:1em;line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
+p aside{font-size:.875em;line-height:1.35;font-style:italic}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
+h1 small,h2 small,h3 small,#toctitle small,.sidebarblock>.content>.title small,h4 small,h5 small,h6 small{font-size:60%;color:#e99b8f;line-height:0}
+h1{font-size:2.125em}
+h2{font-size:1.6875em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.375em}
+h4,h5{font-size:1.125em}
+h6{font-size:1em}
+hr{border:solid #ddddd8;border-width:1px 0 0;clear:both;margin:1.25em 0 1.1875em;height:0}
+em,i{font-style:italic;line-height:inherit}
+strong,b{font-weight:bold;line-height:inherit}
+small{font-size:60%;line-height:inherit}
+code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;color:rgba(0,0,0,.9)}
+ul,ol,dl{font-size:1em;line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
+ul,ol,ul.no-bullet,ol.no-bullet{margin-left:1.5em}
+ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0;font-size:1em}
+ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
+ul.square{list-style-type:square}
+ul.circle{list-style-type:circle}
+ul.disc{list-style-type:disc}
+ul.no-bullet{list-style:none}
+ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
+dl dt{margin-bottom:.3125em;font-weight:bold}
+dl dd{margin-bottom:1.25em}
+abbr,acronym{text-transform:uppercase;font-size:90%;color:rgba(0,0,0,.8);border-bottom:1px dotted #ddd;cursor:help}
+abbr{text-transform:none}
+blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
+blockquote cite{display:block;font-size:.9375em;color:rgba(0,0,0,.6)}
+blockquote cite:before{content:"\2014 \0020"}
+blockquote cite a,blockquote cite a:visited{color:rgba(0,0,0,.6)}
+blockquote,blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
+@media only screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
+h1{font-size:2.75em}
+h2{font-size:2.3125em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
+h4{font-size:1.4375em}}table{background:#fff;margin-bottom:1.25em;border:solid 1px #dedede}
+table thead,table tfoot{background:#f7f8f7;font-weight:bold}
+table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
+table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
+table tr.even,table tr.alt,table tr:nth-of-type(even){background:#f8f8f7}
+table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{display:table-cell;line-height:1.6}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
+h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
+.clearfix:before,.clearfix:after,.float-group:before,.float-group:after{content:" ";display:table}
+.clearfix:after,.float-group:after{clear:both}
+*:not(pre)>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background-color:#f7f7f8;-webkit-border-radius:4px;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
+pre,pre>code{line-height:1.45;color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;text-rendering:optimizeSpeed}
+.keyseq{color:rgba(51,51,51,.8)}
+kbd{display:inline-block;color:rgba(0,0,0,.8);font-size:.75em;line-height:1.4;background-color:#f7f7f7;border:1px solid #ccc;-webkit-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em white inset;box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em #fff inset;margin:-.15em .15em 0 .15em;padding:.2em .6em .2em .5em;vertical-align:middle;white-space:nowrap}
+.keyseq kbd:first-child{margin-left:0}
+.keyseq kbd:last-child{margin-right:0}
+.menuseq,.menu{color:rgba(0,0,0,.8)}
+b.button:before,b.button:after{position:relative;top:-1px;font-weight:400}
+b.button:before{content:"[";padding:0 3px 0 2px}
+b.button:after{content:"]";padding:0 2px 0 3px}
+p a>code:hover{color:rgba(0,0,0,.9)}
+#header,#content,#footnotes,#footer{width:100%;margin-left:auto;margin-right:auto;margin-top:0;margin-bottom:0;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
+#header:before,#header:after,#content:before,#content:after,#footnotes:before,#footnotes:after,#footer:before,#footer:after{content:" ";display:table}
+#header:after,#content:after,#footnotes:after,#footer:after{clear:both}
+#content{margin-top:1.25em}
+#content:before{content:none}
+#header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
+#header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #ddddd8}
+#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #ddddd8;padding-bottom:8px}
+#header .details{border-bottom:1px solid #ddddd8;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:-ms-flexbox;display:-webkit-flex;display:flex;-ms-flex-flow:row wrap;-webkit-flex-flow:row wrap;flex-flow:row wrap}
+#header .details span:first-child{margin-left:-.125em}
+#header .details span.email a{color:rgba(0,0,0,.85)}
+#header .details br{display:none}
+#header .details br+span:before{content:"\00a0\2013\00a0"}
+#header .details br+span.author:before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
+#header .details br+span#revremark:before{content:"\00a0|\00a0"}
+#header #revnumber{text-transform:capitalize}
+#header #revnumber:after{content:"\00a0"}
+#content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #ddddd8;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
+#toc{border-bottom:1px solid #efefed;padding-bottom:.5em}
+#toc>ul{margin-left:.125em}
+#toc ul.sectlevel0>li>a{font-style:italic}
+#toc ul.sectlevel0 ul.sectlevel1{margin:.5em 0}
+#toc ul{font-family:"Open Sans","DejaVu Sans",sans-serif;list-style-type:none}
+#toc a{text-decoration:none}
+#toc a:active{text-decoration:underline}
+#toctitle{color:#7a2518;font-size:1.2em}
+@media only screen and (min-width:768px){#toctitle{font-size:1.375em}
+body.toc2{padding-left:15em;padding-right:0}
+#toc.toc2{margin-top:0!important;background-color:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #efefed;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc.toc2 #toctitle{margin-top:0;font-size:1.2em}
+#toc.toc2>ul{font-size:.9em;margin-bottom:0}
+#toc.toc2 ul ul{margin-left:0;padding-left:1em}
+#toc.toc2 ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+body.toc2.toc-right{padding-left:0;padding-right:15em}
+body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #efefed;left:auto;right:0}}@media only screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc.toc2{width:20em}
+#toc.toc2 #toctitle{font-size:1.375em}
+#toc.toc2>ul{font-size:.95em}
+#toc.toc2 ul ul{padding-left:1.25em}
+body.toc2.toc-right{padding-left:0;padding-right:20em}}#content #toc{border-style:solid;border-width:1px;border-color:#e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;-webkit-border-radius:4px;border-radius:4px}
+#content #toc>:first-child{margin-top:0}
+#content #toc>:last-child{margin-bottom:0}
+#footer{max-width:100%;background-color:rgba(0,0,0,.8);padding:1.25em}
+#footer-text{color:rgba(255,255,255,.8);line-height:1.44}
+.sect1{padding-bottom:.625em}
+@media only screen and (min-width:768px){.sect1{padding-bottom:1.25em}}.sect1+.sect1{border-top:1px solid #efefed}
+#content h1>a.anchor,h2>a.anchor,h3>a.anchor,#toctitle>a.anchor,.sidebarblock>.content>.title>a.anchor,h4>a.anchor,h5>a.anchor,h6>a.anchor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
+#content h1>a.anchor:before,h2>a.anchor:before,h3>a.anchor:before,#toctitle>a.anchor:before,.sidebarblock>.content>.title>a.anchor:before,h4>a.anchor:before,h5>a.anchor:before,h6>a.anchor:before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
+#content h1:hover>a.anchor,#content h1>a.anchor:hover,h2:hover>a.anchor,h2>a.anchor:hover,h3:hover>a.anchor,#toctitle:hover>a.anchor,.sidebarblock>.content>.title:hover>a.anchor,h3>a.anchor:hover,#toctitle>a.anchor:hover,.sidebarblock>.content>.title>a.anchor:hover,h4:hover>a.anchor,h4>a.anchor:hover,h5:hover>a.anchor,h5>a.anchor:hover,h6:hover>a.anchor,h6>a.anchor:hover{visibility:visible}
+#content h1>a.link,h2>a.link,h3>a.link,#toctitle>a.link,.sidebarblock>.content>.title>a.link,h4>a.link,h5>a.link,h6>a.link{color:#ba3925;text-decoration:none}
+#content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
+.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
+.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:"Noto Serif","DejaVu Serif",serif;font-size:1rem;font-style:italic}
+table.tableblock>caption.title{white-space:nowrap;overflow:visible;max-width:0}
+.paragraph.lead>p,#preamble>.sectionbody>.paragraph:first-of-type p{color:rgba(0,0,0,.85)}
+table.tableblock #preamble>.sectionbody>.paragraph:first-of-type p{font-size:inherit}
+.admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
+.admonitionblock>table td.icon{text-align:center;width:80px}
+.admonitionblock>table td.icon img{max-width:none}
+.admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
+.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #ddddd8;color:rgba(0,0,0,.6)}
+.admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content{border-style:solid;border-width:1px;border-color:#e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;-webkit-border-radius:4px;border-radius:4px}
+.exampleblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child{margin-bottom:0}
+.sidebarblock{border-style:solid;border-width:1px;border-color:#e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;-webkit-border-radius:4px;border-radius:4px}
+.sidebarblock>:first-child{margin-top:0}
+.sidebarblock>:last-child{margin-bottom:0}
+.sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
+.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.literalblock pre,.listingblock pre:not(.highlight),.listingblock pre[class="highlight"],.listingblock pre[class^="highlight "],.listingblock pre.CodeRay,.listingblock pre.prettyprint{background:#f7f7f8}
+.sidebarblock .literalblock pre,.sidebarblock .listingblock pre:not(.highlight),.sidebarblock .listingblock pre[class="highlight"],.sidebarblock .listingblock pre[class^="highlight "],.sidebarblock .listingblock pre.CodeRay,.sidebarblock .listingblock pre.prettyprint{background:#f2f1f1}
+.literalblock pre,.literalblock pre[class],.listingblock pre,.listingblock pre[class]{-webkit-border-radius:4px;border-radius:4px;word-wrap:break-word;padding:1em;font-size:.8125em}
+.literalblock pre.nowrap,.literalblock pre[class].nowrap,.listingblock pre.nowrap,.listingblock pre[class].nowrap{overflow-x:auto;white-space:pre;word-wrap:normal}
+@media only screen and (min-width:768px){.literalblock pre,.literalblock pre[class],.listingblock pre,.listingblock pre[class]{font-size:.90625em}}@media only screen and (min-width:1280px){.literalblock pre,.literalblock pre[class],.listingblock pre,.listingblock pre[class]{font-size:1em}}.literalblock.output pre{color:#f7f7f8;background-color:rgba(0,0,0,.9)}
+.listingblock pre.highlightjs{padding:0}
+.listingblock pre.highlightjs>code{padding:1em;-webkit-border-radius:4px;border-radius:4px}
+.listingblock pre.prettyprint{border-width:0}
+.listingblock>.content{position:relative}
+.listingblock code[data-lang]:before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:#999}
+.listingblock:hover code[data-lang]:before{display:block}
+.listingblock.terminal pre .command:before{content:attr(data-prompt);padding-right:.5em;color:#999}
+.listingblock.terminal pre .command:not([data-prompt]):before{content:"$"}
+table.pyhltable{border-collapse:separate;border:0;margin-bottom:0;background:none}
+table.pyhltable td{vertical-align:top;padding-top:0;padding-bottom:0}
+table.pyhltable td.code{padding-left:.75em;padding-right:0}
+pre.pygments .lineno,table.pyhltable td:not(.code){color:#999;padding-left:0;padding-right:.5em;border-right:1px solid #ddddd8}
+pre.pygments .lineno{display:inline-block;margin-right:.25em}
+table.pyhltable .linenodiv{background:none!important;padding-right:0!important}
+.quoteblock{margin:0 1em 1.25em 1.5em;display:table}
+.quoteblock>.title{margin-left:-1.5em;margin-bottom:.75em}
+.quoteblock blockquote,.quoteblock blockquote p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
+.quoteblock blockquote{margin:0;padding:0;border:0}
+.quoteblock blockquote:before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+.quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
+.quoteblock .attribution{margin-top:.5em;margin-right:.5ex;text-align:right}
+.quoteblock .quoteblock{margin-left:0;margin-right:0;padding:.5em 0;border-left:3px solid rgba(0,0,0,.6)}
+.quoteblock .quoteblock blockquote{padding:0 0 0 .75em}
+.quoteblock .quoteblock blockquote:before{display:none}
+.verseblock{margin:0 1em 1.25em 1em}
+.verseblock pre{font-family:"Open Sans","DejaVu Sans",sans;font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
+.verseblock pre strong{font-weight:400}
+.verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
+.quoteblock .attribution,.verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
+.quoteblock .attribution br,.verseblock .attribution br{display:none}
+.quoteblock .attribution cite,.verseblock .attribution cite{display:block;letter-spacing:-.05em;color:rgba(0,0,0,.6)}
+.quoteblock.abstract{margin:0 0 1.25em 0;display:block}
+.quoteblock.abstract blockquote,.quoteblock.abstract blockquote p{text-align:left;word-spacing:0}
+.quoteblock.abstract blockquote:before,.quoteblock.abstract blockquote p:first-of-type:before{display:none}
+table.tableblock{max-width:100%;border-collapse:separate}
+table.tableblock td>.paragraph:last-child p>p:last-child,table.tableblock th>p:last-child,table.tableblock td>p:last-child{margin-bottom:0}
+table.spread{width:100%}
+table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
+table.grid-all th.tableblock,table.grid-all td.tableblock{border-width:0 1px 1px 0}
+table.grid-all tfoot>tr>th.tableblock,table.grid-all tfoot>tr>td.tableblock{border-width:1px 1px 0 0}
+table.grid-cols th.tableblock,table.grid-cols td.tableblock{border-width:0 1px 0 0}
+table.grid-all *>tr>.tableblock:last-child,table.grid-cols *>tr>.tableblock:last-child{border-right-width:0}
+table.grid-rows th.tableblock,table.grid-rows td.tableblock{border-width:0 0 1px 0}
+table.grid-all tbody>tr:last-child>th.tableblock,table.grid-all tbody>tr:last-child>td.tableblock,table.grid-all thead:last-child>tr>th.tableblock,table.grid-rows tbody>tr:last-child>th.tableblock,table.grid-rows tbody>tr:last-child>td.tableblock,table.grid-rows thead:last-child>tr>th.tableblock{border-bottom-width:0}
+table.grid-rows tfoot>tr>th.tableblock,table.grid-rows tfoot>tr>td.tableblock{border-width:1px 0 0 0}
+table.frame-all{border-width:1px}
+table.frame-sides{border-width:0 1px}
+table.frame-topbot{border-width:1px 0}
+th.halign-left,td.halign-left{text-align:left}
+th.halign-right,td.halign-right{text-align:right}
+th.halign-center,td.halign-center{text-align:center}
+th.valign-top,td.valign-top{vertical-align:top}
+th.valign-bottom,td.valign-bottom{vertical-align:bottom}
+th.valign-middle,td.valign-middle{vertical-align:middle}
+table thead th,table tfoot th{font-weight:bold}
+tbody tr th{display:table-cell;line-height:1.6;background:#f7f8f7}
+tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
+p.tableblock>code:only-child{background:none;padding:0}
+p.tableblock{font-size:1em}
+td>div.verse{white-space:pre}
+ol{margin-left:1.75em}
+ul li ol{margin-left:1.5em}
+dl dd{margin-left:1.125em}
+dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
+ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+ul.unstyled,ol.unnumbered,ul.checklist,ul.none{list-style-type:none}
+ul.unstyled,ol.unnumbered,ul.checklist{margin-left:.625em}
+ul.checklist li>p:first-child>.fa-square-o:first-child,ul.checklist li>p:first-child>.fa-check-square-o:first-child{width:1em;font-size:.85em}
+ul.checklist li>p:first-child>input[type="checkbox"]:first-child{width:1em;position:relative;top:1px}
+ul.inline{margin:0 auto .625em auto;margin-left:-1.375em;margin-right:0;padding:0;list-style:none;overflow:hidden}
+ul.inline>li{list-style:none;float:left;margin-left:1.375em;display:block}
+ul.inline>li>*{display:block}
+.unstyled dl dt{font-weight:400;font-style:normal}
+ol.arabic{list-style-type:decimal}
+ol.decimal{list-style-type:decimal-leading-zero}
+ol.loweralpha{list-style-type:lower-alpha}
+ol.upperalpha{list-style-type:upper-alpha}
+ol.lowerroman{list-style-type:lower-roman}
+ol.upperroman{list-style-type:upper-roman}
+ol.lowergreek{list-style-type:lower-greek}
+.hdlist>table,.colist>table{border:0;background:none}
+.hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
+td.hdlist1{padding-right:.75em;font-weight:bold}
+td.hdlist1,td.hdlist2{vertical-align:top}
+.literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
+.colist>table tr>td:first-of-type{padding:0 .75em;line-height:1}
+.colist>table tr>td:last-of-type{padding:.25em 0}
+.thumb,.th{line-height:0;display:inline-block;border:solid 4px #fff;-webkit-box-shadow:0 0 0 1px #ddd;box-shadow:0 0 0 1px #ddd}
+.imageblock.left,.imageblock[style*="float: left"]{margin:.25em .625em 1.25em 0}
+.imageblock.right,.imageblock[style*="float: right"]{margin:.25em 0 1.25em .625em}
+.imageblock>.title{margin-bottom:0}
+.imageblock.thumb,.imageblock.th{border-width:6px}
+.imageblock.thumb>.title,.imageblock.th>.title{padding:0 .125em}
+.image.left,.image.right{margin-top:.25em;margin-bottom:.25em;display:inline-block;line-height:0}
+.image.left{margin-right:.625em}
+.image.right{margin-left:.625em}
+a.image{text-decoration:none}
+span.footnote,span.footnoteref{vertical-align:super;font-size:.875em}
+span.footnote a,span.footnoteref a{text-decoration:none}
+span.footnote a:active,span.footnoteref a:active{text-decoration:underline}
+#footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
+#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em 0;border-width:1px 0 0 0}
+#footnotes .footnote{padding:0 .375em;line-height:1.3;font-size:.875em;margin-left:1.2em;text-indent:-1.2em;margin-bottom:.2em}
+#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none}
+#footnotes .footnote:last-of-type{margin-bottom:0}
+#content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+.gist .file-data>table{border:0;background:#fff;width:100%;margin-bottom:0}
+.gist .file-data>table td.line-data{width:99%}
+div.unbreakable{page-break-inside:avoid}
+.big{font-size:larger}
+.small{font-size:smaller}
+.underline{text-decoration:underline}
+.overline{text-decoration:overline}
+.line-through{text-decoration:line-through}
+.aqua{color:#00bfbf}
+.aqua-background{background-color:#00fafa}
+.black{color:#000}
+.black-background{background-color:#000}
+.blue{color:#0000bf}
+.blue-background{background-color:#0000fa}
+.fuchsia{color:#bf00bf}
+.fuchsia-background{background-color:#fa00fa}
+.gray{color:#606060}
+.gray-background{background-color:#7d7d7d}
+.green{color:#006000}
+.green-background{background-color:#007d00}
+.lime{color:#00bf00}
+.lime-background{background-color:#00fa00}
+.maroon{color:#600000}
+.maroon-background{background-color:#7d0000}
+.navy{color:#000060}
+.navy-background{background-color:#00007d}
+.olive{color:#606000}
+.olive-background{background-color:#7d7d00}
+.purple{color:#600060}
+.purple-background{background-color:#7d007d}
+.red{color:#bf0000}
+.red-background{background-color:#fa0000}
+.silver{color:#909090}
+.silver-background{background-color:#bcbcbc}
+.teal{color:#006060}
+.teal-background{background-color:#007d7d}
+.white{color:#bfbfbf}
+.white-background{background-color:#fafafa}
+.yellow{color:#bfbf00}
+.yellow-background{background-color:#fafa00}
+span.icon>.fa{cursor:default}
+.admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
+.admonitionblock td.icon .icon-note:before{content:"\f05a";color:#19407c}
+.admonitionblock td.icon .icon-tip:before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+.admonitionblock td.icon .icon-warning:before{content:"\f071";color:#bf6900}
+.admonitionblock td.icon .icon-caution:before{content:"\f06d";color:#bf3400}
+.admonitionblock td.icon .icon-important:before{content:"\f06a";color:#bf0000}
+.conum[data-value]{display:inline-block;color:#fff!important;background-color:rgba(0,0,0,.8);-webkit-border-radius:100px;border-radius:100px;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
+.conum[data-value] *{color:#fff!important}
+.conum[data-value]+b{display:none}
+.conum[data-value]:after{content:attr(data-value)}
+pre .conum[data-value]{position:relative;top:-.125em}
+b.conum *{color:inherit!important}
+.conum:not([data-value]):empty{display:none}
+h1,h2{letter-spacing:-.01em}
+dt,th.tableblock,td.content{text-rendering:optimizeLegibility}
+p,td.content{letter-spacing:-.01em}
+p strong,td.content strong{letter-spacing:-.005em}
+p,blockquote,dt,td.content{font-size:1.0625rem}
+p{margin-bottom:1.25rem}
+.sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
+.exampleblock>.content{background-color:#fffef7;border-color:#e0e0dc;-webkit-box-shadow:0 1px 4px #e0e0dc;box-shadow:0 1px 4px #e0e0dc}
+.print-only{display:none!important}
+@media print{@page{margin:1.25cm .75cm}
+*{-webkit-box-shadow:none!important;box-shadow:none!important;text-shadow:none!important}
+a{color:inherit!important;text-decoration:underline!important}
+a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
+a[href^="http:"]:not(.bare):after,a[href^="https:"]:not(.bare):after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+abbr[title]:after{content:" (" attr(title) ")"}
+pre,blockquote,tr,img{page-break-inside:avoid}
+thead{display:table-header-group}
+img{max-width:100%!important}
+p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
+h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
+#toc,.sidebarblock,.exampleblock>.content{background:none!important}
+#toc{border-bottom:1px solid #ddddd8!important;padding-bottom:0!important}
+.sect1{padding-bottom:0!important}
+.sect1+.sect1{border:0!important}
+#header>h1:first-child{margin-top:1.25rem}
+body.book #header{text-align:center}
+body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em 0}
+body.book #header .details{border:0!important;display:block;padding:0!important}
+body.book #header .details span:first-child{margin-left:0!important}
+body.book #header .details br{display:block}
+body.book #header .details br+span:before{content:none!important}
+body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
+body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-break-before:always}
+.listingblock code[data-lang]:before{display:block}
+#footer{background:none!important;padding:0 .9375em}
+#footer-text{color:rgba(0,0,0,.6)!important;font-size:.9em}
+.hide-on-print{display:none!important}
+.print-only{display:block!important}
+.hide-for-print{display:none!important}
+.show-for-print{display:inherit!important}}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>销售变更单</h1>
+<div class="details">
+<span id="author" class="author">BenchmarkChina</span><br>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_销售订单变更单">销售订单变更单</a>
+<ul class="sectlevel2">
+<li><a href="#__orderchanges">/orderChanges</a>
+<ul class="sectlevel3">
+<li><a href="#_销售订单变更单清单">销售订单变更单清单</a></li>
+<li><a href="#_新增销售订单变更单">新增销售订单变更单</a></li>
+</ul>
+</li>
+<li><a href="#__orderchanges_uuid">/orderChanges/{uuid}</a>
+<ul class="sectlevel3">
+<li><a href="#_取得销售订单变更单">取得销售订单变更单</a></li>
+<li><a href="#_更新销售订单变更单">更新销售订单变更单</a></li>
+<li><a href="#_删除销售订单变更单">删除销售订单变更单</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_销售订单变更单身">销售订单变更单身</a>
+<ul class="sectlevel2">
+<li><a href="#__orderchanges_orderchangeuuid_details">/orderChanges/{orderChangeUuid}/details</a>
+<ul class="sectlevel3">
+<li><a href="#_销售订单变更单身清单">销售订单变更单身清单</a></li>
+</ul>
+</li>
+<li><a href="#__orderchanges_orderchangeuuid_details_uuid">/orderChanges/{orderChangeUuid}/details/{uuid}</a>
+<ul class="sectlevel3">
+<li><a href="#_取得销售订单变更单身">取得销售订单变更单身</a></li>
+<li><a href="#_更新销售订单变更单身">更新销售订单变更单身</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_销售订单变更子单身">销售订单变更子单身</a>
+<ul class="sectlevel2">
+<li><a href="#__orderchanges_orderchangeuuid_details_detailuuid_extends">/orderChanges/{orderChangeUuid}/details/{detailUuid}/extends</a>
+<ul class="sectlevel3">
+<li><a href="#_销售订单变更子单身清单">销售订单变更子单身清单</a></li>
+</ul>
+</li>
+<li><a href="#__orderchanges_orderchangeuuid_details_detailuuid_extends_uuid">/orderChanges/{orderChangeUuid}/details/{detailUuid}/extends/{uuid}</a>
+<ul class="sectlevel3">
+<li><a href="#_取得销售订单变更子单身">取得销售订单变更子单身</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_销售订单变更子单身2">销售订单变更子单身2</a>
+<ul class="sectlevel2">
+<li><a href="#__orderchanges_orderchangeuuid_details_orderchangedetailuuid_extends_orderchangeextenduuid_extend2s">/orderChanges/{orderChangeUuid}/details/{orderChangeDetailUuid}/extends/{orderChangeExtendUuid}/extend2s</a>
+<ul class="sectlevel3">
+<li><a href="#_销售订单变更子单身2清单">销售订单变更子单身2清单</a></li>
+</ul>
+</li>
+<li><a href="#__orderchanges_orderchangeuuid_details_orderchangedetailuuid_extends_orderchangeextenduuid_extend2s_uuid">/orderChanges/{orderChangeUuid}/details/{orderChangeDetailUuid}/extends/{orderChangeExtendUuid}/extend2s/{uuid}</a>
+<ul class="sectlevel3">
+<li><a href="#_取得销售订单变更子单身2">取得销售订单变更子单身2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_销售订单变更单"><a class="link" href="#_销售订单变更单">销售订单变更单</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Response structure:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">default</th>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">assembleAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.ASSEMBLE_AMT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">组装费用</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">changeReason</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">changereason</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.CBI_BASE_CHANGE_REASON_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">变更原因</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">changeVersion</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.CHANGE_VERSION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">变更序号</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">channel</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">channel</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.OCM_BASE_CHAN_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">渠道/直营店</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">channelCurrency</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">channelcurrency</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.OCM_BASE_CHAN_CURR_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">币种</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">channelTax</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">channeltax</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.OCM_BASE_CHAN_TAX_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">税种</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">closeFlag</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=未结案/2=已结案</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.CLOSE_FLAG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">结案否</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">confirm</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=未审核/2=已审核/3=审核中/4=退回</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.CONFIRM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">审核码</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">contractNo</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.CONTRACT_NO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">商场合同号</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">customer</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">customer</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.CBI_BASE_CUST_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">客户</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">customerAddress</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">customeraddress</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.CBI_BASE_CUST_ADDR_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">客户地址</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">deliverDate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yyyy-MM-dd</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.DELIVER_DATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">送货日期</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">deliverWay</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">deliverway</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.CBI_BASE_DELIV_WAY_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">送货方式</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">department</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">department</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.CBI_BASE_DEPT_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">部门</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">discountAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.DISCOUNT_AMT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">折扣金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">discountRate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.DISCOUNT_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">折扣率</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">employee</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">employee</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.CBI_BASE_EMPL_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">员工</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">finishFlag</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=未完成/2=已完成</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.FINISH_FLAG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">交易完成否</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.NO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">销售订单单号</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.ORDER_AMT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">订单金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderDate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yyyy-MM-dd</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.ORDER_DATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">开单日期</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderDiscountRate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.ORDER_DISCOUNT_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">整单折扣率</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderMaster</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ordermaster</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.PSO_ORDER_MST_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">销售订单单头</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">paidAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.PAID_AMT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">已付金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">paidRate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.PAID_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">已收款比率</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">predictDeliverDate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.PREDICT_DELIVER_DATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">预计送货日期</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">presentAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.PRESENT_AMT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">赠品金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">printTimes</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.PRINT_TIMES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">打印次数</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">receiveAddress</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.RECEIVE_ADDRESS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">收货人地址</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">receiveDistrict</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.RECEIVE_DISTRICT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">收货人地区</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">receiveName</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.RECEIVE_NAME</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">收货人姓名</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">receivePhone</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.RECEIVE_PHONE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">收货人电话</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">remark</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.REMARK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">备注</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">standardAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.STANDARD_AMT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">标准金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=有效/2=无效</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.STATUS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">状态码</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">taxFlag</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=是/2=否</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.TAX_FLAG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">含税否</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">transferPsoFlag</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=是/2=否</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.TRANSFER_PSO_FLAG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">抛转预订单否</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">unpaidAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_MST.UNPAID_AMT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">未付金额</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="__orderchanges"><a class="link" href="#__orderchanges">/orderChanges</a></h3>
+<div class="sect3">
+<h4 id="_销售订单变更单清单"><a class="link" href="#_销售订单变更单清单">销售订单变更单清单</a></h4>
+<div class="paragraph">
+<p>Request structure:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">default</th>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">channelUuid</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">渠道/直营店</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">confirm</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=未审核/2=已审核/3=审核中/4=退回</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">审核码</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">contractNo</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">商场合同号</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">customerName</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">客户姓名</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">employeeName</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">员工姓名</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">employeeNo</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">员工编号</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">finishFlag</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=未完成/2=已完成</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">交易完成否</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">销售单号</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">onlyLatest</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=是/2=返回除版本0的所有版本变更单/3=返回所有版本变更单</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">返回销售单的最新变更单</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderDateBegin</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">起始日期</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderDateEnd</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">截至日期</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">page</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">分頁頁碼(0-base)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">presentAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">赠品金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">resUuid</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">客户端资源ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">每頁筆數</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=有效/2=无效</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">状态码</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">transferPsoFlag</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=是/2=否</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">抛转预订单否</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect4">
+<h5 id="_request_example"><a class="link" href="#_request_example">Request Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'http://120.27.151.137:10011/orderChanges' -i -H 'Content-Type: application/json'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_example"><a class="link" href="#_response_example">Response Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 2654
+
+{
+  "content" : [ {
+    "uuid" : "E7887AAE-BBA5-4E23-BE1E-66C84DBA9936",
+    "orderMaster" : {
+      "uuid" : "3F078EE2-28D9-487F-9DF9-932047094FCB",
+      "taxFlag" : "2",
+      "standardAmount" : 0,
+      "discountAmount" : 0,
+      "assembleAmount" : 0,
+      "orderAmount" : 0,
+      "discountRate" : 0,
+      "paidAmount" : 0,
+      "unpaidAmount" : 0,
+      "printTimes" : 0,
+      "transferPsoFlag" : "2",
+      "status" : "1",
+      "confirm" : "1",
+      "orderDiscountRate" : 0,
+      "paidRate" : 0,
+      "closeFlag" : "1",
+      "finishFlag" : "1",
+      "presentAmount" : 0
+    },
+    "no" : "S001-20150620001",
+    "changeVersion" : 0,
+    "customer" : {
+      "uuid" : "BD777A19-3FF9-47F8-82A9-4AC50F941168",
+      "status" : "1",
+      "confirm" : "1",
+      "age" : 0,
+      "custAttribute" : "1"
+    },
+    "customerAddress" : {
+      "uuid" : "6B43A391-8AD0-4E2E-B991-E4B2A9EA3356",
+      "liftFlag" : "2",
+      "defaultAddressFlag" : "2",
+      "status" : "1",
+      "confirm" : "1"
+    },
+    "channel" : {
+      "uuid" : "A6A8FFF4-F8F6-4C0B-80DC-D14849345FEF",
+      "status" : "1",
+      "confirm" : "1"
+    },
+    "employee" : {
+      "uuid" : "430DE7B2-AEA4-4228-AC61-AB682CC9DC90",
+      "employeeStatus" : "1",
+      "status" : "1",
+      "confirm" : "1"
+    },
+    "orderDate" : "2015-06-20T00:00:00.000+0000",
+    "predictDeliverDate" : "2015年9月上旬",
+    "deliverDate" : "2015-09-10T00:00:00.000+0000",
+    "deliverWay" : {
+      "uuid" : "B0F9F98B-0DDB-4EDB-96EA-1DB7310298FF",
+      "status" : "1",
+      "confirm" : "1"
+    },
+    "taxFlag" : "2",
+    "channelTax" : {
+      "uuid" : "03C013D1-D9F5-4210-8E82-3F5D05DF2152",
+      "status" : "1",
+      "confirm" : "1"
+    },
+    "channelCurrency" : {
+      "uuid" : "C0D7B815-4419-451A-B95C-C55942A11FF4",
+      "status" : "1",
+      "confirm" : "1"
+    },
+    "standardAmount" : 0,
+    "discountAmount" : 0,
+    "assembleAmount" : 0,
+    "orderAmount" : 0,
+    "discountRate" : 0.90000000,
+    "paidAmount" : 0,
+    "unpaidAmount" : 0,
+    "printTimes" : 0,
+    "transferPsoFlag" : "2",
+    "status" : "1",
+    "confirm" : "2",
+    "orderDiscountRate" : 0,
+    "paidRate" : 0,
+    "closeFlag" : "1",
+    "department" : {
+      "uuid" : "null",
+      "status" : "1",
+      "confirm" : "1",
+      "fullPath" : [ null ]
+    },
+    "receiveAddress" : "123号",
+    "receiveDistrict" : "江苏 南京市 六合区",
+    "receivePhone" : "13000000002",
+    "finishFlag" : "1",
+    "presentAmount" : 0,
+    "changeReason" : { }
+  } ],
+  "totalElements" : 1,
+  "last" : true,
+  "totalPages" : 1,
+  "numberOfElements" : 1,
+  "first" : true,
+  "size" : 0,
+  "number" : 0
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_新增销售订单变更单"><a class="link" href="#_新增销售订单变更单">新增销售订单变更单</a></h4>
+<div class="paragraph">
+<p>Request structure:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">default</th>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">changeReasonUuid</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">变更原因</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">customerAddressUuid</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">客户地址</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">deliverDate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yyyy-MM-dd</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">送货日期</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">discountAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">折扣金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">discountRate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">折扣率</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">订单金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderDiscountRate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">整单折扣率</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">predictDeliverDate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">预计送货日期</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">remark</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">备注</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">standardAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">标准金额</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect4">
+<h5 id="_request_example_2"><a class="link" href="#_request_example_2">Request Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'http://120.27.151.137:10011/orderChanges?orderUuid=3F078EE2-28D9-487F-9DF9-932047094FCB' -i -X POST -H 'Content-Type: application/json' -d '{ }'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_example_2"><a class="link" href="#_response_example_2">Response Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
+Content-Type: application/json;charset=UTF-8
+Content-Length: 2310
+
+{
+  "uuid" : "E7887AAE-BBA5-4E23-BE1E-66C84DBA9936",
+  "orderMaster" : {
+    "uuid" : "3F078EE2-28D9-487F-9DF9-932047094FCB",
+    "taxFlag" : "2",
+    "standardAmount" : 0,
+    "discountAmount" : 0,
+    "assembleAmount" : 0,
+    "orderAmount" : 0,
+    "discountRate" : 0,
+    "paidAmount" : 0,
+    "unpaidAmount" : 0,
+    "printTimes" : 0,
+    "transferPsoFlag" : "2",
+    "status" : "1",
+    "confirm" : "1",
+    "orderDiscountRate" : 0,
+    "paidRate" : 0,
+    "closeFlag" : "1",
+    "finishFlag" : "1",
+    "presentAmount" : 0
+  },
+  "no" : "S001-20150620001",
+  "changeVersion" : 0,
+  "customer" : {
+    "uuid" : "BD777A19-3FF9-47F8-82A9-4AC50F941168",
+    "status" : "1",
+    "confirm" : "1",
+    "age" : 0,
+    "custAttribute" : "1"
+  },
+  "customerAddress" : {
+    "uuid" : "6B43A391-8AD0-4E2E-B991-E4B2A9EA3356",
+    "liftFlag" : "2",
+    "defaultAddressFlag" : "2",
+    "status" : "1",
+    "confirm" : "1"
+  },
+  "channel" : {
+    "uuid" : "A6A8FFF4-F8F6-4C0B-80DC-D14849345FEF",
+    "status" : "1",
+    "confirm" : "1"
+  },
+  "employee" : {
+    "uuid" : "430DE7B2-AEA4-4228-AC61-AB682CC9DC90",
+    "employeeStatus" : "1",
+    "status" : "1",
+    "confirm" : "1"
+  },
+  "orderDate" : "2015-06-20T00:00:00.000+0000",
+  "predictDeliverDate" : "2015年9月上旬",
+  "deliverDate" : "2015-09-10T00:00:00.000+0000",
+  "deliverWay" : {
+    "uuid" : "B0F9F98B-0DDB-4EDB-96EA-1DB7310298FF",
+    "status" : "1",
+    "confirm" : "1"
+  },
+  "taxFlag" : "2",
+  "channelTax" : {
+    "uuid" : "03C013D1-D9F5-4210-8E82-3F5D05DF2152",
+    "status" : "1",
+    "confirm" : "1"
+  },
+  "channelCurrency" : {
+    "uuid" : "C0D7B815-4419-451A-B95C-C55942A11FF4",
+    "status" : "1",
+    "confirm" : "1"
+  },
+  "standardAmount" : 0,
+  "discountAmount" : 0,
+  "assembleAmount" : 0,
+  "orderAmount" : 0,
+  "discountRate" : 0.90000000,
+  "paidAmount" : 0,
+  "unpaidAmount" : 0,
+  "printTimes" : 0,
+  "transferPsoFlag" : "2",
+  "status" : "1",
+  "confirm" : "2",
+  "orderDiscountRate" : 0,
+  "paidRate" : 0,
+  "closeFlag" : "1",
+  "department" : {
+    "uuid" : "null",
+    "status" : "1",
+    "confirm" : "1",
+    "fullPath" : [ null ]
+  },
+  "receiveAddress" : "123号",
+  "receiveDistrict" : "江苏 南京市 六合区",
+  "receivePhone" : "13000000002",
+  "finishFlag" : "1",
+  "presentAmount" : 0,
+  "changeReason" : { }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="__orderchanges_uuid"><a class="link" href="#__orderchanges_uuid">/orderChanges/{uuid}</a></h3>
+<div class="sect3">
+<h4 id="_取得销售订单变更单"><a class="link" href="#_取得销售订单变更单">取得销售订单变更单</a></h4>
+<div class="sect4">
+<h5 id="_request_example_3"><a class="link" href="#_request_example_3">Request Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'http://120.27.151.137:10011/orderChanges/E7887AAE-BBA5-4E23-BE1E-66C84DBA9936' -i -H 'Content-Type: application/json'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_example_3"><a class="link" href="#_response_example_3">Response Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 2310
+
+{
+  "uuid" : "E7887AAE-BBA5-4E23-BE1E-66C84DBA9936",
+  "orderMaster" : {
+    "uuid" : "3F078EE2-28D9-487F-9DF9-932047094FCB",
+    "taxFlag" : "2",
+    "standardAmount" : 0,
+    "discountAmount" : 0,
+    "assembleAmount" : 0,
+    "orderAmount" : 0,
+    "discountRate" : 0,
+    "paidAmount" : 0,
+    "unpaidAmount" : 0,
+    "printTimes" : 0,
+    "transferPsoFlag" : "2",
+    "status" : "1",
+    "confirm" : "1",
+    "orderDiscountRate" : 0,
+    "paidRate" : 0,
+    "closeFlag" : "1",
+    "finishFlag" : "1",
+    "presentAmount" : 0
+  },
+  "no" : "S001-20150620001",
+  "changeVersion" : 0,
+  "customer" : {
+    "uuid" : "BD777A19-3FF9-47F8-82A9-4AC50F941168",
+    "status" : "1",
+    "confirm" : "1",
+    "age" : 0,
+    "custAttribute" : "1"
+  },
+  "customerAddress" : {
+    "uuid" : "6B43A391-8AD0-4E2E-B991-E4B2A9EA3356",
+    "liftFlag" : "2",
+    "defaultAddressFlag" : "2",
+    "status" : "1",
+    "confirm" : "1"
+  },
+  "channel" : {
+    "uuid" : "A6A8FFF4-F8F6-4C0B-80DC-D14849345FEF",
+    "status" : "1",
+    "confirm" : "1"
+  },
+  "employee" : {
+    "uuid" : "430DE7B2-AEA4-4228-AC61-AB682CC9DC90",
+    "employeeStatus" : "1",
+    "status" : "1",
+    "confirm" : "1"
+  },
+  "orderDate" : "2015-06-20T00:00:00.000+0000",
+  "predictDeliverDate" : "2015年9月上旬",
+  "deliverDate" : "2015-09-10T00:00:00.000+0000",
+  "deliverWay" : {
+    "uuid" : "B0F9F98B-0DDB-4EDB-96EA-1DB7310298FF",
+    "status" : "1",
+    "confirm" : "1"
+  },
+  "taxFlag" : "2",
+  "channelTax" : {
+    "uuid" : "03C013D1-D9F5-4210-8E82-3F5D05DF2152",
+    "status" : "1",
+    "confirm" : "1"
+  },
+  "channelCurrency" : {
+    "uuid" : "C0D7B815-4419-451A-B95C-C55942A11FF4",
+    "status" : "1",
+    "confirm" : "1"
+  },
+  "standardAmount" : 0,
+  "discountAmount" : 0,
+  "assembleAmount" : 0,
+  "orderAmount" : 0,
+  "discountRate" : 0.90000000,
+  "paidAmount" : 0,
+  "unpaidAmount" : 0,
+  "printTimes" : 0,
+  "transferPsoFlag" : "2",
+  "status" : "1",
+  "confirm" : "2",
+  "orderDiscountRate" : 0,
+  "paidRate" : 0,
+  "closeFlag" : "1",
+  "department" : {
+    "uuid" : "null",
+    "status" : "1",
+    "confirm" : "1",
+    "fullPath" : [ null ]
+  },
+  "receiveAddress" : "123号",
+  "receiveDistrict" : "江苏 南京市 六合区",
+  "receivePhone" : "13000000002",
+  "finishFlag" : "1",
+  "presentAmount" : 0,
+  "changeReason" : { }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_更新销售订单变更单"><a class="link" href="#_更新销售订单变更单">更新销售订单变更单</a></h4>
+<div class="paragraph">
+<p>Request structure:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">default</th>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">changeReasonUuid</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">变更原因</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">confirm</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=未审核/2=已审核/3=审核中/4=退回</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">审核码</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">customerAddressUuid</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">客户地址</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">deliverDate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yyyy-MM-dd</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">送货日期</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">details</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">array</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">单身数据</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">discountAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">折扣金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">discountRate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">折扣率</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">modifyOnly</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">是否抛转或审核销售单(1=Yes, 2=No)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">订单金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderDiscountRate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">整单折扣率</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">paidAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">已付金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">paidRate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">已收款比率</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">predictDeliverDate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">预计送货日期</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">remark</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">备注</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">standardAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">标准金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=有效/2=无效</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">状态码</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">transferPsoFlag</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=是/2=否</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">抛转预订单否</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">unpaidAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">未付金额</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect4">
+<h5 id="_request_example_4"><a class="link" href="#_request_example_4">Request Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'http://120.27.151.137:10011/orderChanges/E7887AAE-BBA5-4E23-BE1E-66C84DBA9936' -i -X PATCH -H 'Content-Type: application/json' -d '{ }'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_example_4"><a class="link" href="#_response_example_4">Response Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 2310
+
+{
+  "uuid" : "E7887AAE-BBA5-4E23-BE1E-66C84DBA9936",
+  "orderMaster" : {
+    "uuid" : "3F078EE2-28D9-487F-9DF9-932047094FCB",
+    "taxFlag" : "2",
+    "standardAmount" : 0,
+    "discountAmount" : 0,
+    "assembleAmount" : 0,
+    "orderAmount" : 0,
+    "discountRate" : 0,
+    "paidAmount" : 0,
+    "unpaidAmount" : 0,
+    "printTimes" : 0,
+    "transferPsoFlag" : "2",
+    "status" : "1",
+    "confirm" : "1",
+    "orderDiscountRate" : 0,
+    "paidRate" : 0,
+    "closeFlag" : "1",
+    "finishFlag" : "1",
+    "presentAmount" : 0
+  },
+  "no" : "S001-20150620001",
+  "changeVersion" : 0,
+  "customer" : {
+    "uuid" : "BD777A19-3FF9-47F8-82A9-4AC50F941168",
+    "status" : "1",
+    "confirm" : "1",
+    "age" : 0,
+    "custAttribute" : "1"
+  },
+  "customerAddress" : {
+    "uuid" : "6B43A391-8AD0-4E2E-B991-E4B2A9EA3356",
+    "liftFlag" : "2",
+    "defaultAddressFlag" : "2",
+    "status" : "1",
+    "confirm" : "1"
+  },
+  "channel" : {
+    "uuid" : "A6A8FFF4-F8F6-4C0B-80DC-D14849345FEF",
+    "status" : "1",
+    "confirm" : "1"
+  },
+  "employee" : {
+    "uuid" : "430DE7B2-AEA4-4228-AC61-AB682CC9DC90",
+    "employeeStatus" : "1",
+    "status" : "1",
+    "confirm" : "1"
+  },
+  "orderDate" : "2015-06-20T00:00:00.000+0000",
+  "predictDeliverDate" : "2015年9月上旬",
+  "deliverDate" : "2015-09-10T00:00:00.000+0000",
+  "deliverWay" : {
+    "uuid" : "B0F9F98B-0DDB-4EDB-96EA-1DB7310298FF",
+    "status" : "1",
+    "confirm" : "1"
+  },
+  "taxFlag" : "2",
+  "channelTax" : {
+    "uuid" : "03C013D1-D9F5-4210-8E82-3F5D05DF2152",
+    "status" : "1",
+    "confirm" : "1"
+  },
+  "channelCurrency" : {
+    "uuid" : "C0D7B815-4419-451A-B95C-C55942A11FF4",
+    "status" : "1",
+    "confirm" : "1"
+  },
+  "standardAmount" : 0,
+  "discountAmount" : 0,
+  "assembleAmount" : 0,
+  "orderAmount" : 0,
+  "discountRate" : 0.90000000,
+  "paidAmount" : 0,
+  "unpaidAmount" : 0,
+  "printTimes" : 0,
+  "transferPsoFlag" : "2",
+  "status" : "1",
+  "confirm" : "1",
+  "orderDiscountRate" : 0,
+  "paidRate" : 0,
+  "closeFlag" : "1",
+  "department" : {
+    "uuid" : "null",
+    "status" : "1",
+    "confirm" : "1",
+    "fullPath" : [ null ]
+  },
+  "receiveAddress" : "123号",
+  "receiveDistrict" : "江苏 南京市 六合区",
+  "receivePhone" : "13000000002",
+  "finishFlag" : "1",
+  "presentAmount" : 0,
+  "changeReason" : { }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_删除销售订单变更单"><a class="link" href="#_删除销售订单变更单">删除销售订单变更单</a></h4>
+<div class="sect4">
+<h5 id="_request_example_5"><a class="link" href="#_request_example_5">Request Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'http://120.27.151.137:10011/orderChanges/E7887AAE-BBA5-4E23-BE1E-66C84DBA9936' -i -X DELETE -H 'Content-Type: application/json'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_example_5"><a class="link" href="#_response_example_5">Response Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-http" data-lang="http">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_销售订单变更单身"><a class="link" href="#_销售订单变更单身">销售订单变更单身</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Response structure:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">default</th>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">confirm</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=未审核/2=已审核/3=审核中/4=退回</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.CONFIRM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">审核码</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">customizeFlag</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=是/2=否</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.CUSTOMIZE_FLAG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">定制否</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">deliverDate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yyyy-MM-dd</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.DELIVER_DATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">送货日期</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">discountAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.DISCOUNT_AMT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">折扣金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">discountRate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.DISCOUNT_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">成交价折扣率</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">item</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">item</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.PLM_BASE_ITEM_FILE_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">商品</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">itemAttribute</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.ITEM_ATTRIBUTE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">商品属性</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderChange</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderchange</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.PSO_ORDER_CHG_MST_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">销售订单变更单头</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderDetail</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderdetail</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.PSO_ORDER_DTL_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">销售订单单身</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderPrice</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.ORDER_PRICE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">订单单价</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderQuantity</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.ORDER_QTY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">订单数量</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">originalDeliverDate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yyyy-MM-dd</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.ORI_DELIVER_DATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">原始送货日期</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">originalOrderAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.ORI_ORDER_AMT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">税前金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">originalOrderAmountTax</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.ORI_ORDER_AMT_TAX</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">含税金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">presentFlag</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=是/2=否</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.PRESENT_FLAG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">赠品否</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">promotionDiscountRate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.PROMOTION_DISCOUNT_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">促销折扣率</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">promotionPrice</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.PROMOTION_PRICE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">促销单价</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">remark</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.REMARK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">备注</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">returnAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.RETURN_AMT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">退货金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">returnFlag</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=是/2=否</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.RETURN_FLAG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">退货否</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">saleDiscountRate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.SALE_DISCOUNT_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">最低出货折扣率</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">salePrice</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.SALE_PRICE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">最低出货价</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">saleType</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">saletype</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.CBI_BASE_SALE_TYPE_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">销售类型</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sampleFlag</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=是/2=否</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.SAMPLE_FLAG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">样品否</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">specialPrice</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.SPECIAL_PRICE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">特价单价</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">standardAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.STANDARD_AMT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">标准金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">standardPrice</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.STANDARD_PRICE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">标准价</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=有效/2=无效</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.STATUS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">状态码</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">transferPsoFlag</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=是/2=否</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_DTL.TRANSFER_PSO_FLAG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">抛转预订单否</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="__orderchanges_orderchangeuuid_details"><a class="link" href="#__orderchanges_orderchangeuuid_details">/orderChanges/{orderChangeUuid}/details</a></h3>
+<div class="sect3">
+<h4 id="_销售订单变更单身清单"><a class="link" href="#_销售订单变更单身清单">销售订单变更单身清单</a></h4>
+<div class="paragraph">
+<p>Request structure:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">default</th>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">channelUuid</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">渠道/直营店</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderChangeUuid</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">销售订单变更单头</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">page</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">分頁頁碼(0-base)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">resUuid</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">客户端资源ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">每頁筆數</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect4">
+<h5 id="_request_example_6"><a class="link" href="#_request_example_6">Request Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'http://120.27.151.137:10011/orderChanges/E7887AAE-BBA5-4E23-BE1E-66C84DBA9936/details' -i -H 'Content-Type: application/json'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_example_6"><a class="link" href="#_response_example_6">Response Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 2938
+
+{
+  "content" : [ {
+    "uuid" : "29C612B2-CA50-4DED-8A57-B983010B0FA0",
+    "orderChange" : {
+      "uuid" : "4A19358E-B24D-42BC-B0E5-E0D838AE27E0",
+      "taxFlag" : "2",
+      "standardAmount" : 0,
+      "discountAmount" : 0,
+      "assembleAmount" : 0,
+      "orderAmount" : 0,
+      "discountRate" : 0,
+      "paidAmount" : 0,
+      "unpaidAmount" : 0,
+      "printTimes" : 0,
+      "transferPsoFlag" : "2",
+      "status" : "1",
+      "confirm" : "1",
+      "orderDiscountRate" : 0,
+      "paidRate" : 0,
+      "closeFlag" : "1",
+      "finishFlag" : "1",
+      "presentAmount" : 0
+    },
+    "orderDetail" : {
+      "uuid" : "21C8C9D3-217F-42DA-B4B7-6E47D8A4C495",
+      "orderQuantity" : 0,
+      "standardPrice" : 0,
+      "saleDiscountRate" : 0,
+      "salePrice" : 0,
+      "promotionDiscountRate" : 0,
+      "promotionPrice" : 0,
+      "discountRate" : 0,
+      "orderPrice" : 0,
+      "originalOrderAmount" : 0,
+      "originalOrderAmountTax" : 0,
+      "customizeFlag" : "2",
+      "standardAmount" : 0,
+      "discountAmount" : 0,
+      "specialPrice" : 0,
+      "status" : "1",
+      "confirm" : "1",
+      "transferPsoFlag" : "2",
+      "returnFlag" : "2",
+      "returnAmount" : 0,
+      "sampleFlag" : "2",
+      "presentFlag" : "2"
+    },
+    "item" : {
+      "uuid" : "10C5BEB4-2D0C-4E57-9661-C7EA92F6BF84",
+      "release" : "2",
+      "status" : "1",
+      "confirm" : "2",
+      "bulk" : 0,
+      "weight" : 0,
+      "length" : 0,
+      "wide" : 0,
+      "high" : 0,
+      "customizationFlag" : "Y",
+      "customizationColorFlag" : "Y",
+      "customizationGeneralFlag" : "Y",
+      "stopProductionFlag" : "N",
+      "inventoryQuantity" : 0,
+      "suggestPrice" : 0,
+      "marketPrice" : 0,
+      "discountPrice" : 0,
+      "lowestPrice" : 0,
+      "highestPrice" : 0,
+      "costPrice" : 0,
+      "assemblingFlag" : "0",
+      "purchaseType" : "1",
+      "eshopType" : "1",
+      "unitConversionRate" : 0,
+      "stopSaleFlag" : "N"
+    },
+    "orderQuantity" : 0,
+    "standardPrice" : 12000.00000000,
+    "saleDiscountRate" : 0.80000000,
+    "salePrice" : 9600.00000000,
+    "promotionDiscountRate" : 0.60000000,
+    "promotionPrice" : 7200.00000000,
+    "discountRate" : 0.90000000,
+    "orderPrice" : 10800.00000000,
+    "originalOrderAmount" : 0,
+    "originalOrderAmountTax" : 0,
+    "customizeFlag" : "1",
+    "standardAmount" : 0,
+    "discountAmount" : 0,
+    "saleType" : {
+      "uuid" : "null",
+      "calculateDiscountFlag" : "1",
+      "status" : "1",
+      "confirm" : "1",
+      "discountRate" : 0,
+      "shareDiscountFlag" : "1",
+      "alarmFlag" : "1"
+    },
+    "specialPrice" : 0,
+    "status" : "1",
+    "confirm" : "1",
+    "transferPsoFlag" : "2",
+    "returnFlag" : "2",
+    "returnAmount" : 0,
+    "sampleFlag" : "2",
+    "presentFlag" : "2"
+  } ],
+  "totalElements" : 1,
+  "last" : true,
+  "totalPages" : 1,
+  "numberOfElements" : 1,
+  "first" : true,
+  "size" : 0,
+  "number" : 0
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="__orderchanges_orderchangeuuid_details_uuid"><a class="link" href="#__orderchanges_orderchangeuuid_details_uuid">/orderChanges/{orderChangeUuid}/details/{uuid}</a></h3>
+<div class="sect3">
+<h4 id="_取得销售订单变更单身"><a class="link" href="#_取得销售订单变更单身">取得销售订单变更单身</a></h4>
+<div class="sect4">
+<h5 id="_request_example_7"><a class="link" href="#_request_example_7">Request Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'http://120.27.151.137:10011/orderChanges/E7887AAE-BBA5-4E23-BE1E-66C84DBA9936/details/29C612B2-CA50-4DED-8A57-B983010B0FA0' -i -H 'Content-Type: application/json'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_example_7"><a class="link" href="#_response_example_7">Response Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 2576
+
+{
+  "uuid" : "29C612B2-CA50-4DED-8A57-B983010B0FA0",
+  "orderChange" : {
+    "uuid" : "4A19358E-B24D-42BC-B0E5-E0D838AE27E0",
+    "taxFlag" : "2",
+    "standardAmount" : 0,
+    "discountAmount" : 0,
+    "assembleAmount" : 0,
+    "orderAmount" : 0,
+    "discountRate" : 0,
+    "paidAmount" : 0,
+    "unpaidAmount" : 0,
+    "printTimes" : 0,
+    "transferPsoFlag" : "2",
+    "status" : "1",
+    "confirm" : "1",
+    "orderDiscountRate" : 0,
+    "paidRate" : 0,
+    "closeFlag" : "1",
+    "finishFlag" : "1",
+    "presentAmount" : 0
+  },
+  "orderDetail" : {
+    "uuid" : "21C8C9D3-217F-42DA-B4B7-6E47D8A4C495",
+    "orderQuantity" : 0,
+    "standardPrice" : 0,
+    "saleDiscountRate" : 0,
+    "salePrice" : 0,
+    "promotionDiscountRate" : 0,
+    "promotionPrice" : 0,
+    "discountRate" : 0,
+    "orderPrice" : 0,
+    "originalOrderAmount" : 0,
+    "originalOrderAmountTax" : 0,
+    "customizeFlag" : "2",
+    "standardAmount" : 0,
+    "discountAmount" : 0,
+    "specialPrice" : 0,
+    "status" : "1",
+    "confirm" : "1",
+    "transferPsoFlag" : "2",
+    "returnFlag" : "2",
+    "returnAmount" : 0,
+    "sampleFlag" : "2",
+    "presentFlag" : "2"
+  },
+  "item" : {
+    "uuid" : "10C5BEB4-2D0C-4E57-9661-C7EA92F6BF84",
+    "release" : "2",
+    "status" : "1",
+    "confirm" : "2",
+    "bulk" : 0,
+    "weight" : 0,
+    "length" : 0,
+    "wide" : 0,
+    "high" : 0,
+    "customizationFlag" : "Y",
+    "customizationColorFlag" : "Y",
+    "customizationGeneralFlag" : "Y",
+    "stopProductionFlag" : "N",
+    "inventoryQuantity" : 0,
+    "suggestPrice" : 0,
+    "marketPrice" : 0,
+    "discountPrice" : 0,
+    "lowestPrice" : 0,
+    "highestPrice" : 0,
+    "costPrice" : 0,
+    "assemblingFlag" : "0",
+    "purchaseType" : "1",
+    "eshopType" : "1",
+    "unitConversionRate" : 0,
+    "stopSaleFlag" : "N"
+  },
+  "orderQuantity" : 0,
+  "standardPrice" : 12000.00000000,
+  "saleDiscountRate" : 0.80000000,
+  "salePrice" : 9600.00000000,
+  "promotionDiscountRate" : 0.60000000,
+  "promotionPrice" : 7200.00000000,
+  "discountRate" : 0.90000000,
+  "orderPrice" : 10800.00000000,
+  "originalOrderAmount" : 0,
+  "originalOrderAmountTax" : 0,
+  "customizeFlag" : "1",
+  "standardAmount" : 0,
+  "discountAmount" : 0,
+  "saleType" : {
+    "uuid" : "null",
+    "calculateDiscountFlag" : "1",
+    "status" : "1",
+    "confirm" : "1",
+    "discountRate" : 0,
+    "shareDiscountFlag" : "1",
+    "alarmFlag" : "1"
+  },
+  "specialPrice" : 0,
+  "status" : "1",
+  "confirm" : "1",
+  "transferPsoFlag" : "2",
+  "returnFlag" : "2",
+  "returnAmount" : 0,
+  "sampleFlag" : "2",
+  "presentFlag" : "2"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_更新销售订单变更单身"><a class="link" href="#_更新销售订单变更单身">更新销售订单变更单身</a></h4>
+<div class="paragraph">
+<p>Request structure:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">default</th>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">deliverDate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yyyy-MM-dd</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">送货日期</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">discountAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">折扣金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">discountRate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">成交价折扣率</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderPrice</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">订单单价</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderQuantity</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">订单数量</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">originalOrderAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">折后金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">originalOrderAmountTax</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">含税金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">promotionDiscountRate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">促销折扣率</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">promotionPrice</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">促销单价</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">remark</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">备注</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">specialPrice</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">特价单价</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">standardAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">标准金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">standardPrice</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">标准价</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=有效/2=无效</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">状态码</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect4">
+<h5 id="_request_example_8"><a class="link" href="#_request_example_8">Request Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'http://120.27.151.137:10011/orderChanges/E7887AAE-BBA5-4E23-BE1E-66C84DBA9936/details/29C612B2-CA50-4DED-8A57-B983010B0FA0' -i -X PATCH -H 'Content-Type: application/json' -d '{ }'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_example_8"><a class="link" href="#_response_example_8">Response Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 2576
+
+{
+  "uuid" : "29C612B2-CA50-4DED-8A57-B983010B0FA0",
+  "orderChange" : {
+    "uuid" : "4A19358E-B24D-42BC-B0E5-E0D838AE27E0",
+    "taxFlag" : "2",
+    "standardAmount" : 0,
+    "discountAmount" : 0,
+    "assembleAmount" : 0,
+    "orderAmount" : 0,
+    "discountRate" : 0,
+    "paidAmount" : 0,
+    "unpaidAmount" : 0,
+    "printTimes" : 0,
+    "transferPsoFlag" : "2",
+    "status" : "1",
+    "confirm" : "1",
+    "orderDiscountRate" : 0,
+    "paidRate" : 0,
+    "closeFlag" : "1",
+    "finishFlag" : "1",
+    "presentAmount" : 0
+  },
+  "orderDetail" : {
+    "uuid" : "21C8C9D3-217F-42DA-B4B7-6E47D8A4C495",
+    "orderQuantity" : 0,
+    "standardPrice" : 0,
+    "saleDiscountRate" : 0,
+    "salePrice" : 0,
+    "promotionDiscountRate" : 0,
+    "promotionPrice" : 0,
+    "discountRate" : 0,
+    "orderPrice" : 0,
+    "originalOrderAmount" : 0,
+    "originalOrderAmountTax" : 0,
+    "customizeFlag" : "2",
+    "standardAmount" : 0,
+    "discountAmount" : 0,
+    "specialPrice" : 0,
+    "status" : "1",
+    "confirm" : "1",
+    "transferPsoFlag" : "2",
+    "returnFlag" : "2",
+    "returnAmount" : 0,
+    "sampleFlag" : "2",
+    "presentFlag" : "2"
+  },
+  "item" : {
+    "uuid" : "10C5BEB4-2D0C-4E57-9661-C7EA92F6BF84",
+    "release" : "2",
+    "status" : "1",
+    "confirm" : "2",
+    "bulk" : 0,
+    "weight" : 0,
+    "length" : 0,
+    "wide" : 0,
+    "high" : 0,
+    "customizationFlag" : "Y",
+    "customizationColorFlag" : "Y",
+    "customizationGeneralFlag" : "Y",
+    "stopProductionFlag" : "N",
+    "inventoryQuantity" : 0,
+    "suggestPrice" : 0,
+    "marketPrice" : 0,
+    "discountPrice" : 0,
+    "lowestPrice" : 0,
+    "highestPrice" : 0,
+    "costPrice" : 0,
+    "assemblingFlag" : "0",
+    "purchaseType" : "1",
+    "eshopType" : "1",
+    "unitConversionRate" : 0,
+    "stopSaleFlag" : "N"
+  },
+  "orderQuantity" : 0,
+  "standardPrice" : 12000.00000000,
+  "saleDiscountRate" : 0.80000000,
+  "salePrice" : 9600.00000000,
+  "promotionDiscountRate" : 0.60000000,
+  "promotionPrice" : 7200.00000000,
+  "discountRate" : 0.90000000,
+  "orderPrice" : 10800.00000000,
+  "originalOrderAmount" : 0,
+  "originalOrderAmountTax" : 0,
+  "customizeFlag" : "1",
+  "standardAmount" : 0,
+  "discountAmount" : 0,
+  "saleType" : {
+    "uuid" : "null",
+    "calculateDiscountFlag" : "1",
+    "status" : "1",
+    "confirm" : "1",
+    "discountRate" : 0,
+    "shareDiscountFlag" : "1",
+    "alarmFlag" : "1"
+  },
+  "specialPrice" : 0,
+  "status" : "1",
+  "confirm" : "1",
+  "transferPsoFlag" : "2",
+  "returnFlag" : "2",
+  "returnAmount" : 0,
+  "sampleFlag" : "2",
+  "presentFlag" : "2"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_销售订单变更子单身"><a class="link" href="#_销售订单变更子单身">销售订单变更子单身</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Response structure:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">default</th>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">customizeFlag</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1=是/2=否</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.CUSTOMIZE_FLAG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">定制否</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">customizeRemark</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.CUSTOMIZE_REMARK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">定制备注</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">discountAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.DISCOUNT_AMT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">折扣金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">discountRate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.DISCOUNT_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">成交价折扣率</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">item</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">item</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.PLM_BASE_ITEM_FILE_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">商品</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">itemAttribute</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.ITEM_ATTRIBUTE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">商品属性</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderChangeDetail</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderchangedetail</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.PSO_ORDER_CHG_DTL_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">销售订单变更单身</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderExtendDetail</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderextenddetail</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.PSO_ORDER_EXT_DTL_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">销售订单子单身</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderPrice</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.ORDER_PRICE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">订单单价</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderQuantity</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.ORDER_QTY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">订单数量</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">originalOrderAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.ORI_ORDER_AMT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">税前金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">originalOrderAmountTax</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.ORI_ORDER_AMT_TAX</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">含税金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">parentItem</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">item</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.PLM_BASE_ITEM_FILE_P_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">套件商品</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">productCustomizeDescription</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.PROD_CUSTOMIZE_DESC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">产品订做描述</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">promotionDiscountRate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.PROMOTION_DISCOUNT_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">促销折扣率</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">promotionPrice</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.PROMOTION_PRICE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">促销单价</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">remark</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.REMARK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">备注</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">saleDiscountRate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.SALE_DISCOUNT_RATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">最低出货折扣率</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">salePrice</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.SALE_PRICE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">最低出货价</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">specialPrice</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.SPECIAL_PRICE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">特价单价</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">standardAmount</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.STANDARD_AMT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">标准金额</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">standardPrice</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL.STANDARD_PRICE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">标准价</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="__orderchanges_orderchangeuuid_details_detailuuid_extends"><a class="link" href="#__orderchanges_orderchangeuuid_details_detailuuid_extends">/orderChanges/{orderChangeUuid}/details/{detailUuid}/extends</a></h3>
+<div class="sect3">
+<h4 id="_销售订单变更子单身清单"><a class="link" href="#_销售订单变更子单身清单">销售订单变更子单身清单</a></h4>
+<div class="paragraph">
+<p>Request structure:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">default</th>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">channelUuid</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">渠道/直营店</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderChangeDetailUuid</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">销售订单变更单身</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">page</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">分頁頁碼(0-base)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">resUuid</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">客户端资源ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">每頁筆數</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect4">
+<h5 id="_request_example_9"><a class="link" href="#_request_example_9">Request Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'http://120.27.151.137:10011/orderChanges/E7887AAE-BBA5-4E23-BE1E-66C84DBA9936/details/29C612B2-CA50-4DED-8A57-B983010B0FA0/extends' -i -H 'Content-Type: application/json'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_example_9"><a class="link" href="#_response_example_9">Response Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 3168
+
+{
+  "content" : [ {
+    "uuid" : "14DF162A-7501-4E1A-B46E-23BD7F742D33",
+    "orderChangeDetail" : {
+      "uuid" : "29C612B2-CA50-4DED-8A57-B983010B0FA0",
+      "orderQuantity" : 0,
+      "standardPrice" : 0,
+      "saleDiscountRate" : 0,
+      "salePrice" : 0,
+      "promotionDiscountRate" : 0,
+      "promotionPrice" : 0,
+      "discountRate" : 0,
+      "orderPrice" : 0,
+      "originalOrderAmount" : 0,
+      "originalOrderAmountTax" : 0,
+      "customizeFlag" : "2",
+      "standardAmount" : 0,
+      "discountAmount" : 0,
+      "specialPrice" : 0,
+      "status" : "1",
+      "confirm" : "1",
+      "transferPsoFlag" : "2",
+      "returnFlag" : "2",
+      "returnAmount" : 0,
+      "sampleFlag" : "2",
+      "presentFlag" : "2"
+    },
+    "orderExtendDetail" : {
+      "uuid" : "75F3F00D-E21B-4104-AB51-87F481E0CBF0",
+      "customizeFlag" : "2",
+      "orderQuantity" : 0,
+      "standardPrice" : 0,
+      "saleDiscountRate" : 0,
+      "salePrice" : 0,
+      "discountRate" : 0,
+      "orderPrice" : 0,
+      "originalOrderAmount" : 0,
+      "originalOrderAmountTax" : 0,
+      "standardAmount" : 0,
+      "discountAmount" : 0,
+      "promotionDiscountRate" : 0,
+      "promotionPrice" : 0,
+      "specialPrice" : 0
+    },
+    "parentItem" : {
+      "uuid" : "10C5BEB4-2D0C-4E57-9661-C7EA92F6BF84",
+      "release" : "2",
+      "status" : "1",
+      "confirm" : "2",
+      "bulk" : 0,
+      "weight" : 0,
+      "length" : 0,
+      "wide" : 0,
+      "high" : 0,
+      "customizationFlag" : "Y",
+      "customizationColorFlag" : "Y",
+      "customizationGeneralFlag" : "Y",
+      "stopProductionFlag" : "N",
+      "inventoryQuantity" : 0,
+      "suggestPrice" : 0,
+      "marketPrice" : 0,
+      "discountPrice" : 0,
+      "lowestPrice" : 0,
+      "highestPrice" : 0,
+      "costPrice" : 0,
+      "assemblingFlag" : "0",
+      "purchaseType" : "1",
+      "eshopType" : "1",
+      "unitConversionRate" : 0,
+      "stopSaleFlag" : "N"
+    },
+    "item" : {
+      "uuid" : "D1F36954-7DDD-4DCA-9EAC-ED682C8A24B7",
+      "release" : "2",
+      "status" : "1",
+      "confirm" : "2",
+      "bulk" : 0,
+      "weight" : 0,
+      "length" : 0,
+      "wide" : 0,
+      "high" : 0,
+      "customizationFlag" : "Y",
+      "customizationColorFlag" : "Y",
+      "customizationGeneralFlag" : "Y",
+      "stopProductionFlag" : "N",
+      "inventoryQuantity" : 0,
+      "suggestPrice" : 0,
+      "marketPrice" : 0,
+      "discountPrice" : 0,
+      "lowestPrice" : 0,
+      "highestPrice" : 0,
+      "costPrice" : 0,
+      "assemblingFlag" : "0",
+      "purchaseType" : "1",
+      "eshopType" : "1",
+      "unitConversionRate" : 0,
+      "stopSaleFlag" : "N"
+    },
+    "customizeFlag" : "2",
+    "orderQuantity" : 0,
+    "standardPrice" : 0,
+    "saleDiscountRate" : 0,
+    "salePrice" : 0,
+    "discountRate" : 0,
+    "orderPrice" : 0,
+    "originalOrderAmount" : 0,
+    "originalOrderAmountTax" : 0,
+    "standardAmount" : 0,
+    "discountAmount" : 0,
+    "promotionDiscountRate" : 0,
+    "promotionPrice" : 0,
+    "specialPrice" : 0
+  } ],
+  "totalElements" : 1,
+  "last" : true,
+  "totalPages" : 1,
+  "numberOfElements" : 1,
+  "first" : true,
+  "size" : 0,
+  "number" : 0
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="__orderchanges_orderchangeuuid_details_detailuuid_extends_uuid"><a class="link" href="#__orderchanges_orderchangeuuid_details_detailuuid_extends_uuid">/orderChanges/{orderChangeUuid}/details/{detailUuid}/extends/{uuid}</a></h3>
+<div class="sect3">
+<h4 id="_取得销售订单变更子单身"><a class="link" href="#_取得销售订单变更子单身">取得销售订单变更子单身</a></h4>
+<div class="sect4">
+<h5 id="_request_example_10"><a class="link" href="#_request_example_10">Request Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'http://120.27.151.137:10011/orderChanges/E7887AAE-BBA5-4E23-BE1E-66C84DBA9936/details/29C612B2-CA50-4DED-8A57-B983010B0FA0/extends/14DF162A-7501-4E1A-B46E-23BD7F742D33' -i -H 'Content-Type: application/json'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_example_10"><a class="link" href="#_response_example_10">Response Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 2790
+
+{
+  "uuid" : "14DF162A-7501-4E1A-B46E-23BD7F742D33",
+  "orderChangeDetail" : {
+    "uuid" : "29C612B2-CA50-4DED-8A57-B983010B0FA0",
+    "orderQuantity" : 0,
+    "standardPrice" : 0,
+    "saleDiscountRate" : 0,
+    "salePrice" : 0,
+    "promotionDiscountRate" : 0,
+    "promotionPrice" : 0,
+    "discountRate" : 0,
+    "orderPrice" : 0,
+    "originalOrderAmount" : 0,
+    "originalOrderAmountTax" : 0,
+    "customizeFlag" : "2",
+    "standardAmount" : 0,
+    "discountAmount" : 0,
+    "specialPrice" : 0,
+    "status" : "1",
+    "confirm" : "1",
+    "transferPsoFlag" : "2",
+    "returnFlag" : "2",
+    "returnAmount" : 0,
+    "sampleFlag" : "2",
+    "presentFlag" : "2"
+  },
+  "orderExtendDetail" : {
+    "uuid" : "75F3F00D-E21B-4104-AB51-87F481E0CBF0",
+    "customizeFlag" : "2",
+    "orderQuantity" : 0,
+    "standardPrice" : 0,
+    "saleDiscountRate" : 0,
+    "salePrice" : 0,
+    "discountRate" : 0,
+    "orderPrice" : 0,
+    "originalOrderAmount" : 0,
+    "originalOrderAmountTax" : 0,
+    "standardAmount" : 0,
+    "discountAmount" : 0,
+    "promotionDiscountRate" : 0,
+    "promotionPrice" : 0,
+    "specialPrice" : 0
+  },
+  "parentItem" : {
+    "uuid" : "10C5BEB4-2D0C-4E57-9661-C7EA92F6BF84",
+    "release" : "2",
+    "status" : "1",
+    "confirm" : "2",
+    "bulk" : 0,
+    "weight" : 0,
+    "length" : 0,
+    "wide" : 0,
+    "high" : 0,
+    "customizationFlag" : "Y",
+    "customizationColorFlag" : "Y",
+    "customizationGeneralFlag" : "Y",
+    "stopProductionFlag" : "N",
+    "inventoryQuantity" : 0,
+    "suggestPrice" : 0,
+    "marketPrice" : 0,
+    "discountPrice" : 0,
+    "lowestPrice" : 0,
+    "highestPrice" : 0,
+    "costPrice" : 0,
+    "assemblingFlag" : "0",
+    "purchaseType" : "1",
+    "eshopType" : "1",
+    "unitConversionRate" : 0,
+    "stopSaleFlag" : "N"
+  },
+  "item" : {
+    "uuid" : "D1F36954-7DDD-4DCA-9EAC-ED682C8A24B7",
+    "release" : "2",
+    "status" : "1",
+    "confirm" : "2",
+    "bulk" : 0,
+    "weight" : 0,
+    "length" : 0,
+    "wide" : 0,
+    "high" : 0,
+    "customizationFlag" : "Y",
+    "customizationColorFlag" : "Y",
+    "customizationGeneralFlag" : "Y",
+    "stopProductionFlag" : "N",
+    "inventoryQuantity" : 0,
+    "suggestPrice" : 0,
+    "marketPrice" : 0,
+    "discountPrice" : 0,
+    "lowestPrice" : 0,
+    "highestPrice" : 0,
+    "costPrice" : 0,
+    "assemblingFlag" : "0",
+    "purchaseType" : "1",
+    "eshopType" : "1",
+    "unitConversionRate" : 0,
+    "stopSaleFlag" : "N"
+  },
+  "customizeFlag" : "2",
+  "orderQuantity" : 0,
+  "standardPrice" : 0,
+  "saleDiscountRate" : 0,
+  "salePrice" : 0,
+  "discountRate" : 0,
+  "orderPrice" : 0,
+  "originalOrderAmount" : 0,
+  "originalOrderAmountTax" : 0,
+  "standardAmount" : 0,
+  "discountAmount" : 0,
+  "promotionDiscountRate" : 0,
+  "promotionPrice" : 0,
+  "specialPrice" : 0
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_销售订单变更子单身2"><a class="link" href="#_销售订单变更子单身2">销售订单变更子单身2</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Response structure:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+<col style="width: 14%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">default</th>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">information</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL2.INFORMATION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">属性信息</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">item</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">item</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL2.PLM_BASE_ITEM_FILE_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">商品</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">itemCustom</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">itemcustom</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL2.PLM_BASE_CUSTOM_FILE_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">自定义属性</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderChangeExtendDetail</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderchangeextenddetail</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL2.PSO_ORDER_CHG_EXT_DTL_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">销售订单变更子单身</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderExtendDetail2</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderextenddetail2</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL2.PSO_ORDER_EXT_DTL2_UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">销售订单子单身2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">remark</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PSO_ORDER_CHG_EXT_DTL2.REMARK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">备注</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="__orderchanges_orderchangeuuid_details_orderchangedetailuuid_extends_orderchangeextenduuid_extend2s"><a class="link" href="#__orderchanges_orderchangeuuid_details_orderchangedetailuuid_extends_orderchangeextenduuid_extend2s">/orderChanges/{orderChangeUuid}/details/{orderChangeDetailUuid}/extends/{orderChangeExtendUuid}/extend2s</a></h3>
+<div class="sect3">
+<h4 id="_销售订单变更子单身2清单"><a class="link" href="#_销售订单变更子单身2清单">销售订单变更子单身2清单</a></h4>
+<div class="paragraph">
+<p>Request structure:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">default</th>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">channelUuid</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">渠道/直营店</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">orderChangeExtendDetailUuid</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">销售订单变更子单身</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">page</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">分頁頁碼(0-base)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">resUuid</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">客户端资源ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">每頁筆數</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect4">
+<h5 id="_request_example_11"><a class="link" href="#_request_example_11">Request Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'http://120.27.151.137:10011/orderChanges/E7887AAE-BBA5-4E23-BE1E-66C84DBA9936/details/29C612B2-CA50-4DED-8A57-B983010B0FA0/extends/14DF162A-7501-4E1A-B46E-23BD7F742D33/extend2s' -i -H 'Content-Type: application/json'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_example_11"><a class="link" href="#_response_example_11">Response Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 1893
+
+{
+  "content" : [ {
+    "uuid" : "FC04D1CE-46DB-4F14-AE2C-E0B901B1C58B",
+    "orderChangeExtendDetail" : {
+      "uuid" : "C97C37CB-AD6D-4A04-965E-2B657613D50D",
+      "customizeFlag" : "2",
+      "orderQuantity" : 0,
+      "standardPrice" : 0,
+      "saleDiscountRate" : 0,
+      "salePrice" : 0,
+      "discountRate" : 0,
+      "orderPrice" : 0,
+      "originalOrderAmount" : 0,
+      "originalOrderAmountTax" : 0,
+      "standardAmount" : 0,
+      "discountAmount" : 0,
+      "promotionDiscountRate" : 0,
+      "promotionPrice" : 0,
+      "specialPrice" : 0
+    },
+    "orderExtendDetail2" : {
+      "uuid" : "7327533c-644b-46e5-b3b2-99adc10eec50"
+    },
+    "item" : {
+      "uuid" : "99567A01-584C-4B6C-A1BB-A2D4B23A81B2",
+      "release" : "2",
+      "status" : "1",
+      "confirm" : "2",
+      "bulk" : 0,
+      "weight" : 0,
+      "length" : 0,
+      "wide" : 0,
+      "high" : 0,
+      "customizationFlag" : "Y",
+      "customizationColorFlag" : "Y",
+      "customizationGeneralFlag" : "Y",
+      "stopProductionFlag" : "N",
+      "inventoryQuantity" : 0,
+      "suggestPrice" : 0,
+      "marketPrice" : 0,
+      "discountPrice" : 0,
+      "lowestPrice" : 0,
+      "highestPrice" : 0,
+      "costPrice" : 0,
+      "assemblingFlag" : "0",
+      "purchaseType" : "1",
+      "eshopType" : "1",
+      "unitConversionRate" : 0,
+      "stopSaleFlag" : "N"
+    },
+    "itemCustom" : {
+      "uuid" : "B11DE878-4B39-4ACA-9474-74930AD0107C",
+      "release" : "2",
+      "status" : "1",
+      "confirm" : "2",
+      "type" : "1",
+      "style" : "1",
+      "astrict" : "3",
+      "appDisplay" : "2",
+      "appChoose" : "1",
+      "customFlag" : "2",
+      "referenceFlag" : "0"
+    },
+    "information" : "[\"CA051A8B-630F-4CDB-8DD3-86F39DE9D8E0\"]"
+  } ],
+  "totalElements" : 1,
+  "last" : true,
+  "totalPages" : 1,
+  "numberOfElements" : 1,
+  "first" : true,
+  "size" : 0,
+  "number" : 0
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="__orderchanges_orderchangeuuid_details_orderchangedetailuuid_extends_orderchangeextenduuid_extend2s_uuid"><a class="link" href="#__orderchanges_orderchangeuuid_details_orderchangedetailuuid_extends_orderchangeextenduuid_extend2s_uuid">/orderChanges/{orderChangeUuid}/details/{orderChangeDetailUuid}/extends/{orderChangeExtendUuid}/extend2s/{uuid}</a></h3>
+<div class="sect3">
+<h4 id="_取得销售订单变更子单身2"><a class="link" href="#_取得销售订单变更子单身2">取得销售订单变更子单身2</a></h4>
+<div class="sect4">
+<h5 id="_request_example_12"><a class="link" href="#_request_example_12">Request Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'http://120.27.151.137:10011/orderChanges/E7887AAE-BBA5-4E23-BE1E-66C84DBA9936/details/29C612B2-CA50-4DED-8A57-B983010B0FA0/extends/14DF162A-7501-4E1A-B46E-23BD7F742D33/extend2s/FC04D1CE-46DB-4F14-AE2C-E0B901B1C58B' -i -H 'Content-Type: application/json'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_example_12"><a class="link" href="#_response_example_12">Response Example</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 1611
+
+{
+  "uuid" : "FC04D1CE-46DB-4F14-AE2C-E0B901B1C58B",
+  "orderChangeExtendDetail" : {
+    "uuid" : "C97C37CB-AD6D-4A04-965E-2B657613D50D",
+    "customizeFlag" : "2",
+    "orderQuantity" : 0,
+    "standardPrice" : 0,
+    "saleDiscountRate" : 0,
+    "salePrice" : 0,
+    "discountRate" : 0,
+    "orderPrice" : 0,
+    "originalOrderAmount" : 0,
+    "originalOrderAmountTax" : 0,
+    "standardAmount" : 0,
+    "discountAmount" : 0,
+    "promotionDiscountRate" : 0,
+    "promotionPrice" : 0,
+    "specialPrice" : 0
+  },
+  "orderExtendDetail2" : {
+    "uuid" : "7327533c-644b-46e5-b3b2-99adc10eec50"
+  },
+  "item" : {
+    "uuid" : "99567A01-584C-4B6C-A1BB-A2D4B23A81B2",
+    "release" : "2",
+    "status" : "1",
+    "confirm" : "2",
+    "bulk" : 0,
+    "weight" : 0,
+    "length" : 0,
+    "wide" : 0,
+    "high" : 0,
+    "customizationFlag" : "Y",
+    "customizationColorFlag" : "Y",
+    "customizationGeneralFlag" : "Y",
+    "stopProductionFlag" : "N",
+    "inventoryQuantity" : 0,
+    "suggestPrice" : 0,
+    "marketPrice" : 0,
+    "discountPrice" : 0,
+    "lowestPrice" : 0,
+    "highestPrice" : 0,
+    "costPrice" : 0,
+    "assemblingFlag" : "0",
+    "purchaseType" : "1",
+    "eshopType" : "1",
+    "unitConversionRate" : 0,
+    "stopSaleFlag" : "N"
+  },
+  "itemCustom" : {
+    "uuid" : "B11DE878-4B39-4ACA-9474-74930AD0107C",
+    "release" : "2",
+    "status" : "1",
+    "confirm" : "2",
+    "type" : "1",
+    "style" : "1",
+    "astrict" : "3",
+    "appDisplay" : "2",
+    "appChoose" : "1",
+    "customFlag" : "2",
+    "referenceFlag" : "0"
+  },
+  "information" : "[\"CA051A8B-630F-4CDB-8DD3-86F39DE9D8E0\"]"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2016-08-29 17:12:56 +00:00
+</div>
+</div>
+</body>
+</html>

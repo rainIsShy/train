@@ -1,0 +1,57 @@
+<md-dialog class="prod">
+    <div class="prod-item quick-view" layout-margin layout-padding style="padding-bottom: 80px;min-width: 350px;">
+        <div layout="row">
+            <div flex="50">
+                <div image-slider photos="pics" style="padding-top: 8px; height: 250px;"></div>
+            </div>
+            <div flex="50">
+                <div layout="row" layout-margin>
+                    <div flex="45">
+                        <div class="name">商品名称:</div>
+                        <div class="value">{{production.name}}</div>
+
+                        <div class="name">商品编号:</div>
+                        <div class="value">{{production.no}}</div>
+
+                        <div class="name">商品品牌:</div>
+                        <div class="value">{{production.brand.name}}</div>
+
+                        <div class="name">商品规格:</div>
+                        <div class="value">{{production.standard}}</div>
+
+                        <div class="name">颜色:</div>
+                        <div class="value">{{production.color}}</div>
+                    </div>
+                    <div flex="45">
+                        <div class="name">商品单价:</div>
+                        <div class="value">{{production.marketPrice}}</div>
+
+                        <div class="name" ng-if="production.type == 1">商品包数:</div>
+                        <div class="value" ng-if="production.type == 1">{{bomsLength}}</div>
+
+                        <div class="name">商品外径:</div>
+                        <div class="value">{{production.diameter}}</div>
+
+                        <div class="name">商品重量:</div>
+                        <div class="value">{{production.weight}}</div>
+
+                        <div class="name">能否定制:</div>
+                        <div class="value">{{production.customizationFlag == 'Y' ? '可定制' : '不可定制'}}</div>
+                    </div>
+                </div>
+                <div layout="row" layout-margin>
+                    <div flex="100" ng-if="production.type == 1">
+                        <div class="name">包件(编号/名称/能否定制):</div>
+                        <div class="value" ng-repeat="bom in boms.content">
+                            <div class="value">{{bom.item.no}} / {{bom.item.name}} / {{bom.item.customizationFlag == 'Y' ? '可定制' : '不可定制'}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <md-button style="float: right;" ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;关闭</md-button>
+    </div>
+</md-dialog>

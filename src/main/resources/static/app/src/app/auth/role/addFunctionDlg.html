@@ -1,0 +1,24 @@
+<md-dialog style="padding: 30px;opacity: 1;">
+    <md-content>
+        <div layout="row">
+            <form name="selectedDataForm" novalidate>
+
+                <md-input-container>
+                    <label>职能</label>
+                    <md-select ng-model="selectedFunction.uuid">
+                        <md-option ng-repeat="func in allFunctions" value="{{func.uuid}}">
+                            {{func.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+
+                <div layout="row">
+                    <md-button ng-click="hideDlg()" ng-disabled="selectedDataForm.$invalid">
+                        <i class="fa fa-check"></i>&nbsp;确定
+                    </md-button>
+                    <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+                </div>
+            </form>
+        </div>
+    </md-content>
+</md-dialog>

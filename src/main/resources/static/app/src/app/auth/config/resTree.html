@@ -1,0 +1,25 @@
+<script type="text/ng-template" id="resTree.html">
+    <div ui-tree-handle class="tree-node tree-node-content" ng-click="toggleTreeNode(this, node)" ng-class="selectedTreeNode && selectedTreeNode.uuid == node.uuid ? 'highlight':'' ">
+        <ng-md-icon ng-if="collapsed && node.nodes.length > 0" icon="chevron_right"
+                    ng-click="toggle(this)"></ng-md-icon>
+        <ng-md-icon ng-if="!collapsed && node.nodes.length > 0" icon="expand_more" ng-click="toggle(this)"></ng-md-icon>
+        <span ng-if="node.nodes.length == 0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <span>
+            <md-checkbox ng-disabled="!isEditing" style="display: inline;" ng-click="resTreeCheckBoxHandler(node)" aria-label="checkbox"
+                         ng-model="node.checked"></md-checkbox>
+            <span>{{node.name}}</span>
+        </span>
+    </div>
+    <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
+        <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'resTree.html'">
+        </li>
+    </ol>
+</script>
+<div class="res-tree-wrapper">
+    <span class="res-tree">资源树</span>
+</div>
+<div ui-tree data-drag-enabled="false">
+    <ol ui-tree-nodes="" ng-model="resTree" id="tree-root">
+        <li ng-repeat="node in resTree" ui-tree-node ng-include="'resTree.html'" collapsed="true"></li>
+    </ol>
+</div>

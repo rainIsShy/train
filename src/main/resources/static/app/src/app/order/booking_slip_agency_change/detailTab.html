@@ -1,0 +1,76 @@
+<div layout="row" layout-wrap style="margin-top: 5px;">
+    <div flex="100" ng-repeat="detail in selectedItem.detailList | orderBy:'salesOrderDetail.no'" ng-click=""
+         class="prod-item"
+         style="position: relative;padding-bottom: 0px; min-height: 200px;margin-top: 10px;">
+        <div layout="row" class="height: 100%;">
+            <div flex="25">
+                <img style="max-height: 180px;" ng-src="app/img/item.jpeg">
+            </div>
+            <div flex="25">
+                <div layout-padding>项次: <span>{{detail.salesOrderDetail.no}}</span></div>
+                <div layout-padding>品名: <span>{{detail.item.name}}</span></div>
+                <div layout-padding>规格: <span>{{detail.item.standard}}</span></div>
+                <div layout-padding>品牌: <span>{{detail.item.brand.no}}</span></div>
+                <div layout-padding>品牌名称: <span>{{detail.item.brand.name}}</span></div>
+                <div layout-padding>是否定制: <span>{{CUSTOMIZE_FLAG[detail.customizeFlag].name}}</span></div>
+                <div layout-padding>商品属性: <span>{{detail.itemAttribute}}</span></div>
+                <div layout-padding>销售类型: <span>{{detail.saleType.name}}</span></div>
+                <div layout-padding>订单数量: <span>{{detail.orderQuantity}}</span></div>
+                <div layout-padding>出货数量: <span>{{detail.transferOrderQuantity}}</span></div>
+                <div layout-padding>状态码: <span>{{STATUS[detail.status].name}}</span></div>
+            </div>
+            <div flex="25">
+                <div layout-padding>欠货数量: <span>{{detail.untransferOrderQuantity}}</span></div>
+                <div layout-padding>销售单位: <span>{{detail.item.unit}}</span></div>
+                <div layout-padding>标准价: <span>{{detail.standardPrice}}</span></div>
+                <div layout-padding>最低出货折扣率: <span>{{detail.saleDiscountRate}}</span></div>
+                <div layout-padding>最低出货价: <span>{{detail.salePrice}}</span></div>
+                <div layout-padding>特价单价: <span>{{detail.specialPrice}}</span></div>
+                <div layout-padding>订单折扣率: <span>{{detail.discountRate}}</span></div>
+                <div layout-padding>订单单价: <span>{{detail.orderPrice}}</span></div>
+                <div layout-padding>含税金额: <span>￥{{detail.originalOrderAmount}}</span></div>
+                <div layout-padding>税后金额: <span>￥{{detail.originalOrderAmountTax}}</span></div>
+                <div layout-padding>审核码: <span>{{AUDIT[detail.confirm].name}}</span></div>
+            </div>
+            <div flex="25">
+                <div layout-padding>促销折扣率: <span>{{detail.promotionDiscountRate}}</span></div>
+                <div layout-padding>促销单价: <span>{{detail.promotionPrice}}</span></div>
+                <div layout-padding>成交价格折扣率: <span>{{detail.saleDiscountRate}}</span></div>
+                <div layout-padding>来源抛转流水号: <span>{{detail.orderTransferNo}}</span></div>
+                <div layout-padding>销售单单号: <span>{{detail.psoOrderMstNo}}</span></div>
+                <!--<div layout-padding>来源单身项次: <span>{{detail.psoOrderDtlNo}}</span></div>-->
+                <div layout-padding>送货日期: <span>{{detail.deliverDate | date:'yyyy-MM-dd'}}</span></div>
+                <div layout-padding>原始送货日期:<span>{{detail.originalDeliverDate | date:'yyyy-MM-dd'}}</span></div>
+                <div layout-padding>备注: <span>{{detail.remark}}</span></div>
+                <div layout-padding>抛转否: <span>{{TRANSFER_PSO_FLAG[detail.transferFlag].name}}</span>
+                </div>
+                <div style="position: absolute; right: -10px; bottom: 10px;">
+                    <!--ng-show="ui_status != UI_STATUS.VIEW_UI_STATUS">-->
+                    <!--<md-button class="md-button close-btn" aria-label="More"
+                               ng-click="toggleDetailMorePanelAction(detail)">
+                        查看更多...
+                    </md-button>
+                    <md-button class="md-button close-btn" aria-label="More"
+                               ng-click="deleteDetailAction(detail)">
+                        <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>
+                        删除
+                    </md-button>-->
+                    <!--<md-button class="md-button close-btn" aria-label="More"
+                               ng-click="showDetailEditor(detail)">
+                        <ng-md-icon icon="edit" size="20"></ng-md-icon>
+                        编辑
+                    </md-button>-->
+                </div>
+            </div>
+            <!-- detail panel -->
+            <!--<div layout="row" ng-show="detail.showMorePanel">
+                <div layout-margin>Have more stuff here....</div>
+            </div>-->
+            <md-divider style="margin-top: 3px"></md-divider>
+        </div>
+        <!--<div flex="100" class="add-new" style="margin: 10px 0 0 0;"
+             ng-click="preAddItemAction({}, 'PSO_ORDER_DTL', '新增订单')">
+            <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
+        </div>-->
+    </div>
+</div>

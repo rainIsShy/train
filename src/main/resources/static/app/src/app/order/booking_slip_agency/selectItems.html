@@ -1,0 +1,150 @@
+<md-dialog style="padding: 30px;min-width: 400px; max-height:700px;">
+    <md-content >
+        <div flex layout="column">
+            <div layout="row">
+
+                <div layout="column" flex="45">
+                    <div style=" padding: 0px 0px 15px 0px;">第一步：请选择商品</div>
+                    <form name="searchData" novalidate="">
+                        <div layout="row">
+
+                            <md-input-container flex>
+                                <label>商品编号</label>
+                                <input name="no" type="text" ng-model="searchNo" md-maxlength="20">
+                            </md-input-container>
+                            <md-input-container flex>
+                                <label>商品名称</label>
+                                <input name="no" type="text" ng-model="searchName" md-maxlength="20">
+                            </md-input-container>
+                            <md-button ng-click="refreshData()" ng-disabled="searchData.$invalid" style="padding-top: 20px;">
+                                <i class="fa fa-search"></i>
+                            </md-button>
+                        </div>
+                        <md-list-item class="md-2-line" ng-repeat="data in allData.content" ng-click="selectData(data)">
+                            <div class="md-list-item-text">
+                                <h3> {{ data.no }} | {{data.name }} </h3>
+                            </div>
+                            <md-divider ></md-divider>
+                        </md-list-item>
+                    </form>
+                    <div pagination option="pageOption" callback="refreshData()"></div>
+                </div>
+                <div flex="5" layout="column"></div>
+                <div layout="column" flex="25">
+                    <div style="  padding: 0px 0px 15px 0px;">第二步：请确认已选择的商品</div>
+                    <md-input-container>
+                        <label class="label">品号：</label>
+                        <input type="text" ng-model="addOrderDetail.item.no" disabled>
+                    </md-input-container>
+                    <md-input-container>
+                        <label class="label">品名：</label>
+                        <input type="text" ng-model="addOrderDetail.item.name" disabled>
+                    </md-input-container>
+                    <md-input-container>
+                        <label class="label">品牌编号：</label>
+                        <input type="text" ng-model="addOrderDetail.item.brand.no" disabled>
+                    </md-input-container>
+                    <md-input-container>
+                        <label class="label">品牌名称：</label>
+                        <input type="text" ng-model="addOrderDetail.item.brand.name" disabled>
+                    </md-input-container>
+                    <md-input-container>
+                        <label class="label">标准价：</label>
+                        <input type="text" ng-model="addOrderDetail.item.standardPrice" disabled>
+                    </md-input-container>
+                    <md-input-container>
+                        <label class="label">最低出货折扣率：</label>
+                        <input type="text" ng-model="addOrderDetail.item.saleDiscountRate" disabled>
+                    </md-input-container>
+                    <md-input-container>
+                        <label class="label">最低出货价：</label>
+                        <input type="text" ng-model="addOrderDetail.item.salePrice" disabled>
+                    </md-input-container>
+                </div>
+                <div layout="column" flex="25">
+                    <div style="  padding: 0px 0px 15px 0px;">第三步：请输入订单信息</div>
+
+                    <md-input-container  >
+                        <label class="label">数量：</label>
+                        <input type="number" ng-model="addOrderDetail.orderQuantity" string-to-number required min="1"
+                               step="1"
+                               ng-change="changeOrderQuantity()">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label class="label">订单单价</label>
+                        <input type="number" aria-label="..." string-to-number required
+                               ng-model="addOrderDetail.originalOrderPrice" min="0" step="0.01"
+                               ng-change="changeOrderPrice()">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label class="label">税前金额</label>
+                        <input type="number" aria-label="..." string-to-number required
+                               ng-model="addOrderDetail.originalOrderAmount" min="0" step="0.01"
+                               ng-change="changeOrderAmout()">
+                    </md-input-container>
+
+
+                    <md-input-container>
+                        <label class="label">成交价格折扣率</label>
+                        <input type="number" aria-label="..." string-to-number required
+                               ng-model="addOrderDetail.discountRate" min="0" step="0.01">
+                    </md-input-container>
+
+                    <md-input-container layout="row" style=" height: 70px;">
+                    <div style=" padding: 29px 0px 0px 0px;"><label>销售类型：</label></div>
+                    <md-select placeholder="" ng-model="addOrderDetail.saleTypeUuid" class="select"
+                               ng-change="refreshUI(addOrderDetail.saleTypeUuid)">
+                        <md-option ng-selected="saleType.uuid == selectedOrderDetail.saleType.uuid"
+                                   ng-repeat="saleType in saleTypes" value="{{saleType.uuid}}">{{saleType.name}}
+                        </md-option>
+                    </md-select>
+                    </md-input-container>
+
+                    <md-input-container ng-if="specialPriceDisplay">
+                        <label class="label">特价单价：</label>
+                        <input type="number" aria-label="..." string-to-number ng-model="addOrderDetail.specialPrice"
+                               min="0" step="0.01">
+                    </md-input-container>
+
+                    <md-input-container ng-if="promotionDisplay">
+                        <label class="label">促销单价：</label>
+                        <input type="number" aria-label="..." string-to-number ng-model="addOrderDetail.promotionPrice"
+                               min="0" step="0.01">
+                    </md-input-container>
+                    <md-input-container ng-if="promotionDisplay">
+                        <label class="label">促销折扣率：</label>
+                        <input type="number" aria-label="..." string-to-number
+                               ng-model="addOrderDetail.promotionDiscountRate" min="0" step="0.01">
+                    </md-input-container>
+
+
+                    <md-input-container layout="row"  style=" height: 70px;">
+                        <div class="md-input-has-value" style=" padding: 29px 0px 0px 0px;"><label>定制否：</label></div>
+                        <md-select placeholder="" ng-model="addOrderDetail.customizeFlag" class="select">
+                            <md-option value="1">是</md-option>
+                            <md-option value="2">否</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container layout="row" style=" height: 70px;">
+                        <div style=" padding: 29px 0px 0px 0px;"><label>送货日期：</label></div>
+                        <input type="date" aria-label="..." ng-model="addOrderDetail.deliverDate">
+                    </md-input-container>
+                    <md-input-container>
+                        <label class="label">备注：</label>
+                        <input type="text" aria-label="..." ng-model="addOrderDetail.remark" md-maxlength="20">
+                    </md-input-container>
+                </div>
+            </div>
+            <div layout="row">
+                <md-button ng-click="hideDlg()">
+                    <i class="fa fa-check"></i>&nbsp;确定
+                </md-button>
+                <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+            </div>
+        </div>
+
+
+    </md-content>
+</md-dialog>

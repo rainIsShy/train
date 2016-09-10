@@ -1,0 +1,36 @@
+<div layout="row" layout-wrap layout-padding class="menu">
+    <div layout="row" layout-md="column" layout-sm="column" ng-if="listFilterDisplayOption.showStatusFilterMenu">
+        <label class="label">启用状态：</label>
+        <md-select placeholder="" ng-model="listFilterOption.status" class="select">
+            <md-option ng-repeat="(key, value) in STATUS" ng-value="key">{{value.name}}</md-option>
+        </md-select>
+    </div>
+
+    <div layout="row" layout-md="column" layout-sm="column" ng-if="listFilterDisplayOption.showConfirmFilterMenu">
+        <label class="label">审核状态：</label>
+        <md-select placeholder="" ng-model="listFilterOption.confirm" class="select">
+            <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
+        </md-select>
+    </div>
+
+    <div layout="row" layout-md="column" layout-sm="column" ng-if="listFilterDisplayOption.showReleaseFilerMenu">
+        <label class="label">发布状态：</label>
+        <md-select placeholder="" ng-model="listFilterOption.release" class="select">
+            <md-option ng-repeat="(key, value) in RELEASE" ng-value="key">{{value.name}}</md-option>
+        </md-select>
+    </div>
+
+    <div layout="row" layout-md="column" layout-sm="column" ng-if="listFilterDisplayOption.showProdTypeFilterMenu">
+        <label class="label">商品类型：</label>
+        <md-select placeholder="" ng-model="listFilterOption.prodType" class="select">
+            <md-option ng-repeat="(key, value) in PROD_TYPE" ng-value="key">{{value.name}}</md-option>
+        </md-select>
+    </div>
+
+    <div layout="row" layout-md="column" layout-sm="column" ng-if="listFilterDisplayOption.showStopProdFilterMenu">
+        <label class="label">是否停产：</label>
+        <md-select placeholder="" ng-model="listFilterOption.stopProd" class="select">
+            <md-option ng-repeat="(key, value) in STOP_PRODUCTION" ng-value="key">{{value.name}}</md-option>
+        </md-select>
+    </div>
+</div>

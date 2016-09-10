@@ -1,0 +1,102 @@
+<div flex layout="row">
+    <div flex="25" layout="column">
+        <md-input-container>
+            <label class="md-input-has-value">渠道：</label>
+            <input type="text" ng-model="selectedItem.channel.name" readonly>
+            <md-button ng-click="openChannelDlg()" ng-disabled="searchEmployee.$invalid"
+                       class="md-icon-button" style="position:absolute;right:0;bottom:20px;">
+                <i class="fa fa-search"></i>
+            </md-button>
+        </md-input-container>
+        <md-input-container>
+            <label class="md-input-has-value">平台：</label>
+            <input type="text" ng-model="selectedItem.channel.mall.name" readonly>
+            <!--                                            <a href ng-click="openMallDlg()">选择平台</a>-->
+        </md-input-container>
+        <md-input-container>
+            <label class="label">订单号：</label>
+            <input type="text" ng-model="selectedItem.no" required disabled>
+        </md-input-container>
+        <md-input-container>
+            <label>订单类型：</label>
+            <md-select placeholder="" ng-model="selectedItem.orderFlag" disabled>
+                <md-option ng-repeat="(key, value) in ORDER_FLAG" ng-value="key">
+                    {{value.name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+    </div>
+    <div flex="25" layout="column">
+        <md-input-container>
+            <label class="label">账号ID：</label>
+            <input type="text" ng-model="selectedItem.userId" disabled>
+        </md-input-container>
+        <md-input-container>
+            <label class="label">买家昵称：</label>
+            <input type="text" ng-model="selectedItem.buyerNick" disabled>
+        </md-input-container>
+        <md-input-container>
+            <label class="md-input-has-value">收货人：</label>
+            <input type="text"
+                   ng-model="selectedItem.receiveName">
+        </md-input-container>
+        <md-input-container>
+            <label class="label">联系人电话：</label>
+            <input type="text" ng-model="selectedItem.receivePhone">
+        </md-input-container>
+    </div>
+    <div flex layout="column">
+        <md-input-container>
+            <label class="md-input-has-value">送货方式：</label>
+            <input type="text" ng-model="selectedItem.deliverWay.name" readonly required>
+            <md-button ng-click="openDelivWayDlg()" ng-disabled="searchEmployee.$invalid"
+                       class="md-icon-button" style="position:absolute;right:0;bottom:20px;">
+                <i class="fa fa-search"></i>
+            </md-button>
+        </md-input-container>
+        <md-input-container>
+            <label class="label">送货区域：</label>
+            <input type="text" ng-model="selectedItem.receiveDistrict.name" readonly>
+            <md-button ng-click="openAreaDlg()" ng-disabled="searchEmployee.$invalid"
+                       class="md-icon-button" style="position:absolute;right:0;bottom:20px;">
+                <i class="fa fa-search"></i>
+            </md-button>
+        </md-input-container>
+        <md-input-container>
+            <label class="label">合计金额：</label>
+            <input type="number" ng-model="selectedItem.orderAmount" required disabled>
+        </md-input-container>
+        <md-input-container>
+            <label class="label">组装费用：</label>
+            <input type="number" ng-model="selectedItem.assembleAmount">
+        </md-input-container>
+    </div>
+    <div flex layout="column">
+        <md-input-container>
+            <label class="label">客服人员：</label>
+            <input type="text" ng-model="selectedItem.groupUser.name" readonly>
+            <md-button ng-click="openGroupUserDlg()" ng-disabled="searchEmployee.$invalid"
+                       class="md-icon-button" style="position:absolute;right:0;bottom:20px;">
+                <i class="fa fa-search"></i>
+            </md-button>
+        </md-input-container>
+        <md-input-container>
+            <label class="label">交易日期：</label>
+            <input type="date" ng-model="selectedItem.orderDate" disabled>
+        </md-input-container>
+        <md-input-container>
+            <label class="label">预计送货日期：</label>
+            <input type="date" ng-model="selectedItem.predictDeliverDate">
+        </md-input-container>
+    </div>
+</div>
+<div flex layout="row">
+    <md-input-container flex="50">
+        <label class="label">送货地址：</label>
+        <input type="text" ng-model="selectedItem.receiveAddress">
+    </md-input-container>
+    <md-input-container flex>
+        <label class="label">备注：</label>
+        <input type="text" ng-model="selectedItem.remark">
+    </md-input-container>
+</div>

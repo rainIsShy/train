@@ -1,0 +1,33 @@
+<md-content  style="overflow: scroll;">
+    <div layout="row"   layout-align="left center"  >
+        <div align="center" flex="5"  class=" table-head">项次</div>
+        <div align="center" flex="15" class=" table-head">订单编号</div>
+        <div align="center" flex="15" class=" table-head">收款日期</div>
+        <div align="center" flex="15" class=" table-head">收款金额</div>
+        <div align="center" flex="15" class=" table-head">付款方式</div>
+        <div align="center" flex="15" class=" table-head">支付凭证</div>
+    </div>
+    <div ng-repeat="receiptOrderDetail in ReceiptOrderDetailList.content"  >
+        <div  layout="row"  layout-align="left center"  >
+            <div  align="center" flex="5"  class=" table-item">{{receiptOrderDetail.no}} </div>
+            <div  align="center" flex="15" class=" table-item">{{receiptOrderDetail.orderMaster.no}} </div>
+            <div  align="center" flex="15" class=" table-item">
+                <div ng-if="receiptOrderDetail.modiDate == null">
+                    {{receiptOrderDetail.createDate}}
+                </div>
+                <div ng-if="receiptOrderDetail.modiDate != null">
+                    {{receiptOrderDetail.modiDate}}
+                </div>
+
+            </div>
+            <div  align="center" flex="15" class=" table-item">{{receiptOrderDetail.paidAmount}} </div>
+            <div  align="center" flex="15" class=" table-item">{{receiptOrderDetail.paidPayWay.name}} </div>
+            <div align="center" flex="15" class=" table-item"   >
+                <div ng-if="receiptOrderDetail.payOrder.length>0">
+                    <a href={{receiptOrderDetail.payOrder}} target="_blank"> <i class="fa fa-download"></i></a>
+                    <!--<a href={{receiptOrderDetail.payOrder}} download> <i class="fa fa-download"></i></a>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</md-content>

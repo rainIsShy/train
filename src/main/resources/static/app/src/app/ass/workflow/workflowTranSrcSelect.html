@@ -1,0 +1,29 @@
+<md-dialog style="min-width: 500px;max-height: 500px;">
+    <md-content layout="column">
+        <div>
+            <form name="search" novalidate="">
+                <div layout="row">
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancelDlg()">
+                        <ng-md-icon icon="close"></ng-md-icon>
+                    </md-button>
+                </div>
+                <div style="margin: 0px 30px;">
+                    <div layout="row">
+                        <md-input-container flex>
+                            <label>{{desc}}</label>
+                            <input name="no" type="text" ng-model="searchKeyword" md-maxlength="20">
+                        </md-input-container>
+                    </div>
+                    <md-list-item class="md-2-line" ng-repeat="data in dataList" ng-click="select(data)">
+                        <div class="md-list-item-text">
+                            <h3> {{data.no}}&nbsp;|&nbsp;{{ data.name }} </h3>
+                        </div>
+                        <md-divider></md-divider>
+                    </md-list-item>
+                    <div pagination option="pageOption" callback="queryAction()"></div>
+                </div>
+            </form>
+        </div>
+    </md-content>
+</md-dialog>

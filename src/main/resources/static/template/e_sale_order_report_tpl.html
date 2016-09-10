@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style type="text/css">
+        @font-face {
+            font-family:SimSun, 'Microsoft Yahei', '微软雅黑';
+            -fs-pdf-font-embed: embed;
+            -fs-pdf-font-encoding: Identity-H;
+        }
+
+        /*break before h1*/
+        h1 {
+            page-break-before: always;
+        }
+
+        /*Don't break after header*/
+        h1, h2, h3, h4, h5 {
+            page-break-after: avoid;
+        }
+
+        table {
+            page-break-inside: avoid;
+            border:1px solid black;border-collapse:collapse;
+        }
+
+        td {
+            border:1px solid black;
+            padding: 5px;
+        }
+
+        * {
+            font-family:SimSun, 'Microsoft Yahei', '微软雅黑';
+            font-size: 14px;
+        }
+
+        h2 {
+            font-size: 24px;
+        }
+
+        .empty-space {
+            display: inline-block;
+            width: 20px;
+        }
+
+        .under-line {
+            text-decoration: underline;
+        }
+
+        .center {
+            text-align: center;
+        }
+        .page-info {
+            padding-left: 15px;
+        }
+        .page-info:after {
+            content: counter(page) "/" counter(pages);
+        }
+    </style>
+    <title></title>
+</head>
+<body>
+
+<h2 class="center">订货单</h2>
+<h4 class="center">基本信息</h4>
+<hr/>
+<div style="display: table;width: 100%;table-layout: fixed; word-wrap: break-word;">
+    <div style="display: table-cell; width: 33.33%;">
+        <div>销售平台：{{EPS_ORDER_MST.channel.name}}</div>
+        <div>客户姓名：{{EPS_ORDER_MST.receiveName}}</div>
+        <div>要求物流公司：</div>
+        <div>客户ID：{{EPS_ORDER_MST.buyerNick}}</div>
+    </div>
+    <div style="display: table-cell; width: 33.33%;">
+        <div>订单编号：{{EPS_ORDER_MST.no}}</div>
+        <div>省份/城市：{{EPS_ORDER_MST.receiveDistrict.name}}</div>
+        <div>要求物流点：</div>
+        <div>手机：{{EPS_ORDER_MST.receivePhone}}</div>
+    </div>
+    <div style="display: table-cell; width: 33.33%;">
+        <div>购买日期：{{EPS_ORDER_MST.orderDate}}</div>
+        <div>服务内容：{{EPS_ORDER_MST.deliverWay.name}}</div>
+        <div>要求发货时间：{{EPS_ORDER_MST.predictDeliverDate}}</div>
+        <div>是否需要核销：</div>
+    </div>
+</div>
+<div>收货地点：{{EPS_ORDER_MST.receiveAddress}}</div>
+
+<h4 class="center">产品信息</h4>
+<table style="width: 100%; border: 1px solid black;">
+    <thead>
+    <tr>
+        <td>序号</td>
+        <td>产品型号</td>
+        <td>名称</td>
+        <td>颜色</td>
+        <td>数量</td>
+        <td>备注</td>
+    </tr>
+    </thead>
+    <tbody>
+    {{#EPS_ORDER_EXT_DTL}}
+    <tr style="border: 1px solid black;" >
+        <td>{{no}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.standard}}</td>
+        <td>{{item.color}}</td>
+        <td>{{orderQuantity}}</td>
+        <td>{{remark}}</td>
+    </tr>
+    {{/EPS_ORDER_EXT_DTL}}
+    <tr>
+        <td colspan="6" class="center" style="padding: 30px;">加急发货 [ ]</td>
+    </tr>
+    <tr>
+        <td colspan="6">下单金额：{{EPS_ORDER_MST.orderAmount}}</td>
+    </tr>
+    <tr>
+        <td colspan="6">下单人：{{EPS_ORDER_MST.groupUser.name}}</td>
+    </tr>
+    <tr>
+        <td colspan="6">电话：{{orderAmount}}</td>
+    </tr>
+    <tr>
+        <td colspan="6">下单日期：{{EPS_ORDER_MST.createDate}}</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

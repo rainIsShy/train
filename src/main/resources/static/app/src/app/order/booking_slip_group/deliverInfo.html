@@ -1,0 +1,38 @@
+<md-content  style="overflow: scroll;">
+    <div layout="row"   layout-align="left center"  >
+        <div align="center" flex="5"  >操作</div>
+        <div align="center" flex="5"  >项次</div>
+        <div align="center" flex="15">套件品名</div>
+        <div align="center" flex="15">品名</div>
+        <div align="center" flex="15">定制</div>
+        <div align="center" flex="15">商品属性</div>
+        <div align="center" flex="15">商品定制描述</div>
+        <div align="center" flex="15">定制备注</div>
+        <div align="center" flex="15">订单数量</div>
+        <div align="center" flex="15">出货数量</div>
+        <div align="center" flex="15">欠货数量</div>
+        <div align="center" flex="15">抛转流水号</div>
+        <div align="center" flex="15">销售单单号</div>
+        <div align="center" flex="15">销售单出货项数</div>
+        <div align="center" flex="15">备注</div>
+    </div>
+    <div ng-repeat="prodInfo in bookingSlipGroupList.content"  >
+        <div  layout="row"  layout-align="left center"  >
+            <div  align="center" flex="5" class="verticalLine table-item" item-operation-menu> </div>
+            <div  align="center" flex="5" class="verticalLine table-item">1000 </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.color}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.color}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+            <div  align="center" flex="15" class="verticalLine table-item">{{prodInfo.name}} </div>
+        </div>
+    </div>
+</md-content>

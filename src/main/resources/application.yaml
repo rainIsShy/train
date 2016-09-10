@@ -1,0 +1,58 @@
+banner:
+  location: banner.txt
+
+spring:
+  profiles.active: default
+
+  resources:
+    static-locations: file:/root/i1-server/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+server:
+  port: 8080
+
+
+logging:
+  file: /root/web-client-v1/log/web-client-v1.log
+  # LEVEL: TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF
+  level:
+    com.bq.i1: INFO
+
+i1:
+  adapter:
+    url:
+  tiptop-adapter:
+    url: http://localhost:8083
+  tmall-adapter:
+    url:
+
+
+
+--- # default prfile
+spring:
+  profiles: default
+
+
+--- # SIT
+banner:
+  location: banner-sit.txt
+
+i1:
+  i1-adapter:
+    url: http://project.benchmarkchina.com:10813
+  tmall-adapter:
+    url: http://project.benchmarkchina.com:10013
+
+
+--- # Kent's Dev
+
+spring:
+
+  profiles: kent
+
+i1:
+  i1-server:
+    url: http://localhost:8081
+  i1-adapter:
+    url: http://localhost:8082
+
+
+

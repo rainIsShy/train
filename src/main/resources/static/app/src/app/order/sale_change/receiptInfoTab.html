@@ -1,0 +1,23 @@
+<div layout="row" layout-wrap style="margin-top: 5px;">
+    <div flex="100" ng-repeat="receiptOrderDetail in receiptOrderDetailList.content" ng-click=""
+         class="prod-item"
+         style="position: relative;padding-bottom: 0px; min-height: 200px;margin-top: 10px;">
+        <div layout="row" class="height: 100%;">
+            <div flex="50">
+                <div layout-padding>项次： <span>{{receiptOrderDetail.no}}</span></div>
+                <div layout-padding>订单编号： <span>{{receiptOrderDetail.orderMaster.no}}</span>
+                </div>
+                <div layout-padding>收款日期： <span ng-if="receiptOrderDetail.modiDate == null">{{receiptOrderDetail.createDate}}</span>
+                    <span ng-if="receiptOrderDetail.modiDate != null">{{receiptOrderDetail.modiDate}}</span></div>
+            </div>
+            <div flex="50" style="margin-bottom: 45px;">
+                <div layout-padding>收款金额： <span>{{receiptOrderDetail.paidAmount}}</span></div>
+                <div layout-padding>付款方式： <span>{{receiptOrderDetail.paidPayWay.name}}</span></div>
+                <div layout-padding>支付凭证： <span ng-if="receiptOrderDetail.payOrder.length>0"><a
+                        href={{receiptOrderDetail.payOrder}} target="_blank"> <i class="fa fa-download"></i></a></span>
+                </div>
+            </div>
+        </div>
+        <md-divider style="margin-top: 3px"></md-divider>
+    </div>
+</div>

@@ -1,0 +1,450 @@
+<div class="main-panel">
+    <div ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS">
+        <div layout="row" class="top-title">
+            <div flex="70" hide-sm hide-md class="left-title" ng-show="selectedItem" style="position: relative;">
+                <!--<md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
+                           ng-click="editItemAction(selectedItem, 'EPS_JD_TRADE_MST', '订单: ' + selectedItem.orderId)">
+                    <ng-md-icon icon="edit"></ng-md-icon>
+                </md-button>-->
+                <md-menu>
+                    <md-button class="md-icon-button close-btn" aria-label="More" style="float: left;margin-left: 36px;"
+                               ng-click="$mdOpenMenu($event)">
+                        <ng-md-icon icon="menu"></ng-md-icon>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="confirmClickAction($event, selectedItem)"
+                                       ng-if="MenuDisplayOption['107-throw'].display
+                   && (menuAuthDataMap[MenuDisplayOption['107-throw'].uuid]
+                   || isAdmin() || !MenuDisplayOption['107-throw'].uuid)"
+                                       ng-disabled="selectedItem.confirm == '2'">
+                                <ng-md-icon icon="visibility"></ng-md-icon>
+                                审核
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="cancelConfirmClickAction($event, selectedItem)"
+                                       ng-if="MenuDisplayOption['108-cancelThrow'].display
+                   && (menuAuthDataMap[MenuDisplayOption['108-cancelThrow'].uuid]
+                   || isAdmin() || !MenuDisplayOption['108-cancelThrow'].uuid)"
+                                       ng-disabled="selectedItem.confirm != '2'">
+                                <ng-md-icon icon="visibility_off"></ng-md-icon>
+                                取消审核
+                            </md-button>
+                        </md-menu-item>
+                        <!--<md-menu-item>
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="statusClickAction($event, selectedItem)">
+                                <ng-md-icon icon="lock_open"></ng-md-icon>
+                                启用
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="releaseClickAction($event, selectedItem)">
+                                <ng-md-icon icon="send"></ng-md-icon>
+                                发布
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="deleteClickAction($event, selectedItem)">
+                                <ng-md-icon icon="delete"></ng-md-icon>
+                                删除
+                            </md-button>
+                        </md-menu-item>-->
+                    </md-menu-content>
+                </md-menu>
+                <span>订单详细信息</span>
+                <md-button class="md-icon-button close-btn float-right" aria-label="More"
+                           ng-click="selectedItem = null">
+                    <ng-md-icon icon="chevron_left"></ng-md-icon>
+                </md-button>
+            </div>
+            <div flex class="right-title">
+                <!--<md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
+                           ng-click="preAddItemAction({}, 'EPS_JD_TRADE_MST')">
+                    <ng-md-icon icon="add"></ng-md-icon>
+                </md-button>-->
+                <span>订单列表</span>
+                <md-menu>
+                    <md-button class="md-icon-button close-btn float-right" aria-label="More"
+                               ng-click="$mdOpenMenu($event)">
+                        <ng-md-icon icon="menu"></ng-md-icon>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More" ng-click="confirmAllClickAction($event)"
+                                       ng-if="MenuDisplayOption['403-batchThrow'].display
+                   && (menuAuthDataMap[MenuDisplayOption['403-batchThrow'].uuid]
+                   || isAdmin() || !MenuDisplayOption['403-batchThrow'].uuid)"
+                                       ng-disabled="disabledBatchConfirm">
+                                <ng-md-icon icon="visibility"></ng-md-icon>
+                                {{MenuDisplayOption['403-batchThrow'].name}}
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More" ng-disabled="disabledBatchCancelConfirm"
+                                       ng-if="MenuDisplayOption['405-batchSelectThrow'].display
+                   && (menuAuthDataMap[MenuDisplayOption['405-batchSelectThrow'].uuid]
+                   || isAdmin() || !MenuDisplayOption['405-batchSelectThrow'].uuid)"
+                                       ng-click="cancelConfirmAllClickAction($event)">
+                                <ng-md-icon icon="visibility_off"></ng-md-icon>
+                                {{MenuDisplayOption['405-batchSelectThrow'].name}}
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More" ng-click="mergeClickAction($event)"
+                                       ng-if="MenuDisplayOption['407-batchMerge'].display
+                   && (menuAuthDataMap[MenuDisplayOption['407-batchMerge'].uuid]
+                   || isAdmin() || !MenuDisplayOption['407-batchMerge'].uuid)"
+                                       ng-disabled="disableMergeButton">
+                                <ng-md-icon icon="call_merge"></ng-md-icon>
+                                {{MenuDisplayOption['407-batchMerge'].name}}
+                            </md-button>
+                        </md-menu-item>
+                        <!--<md-menu-item>
+                            <md-button class="md-button" aria-label="More" ng-click="statusAllClickAction($event)">
+                                <ng-md-icon icon="lock_open"></ng-md-icon>
+                                批量启用
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More" ng-click="releaseAllClickAction($event)">
+                                <ng-md-icon icon="send"></ng-md-icon>
+                                批量发布
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More" ng-click="deleteAllClickAction($event)">
+                                <ng-md-icon icon="delete"></ng-md-icon>
+                                批量删除
+                            </md-button>
+                        </md-menu-item>-->
+                    </md-menu-content>
+                </md-menu>
+            </div>
+        </div>
+
+        <div layout="row" class="main-body border">
+            <div flex="70" hide-sm hide-md layout="column" class="left-body" ng-show="selectedItem">
+                <div flex="100" layout-padding>
+                    <div layout="row" layout-padding style="font-size: 20px;padding-top: 2px; font-weight: bold;">
+                        <span flex>订单编号: {{selectedItem.orderId}}</span>
+                        <span flex class="right-align">￥{{selectedItem.orderTotalPrice}}</span>
+                    </div>
+                    <md-divider></md-divider>
+                    <div layout="row" layout-wrap layout-margin>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">品牌店</span>
+                            <span class="item-content">{{selectedItem.venderId}}</span>
+                        </span>
+                        <span flex=50" flex-sm="100" layout-padding>
+                            <span class="item-name">订单编号</span>
+                            <span class="item-content">{{selectedItem.orderId}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">付款日期</span>
+                            <span class="item-content">{{selectedItem.paymentConfirmTime | date:'yyyy-MM-dd HH:mm'}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">买家用户名</span>
+                            <span class="item-content">{{selectedItem.pin}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">订单状态</span>
+                            <span class="item-content">{{selectedItem.orderStateRemark}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">贷款金额</span>
+                            <span class="item-content">￥{{selectedItem.orderSellerPrice}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">收货人</span>
+                            <span class="item-content">{{selectedItem.fullname}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">联系电话</span>
+                            <span class="item-content">{{selectedItem.mobile}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">送货地址</span>
+                            <span class="item-content">{{selectedItem.fullAddress}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">备注</span>
+                            <span class="item-content">{{selectedItem.venderRemark}}</span>
+                        </span>
+                    </div>
+
+                    <md-tabs md-dynamic-height md-border-bottom style="padding-top: 30px;">
+                        <md-tab label="产品信息">
+                            <div layout="row" layout-wrap style="margin-top: 20px;">
+                                <div flex="100" ng-repeat="detail in selectedItem.detailList" ng-click=""
+                                     class="prod-item"
+                                     style="position: relative;padding-bottom: 0px; min-height: 200px;margin-top: 20px;">
+                                    <div layout="row" class="height: 100%;">
+                                        <div flex="33">
+                                            <img style="max-height: 180px;" ng-src="app/img/item.jpeg">
+                                        </div>
+                                        <div flex="33">
+                                            <div layout-padding>商品 : <span>{{detail.skuId}}</span></div>
+                                            <div layout-padding>商品编码 : <span>{{detail.outerSkuId}}</span></div>
+                                            <div layout-padding>商品属性 : <span>{{detail.skuName}}</span></div>
+                                            <div layout-padding>单价 : <span>￥{{detail.jdPrice}}</span></div>
+                                            <div layout-padding>数量 : <span>{{detail.itemTotal}}</span></div>
+                                        </div>
+                                        <!--<div style="position: absolute; right: -10px; bottom: 10px;">
+                                            <md-button class="md-button close-btn" aria-label="More"
+                                                       ng-click="toggleDetailMorePanelAction(detail)">
+                                                查看更多...
+                                            </md-button>
+                                            <md-button class="md-button close-btn" aria-label="More"
+                                                       ng-click="deleteDetailAction(detail)">
+                                                <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>
+                                                删除
+                                            </md-button>
+                                            <md-button class="md-button close-btn" aria-label="More"
+                                                       ng-click="editItemAction(detail, 'PSO_ORDER_DTL', '订单: ' + selectedItem.no + ' / ' + '产品信息: ' + detail.no)">
+                                                <ng-md-icon icon="edit" size="20"></ng-md-icon>
+                                                编辑
+                                            </md-button>
+                                        </div>-->
+                                    </div>
+                                    <!-- detail panel -->
+                                    <div layout="row" ng-show="detail.showMorePanel">
+                                        <div layout-margin>Have more stuff here....</div>
+                                    </div>
+                                    <md-divider style="margin-top: 5px"></md-divider>
+                                </div>
+                                <!--<div flex="100" class="add-new" style="margin: 10px 0 0 0;"
+                                     ng-click="preAddItemAction({}, 'PSO_ORDER_DTL', '新增订单')">
+                                    <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
+                                </div>-->
+                            </div>
+                        </md-tab>
+                        <!--<md-tab label="出货">
+                            ...
+                        </md-tab>-->
+                    </md-tabs>
+                </div>
+            </div>
+            <div flex class="right-body">
+                <!-- basic search-->
+                <div flex layout="row" style="position: relative" layout-align="start start">
+                    <!--<span style="position: absolute; top: 15px; left: 10px;">
+                        <md-checkbox ng-model="selectAllFlag" aria-label="Checkbox"
+                                     ng-change="selectAllAction()"></md-checkbox>
+                    </span>-->
+                    <md-input-container flex="15" ng-show="selectedItem == null" style="margin-left: 50px">
+                        <label>订单类型</label>
+                        <md-select ng-model="listFilterOption.orderFlag">
+                            <md-option ng-repeat="(key, value) in ORDER_FLAG" ng-value="key">{{value.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex="15" ng-show="selectedItem == null">
+                        <label>订单状态</label>
+                        <md-select ng-model="listFilterOption.orderState">
+                            <md-option ng-repeat="(key, value) in JINGDONG_STATUS" ng-value="key">{{value.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex="15" ng-show="selectedItem == null">
+                        <label>审核状态</label>
+                        <md-select ng-model="listFilterOption.confirm">
+                            <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex="10" ng-show="selectedItem == null">
+                        <label>员工号：</label>
+                        <input ng-model="listFilterOption.employeeNo"/>
+                    </md-input-container>
+                    <md-button flex="5" ng-click="openEmployeeDlg()" style="padding-top: 10px;" ng-disabled="searchEmployee.$invalid" class="md-icon-button">
+                        <i class="fa fa-search"></i>
+                    </md-button>
+                    <md-input-container flex="15">
+                        <label>备注：</label>
+                        <input ng-model="listFilterOption.venderRemark"/>
+                    </md-input-container>
+                    <md-input-container flex="15">
+                        <label>销售单号：</label>
+                        <input ng-model="listFilterOption.orderId"/>
+                    </md-input-container>
+                    <span style="padding-top: 10px;" ng-show="selectedItem == null">
+                        <md-button class="md-icon-button" aria-label="Eat cake" ng-click="showAdvancedSearchAction()">
+                            <ng-md-icon icon="expand_more" ng-show="!displayAdvancedSearPanel"></ng-md-icon>
+                            <ng-md-icon icon="expand_less" ng-show="displayAdvancedSearPanel"></ng-md-icon>
+                        </md-button>
+                    </span>
+                </div>
+                <!-- advanced search-->
+                <div layout="column" ng-show="displayAdvancedSearPanel">
+                    <!-- fill more searching here.-->
+                    <div layout="row">
+                        <md-input-container flex="15" style="margin-left: 50px;">
+                            <label class="label">起始下单日期：</label>
+                            <input type="date" ng-model="listFilterOption.startOrderDate">
+                        </md-input-container>
+                        <md-input-container flex="15">
+                            <label class="label">结束下单日期：</label>
+                            <input type="date" ng-model="listFilterOption.endOrderDate">
+                        </md-input-container>
+                        <md-input-container flex="15">
+                            <label class="label">起始付款日期：</label>
+                            <input type="date" ng-model="listFilterOption.startPaymentConfirmDate">
+                        </md-input-container>
+                        <md-input-container flex="15">
+                            <label class="label">结束付款日期：</label>
+                            <input type="date" ng-model="listFilterOption.endPaymentConfirmDate">
+                        </md-input-container>
+                        <md-input-container flex="35">
+                            <label>买家用户名：</label>
+                            <input ng-model="listFilterOption.pin"/>
+                        </md-input-container>
+                    </div>
+                </div>
+                <!-- status panel-->
+                <div layout="row" layout-warp layout-padding layout-margin ng-show="!selectedItem"
+                     style="margin: 5px 0px 2px 0px; padding-left: 60px;background-color: whitesmoke;position: relative;height: 50px;padding-top: 15px;">
+                    <span style="position: absolute; left: 10px; top: 5px">
+                        <md-checkbox ng-model="selectAllFlag" aria-label="Checkbox"
+                                     ng-change="selectAllAction()"></md-checkbox>
+                    </span>
+                    <span flex="20">总记录数: {{pageOption.totalElements}}</span>
+                    <span flex="20">已选记录数: {{selectedItemSize}}</span>
+                    <span flex="20">汇总金额: ￥{{selectedItemAmount}}</span>
+
+                    <!--<md-menu>
+                        <md-button class="md-button close-btn" aria-label="More" ng-click="$mdOpenMenu($event)"
+                                   style="position: absolute;right: 0px;top: 0px;">
+                            <ng-md-icon icon="sort"></ng-md-icon>
+                            排序
+                        </md-button>
+                        <md-menu-content width="2">
+                            <md-menu-item>
+                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('name')">
+                                    <ng-md-icon ng-show="sortByField == 'name'" icon="play_arrow"></ng-md-icon>
+                                    按订单号
+                                </md-button>
+                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('no')">
+                                    <ng-md-icon ng-show="sortByField == 'no'" icon="play_arrow"></ng-md-icon>
+                                    按下单日期
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>-->
+                </div>
+                <div ng-repeat="item in itemList | orderBy:sortByField"
+                     ng-class="selectedItem.no == item.no ? 'selected-item':''">
+                    <div class="summary-item">
+                        <div layout="row" layout-wrap>
+                            <span style="position: absolute">
+                                <md-checkbox ng-model="item.selected" aria-label="Checkbox"
+                                             ng-click="selectItemAction($event, item)"></md-checkbox>
+                            </span>
+
+                            <div flex="100" layout="row"
+                                 style="padding-left: 50px;padding-top: 10px; font-weight: bold;">
+                                <span flex ng-click="showDetailPanelAction(item)" class="summary-item__title">{{item.orderId}}</span>
+                                <span flex class="right-align">￥{{item.orderTotalPrice}}</span>
+                            </div>
+                            <div flex="100" layout="row" style="padding-left: 50px;padding-top: 10px;font-size: 14px;"
+                                 layout-align="space-between center" ng-hide="selectedItem">
+                                <div flex layout="column" style="color:#7f8fa4">
+                                    <div flex layout="row" style="color:#7f8fa4">
+                                        <span>品牌店: <span style="font-style: italic">{{item.venderId}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                        <!--<span>订单编号: <span style="font-style: italic">{{item.orderId}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>-->
+                                        <span>付款日期: <span style="font-style: italic">{{item.paymentConfirmTime | date:'yyyy-MM-dd HH:mm'}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                        <span>买家用户名: <span style="font-style: italic">{{item.pin}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                        <span>订单状态: <span
+                                                style="font-style: italic">{{item.orderStateRemark}}</span></span>
+                                        <!--<span>贷款金额: <span
+                                                style="font-style: italic">￥{{item.orderSellerPrice}}</span></span>-->
+                                    </div>
+                                    <div flex layout="row" style="color:#7f8fa4">
+                                        <span>备注: <span style="font-style: italic">{{item.venderRemark}}</span></span>
+                                    </div>
+                                    <!--<div flex layout="row" style="color:#7f8fa4">
+                                        <span>备注: <span style="font-style: italic">{{item.venderRemark}}</span></span>
+                                    </div>
+                                    <div flex layout="row" style="color:#7f8fa4">
+                                        <span>收货人: <span style="font-style: italic">{{item.fullname}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                        <span>联系电话: <span style="font-style: italic">{{item.mobile}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                        <span>送货地址: <span style="font-style: italic">{{item.fullAddress}}</span></span>
+                                    </div>-->
+                                </div>
+                                <div layout="row" layout-align="end center">
+                                    <div ng-if="item.confirm != '2'">
+                                        <md-button class="md-fab md-mini" ng-click="confirmClickAction($event, item)"
+                                                   ng-if="MenuDisplayOption['400-throw'].display
+                   && (menuAuthDataMap[MenuDisplayOption['400-throw'].uuid]
+                   || isAdmin() || !MenuDisplayOption['400-throw'].uuid)">
+                                            <span>审核</span>
+                                        </md-button>
+                                    </div>
+                                    <div ng-if="item.confirm == '2'">
+                                        <md-button class="md-fab md-mini"
+                                                   ng-click="cancelConfirmClickAction($event, item)" ng-if="MenuDisplayOption['401-cancelThrow'].display
+                   && (menuAuthDataMap[MenuDisplayOption['401-cancelThrow'].uuid]
+                   || isAdmin() || !MenuDisplayOption['401-cancelThrow'].uuid)">
+                                            <span>取审</span>
+                                        </md-button>
+                                    </div>
+                                    <md-button class="md-button close-btn" aria-label="More"
+                                               ng-click="toggleMorePanelAction(item)"
+                                               style="position: relative;left: 15px;">
+                                        查看更多...
+                                    </md-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div layout="row" layout-wrap ng-show="item.showMorePanel && !selectedItem"
+                         style="font-size: 14px;">
+                        <div flex="100" ng-repeat="detail in item.detailList" style="padding: 10px 20px 0px 20px;">
+                            <md-divider></md-divider>
+                            <div layout="row" style="height: 100%;">
+                                <div flex="20">
+                                    <img style="max-height: 150px;padding-top: 10px;" ng-src="app/img/item.jpeg">
+                                </div>
+                                <div flex="40">
+                                    <div layout-padding>商品: <span>{{detail.skuId}}</span></div>
+                                    <div layout-padding>商品编码: <span>{{detail.outerSkuId}}</span></div>
+                                    <div layout-padding>商品属性: <span>{{detail.skuName}}</span></div>
+                                    <div layout-padding>单价: <span>{{detail.jdPrice}}</span></div>
+                                    <div layout-padding>数量: <span>{{detail.itemTotal}}</span></div>
+                                </div>
+                                <!--div flex="40">
+                                    <div layout-padding>单价: <span>{{detail.item.brand.name}}</span></div>
+                                    <div layout-padding>数量: <span>{{detail.item.brand.name}}</span></div>
+                                </div-->
+                            </div>
+                        </div>
+                    </div>
+                    <md-divider></md-divider>
+                </div>
+                <div pagination option="pageOption" callback="refreshList()"></div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS">
+        <div layout="row" class="top-title">
+            <div flex="100" class="left-title">
+                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="listItemAction()"
+                           style="float: left; margin-left: 36px;">
+                    <ng-md-icon icon="chevron_left"></ng-md-icon>
+                </md-button>
+                <span>{{desc}}</span>
+                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="saveItemAction()">
+                    <ng-md-icon icon="save"></ng-md-icon>
+                </md-button>
+            </div>
+        </div>
+
+        <object-editor status="status" source="source" domain="domain"></object-editor>
+    </div>
+
+</div>

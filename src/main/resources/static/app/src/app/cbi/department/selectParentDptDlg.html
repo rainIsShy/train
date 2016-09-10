@@ -1,0 +1,31 @@
+<md-dialog style="padding: 30px;min-width: 400px;max-height: 500px;">
+    <md-content layout="column">
+        <div>
+            <form name="searchDepartment" novalidate="">
+                <div layout="row" layout-align="start center">
+                    <md-input-container flex>
+                        <label>请输入名称或编号</label>
+                        <input name="no" type="text" ng-model="filter.searchKeyWord" md-maxlength="256">
+                    </md-input-container>
+                    <md-button ng-click="refreshDepartmentList()" ng-disabled="searchDepartment.$invalid"
+                               class="md-icon-button">
+                        <i class="fa fa-search"></i>
+                    </md-button>
+                    <md-button ng-click="cancelDlg()" class="md-icon-button">
+                        <i class="fa fa-times"></i>
+                    </md-button>
+                </div>
+                <md-list-item class="md-2-line" ng-repeat="department in departmentList | orderBy:'department.name'"
+                              ng-click="selectDepartment(department)">
+                    <div class="md-list-item-text">
+                        <h3>
+                            {{department.no}}&nbsp;|&nbsp;<span ng-repeat="path in department.fullPath">&nbsp;{{path}}&nbsp;</span>
+                        </h3>
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
+            </form>
+            <div pagination option="pageOption" callback="refreshDepartmentList()"></div>
+        </div>
+    </md-content>
+</md-dialog>

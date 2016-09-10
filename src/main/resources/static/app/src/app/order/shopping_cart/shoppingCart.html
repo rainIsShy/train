@@ -1,0 +1,122 @@
+<div layout-fill class=" shoppingcart">
+    <md-content>
+        <md-tabs md-selected="$parent.selectedTabIndex" md-border-bottom md-dynamic-height md-center-tabs="false">
+            <md-tab md-on-select="listTabSelected()">
+                <md-tab-label>{{listTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <div flex class="menu" style="background:#bdbdbd" layout="row" layout-md="column"
+                             layout-sm="column" layout-align="space-around left">
+                            <div flex="5">
+                            </div>
+
+                            <div flex="30" layout="row" layout-md="column" layout-sm="column">
+                                <md-input-container>
+                                    <label>导购员：</label>
+                                    <input ng-model="shoppingCart.employeeName" type="text"/>
+                                </md-input-container>
+                            </div>
+                            <div flex="30" layout="row" layout-md="column" layout-sm="column">
+                                <md-input-container>
+                                    <label>客户：</label>
+                                    <input ng-model="shoppingCart.clientName" type="text"/>
+                                </md-input-container>
+                            </div>
+                            <md-button class="md-raised" style="margin-top: 22px;height: 20px;"
+                                       ng-click="searchShoppingCartList(true)">&nbsp;查询
+                            </md-button>
+                        </div>
+                        <div ng-include=" 'app/src/app/order/shopping_cart/shoppingCartList.html' "></div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+            <md-tab md-on-select="formTabSelected()">
+                <md-tab-label>{{formTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content class="formList">
+                        <form name="mainForm" novalidate>
+                            <div layout-margin layout-padding class="md-whiteframe-z1"
+                                 ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                                <p style="color: red;">请从清单列表中选择一个商品。</p>
+                            </div>
+                            <div ng-if="selectedItem != null">
+                                <div flex class="menu prod" layout="row" layout-md="column" layout-sm="column"
+                                     layout-align="space-around left" layout-margin layout-padding>
+                                    <div flex="5">
+                                    </div>
+                                    <div flex="20" layout="row" layout-md="column" layout-sm="column">
+                                        <label class="label name">导购员：</label>
+                                        <label class="label value">{{ selectedItem.employeeName }}</label>
+                                    </div>
+                                    <div flex="25" layout="row" layout-md="column" layout-sm="column">
+                                        <label class="label name">导购员编号：</label>
+                                        <label class="label value">{{ selectedItem.employeeNo }}</label>
+                                    </div>
+                                    <div flex="20" layout="row" layout-md="column" layout-sm="column">
+                                        <label class="label name">客户：</label>
+                                        <label class="label value">{{ selectedItem.customerName }}</label>
+                                    </div>
+                                    <div flex="25" layout="row" layout-md="column" layout-sm="column">
+                                        <label class="label name">客户编号：</label>
+                                        <label class="label value">{{ selectedItem.customerNo }}</label>
+                                    </div>
+                                </div>
+
+                                <md-divider style="margin: 10px 7px 20px 7px;"></md-divider>
+                                <div ng-repeat="itemDetail in selectedItem.itemDetails">
+                                    <div layout="row" class="md-whiteframe-z1 order-item-background prod" layout-margin
+                                         layout-padding>
+                                        <div flex="15" style="padding-top: 16px;">
+                                            <img ng-src="{{(null!=itemDetail.item.path?(Constant.BACKEND_BASE+ '/app/assets/'+ ((itemDetail.item.path.indexOf('IMAGE') == 0)?'':'IMAGE/')+itemDetail.item.path):'')}}"
+                                                 width="100px;" height="100px;">
+                                        </div>
+                                        <div flex="20" layout="column"
+                                             style=" padding: 20px 0px 0px 0px; border-right-style: ridge; border-right-width: thin;">
+                                            <div class="name">
+                                                {{itemDetail.item.brand.name}}
+                                            </div>
+                                            <div class="name">
+                                                {{itemDetail.item.series}}
+                                            </div>
+                                        </div>
+                                        <div flex="25" layout="column" style=" padding: 20px 0px 0px 20px; ">
+                                            <md-input-container class="md-default-theme md-input-has-value">
+                                                <label style="font-size: 15pt;">颜色:</label>
+                                                <input type="text" ng-disabled="true"
+                                                       value="{{(itemDetail.item.customizationColorFlag=='N'?itemDetail.item.color: itemDetail.itemAttributeDetails[0].name)}}">
+                                            </md-input-container>
+                                            <div class="md-default-theme md-input-has-value">
+                                                <label style="font-size: 12pt;color: rgba(0,0,0,0.54);order: 1;pointer-events: none;-webkit-font-smoothing: antialiased;padding-left: 2px;">是否定制:</label>
+                                                <input class="md-input" type="checkbox"
+                                                       ng-checked="itemDetail.item.customizationFlag=='Y'"
+                                                       ng-disabled="true">
+                                            </div>
+
+                                        </div>
+                                        <div flex="10" layout="column" style=" padding: 20px 0px 0px 10px; ">
+                                            <md-input-container class="md-default-theme md-input-has-value">
+                                                <label style="font-size: 15pt;">数量:</label>
+                                                <input type="number" ng-disabled="true"
+                                                       ng-model="itemDetail.itemQuantity">
+                                            </md-input-container>
+
+                                        </div>
+                                        <div flex="15" layout="column" style=" padding: 20px 0px 0px 10px; ">
+                                            <md-input-container class="md-default-theme md-input-has-value">
+                                                <label style="font-size: 15pt;">单价:</label>
+                                                <input type="number" ng-disabled="true"
+                                                       style="color:blue !important;font-size: 14pt;"
+                                                       ng-model="itemDetail.priceFromChannel">
+                                            </md-input-container>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

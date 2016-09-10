@@ -1,0 +1,81 @@
+<div layout-fill class="right-container catalogue-template">
+    <md-content class="formList">
+        <form name="mainForm" novalidate>
+            <div class="menu">
+                <md-content>
+                    <div class="menu-bar" layout="row" layout-sm="column" layout-align="center left">
+                        <md-button ng-click="changeToEditMode()" ng-if="formMenuDisplayOption['102-edit'].display"
+                                   ng-disabled="ui_status == UI_STATUS.EDIT_UI_STATUS">
+                            <i class="fa fa-plus"></i>&nbsp;{{formMenuDisplayOption['102-edit'].name}}
+                        </md-button>
+                        <md-button ng-click="updateNodeData()" ng-if="formMenuDisplayOption['302-save'].display"
+                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || selectedItem == null">
+                            <i class="fa fa-floppy-o"></i>{{formMenuDisplayOption['302-save'].name}}
+                        </md-button>
+                        <md-button ng-click="cancelModification(303)"
+                                   ng-if="formMenuDisplayOption['303-cancel'].display"
+                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                            <i class="fa fa-reply"></i>&nbsp;{{formMenuDisplayOption['303-cancel'].name}}
+                        </md-button>
+                        <md-button ng-click="quitEditMode()" ng-if="formMenuDisplayOption['304-quit'].display"
+                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                            <i class="fa fa-times"></i>&nbsp;{{formMenuDisplayOption['304-quit'].name}}
+                        </md-button>
+                    </div>
+                </md-content>
+            </div>
+
+
+            <table class="template-data">
+                <tr>
+                    <th ng-repeat="header in headers">
+                        <span class="title">{{header.name}}</span>
+                    </th>
+                </tr>
+                <tr>
+                    <td ng-repeat="header in headers">
+                        <div class="item" ng-repeat="item in selectedTemplateData[header.grade]"
+                             ng-click="nodeDataClickHandler(header.grade, item)"
+                             ng-class="item.selected ? 'selected-item':''">
+                            <span>{{item.name}}</span>
+                            <span ng-click="deleteNodeData($event, item)"
+                                  style="width: 20px;float: right;padding: 0px 5px 0px 5px;color:grey;"
+                                  ng-if="ui_status == UI_STATUS.EDIT_UI_STATUS">
+                                <i class="fa fa-times">-</i>
+                            </span>
+                        </div>
+                        <div class="item plus" ng-click="addNodeData(header.grade)"
+                             ng-if="ui_status == UI_STATUS.EDIT_UI_STATUS && header.showAddButton">
+                            <i class="fa fa-plus">+</i>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <div id="templateNodeContainer" class="editor-container">
+                <md-input-container>
+                    <label>层级</label>
+                    <input type="text" ng-model="selectedItem.grade" required md-maxlength="20" disabled>
+                </md-input-container>
+
+                <md-input-container>
+                    <label>地区编号</label>
+                    <input type="text" ng-model="selectedItem.no" required md-maxlength="20"
+                           ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || selectedItem == null">
+                </md-input-container>
+
+                <md-input-container>
+                    <label>地区名称</label>
+                    <input type="text" ng-model="selectedItem.name" required md-maxlength="20"
+                           ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || selectedItem == null">
+                </md-input-container>
+
+                <md-input-container>
+                    <label>上级地区</label>
+                    <input type="text" ng-model="selectedItem.fullPath[selectedItem.grade-2]" required md-maxlength="20"
+                           disabled>
+                </md-input-container>
+            </div>
+        </form>
+    </md-content>
+</div>

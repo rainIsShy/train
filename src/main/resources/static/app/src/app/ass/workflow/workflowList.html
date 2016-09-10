@@ -1,0 +1,54 @@
+<div layout="row">
+    <div flex layout="row">
+        <div flex="5"></div>
+        <div flex layout="row">
+            <div flex="35">
+                已选中单据数：&nbsp;{{ selectedItemsCount }}
+            </div>
+
+        </div>
+    </div>
+</div>
+<div flex ng-repeat="workflow in workflowMstList.content" layout="row" layout-margin>
+    <div flex layout="row">
+        <div flex="5">
+            <md-checkbox ng-checked="exists(workflow, selected)" ng-click="toggle(workflow, selected)">
+            </md-checkbox>
+        </div>
+        <div flex="95" layout="column" layout-padding class="md-whiteframe-z1 order-item-background">
+            <div layout="row">
+
+                <div flex="30">工作流名稱：&nbsp;{{workflow.workflowName}}</div>
+                <div flex="25">工作流類型：&nbsp;{{WORKFLOW_TYPE[workflow.workFlowType].name}}</div>
+                <div flex="25">備註：&nbsp;{{workflow.remark}}</div>
+                <div flex="20">審核狀態：&nbsp;{{AUDIT[workflow.confirm].name}}</div>
+            </div>
+            <md-divider style="margin: 10px 7px 20px 7px;"></md-divider>
+
+            <div layout="row" ng-repeat="subitem in workflow.detail ">
+                <div layout="column" flex="10">
+                    <!--{{$index +1}}-->
+                    <div>{{subitem.flwoNo}}</div>
+                </div>
+                <div layout="column" flex="25">
+                    <div>{{subitem.flowName}}</div>
+                </div>
+                <div layout="column" flex="25">
+                    <div>{{WORKFLOW_TRANSFER_TYPE[subitem.transferType].name}}</div>
+                </div>
+                <div layout="column" flex="25">
+                    <div>{{subitem.transferDataName}}</div>
+                </div>
+            </div>
+            <div layout="row">
+                <div flex="100" align="right">
+                    <md-button class="md-raised" ng-click="editItem(workflow)">&nbsp;查看详情
+                    </md-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div pagination option="pageOption" callback="refreshList()"></div>

@@ -1,0 +1,16 @@
+<md-content layout-padding>
+    <div ng-repeat="ctg in selectedItemCatalogues.content" class="md-whiteframe-z1" layout-padding>
+        <table class="template-data" border="0" cellspacing="10">
+            <tr>
+                <th ng-repeat="catalogue in ctg.itemCtgs.catalogues">
+                    <span class="title">{{catalogue.catalogueTemplateDetail.no}}&nbsp;{{catalogue.catalogueTemplateDetail.name}}</span>
+                </th>
+            </tr>
+            <tr>
+                <td ng-repeat="catalogue in ctg.itemCtgs.catalogues">
+                    <span class="item">{{catalogue.no}}&nbsp;{{catalogue.name}}</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</md-content>

@@ -1,0 +1,28 @@
+<md-content layout-padding>
+    <div layout="row" layout-wrap>
+        <div flex="33" ng-repeat="bom in selectedItemBoms.content" class="md-whiteframe-z1" layout-padding>
+            <div layout="row" >
+                <div flex="50">
+                    <img class="prod-sm-img" src="{{getImageFullPath(bom.item.path)}}" >
+                </div>
+                <div flex="50" class="property">
+                    <div class="name">BOM商品名称:</div><div class="value">{{bom.item.name}}</div>
+                    <div class="name">BOM商品编号:</div><div class="value">{{bom.item.no}}</div>
+                    <div class="name">数量:</div><div class="value">{{bom.quantity}}</div>
+                    <div class="name">能否定制:</div><div class="value">{{bom.item.customizationFlag == 'Y' ? '可定制' : '不可定制'}}</div>
+                </div>
+            </div>
+            <div>
+                <md-button class="md-raised" ng-click="openModifyBomDlg(bom)" ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">编辑</md-button>
+                <md-button class="md-raised" ng-click="deleteBom(bom)" ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">删除</md-button>
+            </div>
+        </div>
+
+        <div>
+            <div class="add-new" ng-click="openBomSelectDlg()" ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD">
+                <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增BOM</a>
+            </div>
+        </div>
+    </div>
+
+</md-content>

@@ -1,0 +1,35 @@
+<md-dialog style="padding: 30px;min-width: 400px;" class="prod">
+    <md-content>
+        <form name="addCustomForm" novalidate>
+            <div layout="row">
+                <div flex="50" layout="column">
+                    <label>自定义属性:</label>
+                    <md-select placeholder="" ng-model="selectedCustomUuid" class="select" ng-change="customChangeHandler(selectedCustomUuid)" ng-disabled="op == 'modify'">
+                        <md-option ng-selected="custom.itemCustom.uuid == selectedCustom.itemCustom.uuid" ng-repeat="custom in allCustoms" ng-value="custom.itemCustom.uuid">{{custom.itemCustom.name}}</md-option>
+                    </md-select>
+                </div>
+
+                <div flex="50" layout="column" ng-if="selectedCustom.itemCustom.astrict == '1' || selectedCustom.itemCustom.astrict == '3'">
+                    <label>属性值:</label>
+                    <md-radio-group ng-model="selectedCustom.itemCustom.scopeUuid"  ng-change="radioChangeHandler()">
+                        <md-radio-button ng-repeat="value in allCustomsScopes[selectedCustom.itemCustom.uuid]" ng-value="value.uuid" class="md-primary" >{{value.name}}</md-radio-button>
+                    </md-radio-group>
+                </div>
+
+                <div flex="50" layout="column" ng-if="selectedCustom.itemCustom.astrict == '2'">
+                    <label>属性值:</label>
+                    <md-checkbox ng-model="value.checked" ng-repeat="value in allCustomsScopes[selectedCustom.itemCustom.uuid]" ng-change="checkBoxChangeHandler(value, value.checked)">
+                        {{value.name}}
+                    </md-checkbox>
+                </div>
+            </div>
+
+            <div layout="row">
+                <md-button ng-click="hideDlg()" ng-disabled="addCustomForm.$invalid">
+                    <i class="fa fa-check"></i>&nbsp;确定
+                </md-button>
+                <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+            </div>
+        </form>
+    </md-content>
+</md-dialog>

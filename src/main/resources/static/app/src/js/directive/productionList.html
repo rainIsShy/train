@@ -1,0 +1,65 @@
+<div layout="column" style="padding-right: 10px;">
+    <div layout="row" layout-wrap layout-padding>
+        <md-input-container flex="50" style="padding-bottom: 26px">
+            <label>商品编号</label>
+            <input type="text" ng-model="searchQuery.no" ng-keypress="queryEnter($event)">
+        </md-input-container>
+        <md-input-container flex="50" style="padding-bottom: 26px">
+            <label>商品名称</label>
+            <input type="text" ng-model="searchQuery.name" ng-keypress="queryEnter($event)">
+        </md-input-container>
+        <!--<div flex="100" layout="row">
+            <div flex="50">
+                <p>是否电商:</p>
+                <md-radio-group ng-model="param.eshopType">
+                    <md-radio-button value="0" class="md-primary">全部</md-radio-button>
+                    <md-radio-button value="2">电商</md-radio-button>
+                    <md-radio-button value="1">非电商</md-radio-button>
+                </md-radio-group>
+            </div>
+            <div flex>
+                <p>是否虚拟件:</p>
+                <md-radio-group ng-model="param.assemblingFlag">
+                    <md-radio-button value="" class="md-primary">全部</md-radio-button>
+                    <md-radio-button value="1">虚拟件</md-radio-button>
+                    <md-radio-button value="0">非虚拟件</md-radio-button>
+                </md-radio-group>
+            </div>
+        </div>-->
+        <md-button flex="100" class="md-raised" ng-click="queryAction()">搜索</md-button>
+    </div>
+
+    <div layout="column">
+        <div layout="row" layout-padding>
+
+        </div>
+
+    </div>
+</div>
+
+<div layout="row" layout-wrap class="prod" layout-padding>
+    <div flex="50" flex-md="100" flex-sm="100" ng-repeat="production in allProductionsData.content" style="position: relative;"
+         class="prod-item" layout-padding ng-click="selectItemCallbackHandler(production)" ng-if="production.display == undefined || production.display == true">
+        <div class="content">
+            <img class="prod-sm-img" src="{{getImageFullPath(production.path)}}" >
+
+            <div class="name">商品名称:</div>
+            <div class="value">{{production.name}}</div>
+
+            <div class="name">商品编号:</div>
+            <div class="value">{{production.no}}</div>
+
+            <div class="name">商品品牌:</div>
+            <div class="value">{{production.brand.name}}</div>
+
+            <div>
+                <span class="quick-button" style="left: 0px; right: auto;" ng-click="buttonCallbackHandler(production)" ng-show="buttonName && ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY">{{buttonName}}</span>
+                <div class="quick-button" ng-click="openQuickView($event, production)">
+                    <span>QUICK VIEW</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div pagination option="pageOption" callback="refreshProduction()"></div>

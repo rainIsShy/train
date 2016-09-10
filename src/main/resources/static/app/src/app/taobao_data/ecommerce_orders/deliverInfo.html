@@ -1,0 +1,74 @@
+<md-content style="overflow: scroll;">
+    <!--
+    <div flex>
+        <md-button ng-click="openAddDetailExtendDlg()" class="md-raised"
+                   ng-hide="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || selectedItem.confirm == '2'">
+            <i class="fa fa-plus">新增产品</i>
+        </md-button>
+    </div>
+    -->
+    <div layout="row" layout-align="left center">
+        <!--
+        <div align="center" flex="5" class=" table-head"
+             ng-hide="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || selectedItem.confirm == '2'">
+            修改
+        </div>
+        <div align="center" flex="5" class=" table-head"
+             ng-hide="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || selectedItem.confirm == '2'">
+            删除
+        </div>
+        -->
+        <div align="center" flex="5" class=" table-head">单身项次</div>
+        <div align="center" flex="10" class=" table-head">单身品号</div>
+        <div align="center" flex="10" class=" table-head">单身品名</div>
+        <div align="center" flex="5" class=" table-head">项次</div>
+        <div align="center" flex="15" class=" table-head">品号</div>
+        <div align="center" flex="15" class=" table-head">品名</div>
+        <div align="center" flex="15" class=" table-head">规格</div>
+        <div align="center" flex="10" class=" table-head">数量</div>
+        <div align="center" flex="10" class=" table-head">标准价</div>
+        <div align="center" flex="10" class=" table-head">订单单价</div>
+        <div align="center" flex="10" class=" table-head">税前金额</div>
+        <div align="center" flex="10" class=" table-head">单位</div>
+        <div align="center" flex="10" class=" table-head">商品属性</div>
+        <div align="center" flex="15" class=" table-head">备注</div>
+    </div>
+    <div ng-repeat="orderExtendDetail in OrderExtendDetailList | orderBy:['epsOrderDetail.no','no']">
+        <div layout="row" layout-align="left center">
+            <!--
+            <div flex="5" class=" table-item"
+                 ng-hide="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || selectedItem.confirm == '2'">
+                <div layout="row" layout-sm="column" layout-align="center center">
+                    <div ng-click="orderExtendDetailEditMenuAction(orderExtendDetail)">
+                        <i class="fa fa-pencil-square-o"></i>
+                        &nbsp;{{itemOperationMenuDisplayOption['500-item-edit'].name}}
+                    </div>
+                </div>
+            </div>
+            <div flex="5" class=" table-item"
+                 ng-hide="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || selectedItem.confirm == '2'">
+                <div layout="row" layout-sm="column" layout-align="center center">
+                    <div align="center"
+                         ng-click="orderDetailExtendDeleteMenuAction(orderExtendDetail)">
+                        <i class="fa fa-times"></i>
+                    </div>
+                </div>
+            </div>
+            -->
+            <div align="center" flex="5" class=" table-item">{{orderExtendDetail.epsOrderDetail.no}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderExtendDetail.epsOrderDetail.item.no}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderExtendDetail.epsOrderDetail.item.name}}</div>
+            <div align="center" flex="5" class=" table-item">{{orderExtendDetail.no}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.item.no}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.item.name}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.item.standard}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderExtendDetail.orderQuantity}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderExtendDetail.standardPrice}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderExtendDetail.orderPrice}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderExtendDetail.originalOrderAmount}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderExtendDetail.item.unit}}</div>
+            <div align="center" flex="10" class=" table-item">{{orderExtendDetail.itemAttribute}}</div>
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.remark}}</div>
+        </div>
+    </div>
+</md-content>

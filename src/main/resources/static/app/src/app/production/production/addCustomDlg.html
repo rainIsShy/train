@@ -1,0 +1,37 @@
+<md-dialog style="padding: 30px;min-width: 400px; max-height:400px;" class="prod">
+    <md-content>
+        <form name="addCustomForm" novalidate style="overflow-x: hidden;">
+            <div layout="row">
+                <div flex="50" layout="column" style="padding-right: 10px;">
+                    <label>自定义属性:</label>
+                    <md-select placeholder="" ng-model="selectedCustomUuid" class="select" ng-change="customChangeHandler(selectedCustomUuid)" ng-disabled="op == 'modify'">
+                        <md-option ng-selected="custom.uuid == selectedCustom.itemCustom.uuid" ng-repeat="custom in allCustoms" ng-value="custom.uuid">{{custom.name}}</md-option>
+                    </md-select>
+                </div>
+
+                <div flex="50" layout="column" ng-if="selectedCustom.astrict == '1' || selectedCustom.astrict == '3'" style="border-left: 1px solid whitesmoke;padding-left: 10px;">
+                    <label>属性值:</label>
+                    <md-radio-group ng-model="selectedCustom.informationUuids[0]">
+                        <md-radio-button ng-repeat="value in allCustomsScopes[selectedCustom.itemCustom.uuid]" ng-value="value.uuid" class="md-primary">{{value.name}}</md-radio-button>
+                    </md-radio-group>
+                </div>
+
+                <div flex="50" layout="column" ng-if="selectedCustom.astrict == '2'" style="border-left: 1px solid whitesmoke;padding-left: 10px;">
+                    <label>属性值:</label>
+                    <md-checkbox ng-model="value.checked"
+                                 ng-if="value.brand == null || (value.brand && selectedItem.brand && value.brand.uuid == selectedItem.brand.uuid)"
+                                 ng-repeat="value in allCustomsScopes[selectedCustom.itemCustom.uuid]" ng-change="checkBoxChangeHandler(value, value.checked)">
+                        {{value.name}}
+                    </md-checkbox>
+                </div>
+            </div>
+
+            <div layout="row">
+                <md-button ng-click="hideDlg()" ng-disabled="addCustomForm.$invalid">
+                    <i class="fa fa-check"></i>&nbsp;确定
+                </md-button>
+                <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+            </div>
+        </form>
+    </md-content>
+</md-dialog>
