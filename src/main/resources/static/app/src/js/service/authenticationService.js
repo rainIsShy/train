@@ -1,11 +1,13 @@
-angular.module('IOne-Auth').service('AuthenticationService', function (Base64, $http, $cookieStore, $rootScope) {
+angular.module('IOne-Auth').service('AuthenticationService', function (Base64, $http, $cookieStore, $rootScope, Constant) {
     this.Login = function (username, password) {
-        return $http.post('/auth/login', {userName: username, password: password});
+        return $http.post(Constant.BACKEND_BASE + '/auth/login', {userName: username, password: password});
     };
 
-    this.Logout = function (username, password) {
-        this.ClearCredentials();
-        return $http.post('/auth/logout', {userName: username, password: password});
+    this.Logout = function () {
+        return $http.post(Constant.BACKEND_BASE + '/auth/logout').success(function() {
+        }).error(function(data) {
+            console.error(data);
+        });
     };
 
     this.SetCredentials = function (username, password, loginResponse) {
