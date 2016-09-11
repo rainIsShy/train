@@ -1,5 +1,5 @@
 angular.module('IOne-Auth', []);
-angular.module('IOne-login', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 'IOne-Auth']);
+angular.module('IOne-login', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 'IOne-Auth', 'IOne-Constant']);
 
 angular.module('IOne-login').controller('LoginController', function ($scope, $http, $window, AuthenticationService) {
     $scope.password = '';

@@ -69,7 +69,7 @@ angular.module('IOne').run(function($rootScope, $cookieStore, $window, $http) {
     if ($rootScope.globals.currentUser) {
         $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
     } else {
-        $window.location.href = '/login';
+        $window.location.href = '/app/login.html';
     }
 });
 
@@ -161,7 +161,8 @@ angular.module('IOne').controller('MainController', function($rootScope, $scope,
 
     $scope.logout = function () {
         AuthenticationService.Logout().success(function() {
-            $window.location.href = '/login';
+            AuthenticationService.ClearCredentials();
+            $window.location.href = '/app/login.html';
         });
     };
 
