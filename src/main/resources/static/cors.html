@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.4.min.js"></script>
+    <script>
+    var url = 'http://project.benchmarkchina.com:10011/items?size=21&page=0&confirm=&status=&release=&type=&stopProd=&no=&name=&eshopType=&assemblingFlag=&resUuid=3C135191-4811-4788-AEC8-DD0D09AB9DD9&orderByName=2';
+
+
+    $.ajax({
+      type : 'GET',
+      url : url,
+      success : function (response) {
+        console.log(response);
+      },
+      error : function (xhr, status, error) {
+        console.log(xhr);
+        console.log(status);
+        console.log(error);
+      },
+      beforeSend : function (xhr) {
+
+        //xhr.setRequestHeader('Authorization', 'Basic YWRtaW46MTIz');
+        //xhr.setRequestHeader('Access-Control-Allow-Credentials', 'true');
+      },
+      xhrFields : {
+        withCredentials : true
+      }});
+
+
+    </script>
+  </head>
+
+
+</html>
