@@ -513,6 +513,10 @@ angular.module('IOne-Auth', []);
 angular.module('IOne-Constant').constant('Constant', {
     // TODO: get url from application.yaml
     BACKEND_BASE: 'http://project.benchmarkchina.com:10011',
+    I1_ADAPTER_URL: '',
+    EC_ADAPTER_URL: '',
+    TIPTOP_ADAPTER_URL: '',
+    TMALL_ADAPTER_URL: '',
 
     INVALID_VALUE: {
         STRING: 'NA',
