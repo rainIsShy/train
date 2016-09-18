@@ -127,13 +127,13 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
     /**
      * Set stauts to 'edit' to edit an object. The panel will be generated automatically.
      */
-        //$scope.editItemAction = function (editItemAction) {
-        //    $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS);
-        //    $scope.status = 'edit';
-        //    //$scope.desc = desc;
-        //    //$scope.source = source;
-        //    //$scope.domain = domain;
-        //};
+    //$scope.editItemAction = function (editItemAction) {
+    //    $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS);
+    //    $scope.status = 'edit';
+    //    //$scope.desc = desc;
+    //    //$scope.source = source;
+    //    //$scope.domain = domain;
+    //};
 
     $scope.showOrderChangeEditor = function (selectedItem) {
         /*$scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS);
@@ -226,7 +226,7 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
     //    //$scope.domain = domain;
     //};
 
-        //选择生产销售单
+    //选择生产销售单
     $scope.openOrderDlg = function () {
         $mdDialog.show({
             controller: 'SelectOrderController',
@@ -288,9 +288,9 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
     /**
      * Delete detail item
      */
-        //$scope.deleteDetailAction = function (detail) {
-        //    //TODO ...
-        //};
+    //$scope.deleteDetailAction = function (detail) {
+    //    //TODO ...
+    //};
 
     $scope.selectItemAction = function (event, item) {
         $scope.stopEventPropagation(event);
@@ -385,7 +385,10 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
     $scope.transferClickAction = function (event, item) {
         $scope.stopEventPropagation(event);
         console.info('transfer...');
-
+        if (item.orderMaster.transferPsoFlag == '2') {
+            $scope.showWarn("变更单对应的产品销售单尚未抛转,请先抛转产品销售单!");
+            return;
+        }
         $scope.showConfirm('抛转后将会生成预订单变更单，确认抛转吗？', '', function () {
             PsoOrderChangeMaster.transfer(item.uuid).success(function () {
                 item.transferPsoFlag = Constant.TRANSFER_PSO_FLAG[1].value;
@@ -399,15 +402,19 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
     };
 
 
-	$scope.oneOffSync = function(event, item) {
+    $scope.oneOffSync = function (event, item) {
         $scope.stopEventPropagation(event);
+        if (item.orderMaster.transferPsoFlag == '2') {
+            $scope.showWarn("变更单对应的产品销售单尚未抛转,请先抛转产品销售单!");
+            return;
+        }
         $scope.showConfirm('确认一键抛转产品销售单变更单吗？', '', function () {
             PsoOrderChangeMaster.oneOffSync(item.uuid).success(function () {
                 item.transferPsoFlag = Constant.TRANSFER_PSO_FLAG[1].value;
                 $scope.showInfo('产品销售变更单一键同步成功。');
                 $scope.disableBatchMenuButtons();
                 $scope.getOrderMasterCount();
-            }).error(function(response) {
+            }).error(function (response) {
                 $scope.showError(response.message);
             })
         });
@@ -567,7 +574,6 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
 
     $scope.transferAllClickAction = function (event) {
         $scope.stopEventPropagation(event);
-
         if ($scope.selectedItemSize == 0) {
             $scope.showWarn('请先选择记录！');
             return;
@@ -575,20 +581,30 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
         $scope.showConfirm('确认抛转吗', '', function () {
             var promises = [];
             var bError = false;
+            var ignoredNos = '';
+            var count = 0;
             angular.forEach($scope.itemList, function (item) {
                 if (item.selected) {
-                    var response = PsoOrderChangeMaster.transfer(item.uuid).success(function () {
-                        item.transferPsoFlag = '1';
-                    }).error(function (response) {
-                        bError = true;
-                        $scope.showError(item.no + ' 抛转失败：' + response.message);
-                    });
-                    promises.push(response);
+                    if (item.orderMaster.transferPsoFlag != '2') {
+                        var response = PsoOrderChangeMaster.transfer(item.uuid).success(function () {
+                            item.transferPsoFlag = '1';
+                        }).error(function (response) {
+                            bError = true;
+                            $scope.showError(item.no + ' 抛转失败：' + response.message);
+                        });
+                        promises.push(response);
+                        count++;
+                    } else {
+                        ignoredNos = ignoredNos + item.no + '(版本:' + item.changeVersion + ')' + '<br>'
+                    }
                 }
             });
+            if (ignoredNos !== '') {
+                $scope.showWarn('如下变更单对应的产品销售单尚未抛转,将不执行抛转：' + '<br>' + ignoredNos + '请先抛转对应的产品销售单');
+            }
             $q.all(promises).then(function (data) {
                 if (!bError) {
-                    $scope.showInfo('抛转成功！');
+                    $scope.showInfo('共' + count + '笔抛转成功！');
                     $scope.getOrderMasterCount();
                 }
                 $scope.disableBatchMenuButtons();
@@ -607,20 +623,30 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
         $scope.showConfirm('确认一键抛转吗', '', function () {
             var promises = [];
             var bError = false;
+            var ignoredNos = '';
+            var count = 0;
             angular.forEach($scope.itemList, function (item) {
                 if (item.selected) {
-                    var response = PsoOrderChangeMaster.oneOffSync(item.uuid).success(function () {
-                        item.transferPsoFlag = '1';
-                    }).error(function (response) {
-                        bError = true;
-                        $scope.showError(item.no + ' 抛转失败：' + response.message);
-                    });
-                    promises.push(response);
+                    if (item.orderMaster.transferPsoFlag != '2') {
+                        var response = PsoOrderChangeMaster.oneOffSync(item.uuid).success(function () {
+                            item.transferPsoFlag = '1';
+                        }).error(function (response) {
+                            bError = true;
+                            $scope.showError(item.no + ' 抛转失败：' + response.message);
+                        });
+                        promises.push(response);
+                        count++;
+                    } else {
+                        ignoredNos = ignoredNos + item.no + '(版本:' + item.changeVersion + ')' + '<br>'
+                    }
                 }
             });
+            if (ignoredNos !== '') {
+                $scope.showWarn('如下变更单对应的产品销售单尚未抛转,将不执行抛转：' + '<br>' + ignoredNos + '请先抛转对应的产品销售单');
+            }
             $q.all(promises).then(function (data) {
                 if (!bError) {
-                    $scope.showInfo('抛转成功！');
+                    $scope.showInfo('共' + count + '笔抛转成功！');
                     $scope.getOrderMasterCount();
                 }
                 $scope.disableBatchMenuButtons();
@@ -964,10 +990,10 @@ angular.module('IOne-Production').controller('SelectOrderController', function (
             $scope.orderTransferPsoFlag,
             $scope.orderNo
         ).success(function (data) {
-                $scope.orderList = data.content;
-                $scope.pageOption.totalElements = data.totalElements;
-                $scope.pageOption.totalPage = data.totalPages;
-            });
+            $scope.orderList = data.content;
+            $scope.pageOption.totalElements = data.totalElements;
+            $scope.pageOption.totalPage = data.totalPages;
+        });
     };
 
     $scope.refreshOrderList();

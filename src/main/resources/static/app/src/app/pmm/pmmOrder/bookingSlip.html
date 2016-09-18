@@ -187,7 +187,14 @@
                                             <input type="text"  aria-label="..." ng-model="selectedItem.remark"   md-maxlength="20"
                                                    ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                                         </md-input-container>
+                                        <md-input-container>
+                                            <label class="label">促销活动：</label>
+                                            <input type="text" ng-model="selectedItem.promotion.no"
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
+                                                   ng-click="openPromotionDlg()">
+                                        </md-input-container>
                                     </div>
+
                                     <div flex="33" layout="column" layout-padding>
                                         <md-input-container >
                                             <label class="label">采购单号：</label>
@@ -207,8 +214,6 @@
                                             <input type="number" aria-label="..." ng-model="selectedItem.oriOtherAmt"
                                                    ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                                         </md-input-container>
-
-
                                         <md-input-container layout="row" style=" height: 79px;">
                                             <div class="md-input-has-value" style=" padding: 25px 0px 0px 0px;"><label>审核状态：</label>
                                             </div>
@@ -229,8 +234,19 @@
                                                 <md-option value="2">无效</md-option>
                                             </md-select>
                                         </md-input-container>
-
+                                        <md-input-container layout="row" style=" height: 79px;">
+                                            <div class="md-input-has-value" style=" padding: 25px 0px 0px 0px;"><label>采购状态：</label>
+                                            </div>
+                                            <md-select placeholder="" aria-label="..."
+                                                       ng-model="selectedItem.purchaseFlag"
+                                                       class="select" ng-disabled="true">
+                                                <md-option value="1">采购未发出</md-option>
+                                                <md-option value="2">采购发出</md-option>
+                                                <md-option value="3">采购退回</md-option>
+                                            </md-select>
+                                        </md-input-container>
                                     </div>
+
                                     <div flex="33" layout="column" layout-padding>
                                         <md-input-container>
                                             <label class="label">来源单号：</label>
@@ -258,7 +274,6 @@
                                                 抛转否
                                             </md-checkbox>
                                         </md-input-container>
-
 
                                     </div>
                                 </div>

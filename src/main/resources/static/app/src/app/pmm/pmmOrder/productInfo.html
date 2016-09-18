@@ -4,19 +4,16 @@
                    ng-click="openOrderItemsDlg()" class="md-raised">
             <i class="fa fa-plus">新增产品</i>
         </md-button>
-        <md-button
-                   ng-disabled="audit_detail_disabled == 1" class="md-raised" ng-click="confirmOrderItem();">
+        <md-button ng-disabled="audit_detail_disabled == 1" class="md-raised" ng-click="confirmOrderItem();">
             审核
         </md-button>
-        <md-button
-                   ng-disabled="revert_audit_detail_disabled == 1" class="md-raised" ng-click="unConfirmOrderItem();">
+        <md-button ng-disabled="revert_audit_detail_disabled == 1" class="md-raised" ng-click="unConfirmOrderItem();">
             取消审核
         </md-button>
     </div>
-    <div layout="row"    >
-        <div flex="5"
-             ng-disabled="!(selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2)"
-             class="verticalLine table-head">
+    <div layout="row">
+        <div flex="5" class="verticalLine table-head"
+             ng-disabled="!(selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2)">
             <md-checkbox ng-model="selectDetailAllFlag" aria-label="Checkbox"
                          ng-change="selectDetailAllAction(selectDetailAllFlag)"></md-checkbox>
         </div>
@@ -52,6 +49,7 @@
         <div align="center" flex="15"  class=" table-head">来源抛转流水号</div>
         <div align="center" flex="10"  class=" table-head">备注</div>
         <div align="center" flex="10" class=" table-head">审核否</div>
+        <div align="center" flex="10" class=" table-head">审核否</div>
     </div>
     <div ng-repeat="orderDetail in OrderDetailList.content  | orderBy:'no'">
         <div  layout="row"   >
@@ -77,30 +75,30 @@
                 </div>
             </div>
 
-            <div  align="center" flex="5" class=" table-item">{{orderDetail.no}} </div>
-            <div   align="center" flex="10" class=" table-item">{{orderDetail.item.name}} </div>
-            <div  align="center" flex="10" class=" table-item">{{orderDetail.item.standard}} </div>
-            <div  align="center" flex="10" class=" table-item">{{orderDetail.item.brand.no}} </div>
-            <div  align="center" flex="10" class=" table-item">{{orderDetail.item.brand.name}} </div>
-            <div  align="center" flex="10" class=" table-item">{{CUSTOMIZE_FLAG[orderDetail.customizeFlag].name}}</div>
-            <div  align="center" flex="10" class=" table-item">{{orderDetail.itemAttribute}} </div>
-            <div  align="center" flex="10" class=" table-item">{{orderDetail.saleType.name}} </div>
-            <div align="center" flex="10" class=" table-item">{{orderDetail.orderQty}}</div>
-            <div align="center" flex="10" class=" table-item">{{orderDetail.transferOrderQty}}</div>
-            <div align="center" flex="10" class=" table-item">{{orderDetail.untransferOrderQty}}</div>
-            <div  align="center" flex="10" class=" table-item">{{orderDetail.item.unit}} </div>
-            <div align="center" flex="10" class=" table-item">{{orderDetail.orderQty}}</div>
-            <div align="center" flex="10" class=" table-item">{{orderDetail.oriPurPrice}}</div>
-            <div align="center" flex="10" class=" table-item">{{orderDetail.oriPurTax}}</div>
-            <div align="center" flex="10" class=" table-item">{{orderDetail.oriPurAmt}}</div>
-            <div align="center" flex="10" class=" table-item">{{orderDetail.oriPurAmtTax}}</div>
-            <div align="center" flex="10" class=" table-item">{{CUSTOMIZE_FLAG[orderDetail.customizeFlag].name}}</div>
-            <div align="center" flex="10" class=" table-item">{{CUSTOMIZE_FLAG[orderDetail.presentFlag].name}}</div>
-            <div align="center" flex="10" class=" table-item">{{orderDetail.perCustomizePrice}}</div>
-            <div align="center" flex="10" class=" table-item">{{orderDetail.specialPrice}}</div>
-            <div align="center" flex="15" class=" table-item">{{orderDetail.psoTransferNo}}</div>
-            <div  align="center" flex="10" class=" table-item">{{orderDetail.remark}} </div>
-            <div align="center" flex="10" class=" table-item">{{CONFIRM[orderDetail.confirm].name}}</div>
+            <div align="center" flex="5" class="table-item">{{orderDetail.no}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.item.name}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.item.standard}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.item.brand.no}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.item.brand.name}}</div>
+            <div align="center" flex="10" class="table-item">{{CUSTOMIZE_FLAG[orderDetail.customizeFlag].name}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.itemAttribute}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.saleType.name}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.orderQty}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.transferOrderQty}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.untransferOrderQty}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.item.unit}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.orderQty}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.oriPurPrice}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.oriPurTax}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.oriPurAmt}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.oriPurAmtTax}}</div>
+            <div align="center" flex="10" class="table-item">{{CUSTOMIZE_FLAG[orderDetail.customizeFlag].name}}</div>
+            <div align="center" flex="10" class="table-item">{{CUSTOMIZE_FLAG[orderDetail.presentFlag].name}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.perCustomizePrice}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.specialPrice}}</div>
+            <div align="center" flex="15" class="table-item">{{orderDetail.psoTransferNo}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.remark}}</div>
+            <div align="center" flex="10" class="table-item">{{CONFIRM[orderDetail.confirm].name}}</div>
         </div>
     </div>
 </md-content>

@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function($routeProvi
     })
 }]);
 
-angular.module('IOne-Production').controller('CatalogueDataController', function($scope, CatalogueTemplate, Catalogue, ProductionCatalogueDetails, Constant, $mdDialog, Upload, $timeout){
+angular.module('IOne-Production').controller('CatalogueDataController', function ($scope, CatalogueTemplate, Catalogue, ProductionCatalogueDetails, CatalogueTagService, Constant, $mdDialog, Upload, $timeout) {
     $scope.listFilterOption = {
         status :  Constant.STATUS[0].value,
         confirm : Constant.CONFIRM[0].value,
@@ -107,6 +107,8 @@ angular.module('IOne-Production').controller('CatalogueDataController', function
                 $scope.isRefreshing = false;
             });
         }
+
+        $scope.getCatalogueTags($scope.selectedTemplateNodeData.uuid);
     };
 
     //Refresh the data of one template
@@ -413,6 +415,41 @@ angular.module('IOne-Production').controller('CatalogueDataController', function
         }
     };
 
+    $scope.catalogueTags = [];
+    $scope.getCatalogueTags = function (itemUuid) {
+        CatalogueTagService.getAll(itemUuid).success(function (data) {
+            $scope.catalogueTags = data.content;
+        });
+    };
+    $scope.openTagSelectDlg = function () {
+        $mdDialog.show({
+            controller: 'CatalogueTagSelectDlgController',
+            templateUrl: 'app/src/app/production/template_data/catalogueTagSelectDlg.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            locals: {}
+        }).then(function (tagUuid) {
+            CatalogueTagService.add({
+                catalogueUuid: $scope.selectedTemplateNodeData.uuid,
+                tagUuid: tagUuid
+            }).success(function () {
+                $scope.showInfo('新增目录标签成功。');
+                $scope.getCatalogueTags($scope.selectedTemplateNodeData.uuid);
+            }).error(function (data) {
+                $scope.showInfo('新增目录标签失敗。');
+            });
+
+        });
+    };
+    $scope.deleteCatalogueTag = function (uuid) {
+        $scope.showConfirm('确认删除目录标签吗？', '', function () {
+            CatalogueTagService.delete(uuid).success(function () {
+                $scope.getCatalogueTags($scope.selectedTemplateNodeData.uuid);
+                $scope.showInfo('删除目录标签成功。');
+            });
+        });
+    }
+
 });
 
 angular.module('IOne-Production').controller('TemplateSelectController', function($scope, $mdDialog, CatalogueTemplate, catalogueTemplates, selectedTemplateData) {
@@ -426,4 +463,35 @@ angular.module('IOne-Production').controller('TemplateSelectController', functio
     $scope.cancelDlg = function() {
         $mdDialog.cancel();
     };
+});
+
+
+angular.module('IOne-Production').controller('CatalogueTagSelectDlgController', function ($scope, $mdDialog, $mdToast, TagService) {
+    $scope.pageOption = {
+        sizePerPage: 5,
+        currentPage: 0,
+        totalPage: 0,
+        totalElements: 0,
+        displayModel: 0  //0 : image + text //1 : image
+    };
+    var tagQuery = {confirm: 2, status: 1};
+    $scope.tags = [];
+    $scope.keyWord = "";
+    $scope.refreshPage = function (isRefresh) {
+        $scope.pageOption.currentPage = isRefresh ? 0 : $scope.pageOption.currentPage;
+        TagService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, tagQuery.confirm, tagQuery.status, null, null, $scope.keyWord).success(function (data) {
+            $scope.pageOption.totalPage = data.totalPages;
+            $scope.pageOption.totalElements = data.totalElements;
+            $scope.tags = data.content;
+
+        });
+    };
+    $scope.addProductionTag = function (tagUuid) {
+        $mdDialog.hide(tagUuid);
+    };
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+
+    $scope.refreshPage();
 });

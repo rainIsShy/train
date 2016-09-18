@@ -1,0 +1,27 @@
+<md-dialog style="padding: 15px">
+    <div>
+        <md-input-container style="max-width: 50%">
+            <label>名稱：</label>
+            <input ng-model="keyWord" type="text" ng-keypress="refreshPage(true)"/>
+        </md-input-container>
+    </div>
+
+    <md-list>
+            <md-list-item style="background-color:#f0f0f0;">
+                <span flex="10"></span>
+                <span flex>名稱</span>
+                <span flex>說明</span>
+            </md-list-item>
+            <md-list-item style="font-size: 1rem"
+                          ng-repeat="tag in tags" ng-click="addProductionTag(tag.uuid)">
+                <span flex="10"><i class="fa fa-plus"></i></span>
+                <span flex>{{tag.name}}</span>
+                <span flex>{{tag.explain}}</span>
+            </md-list-item>
+        </md-list>
+
+        <div pagination option="pageOption" callback="refreshPage()"></div>
+
+        <md-button ng-click="cancelDlg()" md-autofocus><i class="fa fa-times"></i>&nbsp;取消</md-button>
+    </md-content>
+</md-dialog>
