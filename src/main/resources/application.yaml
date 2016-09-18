@@ -5,7 +5,7 @@ spring:
   profiles.active: default
 
   resources:
-    static-locations: file:/root/i1-server/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+    static-locations: file:/root/web-client-v1/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
 server:
   port: 8080
 
