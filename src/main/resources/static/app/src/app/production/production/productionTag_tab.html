@@ -1,0 +1,16 @@
+<md-content layout="row" layout-padding class="prod">
+    <div layout="column">
+        <div ng-repeat="productionTag in productionTags">
+            <span ng-click="deleteProductionTag(productionTag.uuid)"
+                  style="width: 20px;padding: 0px 5px 0px 5px;color:grey;"
+                  ng-show="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY">
+                     <i class="fa fa-times"></i>
+            </span>
+            <span>{{productionTag.tag.name}}</span>
+        </div>
+        <span class="add-new" ng-click="openTagSelectDlg()"
+              ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD">
+                <a><i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增标签</a>
+        </span>
+    </div>
+</md-content>

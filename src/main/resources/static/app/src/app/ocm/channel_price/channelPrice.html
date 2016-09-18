@@ -43,7 +43,11 @@
                                                        ng-if="formMenuDisplayOption['102-edit'].display && (menuAuthDataMap[formMenuDisplayOption['102-edit'].uuid] || isAdmin() || !formMenuDisplayOption['102-edit'].uuid)">
                                                 <i class="fa fa-pencil-square-o"></i>&nbsp;{{formMenuDisplayOption['102-edit'].name}}
                                             </md-button>
-
+                                            <md-button ng-click="menuAction(301)"
+                                                       ng-if="formMenuDisplayOption['301-delete'].display && (menuAuthDataMap[formMenuDisplayOption['301-delete'].uuid] || isAdmin() || !formMenuDisplayOption['301-delete'].uuid)"
+                                                       ng-disabled="ChannelPriceList.totalElements == 0">
+                                                <i class="fa fa-times"></i>&nbsp;{{formMenuDisplayOption['301-delete'].name}}
+                                            </md-button>
                                         </div>
 
                                         <div class="menu-bar" layout="row" layout-sm="column" layout-align="center left"
@@ -71,11 +75,7 @@
                                                        ng-disabled="addNodeDisabled">
                                                 <i class="fa fa-plus"></i>&nbsp;{{formMenuDisplayOption['300-add'].name}}
                                             </md-button>
-                                            <md-button ng-click="menuAction(301)"
-                                                       ng-if="formMenuDisplayOption['301-delete'].display && (menuAuthDataMap[formMenuDisplayOption['301-delete'].uuid] || isAdmin() || !formMenuDisplayOption['301-delete'].uuid)"
-                                                       ng-disabled="deleteNodeDisabled">
-                                                <i class="fa fa-times"></i>&nbsp;{{formMenuDisplayOption['301-delete'].name}}
-                                            </md-button>
+
                                             <md-button ng-click="menuAction(302)"
                                                        ng-if="formMenuDisplayOption['302-save'].display && (menuAuthDataMap[formMenuDisplayOption['302-save'].uuid] || isAdmin() || !formMenuDisplayOption['302-save'].uuid)"
                                                        ng-disabled="mainForm.$invalid">
@@ -107,11 +107,13 @@
                                 </md-input-container>
                                 <md-input-container >
                                     <label>目录名称：</label>
-                                    <input  aria-label="..."  ng-model="catalogueName"/>
+                                    <input aria-label="..." ng-model="catalogueName"
+                                           ng-keydown="$event.which === 13 && searchChannelPriceWithPaging()"/>
                                 </md-input-container>
                                 <md-input-container >
                                     <label>商品信息：</label>
-                                    <input aria-label="..."  ng-model="itemName"/>
+                                    <input aria-label="..." ng-model="itemName"
+                                           ng-keydown="$event.which === 13 && searchChannelPriceWithPaging()"/>
                                 </md-input-container>
                                 <md-input-container layout="row" style=" height: 79px;">
                                     <div style=" padding: 20px 0px 0px 0px;"><label>仓库：</label></div>
@@ -197,8 +199,9 @@
                                         </div>
                                         <div  align="center" flex="10" class="table-item">
                                             <md-input-container>
-                                                <input type="number" aria-label="..." string-to-number   ng-model="channelPrice.standardPrice"    min="0"  step="0.01"
-                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS || channelPrice.confirm == 2">
+                                                <input type="number" aria-label="..." string-to-number ng-model="channelPrice.standardPrice" min="0" step="0.01"
+                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS || channelPrice.confirm == 2"
+                                                       ng-change="changeSaleDiscountRate(channelPrice)">
                                             </md-input-container>
                                         </div>
 

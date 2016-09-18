@@ -3,7 +3,7 @@
 }
 
 body {
-    /*overflow-x: hidden;*/
+    overflow-x: hidden;
 }
 
 .partial-text {
@@ -86,6 +86,7 @@ md-tabs {
 
 .chip-remove {
     cursor: pointer;
+    margin-left: 10px;
 }
 
 .show {
@@ -101,7 +102,7 @@ md-tabs {
 }
 
 .icon-btn:hover {
-    color: #f5f5f5;
+    color: grey;
     cursor: pointer;
 }
 

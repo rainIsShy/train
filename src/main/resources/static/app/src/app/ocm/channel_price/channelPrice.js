@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('ChannelPriceController', function ($scope, $q, OCMParametersService, WarehousesService, ChannelService, ChannelPriceService, CatalogueTemplate, Catalogue, ProductionCatalogueDetails, $mdDialog, $timeout, Constant) {
+angular.module('IOne-Production').controller('ChannelPriceController', function ($scope, $q, OCMParametersService, WarehousesService, ChannelService, ChannelPriceService, ChannelLevelService, CatalogueTemplate, Catalogue, ProductionCatalogueDetails, $mdDialog, $timeout, Constant) {
     //initialize model value.
     $scope.ocmListMenu = {
         selectAll: false,
@@ -20,12 +20,13 @@ angular.module('IOne-Production').controller('ChannelPriceController', function 
         '102-edit': {display: true, name: '编辑', uuid: '4A7E5038-2319-4089-AE5D-FDCB32C3FFB5'},
         '109-copy': {display: true, name: '导入', uuid: 'C1E09C8F-489B-4E92-AED9-7A185DE3E989'},
         '110-syncPrice': {display: true, name: '同步定价', uuid: '4dceb5a1-41ac-4cae-87b9-f6b2a12d2093'},
+        '301-delete': {display: true, name: '清空', uuid: 'c47d30c5-6550-45a2-9b4c-931895ef8f1c'},
 
         '200-cancel': {display: true, name: '取消新增', uuid: '8536C6CE-75F0-46F4-9CFA-A3DE2AB371CE'},
         '201-save': {display: true, name: '保存', uuid: 'C03E7689-267F-4A6B-AA7D-88A99C9CEFF0'},
         '202-continueAdd': {display: true, name: '继续导入商品', uuid: 'A9B52AFC-55C3-4AD2-A6CC-2E45EFD8F29C'},
 
-        '301-delete': {display: true, name: '清空', uuid: 'c47d30c5-6550-45a2-9b4c-931895ef8f1c'},
+
         '302-save': {display: true, name: '保存', uuid: '01673539-3C67-4E76-B616-3767B07E6922'},
         '303-cancel': {display: true, name: '取消修改', uuid: 'FD70B726-FF76-45B4-B667-BB778B3C2AA9'},
         '304-quit': {display: true, name: '退出编辑', uuid: '63367BAD-6D79-4994-B420-EBFAA30D8357'},
@@ -124,6 +125,12 @@ angular.module('IOne-Production').controller('ChannelPriceController', function 
 
         WarehousesService.getAll().success(function (data) {
             $scope.warehouses = data;
+        });
+
+        ChannelLevelService.getAll(100, 0, '', '', '', '', '', '', $scope.selectedItem.uuid, '', '').success(function (data) {
+            if (data.totalElements) {
+
+            }
         });
 
     };

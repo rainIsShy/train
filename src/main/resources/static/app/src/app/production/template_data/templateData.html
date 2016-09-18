@@ -121,21 +121,49 @@
                                             <input type="text" ng-model="selectedTemplateNode.parentName" value="{{selectedTemplateNode.parentName = (selectedTemplateNode.index > 0 ? selectedItem.details[selectedTemplateNode.index - 1].no + '  ' + selectedItem.details[selectedTemplateNode.index - 1].name : '')}}" disabled>
                                         </md-input-container>
 
-                                        <md-switch ng-model="selectedTemplateNode.defaultFlag" ng-true-value="'Y'" ng-false-value="'N'" aria-label="默认APP目录" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
-                                            默认APP目录
-                                        </md-switch>
+                                        <div layout="row">
+                                            <div flex>
+                                                <md-switch ng-model="selectedTemplateNode.defaultFlag"
+                                                           ng-true-value="'Y'" ng-false-value="'N'" aria-label="默认APP目录"
+                                                           ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                    默认APP目录
+                                                </md-switch>
 
-                                        <md-switch ng-model="selectedItem.dataStatus" ng-true-value="'1'" ng-false-value="'2'" aria-label="失效作废" ng-change="modifyFromPanelHandler()">
-                                            失效作废
-                                        </md-switch>
+                                                <md-switch ng-model="selectedItem.dataStatus" ng-true-value="'1'"
+                                                           ng-false-value="'2'" aria-label="失效作废"
+                                                           ng-change="modifyFromPanelHandler()">
+                                                    失效作废
+                                                </md-switch>
 
-                                        <md-switch ng-model="selectedItem.dataConfirm" ng-true-value="'2'" ng-false-value="'1'" aria-label="审核状态" ng-change="modifyFromPanelHandler()">
-                                            审核状态
-                                        </md-switch>
+                                                <md-switch ng-model="selectedItem.dataConfirm" ng-true-value="'2'"
+                                                           ng-false-value="'1'" aria-label="审核状态"
+                                                           ng-change="modifyFromPanelHandler()">
+                                                    审核状态
+                                                </md-switch>
 
-                                        <md-switch ng-model="selectedItem.dataRelease" ng-true-value="'2'" ng-false-value="'1'" aria-label="发布状态" ng-change="modifyFromPanelHandler()">
-                                            发布状态
-                                        </md-switch>
+                                                <md-switch ng-model="selectedItem.dataRelease" ng-true-value="'2'"
+                                                           ng-false-value="'1'" aria-label="发布状态"
+                                                           ng-change="modifyFromPanelHandler()">
+                                                    发布状态
+                                                </md-switch>
+                                            </div>
+                                            <div flex>
+                                                标签
+                                                <div ng-repeat="catalogueTag in catalogueTags">
+                                                    <span ng-click="deleteCatalogueTag(catalogueTag.uuid)"
+                                                          style="width: 20px;padding: 0px 5px 0px 5px;color:grey;"
+                                                          ng-show="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY">
+                                                             <i class="fa fa-times"></i>
+                                                    </span>
+                                                    <span>{{catalogueTag.tag.name}}</span>
+                                                </div>
+                                                <div class="add-new" ng-click="openTagSelectDlg()"
+                                                     ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD">
+                                                    <a><i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增标签</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div ng-if="selectedTemplateNodeData.path">
                                             <img class="catalogue-img" ng-src="{{getImageFullPath(selectedTemplateNodeData.path)}}"/>
                                         </div>

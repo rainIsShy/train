@@ -207,8 +207,9 @@ angular.module('IOne-Production').service('ProductionCatalogueDetails', function
     this.postByCatalogueAndChannel = function(catalogueUuid, channelUuid,resUuid) {
         var url = '/itemCatalogueDetails/channel/' + channelUuid + '?catalogueUuid=' + catalogueUuid + '&filterWithChannelPrice=0';
        if(resUuid !== undefined && resUuid !== null) {
-           url = url + '&resUuid=' + resUuid + '&filterWithChannelPrice=0';
+           url = url + '&resUuid=' + resUuid;
        }
+        console.log(url);
        return $http.post(Constant.BACKEND_BASE + url);
 
     };
@@ -230,6 +231,13 @@ angular.module('IOne-Production').service('ProductionCatalogueDetails', function
 
     this.modify = function(uuid, item) {
         return $http.patch(Constant.BACKEND_BASE + '/itemCatalogueDetails/' + uuid, item);
+    };
+
+    this.autoRelate = function (catalogueUuid) {
+        var url = '/itemCatalogueDetails?action=autoRelate&catalogueUuid=' + catalogueUuid;
+        console.log(url);
+        return $http.post(Constant.BACKEND_BASE + url);
+
     };
 });
 

@@ -14,7 +14,7 @@ angular.module('IOne-Production').filter('itemsInCatalogue', function() {
     }
 });
 
-angular.module('IOne-Production').controller('ProductionLinkController', function($scope, Catalogue, CatalogueTemplate, Constant, ProductionCatalogueDetails, $mdDialog, $timeout) {
+angular.module('IOne-Production').controller('ProductionLinkController', function ($scope, Catalogue, CatalogueTemplate, Constant, ProductionCatalogueDetails, $mdDialog, $timeout, $q) {
 
     $scope.listFilterOption = {
         status :  Constant.STATUS[0].value,
@@ -41,6 +41,7 @@ angular.module('IOne-Production').controller('ProductionLinkController', functio
         '104-status': {display: true, name: '启用', uuid: 'C4FB55D6-8293-41B8-9A16-CB2BC851E1AC'},
         '105-confirm': {display: true, name: '审核', uuid: 'AC193DD9-EAC8-4BBE-AD1B-E1DFBB062DD9'},
         '106-release': {display: true, name: '发布', uuid: '2ACE4698-8EF8-4A55-B668-45601CA95013'},
+        '107-change': {display: true, name: '生成关联', uuid: 'ac1964cf-fffb-44ac-ac3b-5d58ad437785'},
 
         '200-cancel': {display: true, name: '取消新增', uuid: 'ADD763EE-0F54-4AB7-B79D-DBA7FA46B0A3'},
         '201-save': {display: true, name: '保存', uuid: '63235E5A-2240-4631-B876-6774C773F5BE'},
@@ -118,7 +119,7 @@ angular.module('IOne-Production').controller('ProductionLinkController', functio
 
         //Already the last node
         if(nextNode == undefined || nextNode == undefined) {
-            return;
+
         } else {
             $scope.isRefreshing = true;
             Catalogue.get(nextNode.uuid, nodeDataUuid).success(function(data) {
@@ -262,12 +263,11 @@ angular.module('IOne-Production').controller('ProductionLinkController', functio
 
         $scope.selectedItem = item;
         $scope.selectedLinkItem = null;
-
         $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
     };
 
     $scope.addCatalogueDetail = function(production) {
-        if(production && $scope.selectedTemplateNodeData) {
+        if (production && $scope.selectedTemplateNogdeData) {
             ProductionCatalogueDetails.addLink($scope.selectedTemplateNodeData.uuid, production.uuid).success(function(data){
                 $scope.showInfo('新增商品关联成功。');
 
@@ -331,6 +331,33 @@ angular.module('IOne-Production').controller('ProductionLinkController', functio
             $scope.refreshUI($scope.selectedItem);
             $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS_MODIFY, 1);
         });
+    };
+
+    $scope.changeMenuAction = function () {
+        var catalogueUuidArray = [];
+
+        //取得該目錄樹下的所有目錄uuid
+        angular.forEach($scope.selectedTemplateData[$scope.selectedItem.uuid], function (catalogueList) {
+            angular.forEach(catalogueList, function (catalogue) {
+                console.log(catalogue.name);
+                catalogueUuidArray.push(catalogue.uuid);
+            });
+        });
+
+
+        var promises = [];
+        for (var i = 0; i < catalogueUuidArray.length; i++) {
+            console.log(catalogueUuidArray[i]);
+            var response = ProductionCatalogueDetails.autoRelate(catalogueUuidArray[i]).success(function (data) {
+                console.log(data);
+            });
+            promises.push(response);
+        }
+        $q.all(promises).then(function () {
+            $scope.showInfo('关联成功');
+        });
+
+
     };
 
     //Set menu names

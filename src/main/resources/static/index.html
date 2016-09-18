@@ -32,13 +32,6 @@
             <div layout="row" ng-hide="autoLogin" >
                 <div class="md-toolbar-tools banner-2">
                     <md-button class="md-icon-button banner-size" ng-show="!lockMenuFlag" ng-click="lockMenu(true)"><i class="fa fa-bars"></i></md-button>
-                    <!--<div ng-show="!lockMenuFlag">-->
-                    <!--<img ng-src="app/img/home.jpg"/>-->
-                    <!--</div>-->
-                    <!--<md-input-container flex="20">-->
-                    <!--<label class="main-font search-label">搜索</label>-->
-                    <!--<input ng-model="search" style="">-->
-                    <!--</md-input-container>-->
                     <div ng-cloak ng-show="selectedMainMenu && selectedMenu">{{selectedMainMenu.name}} / {{selectedMenu.name}}</div>
                     <md-button class="md-icon-button" style="position: absolute; right: 5px;" ng-click="logout()">
                         <ng-md-icon icon="logout"></ng-md-icon>
@@ -195,7 +188,15 @@
 <script src="app/src/app/ocm/itemInfo/itemInfo.js"></script>
 <script src="app/src/app/ocm/channelArea/channelRelation.js"></script>
 <script src="app/src/app/ocm/channelLevel/channelLevel.js"></script>
+<script src="app/src/js/service/adapter/ErpAdapterService.js"></script>
+<script src="app/src/js/service/adapter/JdEcAdapterService.js"></script>
+<script src="app/src/js/service/adapter/TaobaoEcAdapterService.js"></script>
 <script src="app/src/app/ocm/promotion/promotion.js"></script>
+<script src="app/src/js/service/tags.js"></script>
+<script src="app/src/app/fam/tag/tags.js"></script>
+<script src="app/src/app/report/report/report.js"></script>
+<script src="app/src/js/service/catalogueTags.js"></script>
+<script src="app/src/js/service/productionTags.js"></script>
 <script src="app/src/app.js"></script>
 
 </body>

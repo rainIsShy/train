@@ -1,0 +1,45 @@
+<style>
+    table[md-data-table][md-row-select]>tbody>tr>td:first-child, table[md-data-table][md-row-select]>tfoot>tr>td:first-child, table[md-data-table][md-row-select]>thead:not([md-table-progress])>tr>th:first-child {
+        width: 18px;
+        padding: 0 28px 0 0;
+    }
+</style>
+
+<div layout="column" id="report-banner">
+    <md-data-table-toolbar style="background-color: whitesmoke; height: 60px;">
+        <h2 class="md-title">{{report.name}}</h2>
+        <div flex=""></div>
+        <ng-md-icon icon="keyboard_arrow_left" ng-click="path('/reports/')" class="icon-btn"></ng-md-icon>
+    </md-data-table-toolbar>
+    <md-data-table-toolbar style="margin-top: 10px;">
+        <div layout="row">
+            <md-input-container class="md-block" flex-gt-sm ng-repeat="filter in report.filter">
+                <label>{{::filter.name}}</label>
+                <input ng-model="filterDataValue[filter.value]">
+            </md-input-container>
+            <md-button class="md-raised" style="height: 20px; margin-top: 15px;" ng-click="queryData()">
+                <i class="fa fa-search"></i>&nbsp;&nbsp;查询
+            </md-button>
+        </div>
+    </md-data-table-toolbar>
+</div>
+
+<div ng-style="{width: getTableWidth()}">
+    <md-content layout="column">
+        <md-data-table-container flex style="margin: 20px 10px 20px 24px; max-height: 500px;">
+            <table md-data-table md-row-select="selected" md-progress="deferred">
+                <thead>
+                <tr>
+                    <th ng-repeat="title in reportData[0]"><span class="md-subhead" style="font-weight: 600;font-size: 13px;">{{::title}}</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="row in reportData track by $index" ng-if="$index != 0">
+                    <td ng-repeat="column in row track by $index"><span style="font-size: 12px;" class="md-body-1">{{column}}</span></td>
+                </tr>
+                </tbody>
+            </table>
+        </md-data-table-container>
+    </md-content>
+    <div ng-if="reportData" pagination option="pageOption" callback="queryData()"></div>
+</div>

@@ -1,0 +1,66 @@
+<md-dialog style="padding: 30px;opacity: 1;max-height: 500px;width: 50%;">
+    <md-content ng-hide="addFilterDlg">
+        <form name="editDlg" novalidate>
+            <div layout="column" style="    margin-bottom: 20px;">
+                <md-input-container>
+                    <label>名称:</label>
+                    <input type="text" required ng-model="item.name">
+                </md-input-container>
+                <md-input-container>
+                    <label>编号:</label>
+                    <input type="text" required ng-model="item.no">
+                </md-input-container>
+                <md-input-container>
+                    <label>查询SQL:</label>
+                    <textarea ng-model="item.sql" rows="5" md-select-on-focus></textarea>
+                </md-input-container>
+
+                <md-content>
+                    <div layout="row" layout-wrap flex class="template-item-content">
+                        <span class="chip" ng-repeat="filterItem in item.filter track by $index">
+                            <span>{{filterItem.name}} : {{filterItem.value}}</span>
+                            <span class="chip-remove" ng-click="deleteFilter(filterItem)"><ng-md-icon icon="clear"></ng-md-icon></span>
+                        </span>
+                    </div>
+                </md-content>
+
+            </div>
+            <div layout="row">
+                <md-button class="md-raised layout-margin" ng-click="addFilterDlg = true;currentFilter = {}"><i class="fa fa-times"></i>&nbsp;新增查询字段</md-button>
+                <md-button ng-click="hideDlg()" ng-disabled="editDlg.$invalid">
+                    <i class="fa fa-check"></i>&nbsp;确定
+                </md-button>
+                <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+            </div>
+        </form>
+    </md-content>
+
+    <md-content ng-show="addFilterDlg">
+        <form name="editFilterDlg" novalidate>
+            <div layout="column">
+                <md-input-container>
+                    <label>名称:</label>
+                    <input type="text" required ng-model="currentFilter.name">
+                </md-input-container>
+                <md-input-container>
+                    <label>字段:</label>
+                    <input type="text" required ng-model="currentFilter.value">
+                </md-input-container>
+                <md-input-container>
+                    <label>类型</label>
+                    <md-select ng-model="currentFilter.type">
+                        <md-option value="-5">数字</md-option>
+                        <md-option value="91">日期</md-option>
+                        <md-option value="1111">字符</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-button ng-click="addFilter();addFilterDlg = false" ng-disabled="editFilterDlg.$invalid">
+                    <i class="fa fa-check"></i>&nbsp;确定
+                </md-button>
+                <md-button ng-click="addFilterDlg = false"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+            </div>
+        </form>
+    </md-content>
+</md-dialog>

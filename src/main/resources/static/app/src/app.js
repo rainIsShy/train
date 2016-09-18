@@ -78,9 +78,20 @@ angular.module('IOne').run(function($rootScope, $cookieStore, $window, $http) {
  * All other controllers can share this controller and share data here.
  */
 angular.module('IOne').controller('MainController', function($rootScope, $scope, $mdUtil, $mdSidenav, $location, $timeout, $cookieStore, Constant,
-                                                             $mdToast, $mdDialog, $window, AuthenticationService, MenuService, ResService,OrderMaster,
+                                                             $mdToast, $mdDialog, $window, $http, AuthenticationService, MenuService, ResService,OrderMaster,
                                                              SalesOrderMaster,UserService, PsoOrderChangeMaster, SalesOrderChangeMaster,
                                                              PsoOrderReturnMaster, PSOReturnSalesOrdersMasterService, Receipts, Receipt2s) {
+
+    //取得adapter info
+    $http.post('/adapter/info', $rootScope.globals.currentUser)
+        .success(function (result) {
+            $rootScope.globals.adapterInfo = result;
+            $cookieStore.put('globals', $rootScope.globals);
+        })
+        .error(function (response) {
+            alert(response.message);
+        });
+    /////////////////////////////////////////////////////////////
     $scope.currentUser = $scope.globals.currentUser.username;
     $scope.displayName = $cookieStore.get('displayName');
     $scope.displayType = $cookieStore.get('displayType');

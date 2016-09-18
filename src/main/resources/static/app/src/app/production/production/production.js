@@ -7,7 +7,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
 
 angular.module('IOne-Production').controller('ProductionController', function ($scope, Production, ProductionPic, ProductionBom, ProductionArea,
                                                                                ProductionBrand, ProductionCustom, ProductionItemCustom, ProductionCatalogueDetails,
-                                                                               $mdDialog, $timeout, Constant, Upload, ProductionUnit) {
+                                                                               $mdDialog, $timeout, Constant, Upload, ProductionUnit, ProductionTagService) {
     $scope.listFilterOption = {
         status: Constant.STATUS[0].value,
         confirm: Constant.CONFIRM[0].value,
@@ -156,11 +156,11 @@ angular.module('IOne-Production').controller('ProductionController', function ($
                 //Get units
                 ProductionUnit.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,
                     $scope.selectedItem.uuid).success(function (data) {
-                        $scope.selectedItem.unitList = data.content;
-                    }).error(function (resp) {
-                        //$scope.showError('获取单位换算率失败:' + data.message);
-                        $scope.selectedItem.unitList = [];
-                    });
+                    $scope.selectedItem.unitList = data.content;
+                }).error(function (resp) {
+                    //$scope.showError('获取单位换算率失败:' + data.message);
+                    $scope.selectedItem.unitList = [];
+                });
 
                 //Get all custom
                 ProductionCustom.getAll().success(function (data) {
@@ -205,6 +205,9 @@ angular.module('IOne-Production').controller('ProductionController', function ($
                     });
                     //console.info($scope.selectedItemCatalogues);
                 });
+
+                //Get all production tags
+                $scope.getProductionTags($scope.selectedItem.uuid);
             }
         });
         $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
@@ -563,10 +566,10 @@ angular.module('IOne-Production').controller('ProductionController', function ($
                 ProductionUnit.modify(workingUnit).success(function (respUnit) {
                     ProductionUnit.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,
                         $scope.selectedItem.uuid).success(function (data) {
-                            $scope.selectedItem.unitList = data.content;
-                        }).error(function (resp) {
-                            $scope.showError('获取单位换算率数据失败:' + resp.message);
-                        });
+                        $scope.selectedItem.unitList = data.content;
+                    }).error(function (resp) {
+                        $scope.showError('获取单位换算率数据失败:' + resp.message);
+                    });
                     $scope.showInfo('修改单位换算率成功。');
                 }).error(function (resp) {
                     $scope.showError('修改单位换算率失败:' + resp.message);
@@ -585,6 +588,38 @@ angular.module('IOne-Production').controller('ProductionController', function ($
             })
         });
     };
+
+    $scope.productionTags = [];
+    $scope.getProductionTags = function (itemUuid) {
+        ProductionTagService.getAll(itemUuid).success(function (data) {
+            $scope.productionTags = data.content;
+        });
+    };
+    $scope.openTagSelectDlg = function () {
+        $mdDialog.show({
+            controller: 'TagSelectDlgController',
+            templateUrl: 'app/src/app/production/production/TagSelectDlg.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            locals: {}
+        }).then(function (tagUuid) {
+            ProductionTagService.add({itemUuid: $scope.selectedItem.uuid, tagUuid: tagUuid}).success(function () {
+                $scope.showInfo('新增商品标签成功。');
+                $scope.getProductionTags($scope.selectedItem.uuid);
+            }).error(function (data) {
+                $scope.showInfo('新增商品标签失敗。');
+            });
+
+        });
+    };
+    $scope.deleteProductionTag = function (uuid) {
+        $scope.showConfirm('确认删除商品标签吗？', '', function () {
+            ProductionTagService.delete(uuid).success(function () {
+                $scope.getProductionTags($scope.selectedItem.uuid);
+                $scope.showInfo('删除商品标签成功。');
+            });
+        });
+    }
 });
 
 angular.module('IOne-Production').controller('UnitEditController', function ($scope, $mdDialog, Production, selectedItem, selectedUnit) {
@@ -757,3 +792,32 @@ angular.module('IOne-Production').controller('CustomController', function ($scop
     };
 });
 
+angular.module('IOne-Production').controller('TagSelectDlgController', function ($scope, $mdDialog, $mdToast, TagService) {
+    $scope.pageOption = {
+        sizePerPage: 5,
+        currentPage: 0,
+        totalPage: 0,
+        totalElements: 0,
+        displayModel: 0  //0 : image + text //1 : image
+    };
+    var tagQuery = {confirm: 2, status: 1};
+    $scope.tags = [];
+    $scope.keyWord = "";
+    $scope.refreshPage = function (isRefresh) {
+        $scope.pageOption.currentPage = isRefresh ? 0 : $scope.pageOption.currentPage;
+        TagService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, tagQuery.confirm, tagQuery.status, null, null, $scope.keyWord).success(function (data) {
+            $scope.pageOption.totalPage = data.totalPages;
+            $scope.pageOption.totalElements = data.totalElements;
+            $scope.tags = data.content;
+
+        });
+    };
+    $scope.addProductionTag = function (tagUuid) {
+        $mdDialog.hide(tagUuid);
+    };
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+
+    $scope.refreshPage();
+});

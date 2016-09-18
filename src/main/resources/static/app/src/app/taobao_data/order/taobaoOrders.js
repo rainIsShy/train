@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('TaobaoOrdersController', function ($scope, $q, TaobaoOrders, TaobaoOrderDetail, TaobaoAmountMaster, TaobaoAmountDetail, $mdDialog, $timeout, Constant) {
+angular.module('IOne-Production').controller('TaobaoOrdersController', function ($scope, $q, TaobaoOrders, TaobaoOrderDetail, TaobaoAmountMaster, TaobaoAmountDetail, TaoBaoAdapterService, $mdDialog, $timeout, Constant) {
     $scope.taobaoOrderListMenu = {
         selectAll: false,
         effectiveType: '2', //失效作废
@@ -31,7 +31,8 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
         '405-query': {display: true, name: '查询', uuid: 'FEB54F9A-D4B3-432B-ACAF-78DBE0D0A49A'},
         '407-merge': {display: true, name: '合并', uuid: 'BC6C29F5-0772-4041-8CAD-EA66C60C533D'},
         '408-unConfirm': {display: true, name: '取消审核', uuid: '91E1EB8B-6094-4B75-9937-6DCB9D0ED6D4'},
-        '409-delivery': {display: true, name: '发货', uuid: '91E1EB8B-6094-4B75-9937-6DCB9D0ED6D4'}
+        '409-delivery': {display: true, name: '发货', uuid: '91E1EB8B-6094-4B75-9937-6DCB9D0ED6D4'},
+        '410-sync': {display: true, name: '同步订单', uuid: '1ec0df3f-4c38-4eaf-81c1-e46e33708f7f'}
     };
 
     $scope.pageOption = {
@@ -404,6 +405,38 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
 
     };
 
+    $scope.syncMenuAction = function () {
+        $mdDialog.show({
+            controller: 'EpsSyncController',
+            templateUrl: 'app/src/app/taobao_data/order/syncDlg.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            locals: {}
+        }).then(function (items) {
+            items = items.replace(/[\r\n\s]/g, '');
+            items = items.replace(/，/g, ',');
+
+            if (items.substr(items.length - 1, 1) === ',') {
+                items = items.substr(0, items.length - 1);
+            }
+            var itemsArray = items.split(',');
+
+            for (var i = itemsArray.length - 1;  i >0; i--) {
+                if (itemsArray[i] == undefined || itemsArray[i] == '' || itemsArray[i] == null) {
+                    itemsArray.splice(i, 1);
+                }
+            }
+
+            var syncOrdersString = 'tids='+itemsArray.join('&tids=');
+
+            TaoBaoAdapterService.syncByTids(itemsArray).success(function (data) {
+                $scope.showInfo("同步成功");
+            }).error(function (response) {
+                $scope.showError(response.message);
+            });
+
+        });
+    };
 
 });
 
@@ -427,5 +460,25 @@ angular.module('IOne-Production').controller('TaobaoOrdersDeliveryController', f
     };
 });
 
+angular.module('IOne-Production').controller('EpsSyncController', function ($scope, $mdDialog) {
+
+    $scope.hideDlg = function () {
+        $mdDialog.hide($scope.syncOrders);
+    };
+
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+
+    $scope.formatInput = function () {
+        $scope.syncOrders = $scope.syncOrders.replace(/[\r\n\s]/g, '');
+        $scope.syncOrders = $scope.syncOrders.replace(/，/g, ',');
+        if ($scope.syncOrders.substr($scope.syncOrders.length - 1, 1) === ',') {
+            $scope.syncOrders = $scope.syncOrders.substr(0, $scope.syncOrders.length - 1);
+        }
+        var syncOrdersArray = $scope.syncOrders.split(',');
+    };
+
+});
 
 

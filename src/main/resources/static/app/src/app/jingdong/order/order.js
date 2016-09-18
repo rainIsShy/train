@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('JdOrderController', function ($scope, JdTradeMaster, JdTradeDetail1, JdTradeDetail2, Constant, $mdDialog) {
+angular.module('IOne-Production').controller('JdOrderController', function ($scope, JdTradeMaster, JdTradeDetail1, JdTradeDetail2, JdAdapterService, Constant, $mdDialog) {
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
@@ -19,7 +19,8 @@ angular.module('IOne-Production').controller('JdOrderController', function ($sco
         '401-cancelThrow': {display: true, name: '取审', uuid: '3786e3e5-efd5-43fe-b639-f4fc70ad241f'},
         '403-batchThrow': {display: true, name: '批量审核', uuid: '1B06DBD4-A1A7-47A3-88C0-15EDB98029CA'},
         '405-batchSelectThrow': {display: true, name: '批量取审', uuid: 'FE5F696F-1C29-4AA1-9410-341BF82EB376'},
-        '407-batchMerge': {display: true, name: '批量合并', uuid: 'B98178BC-213F-4D58-8CB3-5AE2131AEEB9'}
+        '407-batchMerge': {display: true, name: '批量合并', uuid: 'B98178BC-213F-4D58-8CB3-5AE2131AEEB9'},
+        '410-sync': {display: true, name: '同步订单', uuid: 'H74KF93S-JFAG-4HAD-134J-38R5HCAV46AA'}
     };
     $scope.JINGDONG_STATUS = Constant.JINGDONG_STATUS;
     $scope.disableMergeButton = false;
@@ -514,6 +515,39 @@ angular.module('IOne-Production').controller('JdOrderController', function ($sco
                 $scope.disabledBatchCancelConfirm = true;
             }
         }
+    };
+
+    $scope.syncMenuAction = function () {
+        $mdDialog.show({
+            controller: 'EpsSyncController',
+            templateUrl: 'app/src/app/taobao_data/order/syncDlg.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            locals: {}
+        }).then(function (items) {
+            items = items.replace(/[\r\n\s]/g, '');
+            items = items.replace(/，/g, ',');
+
+            if (items.substr(items.length - 1, 1) === ',') {
+                items = items.substr(0, items.length - 1);
+            }
+            var itemsArray = items.split(',');
+
+            for (var i = itemsArray.length - 1;  i >0; i--) {
+                if (itemsArray[i] == undefined || itemsArray[i] == '' || itemsArray[i] == null) {
+                    itemsArray.splice(i, 1);
+                }
+            }
+
+            var syncOrdersString = 'orderIds='+itemsArray.join('&orderIds=');
+
+            JdAdapterService.syncByOrderId(itemsArray).success(function (data) {
+                $scope.showInfo("同步成功");
+            }).error(function (response) {
+                $scope.showError(response.message);
+            });
+
+        });
     };
 });
 
