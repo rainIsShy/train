@@ -99,7 +99,7 @@ angular.module('IOne-directives').directive('orderFormMenu', function(Constant) 
     return {
         templateUrl: 'app/src/js/directive/orderFormMenu.html',
         link: function($scope) {
-          $scope.orderListMenuAction = function(menuId, $event) {
+            $scope.orderListMenuAction = function(menuId, $event) {
                 //Main menu
                 if(menuId == 410) {
                     $scope.selectAllMenuAction();
@@ -119,8 +119,12 @@ angular.module('IOne-directives').directive('orderFormMenu', function(Constant) 
                     $scope.oneOffSync();
                 } else if(menuId == 419) {
                     $scope.rollbackTransfer();
+                } else if (menuId == 420) {
+                    $scope.changePurchaseFlag(2);
+                } else if (menuId == 421) {
+                    $scope.changePurchaseFlag(3);
                 }
-           }
+            }
         }
     }
 });
@@ -213,6 +217,8 @@ angular.module('IOne-directives').directive('taobaoOrderListMenu', function(Cons
                     $scope.unConfirmMenuAction();
                 }else if(menuId == 409) {
                     $scope.deliveryMenuAction();
+                }else if(menuId == 410) {
+                    $scope.syncMenuAction();
                 }
             }
         }

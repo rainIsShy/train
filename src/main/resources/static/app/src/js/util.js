@@ -345,6 +345,10 @@ RES_UUID_MAP = {
         WAREHOUSE: {
             RES_UUID: 'fec8451f-200d-43f7-9bae-8538ecbe2c3e',
             TITLE: '仓库基础资料'
+        },
+        TAG: {
+            RES_UUID: 'c7ed1ab0-f83b-4ea8-a2c2-b3fd25651931',
+            TITLE: '标签管理'
         }
     },
 
@@ -900,7 +904,8 @@ angular.module('IOne-Constant').constant('Constant', {
                     name: '物流安装服务商维护管理',
                     link: '/logistics_installations',
                     uuid: RES_UUID_MAP.CBI.LOGISTICS_INSTALLATIONS.RES_UUID
-                }
+                },
+                {id: '/fam/tags', name: '标签管理', link: '/fam/tags', uuid: RES_UUID_MAP.CBI.TAG.RES_UUID}
             ]
         }
     ],
@@ -1258,5 +1263,10 @@ angular.module('IOne-Constant').constant('Constant', {
     'STOP_SALE_FLAG': {
         Y: {value: 'Y', name: '停售'},
         N: {value: 'N', name: '未停售'}
+    },
+    'PURCHASE_FLAG': {
+        1: {value: '1', name: '采购未发出<'},
+        2: {value: '2', name: '采购发出1'},
+        3: {value: '3', name: '采购退回123'}
     }
 });

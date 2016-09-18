@@ -26,13 +26,14 @@
         <div class="menu" layout="row" layout-md="column" layout-sm="column">
             <div flex="20" layout="row" layout-md="column" layout-sm="column" style="margin-left: 10px;">
                 <label class="label">订单类型：</label>
-                <md-select placeholder="全部" ng-model="taobaoOrderListMenu.orderFlag" class="select">
+                <md-select flex placeholder="全部" ng-model="taobaoOrderListMenu.orderFlag" class="select">
                     <md-option ng-repeat="(key, value) in ORDER_FLAG" ng-value="key">{{value.name}}</md-option>
                 </md-select>
             </div>
             <div flex="35" layout="row" layout-md="column" layout-sm="column">
                 <label class="label">订单状态：</label>
-                <md-select placeholder="" ng-model="taobaoOrderListMenu.taobao_status" class="select" aria-label="status">
+                <md-select flex placeholder="" ng-model="taobaoOrderListMenu.taobao_status" class="select"
+                           aria-label="status">
                     <md-option ng-repeat="(key, value) in TAOBAO_STATUS" ng-value="value.value">
                         {{value.name}}
                     </md-option>
@@ -40,7 +41,8 @@
             </div>
             <div flex="20" layout="row" layout-md="column" layout-sm="column">
                 <label class="label">订单旗帜：</label>
-                <md-select placeholder="" ng-model="taobaoOrderListMenu.seller_flag" class="select" aria-label="flag">
+                <md-select flex placeholder="" ng-model="taobaoOrderListMenu.seller_flag" class="select"
+                           aria-label="flag">
                     <md-option ng-repeat="(key, value) in SELLER_FLAG" ng-value="key">
                         {{value.name}}
                     </md-option>
@@ -48,7 +50,7 @@
             </div>
             <div flex="20" layout="row" layout-md="column" layout-sm="column">
                 <label class="label">审核状态：</label>
-                <md-select placeholder="全部" ng-model="taobaoOrderListMenu.confirm" class="select">
+                <md-select flex placeholder="全部" ng-model="taobaoOrderListMenu.confirm" class="select">
                     <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
                 </md-select>
             </div>
@@ -66,18 +68,26 @@
                 <label>卖家备注：</label>
                 <input ng-model="taobaoOrderListMenu.sellerMemo"/>
             </md-input-container>
-            <md-button flex="10" class="md-raised"
-                       ng-if="taobaoOrderListMenuDisplayOption['405-query'].display
+            <div flex layout="row" layout-align="end center">
+                <md-button class="md-raised"
+                           ng-if="taobaoOrderListMenuDisplayOption['405-query'].display
                        && (menuAuthDataMap[taobaoOrderListMenuDisplayOption['405-query'].uuid] || isAdmin() || !taobaoOrderListMenuDisplayOption['405-query'].uuid)"
-                       style="margin: 22px 0px 0px 50px;height: 20px;"
-                       ng-click="taobaoOrderListMenuAction(405, $event)">&nbsp;{{taobaoOrderListMenuDisplayOption['405-query'].name}}
-            </md-button>
+                           style="height: 20px;"
+                           ng-click="taobaoOrderListMenuAction(405, $event)">&nbsp;{{taobaoOrderListMenuDisplayOption['405-query'].name}}
+                </md-button>
+                <md-button class="md-raised"
+                           ng-if="taobaoOrderListMenuDisplayOption['410-sync'].display
+                       && (menuAuthDataMap[taobaoOrderListMenuDisplayOption['410-sync'].uuid] || isAdmin() || !taobaoOrderListMenuDisplayOption['410-sync'].uuid)"
+                           style="height: 20px;"
+                           ng-click="taobaoOrderListMenuAction(410, $event)">&nbsp;{{taobaoOrderListMenuDisplayOption['410-sync'].name}}
+                </md-button>
+            </div>
         </div>
     </div>
 
 
     <div flex style="padding: 20px 0px 0px 0px;" layout="row" layout-md="column" layout-sm="column" layout-align="space-around left">
-        <div flex="70" layout="row" layout-md="column" layout-sm="column">
+        <div flex="60" layout="row" layout-md="column" layout-sm="column">
             <md-checkbox ng-model="taobaoOrderListMenu.selectAll" ng-change="taobaoOrderListMenuAction(400, $event)"
                          ng-if="taobaoOrderListMenuDisplayOption['400-selectAll'].display && (menuAuthDataMap[taobaoOrderListMenuDisplayOption['400-selectAll'].uuid] || isAdmin() || !taobaoOrderListMenuDisplayOption['400-selectAll'].uuid)"
                          aria-label="全选" ng-true-value="true" ng-false-value="false"> &nbsp;{{taobaoOrderListMenuDisplayOption['400-selectAll'].name}}

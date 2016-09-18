@@ -315,6 +315,13 @@
                     <span flex="20">总记录数: {{pageOption.totalElements}}</span>
                     <span flex="20">已选记录数: {{selectedItemSize}}</span>
                     <span flex="20">汇总金额: ￥{{selectedItemAmount}}</span>
+                    <div flex="35" style="padding-top: -15px;" layout="row" layout-align="end center">
+                        <md-button ng-click="syncMenuAction()" style="padding-top: -15px;"
+                                   ng-if="MenuDisplayOption['410-sync'].display &&
+                                   (menuAuthDataMap[MenuDisplayOption['410-sync'].uuid] || isAdmin() || !MenuDisplayOption['410-sync'].uuid)">
+                            <i class="fa fa-cloud-download"></i>同步订单
+                        </md-button>
+                    </div>
 
                     <!--<md-menu>
                         <md-button class="md-button close-btn" aria-label="More" ng-click="$mdOpenMenu($event)"

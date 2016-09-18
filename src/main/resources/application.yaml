@@ -18,15 +18,19 @@ logging:
 
 i1:
   adapter:
-    url:
+    url: http://localhost:8081
+  i1-adapter:
+    url: http://localhost:8082
   tiptop-adapter:
     url: http://localhost:8083
+  ec-adapter:
+    url: http://localhost:8084
   tmall-adapter:
-    url:
+    url: http://localhost:8085
 
 
 
---- # default prfile
+--- # default profile
 spring:
   profiles: default
 
@@ -36,10 +40,16 @@ banner:
   location: banner-sit.txt
 
 i1:
+  adapter:
+    url: http://project.benchmarkchian.com:18011
   i1-adapter:
-    url: http://project.benchmarkchina.com:10813
+    url: http://project.benchmarkchian.com:18012
+  tiptop-adapter:
+    url: http://project.benchmarkchian.com:18013
+  ec-adapter:
+    url: http://project.benchmarkchian.com:18014
   tmall-adapter:
-    url: http://project.benchmarkchina.com:10013
+    url: http://project.benchmarkchian.com:18015
 
 
 --- # Kent's Dev
