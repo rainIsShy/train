@@ -1,0 +1,33 @@
+<md-dialog style="padding: 30px;width: 520px;min-height: 100px;max-height: 500px;opacity: 1;">
+    <md-content>
+        <div layout="row">
+            <form flex name="epsSyncForm">
+                <div flex>
+                    <md-input-container style="width:500px;">
+                        <label>输入单号(逗号分隔)</label>
+                        <textarea ng-model="syncOrders" name="syncOrders" md-maxlength="2000" cols="63" wrap="hard"
+                                  autofocus md-select-on-focus required placeholder="1234,5678">
+                        </textarea>
+                        <div ng-messages="epsSyncForm.syncOrders.$error" ng-if="1">
+                            <div ng-message="required">*必须填写*</div>
+                            <!--<div ng-message="pattern">请填入数字</div>-->
+                            <div ng-message="md-maxlength">最大长度2000</div>
+                        </div>
+                    </md-input-container>
+                    <!--<div>{{syncOrders}}</div>-->
+                    <div layout="row" layout-align="end center">
+                        <md-button ng-click="formatInput()">
+                            <i class="fa fa-magic"></i>&nbsp;整理
+                        </md-button>
+                        <md-button ng-click="hideDlg()" ng-disabled="epsSyncForm.$invalid">
+                            <i class="fa fa-check"></i>&nbsp;确定
+                        </md-button>
+                        <md-button ng-click="cancelDlg()">
+                            <i class="fa fa-times"></i>&nbsp;取消
+                        </md-button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </md-content>
+</md-dialog>

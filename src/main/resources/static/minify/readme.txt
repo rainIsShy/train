@@ -1,0 +1,1 @@
+A folder for minify js and css files.
