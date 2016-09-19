@@ -527,26 +527,20 @@ angular.module('IOne-Production').controller('JdOrderController', function ($sco
         }).then(function (items) {
             items = items.replace(/[\r\n\s]/g, '');
             items = items.replace(/，/g, ',');
-
             if (items.substr(items.length - 1, 1) === ',') {
                 items = items.substr(0, items.length - 1);
             }
             var itemsArray = items.split(',');
-
-            for (var i = itemsArray.length - 1;  i >0; i--) {
+            for (var i = itemsArray.length - 1; i > 0; i--) {
                 if (itemsArray[i] == undefined || itemsArray[i] == '' || itemsArray[i] == null) {
                     itemsArray.splice(i, 1);
                 }
             }
-
-            var syncOrdersString = 'orderIds='+itemsArray.join('&orderIds=');
-
-            JdAdapterService.syncByOrderId(itemsArray).success(function (data) {
+            //var syncOrdersString = 'orderIds=' + itemsArray.join('&orderIds=');
+            JdAdapterService.syncByOrderId(itemsArray, $scope, function (response) {
                 $scope.showInfo("同步成功");
-            }).error(function (response) {
-                $scope.showError(response.message);
+                $scope.refreshList();
             });
-
         });
     };
 });

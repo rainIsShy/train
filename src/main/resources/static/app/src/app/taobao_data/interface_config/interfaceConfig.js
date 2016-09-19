@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('EPSInterfaceConfigController', function ($scope, EPSInterfaceConfigService, Constant, $mdDialog, $q) {
+angular.module('IOne-Production').controller('EPSInterfaceConfigController', function ($scope, TaoBaoAdapterService, Constant, $mdDialog, $q) {
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
@@ -55,7 +55,8 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
     };
 
     $scope.refreshList = function () {
-        EPSInterfaceConfigService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption.select.confirm, $scope.listFilterOption.select.status,
+        //EPSInterfaceConfigService.getAll
+        TaoBaoAdapterService.queryConfig($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption.select.confirm, $scope.listFilterOption.select.status,
             $scope.listFilterOption.no, $scope.listFilterOption.name, $scope.listFilterOption.keyWord, $scope.RES_UUID_MAP.EPS.INTERFACE_CONFIG.RES_UUID)
             .success(function (data) {
                 $scope.itemList = data.content;
@@ -172,25 +173,41 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
         }
         if ($scope.status == 'add') {
             if ($scope.domain == 'EPS_BASE_INTERFACE_CONF') {
-                EPSInterfaceConfigService.add($scope.source).success(function (data) {
-                    $scope.showInfo('新增数据成功。');
-                }).error(function (data) {
-                    $scope.showError('新增失败:' + '<br>' + data.message);
+                var itemList = [];
+                itemList.push($scope.source);
+                TaoBaoAdapterService.insertConfig(itemList, $scope, function (response) {
+                    $scope.showInfo("新增成功");
                 });
-
+                /*
+                 EPSInterfaceConfigService.add($scope.source).success(function (data) {
+                 $scope.showInfo('新增数据成功。');
+                 }).error(function (data) {
+                 $scope.showError('新增失败:' + '<br>' + data.message);
+                 });
+                 */
             }
         } else if ($scope.status == 'edit') {
             if ($scope.domain == 'EPS_BASE_INTERFACE_CONF') {
-                EPSInterfaceConfigService.modify($scope.source.uuid, $scope.source).success(function (data) {
-                    $scope.showInfo('修改数据成功。');
+                var itemList = [];
+                itemList.push($scope.source);
+                TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
+                    $scope.showInfo("修改成功");
                     $scope.source = data;
                     $scope.selectedItem = data;
                     $scope.selectedItemBackUp = angular.copy($scope.selectedItem);
-                }).error(function (data) {
-                    $scope.showError('修改失败:' + '<br>' + data.message);
-                    $scope.source = angular.copy($scope.selectedItemBackUp);
-                    $scope.selectedItem = angular.copy($scope.selectedItemBackUp);
                 });
+                /*
+                 EPSInterfaceConfigService.modify($scope.source.uuid, $scope.source).success(function (data) {
+                 $scope.showInfo('修改数据成功。');
+                 $scope.source = data;
+                 $scope.selectedItem = data;
+                 $scope.selectedItemBackUp = angular.copy($scope.selectedItem);
+                 }).error(function (data) {
+                 $scope.showError('修改失败:' + '<br>' + data.message);
+                 $scope.source = angular.copy($scope.selectedItemBackUp);
+                 $scope.selectedItem = angular.copy($scope.selectedItemBackUp);
+                 });
+                 */
             }
         }
     };
@@ -225,14 +242,23 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                     uuid: item.uuid,
                     confirm: Constant.CONFIRM[1].value
                 };
-                EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
+                var itemList = [];
+                itemList.push(UpdateInput);
+                TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
                     item.confirm = Constant.CONFIRM[1].value;
                     $scope.disableBatchMenuButtons();
-                    $scope.showInfo('取消审核成功！');
-                }).error(function (response) {
-                    //$scope.showError($scope.getError(response.message));
-                    $scope.showError(response.message);
+                    $scope.showInfo("取消审核成功");
                 });
+                /*
+                 EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
+                 item.confirm = Constant.CONFIRM[1].value;
+                 $scope.disableBatchMenuButtons();
+                 $scope.showInfo('取消审核成功！');
+                 }).error(function (response) {
+                 //$scope.showError($scope.getError(response.message));
+                 $scope.showError(response.message);
+                 });
+                 */
             });
         } else {
             $scope.showConfirm('确认审核吗？', '', function () {
@@ -240,14 +266,23 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                     uuid: item.uuid,
                     confirm: Constant.CONFIRM[2].value
                 };
-                EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
+                var itemList = [];
+                itemList.push(UpdateInput);
+                TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
                     item.confirm = Constant.CONFIRM[2].value;
                     $scope.disableBatchMenuButtons();
-                    $scope.showInfo('审核成功！');
-                }).error(function (response) {
-                    //$scope.showError($scope.getError(response.message));
-                    $scope.showError(response.message);
+                    $scope.showInfo("审核成功");
                 });
+                /*
+                 EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
+                 item.confirm = Constant.CONFIRM[2].value;
+                 $scope.disableBatchMenuButtons();
+                 $scope.showInfo('审核成功！');
+                 }).error(function (response) {
+                 //$scope.showError($scope.getError(response.message));
+                 $scope.showError(response.message);
+                 });
+                 */
             });
         }
     };
@@ -260,10 +295,18 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                     uuid: item.uuid,
                     confirm: Constant.CONFIRM[1].value
                 };
-                EPSInterfaceConfigService.modify(UpdateInput.uuid, UpdateInput).success(function () {
+                var itemList = [];
+                itemList.push(UpdateInput);
+                TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
                     $scope.disableBatchMenuButtons();
-                    $scope.showInfo('修改数据成功。');
+                    $scope.showInfo("取消审核成功");
                 });
+                /*
+                 EPSInterfaceConfigService.modify(UpdateInput.uuid, UpdateInput).success(function () {
+                 $scope.disableBatchMenuButtons();
+                 $scope.showInfo('修改数据成功。');
+                 });
+                 */
             }, function () {
                 item.confirm = Constant.CONFIRM[2].value
             });
@@ -278,10 +321,18 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                     uuid: item.uuid,
                     confirm: Constant.CONFIRM[2].value
                 };
-                EPSInterfaceConfigService.modify(UpdateInput.uuid, UpdateInput).success(function () {
+                var itemList = [];
+                itemList.push(UpdateInput);
+                TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
                     $scope.disableBatchMenuButtons();
-                    $scope.showInfo('修改数据成功。');
+                    $scope.showInfo("审核成功");
                 });
+                /*
+                 EPSInterfaceConfigService.modify(UpdateInput.uuid, UpdateInput).success(function () {
+                 $scope.disableBatchMenuButtons();
+                 $scope.showInfo('修改数据成功。');
+                 });
+                 */
             }, function () {
                 item.confirm = Constant.CONFIRM[1].value;
             });
@@ -298,15 +349,25 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                     status: Constant.STATUS[2].value,
                     confirm: Constant.CONFIRM[1].value
                 };
-                EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
+                var itemList = [];
+                itemList.push(UpdateInput);
+                TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
                     item.status = Constant.STATUS[2].value;
                     item.confirm = Constant.CONFIRM[1].value;
                     $scope.disableBatchMenuButtons();
-                    $scope.showInfo('修改为失效成功！');
-                }).error(function (response) {
-                    //$scope.showError($scope.getError(response.message));
-                    $scope.showError(response.message);
+                    $scope.showInfo("修改为失效成功");
                 });
+                /*
+                 EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
+                 item.status = Constant.STATUS[2].value;
+                 item.confirm = Constant.CONFIRM[1].value;
+                 $scope.disableBatchMenuButtons();
+                 $scope.showInfo('修改为失效成功！');
+                 }).error(function (response) {
+                 //$scope.showError($scope.getError(response.message));
+                 $scope.showError(response.message);
+                 });
+                 */
             });
         } else {
             $scope.showConfirm('确认改为生效吗？', '', function () {
@@ -314,14 +375,25 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                     uuid: item.uuid,
                     status: Constant.STATUS[1].value
                 };
-                EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
-                    item.status = Constant.STATUS[1].value;
-                    $scope.disableBatchMenuButtons();
-                    $scope.showInfo('修改为生效成功！');
-                }).error(function (response) {
-                    //$scope.showError($scope.getError(response.message));
-                    $scope.showError(response.message);
+                var itemList = [];
+                itemList.push(UpdateInput);
+                TaoBaoAdapterService.updateProfile(itemList, $scope, function (response) {
+                    TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
+                        item.status = Constant.STATUS[1].value;
+                        $scope.disableBatchMenuButtons();
+                        $scope.showInfo('修改为生效成功！');
+                    });
                 });
+                /*
+                 EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
+                 item.status = Constant.STATUS[1].value;
+                 $scope.disableBatchMenuButtons();
+                 $scope.showInfo('修改为生效成功！');
+                 }).error(function (response) {
+                 //$scope.showError($scope.getError(response.message));
+                 $scope.showError(response.message);
+                 });
+                 */
             });
         }
     };
@@ -334,10 +406,20 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                     uuid: item.uuid,
                     status: Constant.STATUS[1].value
                 };
-                EPSInterfaceConfigService.modify(UpdateInput.uuid, UpdateInput).success(function () {
-                    $scope.disableBatchMenuButtons();
-                    $scope.showInfo('修改数据成功。');
+                var itemList = [];
+                itemList.push(UpdateInput);
+                TaoBaoAdapterService.updateProfile(itemList, $scope, function (response) {
+                    TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
+                        $scope.disableBatchMenuButtons();
+                        $scope.showInfo("修改为有效成功");
+                    });
                 });
+                /*
+                 EPSInterfaceConfigService.modify(UpdateInput.uuid, UpdateInput).success(function () {
+                 $scope.disableBatchMenuButtons();
+                 $scope.showInfo('修改数据成功。');
+                 });
+                 */
             }, function () {
                 item.status = Constant.STATUS[2].value;
             });
@@ -348,11 +430,18 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                     status: Constant.STATUS[2].value,
                     confirm: Constant.CONFIRM[1].value
                 };
-                EPSInterfaceConfigService.modify(UpdateInput.uuid, UpdateInput).success(function () {
+                TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
                     item.confirm = Constant.CONFIRM[1].value;
                     $scope.disableBatchMenuButtons();
-                    $scope.showInfo('修改数据成功。');
+                    $scope.showInfo("修改为无效成功");
                 });
+                /*
+                 EPSInterfaceConfigService.modify(UpdateInput.uuid, UpdateInput).success(function () {
+                 item.confirm = Constant.CONFIRM[1].value;
+                 $scope.disableBatchMenuButtons();
+                 $scope.showInfo('修改数据成功。');
+                 });
+                 */
             }, function () {
                 item.status = Constant.STATUS[1].value;
             });
@@ -367,11 +456,20 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
             return;
         }
         $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
-            EPSInterfaceConfigService.delete(item.uuid).success(function () {
+            var itemList = [];
+            itemList.push(item);
+            TaoBaoAdapterService.deleteConfig(itemList, $scope, function (response) {
                 $scope.selectedItem = null;
                 $scope.refreshList();
-                $scope.showInfo('删除数据成功。');
+                $scope.showInfo('删除成功。');
             });
+            /*
+             EPSInterfaceConfigService.delete(item.uuid).success(function () {
+             $scope.selectedItem = null;
+             $scope.refreshList();
+             $scope.showInfo('删除数据成功。');
+             });
+             */
         });
     };
 
@@ -380,11 +478,17 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
         var promises = [];
         var noDeleteNos = '';
         var count = 0;
+        var itemList = [];
         angular.forEach($scope.itemList, function (item) {
             if (item.selected === true) {
                 if (item.status == '1' && item.confirm == '1') {
-                    var response = EPSInterfaceConfigService.delete(item.uuid).success(function () {
+                    itemList.push(item);
+                    var response = TaoBaoAdapterService.deleteConfig(itemList, $scope, function (response) {
                     });
+                    /*
+                     var response = EPSInterfaceConfigService.delete(item.uuid).success(function () {
+                     });
+                     */
                     promises.push(response);
                     count++;
                 } else {
@@ -417,6 +521,7 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
         var promises = [];
         var confirmedNos = '';
         var count = 0;
+        var itemList = [];
         angular.forEach($scope.itemList, function (item) {
             if (item.selected === true) {
                 if (item.confirm != Constant.CONFIRM[2].value) {
@@ -424,8 +529,13 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                         uuid: item.uuid,
                         confirm: Constant.CONFIRM[2].value
                     };
-                    var response = EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
+                    itemList.push(UpdateInput);
+                    var response = TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
                     });
+                    /*
+                     var response = EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
+                     });
+                     */
                     promises.push(response);
                     count++;
                 } else {
@@ -457,6 +567,7 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
         var promises = [];
         var unConfirmedNos = '';
         var count = 0;
+        var itemList = [];
         angular.forEach($scope.itemList, function (item) {
             if (item.selected === true) {
                 if (item.confirm == Constant.CONFIRM[2].value) {
@@ -464,8 +575,13 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                         uuid: item.uuid,
                         confirm: Constant.CONFIRM[1].value
                     };
-                    var response = EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
+                    itemList.push(UpdateInput);
+                    var response = TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
                     });
+                    /*
+                     var response = EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
+                     });
+                     */
                     promises.push(response);
                     count++;
                 } else {
@@ -497,6 +613,7 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
         var promises = [];
         var effectiveNos = '';
         var count = 0;
+        var itemList = [];
         angular.forEach($scope.itemList, function (item) {
             if (item.selected === true) {
                 if (item.status != Constant.STATUS[1].value) {
@@ -504,9 +621,17 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                         uuid: item.uuid,
                         status: Constant.STATUS[1].value
                     };
-                    var response = EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
+                    itemList.push(UpdateInput);
+                    var response = TaoBaoAdapterService.updateProfile(itemList, $scope, function (response) {
                     });
+                    var response2 = TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
+                    });
+                    /*
+                     var response = EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
+                     });
+                     */
                     promises.push(response);
+                    promises.push(response2);
                     count++;
                 } else {
                     effectiveNos = effectiveNos + item.no + '<br>';
@@ -535,6 +660,7 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
         var promises = [];
         var uneffectiveNos = '';
         var count = 0;
+        var itemList = [];
         angular.forEach($scope.itemList, function (item) {
             if (item.selected === true) {
                 if (item.status == Constant.STATUS[1].value) {
@@ -542,8 +668,13 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                         uuid: item.uuid,
                         status: Constant.STATUS[2].value
                     };
-                    var response = EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
+                    itemList.push(UpdateInput);
+                    var response = TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
                     });
+                    /*
+                     var response = EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
+                     });
+                     */
                     promises.push(response);
                     count++;
                 } else {
