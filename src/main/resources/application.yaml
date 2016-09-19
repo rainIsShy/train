@@ -77,4 +77,18 @@ i1:
     url: http://localhost:8082
 
 
+--- # Carzy's Dev
+
+spring:
+
+  profiles: carzy
+
+i1:
+  i1-server:
+    url: http://project.benchmarkchina.com:10011
+  i1-adapter:
+    url: http://project.benchmarkchian.com:18012
+
+
+
 
