@@ -1,5 +1,5 @@
 /**
- * Created by xavier on 2016/9/5.
+ * Created by xavier on 2016/9/5..
  */
 
 angular.module('IOne-Production').service('ErpAdapterService', function ($http, $rootScope) {
