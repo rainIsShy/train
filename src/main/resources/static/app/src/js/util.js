@@ -516,7 +516,7 @@ angular.module('IOne-Auth', []);
 
 angular.module('IOne-Constant').constant('Constant', {
     // TODO: get url from application.yaml
-    BACKEND_BASE: 'http://project.benchmarkchina.com:10011',
+    BACKEND_BASE: 'http://localhost:8080',
     I1_ADAPTER_URL: '',
     EC_ADAPTER_URL: '',
     TIPTOP_ADAPTER_URL: '',
@@ -693,13 +693,11 @@ angular.module('IOne-Constant').constant('Constant', {
         {
             id: 7,
             uuid: '',
-            name: '数据同步管理',
+            name: '报表管理',
             isOpen: false,
             icon: 'fa fa-history',
             subList: [
-                {id: '/dsm/rule', name: '同步规则管理', link: '/dsm/rule', uuid: ''},
-                {id: '/dsm/schedule', name: '同步任务管理', link: '/dsm/schedule', uuid: ''},
-                {id: '/dsm/log', name: '日志管理', link: '/dsm/log', uuid: ''}
+                {id: '/reports', name: '报表查询', link: '/reports', uuid: ''},
             ]
         },
         {

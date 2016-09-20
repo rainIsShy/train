@@ -11,7 +11,7 @@ angular.module('IOne-Production').config(['$routeProvider', function($routeProvi
 
 angular.module('IOne-Production').service('ReportFileService', function($http, Constant) {
     this.getAll = function(size, page, no, name, sql) {
-        return $http.get(Constant.BACKEND_BASE + 'reportFiles', {params: {
+        return $http.get(Constant.BACKEND_BASE + '/reportFiles', {params: {
             size: size,
             page: page,
             no: no,
@@ -21,25 +21,25 @@ angular.module('IOne-Production').service('ReportFileService', function($http, C
     };
 
     this.get = function(uuid) {
-        return $http.get(Constant.BACKEND_BASE + 'reportFiles/' + uuid);
+        return $http.get(Constant.BACKEND_BASE + '/reportFiles/' + uuid);
     };
 
     this.add = function(data) {
         if(data.filter) {
             data.filter = JSON.stringify(data.filter);
         }
-        return $http.post(Constant.BACKEND_BASE + 'reportFiles', data);
+        return $http.post(Constant.BACKEND_BASE + '/reportFiles', data);
     };
 
     this.modify = function(data) {
         if(data.filter) {
             data.filter = JSON.stringify(data.filter);
         }
-        return $http.patch(Constant.BACKEND_BASE + 'reportFiles/' + data.uuid, data);
+        return $http.patch(Constant.BACKEND_BASE + '/reportFiles/' + data.uuid, data);
     };
 
     this.delete = function(uuid) {
-        return $http.delete(Constant.BACKEND_BASE + 'reportFiles/' + uuid);
+        return $http.delete(Constant.BACKEND_BASE + '/reportFiles/' + uuid);
     };
 });
 
@@ -236,7 +236,7 @@ angular.module('IOne-Production').controller('ReportQueryAddController', functio
 });
 
 
-angular.module('IOne-Production').controller('ReportQueryController', function($scope, $http, $routeParams, $compile, ReportFileService, Constant) {
+angular.module('IOne-Production').controller('ReportQueryController', function($scope, $http, $routeParams, $compile, $window, ReportFileService, Constant) {
     $scope.getTableWidth = function() {
         return $('#report-banner').width();
     };
@@ -245,7 +245,7 @@ angular.module('IOne-Production').controller('ReportQueryController', function($
     $scope.reportUuid = $routeParams.reportId;
 
     $scope.pageOption = {
-        sizePerPage: 15,
+        sizePerPage: 50,
         currentPage: 0,
         totalPage: 100,
         totalElements: 100
@@ -267,13 +267,14 @@ angular.module('IOne-Production').controller('ReportQueryController', function($
                 name: item.name,
                 value: item.value,
                 type: item.type,
-                data: $scope.filterDataValue[item.value]
+                data: $scope.filterDataValue[item.value],
+                like: item.like
             };
 
             $scope.filterData[item.value] = newItem;
         });
 
-        $http.post('/objects/data', {
+        $http.post(Constant.BACKEND_BASE + '/objects/data', {
             sql: $scope.report.sql,
             filter: $scope.filterData,
             page: $scope.pageOption.currentPage,
@@ -282,6 +283,39 @@ angular.module('IOne-Production').controller('ReportQueryController', function($
             $scope.reportData = data.content;
             $scope.pageOption.totalPage = data.totalPages;
             $scope.pageOption.totalElements = data.totalElements;
+        })
+    };
+
+    $scope.exportData = function() {
+        $scope.filterData = {};
+        angular.forEach($scope.report.filter, function(item) {
+            var newItem = {
+                name: item.name,
+                value: item.value,
+                type: item.type,
+                data: $scope.filterDataValue[item.value],
+                like: item.like
+            };
+
+            $scope.filterData[item.value] = newItem;
+        });
+
+        $http.post(Constant.BACKEND_BASE + '/objects/export', {
+            sql: $scope.report.sql,
+            filter: $scope.filterData,
+            page: $scope.pageOption.currentPage,
+            size: $scope.pageOption.sizePerPage
+        }).success(function(data) {
+            if(data) {
+                var anchor = angular.element('<a/>');
+                anchor.attr({
+                    href: 'data:attachment/csv;base64,' + encodeURI(btoa(unescape(encodeURIComponent(data)))),
+                    target: '_blank',
+                    download: 'export.csv'
+                })[0].click();
+            } else {
+                $scope.showError('Failed to export data.');
+            }
         })
     };
 });
