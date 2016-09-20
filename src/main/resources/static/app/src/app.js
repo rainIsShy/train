@@ -83,7 +83,7 @@ angular.module('IOne').controller('MainController', function($rootScope, $scope,
                                                              PsoOrderReturnMaster, PSOReturnSalesOrdersMasterService, Receipts, Receipt2s) {
 
     //取得adapter info
-    $http.post('/adapter/info', $rootScope.globals.currentUser)
+    $http.post(Constant.BACKEND_BASE + '/adapter/info', $rootScope.globals.currentUser)
         .success(function (result) {
             $rootScope.globals.adapterInfo = result;
             $cookieStore.put('globals', $rootScope.globals);
