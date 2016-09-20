@@ -19,14 +19,17 @@
                     <div layout="row" layout-wrap flex class="template-item-content">
                         <span class="chip" ng-repeat="filterItem in item.filter track by $index">
                             <span>{{filterItem.name}} : {{filterItem.value}}</span>
-                            <span class="chip-remove" ng-click="deleteFilter(filterItem)"><ng-md-icon icon="clear"></ng-md-icon></span>
+                            <span class="chip-remove" ng-click="deleteFilter(filterItem)"><ng-md-icon
+                                    icon="clear"></ng-md-icon></span>
                         </span>
                     </div>
                 </md-content>
 
             </div>
             <div layout="row">
-                <md-button class="md-raised layout-margin" ng-click="addFilterDlg = true;currentFilter = {}"><i class="fa fa-times"></i>&nbsp;新增查询字段</md-button>
+                <md-button class="md-raised layout-margin" ng-click="addFilterDlg = true;currentFilter = {}"><i
+                        class="fa fa-times"></i>&nbsp;新增查询字段
+                </md-button>
                 <md-button ng-click="hideDlg()" ng-disabled="editDlg.$invalid">
                     <i class="fa fa-check"></i>&nbsp;确定
                 </md-button>
@@ -52,6 +55,13 @@
                         <md-option value="-5">数字</md-option>
                         <md-option value="91">日期</md-option>
                         <md-option value="1111">字符</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container>
+                    <label>是否模糊匹配</label>
+                    <md-select ng-model="currentFilter.like">
+                        <md-option value="true">是</md-option>
+                        <md-option value="false">否</md-option>
                     </md-select>
                 </md-input-container>
             </div>
