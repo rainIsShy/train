@@ -93,14 +93,19 @@ angular.module('IOne').controller('MainController', function($rootScope, $scope,
         });
 
      //server的相關設定並記錄成全域變數
-    $http.get("http://localhost:8080/env").success(function(data){
+    $http.get("/env").success(function(data){
          var serverName = data.profiles[0];
-         var applicationConfig = data["applicationConfig: [classpath:/application.yaml]#"+serverName];
+         var applicationConfig = data["applicationConfig: [classpath:/application.yaml]"];
          Constant.BACKEND_BASE = applicationConfig["i1.i1-server.url"]==null?'':applicationConfig["i1.i1-server.url"];
-         Constant.I1_ADAPTER_URL=applicationConfig["i1.adapter.url"]==null?'':applicationConfig["i1.adapter.url"];
+         Constant.I1_ADAPTER_URL=applicationConfig["i1.i1-adapter.url"]==null?'':applicationConfig["i1.i1-adapter.url"];
          Constant.EC_ADAPTER_URL= applicationConfig["i1.ec-adapter.url"]==null?'':applicationConfig["i1.ec-adapter.url"];
          Constant.TIPTOP_ADAPTER_URL= applicationConfig["i1.tiptop-adapter.url"]==null?'':applicationConfig["i1.tiptop-adapter.url"];
          Constant.TMALL_ADAPTER_URL= applicationConfig["i1.tmall-adapter.url"]==null?'':applicationConfig["i1.tmall-adapter.url"];
+        console.info("BACKEND_BASE: " + Constant.BACKEND_BASE);
+        console.info("I1_ADAPTER_URL: " + Constant.I1_ADAPTER_URL);
+        console.info("EC_ADAPTER_URL: " + Constant.EC_ADAPTER_URL);
+        console.info("TIPTOP_ADAPTER_URL: " + Constant.TIPTOP_ADAPTER_URL);
+        console.info("TMALL_ADAPTER_URL: " + Constant.TMALL_ADAPTER_URL);
      }).error(function(){});
     /////////////////////////////////////////////////////////////
     $scope.currentUser = $scope.globals.currentUser.username;
