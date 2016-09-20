@@ -24,7 +24,7 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
             confStatus: Constant.WALK_THROUGH_CONF_STATUS[0].value,
             confirm: Constant.CONFIRM[0].value,
             transferFlag: Constant.TRANSFER_PSO_FLAG[1].value,
-            orderType:''
+            orderType: ''
         }
     };
 
@@ -491,8 +491,17 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
         });
     };
 
-
     $scope.openO2oSupplierDlg = function (item) {
+        if (item.logistic == null) {
+            $scope.showWarn("没有物流服务信息");
+            return;
+        }
+        if (item.logistic.walkThrough.orderType != Constant.EPS_ORDER_TYPE[5].value
+            && item.logistic.walkThrough.orderType != Constant.EPS_ORDER_TYPE[6].value) {
+            $scope.showWarn("O2O维护只能维护订单类型为" + Constant.EPS_ORDER_TYPE[5].name + "或" + Constant.EPS_ORDER_TYPE[6].name + "的单据");
+            return;
+        }
+
         $mdDialog.show({
             controller: 'O2oSupplierEditorController',
             templateUrl: 'app/src/app/cbi/logistics_installations/o2oSupplierDlg.html',
@@ -502,10 +511,7 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
                 editingItem: item
             }
         }).then(function (editingItem) {
-            //console.info("选择返回后的值:");
-            //console.info(editingItem);
-
-            if (editingItem.isModifyLogistic == false) {
+            /*if (editingItem.isModifyLogistic == false) {
                 if (editingItem.logistic.supplier.uuid) {
                     console.info("新增物流订单");
                     var Input = {
@@ -523,8 +529,9 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
                         $scope.showError(response.message);
                     });
                 }
-            } else if (editingItem.isModifyLogistic == true) {
-                if (editingItem.installation.confirm == '2') {
+            } else */
+            if (editingItem.isModifyLogistic == true) {
+                if (editingItem.installation.confirm == Constant.CONFIRM[2].value) {
                     $scope.showInfo("已有审核的物流订单,不再更新");
                     return;
                 }
@@ -532,15 +539,11 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
                     console.info("更新物流订单");
                     var Input = {
                         uuid: editingItem.logistic.uuid,
-                        //supplier: editingItem.logistic.supplier,
-                        supplierUuid: editingItem.logistic.supplier.uuid,
-                        orderDate: moment(new Date()).format('YYYY-MM-DD 00:00:00'),
                         receiptDate: editingItem.confDeliverDate,
-                        no: "1"
+                        no: editingItem.logistic.no
                     };
                     WalkThroughLogistic.modify(editingItem.uuid, Input).success(function (data) {
                         $scope.showInfo("更新物流订单成功");
-                        //console.info(data);
                         item.logistic = data;
                     }).error(function (response) {
                         $scope.showError(response.message);
@@ -803,7 +806,11 @@ angular.module('IOne-Production').controller('BatchSupplierEditorController', fu
 
 angular.module('IOne-Production').controller('O2oSupplierEditorController', function ($scope, OCMSupplierService, Constant, $mdDialog, editingItem) {
     $scope.editingItem = angular.copy(editingItem);
-    //console.info($scope.editingItem);
+    if(editingItem.logistic.receiptDate == null){
+        editingItem.logistic.receiptDate = moment(editingItem.logistic.walkThrough.confDeliverDate).format('YYYY-MM-DD');
+    } else {
+        editingItem.logistic.receiptDate = moment(editingItem.logistic.receiptDate).format('YYYY-MM-DD');
+    }
 
     if (angular.isUndefined($scope.editingItem.logistic) || $scope.editingItem.logistic == null) {
         $scope.editingItem.logistic = {
@@ -845,11 +852,6 @@ angular.module('IOne-Production').controller('O2oSupplierEditorController', func
         $scope.supplyType = "2";
         $scope.queryAction();
     };
-    //$scope.showInstallationsPanel = function () {
-    //    $scope.chosenSupplier = "installations";
-    //    $scope.supplyType = "3";
-    //    $scope.queryAction();
-    //};
 
     $scope.pageOption = {
         sizePerPage: 10,
