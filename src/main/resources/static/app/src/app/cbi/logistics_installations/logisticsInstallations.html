@@ -14,6 +14,12 @@
                                 <span>维护</span>
                             </md-button>
                         </md-menu-item>
+                        <md-menu-item
+                                ng-if="menuDisplayOption['o2oDetailMaintain'].display && (menuAuthDataMap[menuDisplayOption['o2oDetailMaintain'].uuid] || isAdmin() || !menuDisplayOption['o2oDetailMaintain'].uuid)">
+                            <md-button class="md-button" aria-label="More" ng-click="openSupplierDlg(selectedItem)">
+                                <span>O2O维护</span>
+                            </md-button>
+                        </md-menu-item>
                         <!--<md-menu-item>
                             <md-button class="md-button" aria-label="More" ng-disabled="selectedItem.confirm == '2'"
                                        ng-click="confirmClickAction($event, selectedItem)">
@@ -79,6 +85,13 @@
                             <md-button class="md-button" aria-label="More" ng-click="openBatchSupplierDlg()">
                                 <ng-md-icon icon="check"></ng-md-icon>
                                 批量维护
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item
+                                ng-if="menuDisplayOption['batchO2oMaintain'].display && (menuAuthDataMap[menuDisplayOption['batchO2oMaintain'].uuid] || isAdmin() || !menuDisplayOption['batchO2oMaintain'].uuid)">
+                            <md-button class="md-button" aria-label="More" ng-click="openBatchSupplierDlg()">
+                                <ng-md-icon icon="check"></ng-md-icon>
+                                O2O批量维护
                             </md-button>
                         </md-menu-item>
                         <!--<md-menu-item>
@@ -351,6 +364,11 @@
                                     <div ng-if="menuDisplayOption['maintain'].display && (menuAuthDataMap[menuDisplayOption['maintain'].uuid] || isAdmin() || !menuDisplayOption['maintain'].uuid)">
                                         <md-button class="md-fab md-mini" ng-click="openSupplierDlg(item)">
                                             <span>维护</span>
+                                        </md-button>
+                                    </div>
+                                    <div ng-if="menuDisplayOption['o2oMaintain'].display && (menuAuthDataMap[menuDisplayOption['o2oMaintain'].uuid] || isAdmin() || !menuDisplayOption['o2oMaintain'].uuid)">
+                                        <md-button class="md-fab md-mini" ng-click="openO2oSupplierDlg(item)">
+                                            <span>O2O</span>
                                         </md-button>
                                     </div>
                                     <!--<div ng-if="item.confirm != '2'">

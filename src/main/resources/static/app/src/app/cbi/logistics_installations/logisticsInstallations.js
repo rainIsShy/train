@@ -31,7 +31,10 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
     $scope.menuDisplayOption = {
         'maintain': {display: true, name: '维护', uuid: 'b6c65ede-36cd-4754-b4c0-0732bda3f9c2'},
         'detailMaintain': {display: true, name: '维护', uuid: 'fa325832-1480-4968-aea3-102d8ad1f3e5'},
-        'batchMaintain': {display: true, name: '批量维护', uuid: '39d59bfc-2fcc-4524-9d04-2161f09a308b'}
+        'batchMaintain': {display: true, name: '批量维护', uuid: '39d59bfc-2fcc-4524-9d04-2161f09a308b'},
+        'o2oMaintain': {display: true, name: 'O2O', uuid: '552E6A90-445F-45FF-8923-BDD97924377E'},
+        'o2oDetailMaintain': {display: true, name: 'O2O维护', uuid: '6E3814DC-EB5C-4A09-9F62-0084C59E6385'},
+        'batchO2oMaintain': {display: true, name: '批量O2O维护', uuid: '0EB3EFC2-DDC2-4C82-A936-F870AC1CEE1F'}
     };
 
     $scope.sortByAction = function (field) {
@@ -399,14 +402,14 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
 
             if (editingItem.isModifyLogistic == false) {
                 if (editingItem.logistic.supplier.uuid) {
-                    console.info("新增物流订单")
+                    console.info("新增物流订单");
                     var Input = {
                         //supplier: editingItem.logistic.supplier,
                         supplierUuid: editingItem.logistic.supplier.uuid,
                         orderDate: moment(new Date()).format('YYYY-MM-DD 00:00:00'),
                         receiptDate: editingItem.confDeliverDate,
                         no: "1"
-                    }
+                    };
                     WalkThroughLogistic.add(editingItem.uuid, Input).success(function (data) {
                         $scope.showInfo("新增物流订单成功");
                         //console.info(data);
@@ -429,7 +432,7 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
                         orderDate: moment(new Date()).format('YYYY-MM-DD 00:00:00'),
                         receiptDate: editingItem.confDeliverDate,
                         no: "1"
-                    }
+                    };
                     WalkThroughLogistic.modify(editingItem.uuid, Input).success(function (data) {
                         $scope.showInfo("更新物流订单成功");
                         //console.info(data);
@@ -442,7 +445,7 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
 
             if (editingItem.isModifyInstallation == false) {
                 if (editingItem.installation.supplier.uuid) {
-                    console.info("新增安装订单")
+                    console.info("新增安装订单");
                     var Input = {
                         //supplier: editingItem.installation.supplier,
                         supplierUuid: editingItem.installation.supplier.uuid,
@@ -450,7 +453,7 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
                         installationDate: moment(editingItem.installation.installationDate).format('YYYY-MM-DD 00:00:00'),
                         no: "1"
 
-                    }
+                    };
                     WalkThroughInstallation.add(editingItem.uuid, Input).success(function (data) {
                         $scope.showInfo("新增安装订单成功");
                         //console.info(data);
@@ -474,11 +477,71 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
                         installationDate: moment(editingItem.installation.installationDate).format('YYYY-MM-DD 00:00:00'),
                         no: "1"
 
-                    }
+                    };
                     WalkThroughInstallation.modify(editingItem.uuid, Input).success(function (data) {
                         $scope.showInfo("更新安装订单成功");
                         //console.info(data);
                         item.installation = data;
+                    }).error(function (response) {
+                        $scope.showError(response.message);
+                    });
+                }
+            }
+
+        });
+    };
+
+
+    $scope.openO2oSupplierDlg = function (item) {
+        $mdDialog.show({
+            controller: 'O2oSupplierEditorController',
+            templateUrl: 'app/src/app/cbi/logistics_installations/o2oSupplierDlg.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            locals: {
+                editingItem: item
+            }
+        }).then(function (editingItem) {
+            //console.info("选择返回后的值:");
+            //console.info(editingItem);
+
+            if (editingItem.isModifyLogistic == false) {
+                if (editingItem.logistic.supplier.uuid) {
+                    console.info("新增物流订单");
+                    var Input = {
+                        //supplier: editingItem.logistic.supplier,
+                        supplierUuid: editingItem.logistic.supplier.uuid,
+                        orderDate: moment(new Date()).format('YYYY-MM-DD 00:00:00'),
+                        receiptDate: editingItem.confDeliverDate,
+                        no: "1"
+                    };
+                    WalkThroughLogistic.add(editingItem.uuid, Input).success(function (data) {
+                        $scope.showInfo("新增物流订单成功");
+                        //console.info(data);
+                        item.logistic = data;
+                    }).error(function (response) {
+                        $scope.showError(response.message);
+                    });
+                }
+            } else if (editingItem.isModifyLogistic == true) {
+                if (editingItem.installation.confirm == '2') {
+                    $scope.showInfo("已有审核的物流订单,不再更新");
+                    return;
+                }
+                if (editingItem.logistic.supplier) {
+                    console.info("更新物流订单");
+                    var Input = {
+                        uuid: editingItem.logistic.uuid,
+                        //supplier: editingItem.logistic.supplier,
+                        supplierUuid: editingItem.logistic.supplier.uuid,
+                        orderDate: moment(new Date()).format('YYYY-MM-DD 00:00:00'),
+                        receiptDate: editingItem.confDeliverDate,
+                        no: "1"
+                    };
+                    WalkThroughLogistic.modify(editingItem.uuid, Input).success(function (data) {
+                        $scope.showInfo("更新物流订单成功");
+                        //console.info(data);
+                        item.logistic = data;
                     }).error(function (response) {
                         $scope.showError(response.message);
                     });
@@ -735,5 +798,91 @@ angular.module('IOne-Production').controller('BatchSupplierEditorController', fu
     };
     $scope.cancelDlg = function () {
         $mdDialog.cancel();
+    };
+});
+
+angular.module('IOne-Production').controller('O2oSupplierEditorController', function ($scope, OCMSupplierService, Constant, $mdDialog, editingItem) {
+    $scope.editingItem = angular.copy(editingItem);
+    //console.info($scope.editingItem);
+
+    if (angular.isUndefined($scope.editingItem.logistic) || $scope.editingItem.logistic == null) {
+        $scope.editingItem.logistic = {
+            supplier: {
+                name: null
+            }
+        };
+        $scope.editingItem.isModifyLogistic = false;
+    } else {
+        $scope.editingItem.isModifyLogistic = true;
+    }
+
+    if (angular.isUndefined($scope.editingItem.installation) || $scope.editingItem.installation == null) {
+        $scope.editingItem.installation = {
+            supplier: {
+                name: null
+            }
+        };
+        $scope.editingItem.isModifyInstallation = false;
+    } else {
+        $scope.editingItem.isModifyInstallation = true;
+        if ($scope.editingItem.installation.installationDate != null) {
+            $scope.editingItem.installation.installationDate = new Date($scope.editingItem.installation.installationDate);
+        }
+    }
+
+    $scope.saveSupplier = function () {
+        $mdDialog.hide($scope.editingItem);
+    };
+
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+
+    $scope.supplyType = "";//2=物流,3=安装
+    $scope.chosenSupplier = "";
+    $scope.showLogisticsPanel = function () {
+        $scope.chosenSupplier = "logistics";
+        $scope.supplyType = "2";
+        $scope.queryAction();
+    };
+    //$scope.showInstallationsPanel = function () {
+    //    $scope.chosenSupplier = "installations";
+    //    $scope.supplyType = "3";
+    //    $scope.queryAction();
+    //};
+
+    $scope.pageOption = {
+        sizePerPage: 10,
+        currentPage: 0,
+        totalPage: 0,
+        totalElements: 0
+    };
+
+    $scope.queryAction = function () {
+        $scope.pageOption.currentPage = 0;
+        $scope.refreshSupplier();
+    };
+    $scope.backAction = function () {
+        $scope.chosenSupplier = "";
+        $scope.searchKeyword = "";
+    };
+
+    $scope.refreshSupplier = function () {
+        OCMSupplierService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, '0', '0', null, null, $scope.supplyType, $scope.searchKeyword).success(function (data) {
+            $scope.allSupplier = data;
+            $scope.pageOption.totalElements = data.totalElements;
+            $scope.pageOption.totalPage = data.totalPages;
+        });
+    };
+
+    $scope.selectSupplier = function (supplier) {
+        if (supplier) {
+            if ($scope.chosenSupplier == "logistics") {
+                $scope.editingItem.logistic.supplier = supplier;
+            } else if ($scope.chosenSupplier == "installations") {
+                $scope.editingItem.installation.supplier = supplier;
+            }
+            $scope.backAction();
+        }
     };
 });
