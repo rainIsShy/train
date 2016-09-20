@@ -16,11 +16,10 @@ angular.module('IOne-login').controller('LoginController', function ($scope, $ht
                 AuthenticationService.SetCredentials($scope.username, $scope.password, result);
 
                 $window.location.href = '/';
-            })
-            .error(function() {
+            }).error(function() {
                 $scope.info = '用户名或密码不正确， 请重新登录。';
 
                 $scope.logining = false;
-            });
+        });
     };
 });
