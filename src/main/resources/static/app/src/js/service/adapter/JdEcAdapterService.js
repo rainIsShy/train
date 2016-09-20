@@ -2,9 +2,10 @@
  * Created by xavier on 2016/9/5.
  */
 angular.module('IOne-Production').service('JdAdapterService', function ($http, $rootScope) {
-    this.syncByOrderId = function (orderIds) {
-        var ecAdapterUrl = $rootScope.globals.adapterInfo.ecAdapterServerUrl;
 
+    var ecAdapterUrl = $rootScope.globals.adapterInfo.ecAdapterServerUrl;
+
+    this.syncByOrderId = function (orderIds) {
         var url = ecAdapterUrl + '/jd/trades?sync=orderId';
         angular.forEach(orderIds, function (orderId) {
             url += '&orderIds=' + orderId;
@@ -14,8 +15,6 @@ angular.module('IOne-Production').service('JdAdapterService', function ($http, $
     };
 
     this.syncByDate = function (start, end) {
-        var ecAdapterUrl = $rootScope.globals.adapterInfo.ecAdapterServerUrl;
-
         var url = ecAdapterUrl + '/jd/trades?'
             + 'start=' + start
             + 'end=' + end;

@@ -78,35 +78,37 @@ angular.module('IOne').run(function($rootScope, $cookieStore, $window, $http) {
  * All other controllers can share this controller and share data here.
  */
 angular.module('IOne').controller('MainController', function($rootScope, $scope, $mdUtil, $mdSidenav, $location, $timeout, $cookieStore, Constant,
-                                                             $mdToast, $mdDialog, $window, $http, AuthenticationService, MenuService, ResService,OrderMaster,
-                                                             SalesOrderMaster,UserService, PsoOrderChangeMaster, SalesOrderChangeMaster,
-                                                             PsoOrderReturnMaster, PSOReturnSalesOrdersMasterService, Receipts, Receipt2s) {
+                                                             $mdToast, $mdDialog, $window, $http, AuthenticationService, MenuService, ResService, OrderMaster,
+                                                             SalesOrderMaster, UserService, PsoOrderChangeMaster, SalesOrderChangeMaster,
+                                                             PsoOrderReturnMaster, PSOReturnSalesOrdersMasterService, Receipts, Receipt2s, ErpAdapterService) {
+
+    // ErpAdapterService.transferErpAdapter('',null, $scope, function(){});
 
     //取得adapter info
-    $http.post(Constant.BACKEND_BASE + '/adapter/info', $rootScope.globals.currentUser)
-        .success(function (result) {
-            $rootScope.globals.adapterInfo = result;
-            $cookieStore.put('globals', $rootScope.globals);
-        })
-        .error(function (response) {
-            alert(response.message);
-        });
+    // $http.post(Constant.BACKEND_BASE + '/adapter/info', $rootScope.globals.currentUser)
+    //     .success(function (result) {
+    //         $rootScope.globals.adapterInfo = result;
+    //         $cookieStore.put('globals', $rootScope.globals);
+    //     })
+    //     .error(function (response) {
+    //         alert(response.message);
+    //     });
 
      //server的相關設定並記錄成全域變數
-    $http.get("/env").success(function(data){
-         var serverName = data.profiles[0];
-         var applicationConfig = data["applicationConfig: [classpath:/application.yaml]"];
-         Constant.BACKEND_BASE = applicationConfig["i1.i1-server.url"]==null?'':applicationConfig["i1.i1-server.url"];
-         Constant.I1_ADAPTER_URL=applicationConfig["i1.i1-adapter.url"]==null?'':applicationConfig["i1.i1-adapter.url"];
-         Constant.EC_ADAPTER_URL= applicationConfig["i1.ec-adapter.url"]==null?'':applicationConfig["i1.ec-adapter.url"];
-         Constant.TIPTOP_ADAPTER_URL= applicationConfig["i1.tiptop-adapter.url"]==null?'':applicationConfig["i1.tiptop-adapter.url"];
-         Constant.TMALL_ADAPTER_URL= applicationConfig["i1.tmall-adapter.url"]==null?'':applicationConfig["i1.tmall-adapter.url"];
-        console.info("BACKEND_BASE: " + Constant.BACKEND_BASE);
-        console.info("I1_ADAPTER_URL: " + Constant.I1_ADAPTER_URL);
-        console.info("EC_ADAPTER_URL: " + Constant.EC_ADAPTER_URL);
-        console.info("TIPTOP_ADAPTER_URL: " + Constant.TIPTOP_ADAPTER_URL);
-        console.info("TMALL_ADAPTER_URL: " + Constant.TMALL_ADAPTER_URL);
-     }).error(function(){});
+    // $http.get("/env").success(function(data){
+    //      var serverName = data.profiles[0];
+    //      var applicationConfig = data["applicationConfig: [classpath:/application.yaml]" + serverName];
+    //      Constant.BACKEND_BASE = applicationConfig["i1.i1-server.url"]==null?'':applicationConfig["i1.i1-server.url"];
+    //      Constant.I1_ADAPTER_URL=applicationConfig["i1.i1-adapter.url"]==null?'':applicationConfig["i1.i1-adapter.url"];
+    //      Constant.EC_ADAPTER_URL= applicationConfig["i1.ec-adapter.url"]==null?'':applicationConfig["i1.ec-adapter.url"];
+    //      Constant.TIPTOP_ADAPTER_URL= applicationConfig["i1.tiptop-adapter.url"]==null?'':applicationConfig["i1.tiptop-adapter.url"];
+    //      Constant.TMALL_ADAPTER_URL= applicationConfig["i1.tmall-adapter.url"]==null?'':applicationConfig["i1.tmall-adapter.url"];
+    //     console.info("BACKEND_BASE: " + Constant.BACKEND_BASE);
+    //     console.info("I1_ADAPTER_URL: " + Constant.I1_ADAPTER_URL);
+    //     console.info("EC_ADAPTER_URL: " + Constant.EC_ADAPTER_URL);
+    //     console.info("TIPTOP_ADAPTER_URL: " + Constant.TIPTOP_ADAPTER_URL);
+    //     console.info("TMALL_ADAPTER_URL: " + Constant.TMALL_ADAPTER_URL);
+    //  }).error(function(){});
     /////////////////////////////////////////////////////////////
     $scope.currentUser = $scope.globals.currentUser.username;
     $scope.displayName = $cookieStore.get('displayName');
