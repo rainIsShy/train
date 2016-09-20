@@ -307,12 +307,10 @@ angular.module('IOne-Production').controller('ReportQueryController', function($
             size: $scope.pageOption.sizePerPage
         }).success(function(data) {
             if(data) {
-                var anchor = angular.element('<a/>');
-                anchor.attr({
-                    href: 'data:attachment/csv;base64,' + encodeURI(btoa(unescape(encodeURIComponent(data)))),
-                    target: '_blank',
-                    download: 'export.csv'
-                })[0].click();
+                var link = window.document.createElement("a");
+                link.setAttribute("href", "data:text/csv;charset=utf-8,%EF%BB%BF" + encodeURI(data));
+                link.setAttribute("download", "export.csv");
+                link.click();
             } else {
                 $scope.showError('Failed to export data.');
             }
