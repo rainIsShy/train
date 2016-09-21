@@ -5,9 +5,7 @@ angular.module('IOne-Auth').service('AuthenticationService', function (Base64, $
     this.Login = function (username, password, successCallback, errorCallback) {
         $http.get('/adapter/info').success(function (response, status) {
             $rootScope.adapterInfo = response;
-            Constant.BACKEND_BASE = response.i1ServerUrl;
-
-            $http.post(Constant.BACKEND_BASE + '/auth/login', {
+            $http.post(response.i1ServerUrl + '/auth/login', {
                 userName: username,
                 password: password
             }).success(function (loginResponse) {
