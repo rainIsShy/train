@@ -7,8 +7,6 @@ angular.module('IOne-Production').service('ErpAdapterService', function ($http, 
     var adapterUrl = $rootScope.globals.adapterInfo.adapterServerUrl;
 
     this.transferErpAdapter = function (path, transferObj, serviceScope, callBack) {
-        transferObj.MODI_USER_UUID = $rootScope.globals.adapterInfo.modiUserUuid; //FIXME 待調整
-        transferObj.CREATE_USER_UUID = $rootScope.globals.adapterInfo.createUserUuid; //FIXME 待調整
 
         $http.post(adapterUrl + '/adapter/tasks' + path, transferObj).success(function (response, status) {
             if (status == 201) {
