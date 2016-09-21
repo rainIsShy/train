@@ -56,7 +56,7 @@ banner:
   location: banner-uat.txt
 
 i1:
-  adapter:
+  i1-server:
     url: http://project.benchmarkchian.com:18021
   i1-adapter:
     url: http://project.benchmarkchian.com:18022
