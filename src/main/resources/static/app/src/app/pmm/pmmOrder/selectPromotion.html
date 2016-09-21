@@ -1,0 +1,31 @@
+<md-dialog style="padding: 30px;min-width: 400px;max-height: 700px;">
+    <md-content layout="column">
+        <div>
+            <form name="searchPromotion" novalidate="">
+                <div layout="row">
+                    <md-input-container flex>
+                        <label>查询促销活动</label>
+                        <input name="no" type="text" ng-model="searchKeyword" md-maxlength="20">
+                    </md-input-container>
+                    <md-button ng-click="refresh()" ng-disabled="searchChannel.$invalid" style="padding-top: 20px;">
+                        <i class="fa fa-search"></i>
+                    </md-button>
+                </div>
+                <md-list-item class="md-2-line" ng-repeat="row in resp.content" ng-click="select(row)">
+                    <div class="md-list-item-text">
+                        <h3> {{row.no}} | {{ row.name }} | {{ row.salePromotionDesc }} </h3>
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
+            </form>
+            <div pagination option="pageOption" callback="refresh()"></div>
+        </div>
+        <div layout="row">
+            <md-button ng-click="hideDlg()">
+                <i class="fa fa-check"></i>&nbsp;确定
+            </md-button>
+            <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+        </div>
+
+    </md-content>
+</md-dialog>
