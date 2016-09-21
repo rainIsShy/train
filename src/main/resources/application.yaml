@@ -57,15 +57,15 @@ banner:
 
 i1:
   i1-server:
-    url: http://project.benchmarkchian.com:18021
+    url: http://project.benchmarkchina.com:18021
   i1-adapter:
-    url: http://project.benchmarkchian.com:18022
+    url: http://project.benchmarkchina.com:18022
   tiptop-adapter:
-    url: http://project.benchmarkchian.com:18023
+    url: http://project.benchmarkchina.com:18023
   ec-adapter:
-    url: http://project.benchmarkchian.com:18024
+    url: http://project.benchmarkchina.com:18024
   tmall-adapter:
-    url: http://project.benchmarkchian.com:18025
+    url: http://project.benchmarkchina.com:18025
 
 --- # Kent's Dev
 
