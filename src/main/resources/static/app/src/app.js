@@ -82,6 +82,9 @@ angular.module('IOne').controller('MainController', function($rootScope, $scope,
                                                              SalesOrderMaster, UserService, PsoOrderChangeMaster, SalesOrderChangeMaster,
                                                              PsoOrderReturnMaster, PSOReturnSalesOrdersMasterService, Receipts, Receipt2s) {
 
+    ////////////////UPDATE SERVER LINK///////////////////////////
+    Constant.BACKEND_BASE = $rootScope.globals.adapterInfo.i1ServerUrl;
+
     /////////////////////////////////////////////////////////////
     $scope.currentUser = $scope.globals.currentUser.username;
     $scope.displayName = $cookieStore.get('displayName');

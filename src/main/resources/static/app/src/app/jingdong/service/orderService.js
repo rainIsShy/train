@@ -4,7 +4,7 @@ angular.module('IOne-Production').service('JdTradeMaster', function ($http, Cons
         var orderFlag = filter.orderFlag == 0 ? '' : filter.orderFlag;
         var orderState = filter.orderState == 0 ? '' : filter.orderState;
         //默认参数有confirm taobaoStatus
-        var url = 'jdTrades?size=' + sizePerPage
+        var url = '/jdTrades?size=' + sizePerPage
             + '&page=' + page;
 
         if (confirm !== '') {

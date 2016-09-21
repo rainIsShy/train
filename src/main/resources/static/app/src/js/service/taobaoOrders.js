@@ -5,7 +5,7 @@ angular.module('IOne-Production').service('TaobaoOrders', function ($http, Const
         confirm = confirm == 0 ? '' : confirm;
         orderFlag = orderFlag == 0 ? '' : orderFlag;
         //默认参数有confirm taobaoStatus
-        var url = 'taobaoTrades?size=' + sizePerPage
+        var url = '/taobaoTrades?size=' + sizePerPage
             + '&page=' + page
             + '&confirm=' + confirm
             + '&taobaoStatus=' + taobaoStatus
