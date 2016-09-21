@@ -515,7 +515,7 @@ angular.module('IOne-Production', []);
 angular.module('IOne-Auth', []);
 
 angular.module('IOne-Constant').constant('Constant', {
-    // TODO: get url from application.yaml
+    // those url will be overwrite from /env json at runtime
     BACKEND_BASE: 'http://project.benchmarkchina.com:10811',
     I1_ADAPTER_URL: '',
     EC_ADAPTER_URL: '',
@@ -688,6 +688,16 @@ angular.module('IOne-Constant').constant('Constant', {
                 {id: '/auth/user', name: '账号管理', link: '/auth/user', uuid: RES_UUID_MAP.AUTH.USER.RES_UUID},
                 {id: '/auth/config', name: '权限配置', link: '/auth/config', uuid: RES_UUID_MAP.AUTH.CONFIG.RES_UUID},
                 {id: '/auth/share', name: '数据共享配置', link: '/auth/share', uuid: RES_UUID_MAP.AUTH.SHARE.RES_UUID}
+            ]
+        }
+        {
+            id: 7,
+            uuid: '',
+            name: '报表管理',
+            isOpen: false,
+            icon: 'fa fa-history',
+            subList: [
+                {id: '/reports', name: '报表查询', link: '/reports', uuid: ''},
             ]
         },
         {

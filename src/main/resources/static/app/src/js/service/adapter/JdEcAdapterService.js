@@ -3,8 +3,9 @@
  */
 angular.module('IOne-Production').service('JdAdapterService', function ($http, $rootScope) {
 
+    var ecAdapterUrl = $rootScope.globals.adapterInfo.ecAdapterServerUrl;
+
     this.syncByOrderId = function (orderIds, controllerScope, successCallBack) {
-        var ecAdapterUrl = $rootScope.globals.adapterInfo.ecAdapterServerUrl;
 
         var url = ecAdapterUrl + '/jd/trades?sync=orderId';
         angular.forEach(orderIds, function (orderId) {
@@ -27,7 +28,6 @@ angular.module('IOne-Production').service('JdAdapterService', function ($http, $
     };
 
     this.syncByDate = function (start, end, controllerScope, successCallBack) {
-        var ecAdapterUrl = $rootScope.globals.adapterInfo.ecAdapterServerUrl;
 
         var url = ecAdapterUrl + '/jd/trades?'
             + 'start=' + start

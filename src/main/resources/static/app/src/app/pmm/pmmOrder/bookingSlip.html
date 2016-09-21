@@ -191,7 +191,7 @@
                                             <label class="label">促销活动：</label>
                                             <input type="text" ng-model="selectedItem.promotion.no"
                                                    ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
-                                                   ng-click="openPromotionDlg()">
+                                                   ng-click="openOrderPromotionDlg()">
                                         </md-input-container>
                                     </div>
 
@@ -286,11 +286,11 @@
                                                 <div ng-include=" 'app/src/app/pmm/pmmOrder/productInfo.html' "></div>
                                             </md-tab>
 
-                                            <md-tab label="出货" md-on-select="deliverInfoTabSelected()">
+                                            <md-tab label="采购" md-on-select="deliverInfoTabSelected()">
                                                 <div ng-include=" 'app/src/app/pmm/pmmOrder/deliverInfo.html' "></div>
                                             </md-tab>
 
-                                            <md-tab label="商品自定义"  md-on-select="customTabSelected()">
+                                            <md-tab label="商品自定义" md-on-select="customTabSelected()">
                                                 <div ng-include=" 'app/src/app/pmm/pmmOrder/custom_tab.html' "></div>
                                             </md-tab>
                                         </md-tabs>
