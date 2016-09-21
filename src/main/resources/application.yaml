@@ -51,6 +51,21 @@ i1:
   tmall-adapter:
     url: http://project.benchmarkchian.com:18015
 
+--- # UAT
+banner:
+  location: banner-uat.txt
+
+i1:
+  adapter:
+    url: http://project.benchmarkchian.com:18021
+  i1-adapter:
+    url: http://project.benchmarkchian.com:18022
+  tiptop-adapter:
+    url: http://project.benchmarkchian.com:18023
+  ec-adapter:
+    url: http://project.benchmarkchian.com:18024
+  tmall-adapter:
+    url: http://project.benchmarkchian.com:18025
 
 --- # Kent's Dev
 
