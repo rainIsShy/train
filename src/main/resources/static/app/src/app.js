@@ -81,6 +81,8 @@ angular.module('IOne').controller('MainController', function($rootScope, $scope,
                                                              $mdToast, $mdDialog, $window, $http, AuthenticationService, MenuService, ResService, OrderMaster,
                                                              SalesOrderMaster, UserService, PsoOrderChangeMaster, SalesOrderChangeMaster,
                                                              PsoOrderReturnMaster, PSOReturnSalesOrdersMasterService, Receipts, Receipt2s) {
+    ////////////////UPDATE SERVER LINK///////////////////////////
+    Constant.BACKEND_BASE = $rootScope.globals.adapterInfo.i1ServerUrl;
 
     ////////////////UPDATE SERVER LINK///////////////////////////
     Constant.BACKEND_BASE = $rootScope.globals.adapterInfo.i1ServerUrl;
