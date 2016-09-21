@@ -80,7 +80,7 @@ angular.module('IOne').run(function($rootScope, $cookieStore, $window, $http) {
 angular.module('IOne').controller('MainController', function($rootScope, $scope, $mdUtil, $mdSidenav, $location, $timeout, $cookieStore, Constant,
                                                              $mdToast, $mdDialog, $window, $http, AuthenticationService, MenuService, ResService, OrderMaster,
                                                              SalesOrderMaster, UserService, PsoOrderChangeMaster, SalesOrderChangeMaster,
-                                                             PsoOrderReturnMaster, PSOReturnSalesOrdersMasterService, Receipts, Receipt2s, ErpAdapterService) {
+                                                             PsoOrderReturnMaster, PSOReturnSalesOrdersMasterService, Receipts, Receipt2s) {
 
     /////////////////////////////////////////////////////////////
     $scope.currentUser = $scope.globals.currentUser.username;

@@ -2,10 +2,20 @@ angular.module('IOne-Auth').service('AuthenticationService', function (Base64, $
 
     $rootScope.adapterInfo = null;
 
-    this.SetBasicData = function () {
+    this.Login = function (username, password, successCallback, errorCallback) {
         $http.get('/adapter/info').success(function (response, status) {
             $rootScope.adapterInfo = response;
             Constant.BACKEND_BASE = response.i1ServerUrl;
+
+            $http.post(Constant.BACKEND_BASE + '/auth/login', {
+                userName: username,
+                password: password
+            }).success(function (loginResponse) {
+                successCallback(loginResponse)
+            }).error(function () {
+                errorCallback()
+            });
+
         }).error(function (response, status) {
             if (response == null) {
                 alert("[" + (status + '') + "]Connect Server Fail");
@@ -15,9 +25,9 @@ angular.module('IOne-Auth').service('AuthenticationService', function (Base64, $
         });
     };
 
-    this.Login = function (username, password) {
-        return $http.post(Constant.BACKEND_BASE + '/auth/login', {userName: username, password: password});
-    };
+    // this.Login = function (username, password, successCallback, errorCallback) {
+    //     return $http.post(Constant.BACKEND_BASE + '/auth/login', {userName: username, password: password});
+    // };
 
     this.Logout = function () {
         return $http.post(Constant.BACKEND_BASE + '/auth/logout').success(function() {

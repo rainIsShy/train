@@ -2,25 +2,38 @@ angular.module('IOne-Auth', []);
 angular.module('IOne-login', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 'IOne-Auth', 'IOne-Constant']);
 
 angular.module('IOne-login').controller('LoginController', function ($scope, $http, $window, AuthenticationService) {
-    AuthenticationService.SetBasicData();
     $scope.password = '';
 
     $scope.login = function () {
         $scope.logining = true;
 
-        AuthenticationService.Login($scope.username, $scope.password)
-            .success(function (result, status, headers) {
-                $scope.info = '登录成功， 正在转向首页...';
+        // AuthenticationService.Login($scope.username, $scope.password)
+        //     .success(function (result, status, headers) {
+        //         $scope.info = '登录成功， 正在转向首页...';
+        //
+        //         $scope.logining = false;
+        //
+        //         AuthenticationService.SetCredentials($scope.username, $scope.password, result);
+        //
+        //         $window.location.href = '/';
+        //     }).error(function() {
+        //         $scope.info = '用户名或密码不正确， 请重新登录。';
+        //
+        //         $scope.logining = false;
+        // });
 
-                $scope.logining = false;
+        AuthenticationService.Login($scope.username, $scope.password, function (result) {
+            $scope.info = '登录成功， 正在转向首页...';
 
-                AuthenticationService.SetCredentials($scope.username, $scope.password, result);
+            $scope.logining = false;
 
-                $window.location.href = '/';
-            }).error(function() {
-                $scope.info = '用户名或密码不正确， 请重新登录。';
+            AuthenticationService.SetCredentials($scope.username, $scope.password, result);
 
-                $scope.logining = false;
+            $window.location.href = '/';
+        }, function () {
+            $scope.info = '用户名或密码不正确， 请重新登录。';
+
+            $scope.logining = false;
         });
     };
 });
