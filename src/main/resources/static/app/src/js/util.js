@@ -689,7 +689,7 @@ angular.module('IOne-Constant').constant('Constant', {
                 {id: '/auth/config', name: '权限配置', link: '/auth/config', uuid: RES_UUID_MAP.AUTH.CONFIG.RES_UUID},
                 {id: '/auth/share', name: '数据共享配置', link: '/auth/share', uuid: RES_UUID_MAP.AUTH.SHARE.RES_UUID}
             ]
-        }
+        },
         {
             id: 7,
             uuid: '',
