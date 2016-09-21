@@ -2,13 +2,13 @@
  * Created by xavier on 2016/9/5.
  */
 
-angular.module('IOne-Production').service('ErpAdapterService', function ($http, $rootScope) {
+angular.module('IOne-Production').service('ErpAdapterService', function ($http, $rootScope, $cookieStore) {
+
+    var adapterUrl = $rootScope.globals.adapterInfo.adapterServerUrl;
 
     this.transferErpAdapter = function (path, transferObj, serviceScope, callBack) {
-
-        var adapterUrl = $rootScope.globals.adapterInfo.adapterServerUrl;
-        transferObj.MODI_USER_UUID = $rootScope.globals.adapterInfo.modiUserUuid;
-        transferObj.CREATE_USER_UUID = $rootScope.globals.adapterInfo.createUserUuid;
+        transferObj.MODI_USER_UUID = $rootScope.globals.adapterInfo.modiUserUuid; //FIXME 待調整
+        transferObj.CREATE_USER_UUID = $rootScope.globals.adapterInfo.createUserUuid; //FIXME 待調整
 
         $http.post(adapterUrl + '/adapter/tasks' + path, transferObj).success(function (response, status) {
             if (status == 201) {
@@ -16,7 +16,7 @@ angular.module('IOne-Production').service('ErpAdapterService', function ($http, 
             } else {
                 serviceScope.showError('抛转失败！');
             }
-        }).error(function (response) {
+        }).error(function (response, status) {
             if (response == null) {
                 serviceScope.showError("[" + (status + '') + "]Connect Server Fail");
             } else {

@@ -1,7 +1,33 @@
 angular.module('IOne-Auth').service('AuthenticationService', function (Base64, $http, $cookieStore, $rootScope, Constant) {
-    this.Login = function (username, password) {
-        return $http.post(Constant.BACKEND_BASE + '/auth/login', {userName: username, password: password});
+
+    $rootScope.adapterInfo = null;
+
+    this.Login = function (username, password, successCallback, errorCallback) {
+        $http.get('/adapter/info').success(function (response, status) {
+            $rootScope.adapterInfo = response;
+            Constant.BACKEND_BASE = response.i1ServerUrl;
+
+            $http.post(Constant.BACKEND_BASE + '/auth/login', {
+                userName: username,
+                password: password
+            }).success(function (loginResponse) {
+                successCallback(loginResponse)
+            }).error(function () {
+                errorCallback()
+            });
+
+        }).error(function (response, status) {
+            if (response == null) {
+                alert("[" + (status + '') + "]Connect Server Fail");
+            } else {
+                alert("[" + (status + '') + "]" + response.message);
+            }
+        });
     };
+
+    // this.Login = function (username, password, successCallback, errorCallback) {
+    //     return $http.post(Constant.BACKEND_BASE + '/auth/login', {userName: username, password: password});
+    // };
 
     this.Logout = function () {
         return $http.post(Constant.BACKEND_BASE + '/auth/logout').success(function() {
@@ -19,6 +45,10 @@ angular.module('IOne-Auth').service('AuthenticationService', function (Base64, $
                 authdata: authdata
             }
         };
+
+        $rootScope.globals.adapterInfo = $rootScope.adapterInfo;
+        $rootScope.globals.adapterInfo.createUserUuid = loginResponse.createUserUuid;
+        $rootScope.globals.adapterInfo.modiUserUuid = loginResponse.modiUserUuid;
 
         $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
         $cookieStore.put('globals', $rootScope.globals);
