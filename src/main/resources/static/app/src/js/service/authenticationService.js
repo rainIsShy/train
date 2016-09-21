@@ -37,6 +37,8 @@ angular.module('IOne-Auth').service('AuthenticationService', function (Base64, $
         };
 
         $rootScope.globals.adapterInfo = $rootScope.adapterInfo;
+        $rootScope.globals.adapterInfo.createUserUuid = loginResponse.createUserUuid;
+        $rootScope.globals.adapterInfo.modiUserUuid = loginResponse.modiUserUuid;
 
         $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
         $cookieStore.put('globals', $rootScope.globals);

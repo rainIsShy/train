@@ -47,11 +47,6 @@ public class AdapterInfoController {
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public AdapterInfo getAdapterInfo() {
-//        User user = this.currentUser();
-
-        //1. 要再回後台, 取得 login 之後的資料
-        //2. 後台 login 之後, 要多傳一些訊息回到前台
-
         AdapterInfo adapterInfo = new AdapterInfo();
         adapterInfo.setAdapterServerUrl(this.adapterServerUrl);
         adapterInfo.setEcAdapterServerUrl(this.ecAdapterServerUrl);
@@ -69,12 +64,6 @@ public class AdapterInfoController {
         private String tiptopAdapterServerUrl;
 
         private String i1ServerUrl;
-
-
-//        private AdapterInfo(User user) {
-//            this.modiUserUuid = user.getUserUuid();
-//            this.createUserUuid = user.getUserUuid();
-//        }
 
         public String getModiUserUuid() {
             return modiUserUuid;
@@ -125,4 +114,3 @@ public class AdapterInfoController {
         }
     }
 }
-
