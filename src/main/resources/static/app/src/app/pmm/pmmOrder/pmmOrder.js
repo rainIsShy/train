@@ -1434,7 +1434,7 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         $scope.addOrderDetail.presentFlag = 2;
         // $scope.addOrderDetail.originalStandardAmount = parseFloat(($scope.addOrderDetail.standardPrice * $scope.addOrderDetail.orderQuantity).toFixed(2));
         $scope.addOrderDetail.itemUuid = data.uuid;
-        refreshUI();
+        $scope.refreshUI();
     };
 
     $scope.changePurPrice = function (price) {
