@@ -84,7 +84,7 @@ angular.module('IOne-Production').service('PmmOrderDetail', function ($http, Con
     };
 
     this.getAllCountByMasterUuids = function(orderMasterUuids) {
-        var url = 'pmmOrders/' + orderMasterUuids + '/count/';
+        var url = '/pmmOrders/' + orderMasterUuids + '/count/';
         console.log(Constant.BACKEND_BASE + url);
         return $http.get(Constant.BACKEND_BASE + url );
     };

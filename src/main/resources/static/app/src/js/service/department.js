@@ -2,7 +2,7 @@ angular.module('IOne-Production').service('Department', function ($http, Constan
     this.getAll = function (sizePerPage, page, filter) {
         var confirm = filter.confirm == 0 ? '' : filter.confirm;
         var status = filter.status == 0 ? '' : filter.status;
-        var url = 'departments?size=' + sizePerPage
+        var url = '/departments?size=' + sizePerPage
             + '&page=' + page;
 
         if (confirm !== '') {

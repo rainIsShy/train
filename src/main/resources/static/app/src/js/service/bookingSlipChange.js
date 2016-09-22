@@ -93,7 +93,7 @@ angular.module('IOne-Production').service('SalesOrderChangeDetail', function ($h
     };
 
     //this.getAllCountByMasterUuids = function(orderMasterUuids) {
-    //    var url = 'salesOrders/'+orderMasterUuids + '/count/';
+    //    var url = '/salesOrders/'+orderMasterUuids + '/count/';
     //    return $http.get(Constant.BACKEND_BASE + url );
     //};
 

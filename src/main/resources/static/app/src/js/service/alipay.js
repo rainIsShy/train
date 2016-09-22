@@ -3,7 +3,7 @@ angular.module('IOne-Production').service('AliPayService', function ($http, Cons
         var confirm = filter.confirm == 0 ? '' : filter.confirm;
         var orderStatus = filter.orderStatus == 0 ? '' : filter.orderStatus;
         //默认参数有confirm taobaoStatus
-        var url = 'aliPays?size=' + sizePerPage
+        var url = '/aliPays?size=' + sizePerPage
             + '&page=' + page;
 
         if (confirm !== '') {

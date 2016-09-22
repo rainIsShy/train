@@ -4,7 +4,7 @@ angular.module('IOne-Production').service('EpsOrderChangeMaster', function ($htt
         var transferPsoFlag = filter.select.transferPsoFlag == 0 ? '' : filter.select.transferPsoFlag;
         var status = filter.select.status == 0 ? '' : filter.select.status;
         //默认参数有confirm taobaoStatus
-        var url = 'epsOrderChanges?size=' + sizePerPage
+        var url = '/epsOrderChanges?size=' + sizePerPage
             + '&page=' + page + '&onlyLatest=2';
 
         if (confirm !== '') {
