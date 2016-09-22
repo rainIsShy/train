@@ -3,7 +3,7 @@ angular.module('IOne-Production').service('PsoOrderReturnMaster', function ($htt
         var confirm = filter.select.confirm == 0 ? '' : filter.select.confirm;
         var transferPsoFlag = filter.select.transferPsoFlag == 0 ? '' : filter.select.transferPsoFlag;
         var status = filter.select.status == 0 ? '' : filter.select.status;
-        var url = 'orders?size=' + sizePerPage
+        var url = '/orders?size=' + sizePerPage
             + '&page=' + page
             + '&onlyReturn=1';
 

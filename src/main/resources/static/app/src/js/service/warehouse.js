@@ -2,7 +2,7 @@ angular.module('IOne-Production').service('Warehouse', function ($http, Constant
     this.getAll = function (sizePerPage, page, filter) {
         var confirm = filter.select.confirm == 0 ? '' : filter.select.confirm;
         var status = filter.select.status == 0 ? '' : filter.select.status;
-        var url = 'warehouses?size=' + sizePerPage
+        var url = '/warehouses?size=' + sizePerPage
             + '&page=' + page;
 
         if (confirm !== '') {

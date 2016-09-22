@@ -21,7 +21,7 @@ angular.module('IOne-Production').service('EPSMaster', function ($http, Constant
         status = status == 0 ? '' : status;
         transferPsoFlag = transferPsoFlag == 0 ? '' : transferPsoFlag;
 
-        var url = 'epsOrders?size=' + sizePerPage
+        var url = '/epsOrders?size=' + sizePerPage
             + '&page=' + page
             + '&confirm=' + confirm
             + '&status=' + status

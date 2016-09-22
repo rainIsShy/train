@@ -101,7 +101,7 @@ angular.module('IOne-Production').service('ChannelPriceService', function ($http
         var ChannelPriceQuery = {
             channelUuid: channelUuid
         };
-        var url = 'channelPrices/' + channelUuid + '/count/';
+        var url = '/channelPrices/' + channelUuid + '/count/';
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
@@ -109,7 +109,7 @@ angular.module('IOne-Production').service('ChannelPriceService', function ($http
         var ChannelPriceQuery = {
             channelUuid: channelUuid
         };
-        var url = 'channels/' + channelUuid + '/count/';
+        var url = '/channels/' + channelUuid + '/count/';
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
@@ -432,7 +432,7 @@ angular.module('IOne-Production').service('ChannelItemInfoService', function ($h
         var ChannelPriceQuery = {
             channelUuid: channelUuid
         };
-        var url = 'channels/' + channelUuid + '/count/';
+        var url = '/channels/' + channelUuid + '/count/';
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
@@ -538,7 +538,7 @@ angular.module('IOne-Production').service('ChannelRelationService', function ($h
         var ChannelPriceQuery = {
             channelUuid: channelUuid
         };
-        var url = 'channelRelations/count?channelUuids=' + channelUuid;
+        var url = '/channelRelations/count?channelUuids=' + channelUuid;
         return $http.get(Constant.BACKEND_BASE + url);
     };
 

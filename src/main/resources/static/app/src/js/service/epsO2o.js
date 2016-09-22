@@ -5,7 +5,7 @@ angular.module('IOne-Production').service('EpsO2oOrderMaster', function ($http, 
         var status = filter.select.status == 0 ? '' : filter.select.status;
         var orderFlag = filter.select.orderFlag == 0 ? '' : filter.select.orderFlag;
         //默认参数有confirm taobaoStatus
-        var url = 'epsOrders?size=' + sizePerPage
+        var url = '/epsOrders?size=' + sizePerPage
             + '&page=' + page + '&onlyO2o=1';
 
         if (confirm !== '') {

@@ -1,7 +1,7 @@
 angular.module('IOne-Production').service('Receipts', function ($http, Constant) {
     this.getAll = function (sizePerPage, page, channelUuid, no, orderReceiptDetailStatus, orderAmount, paidAmount, unpaidAmount, resUuid) {
         var orderReceiptDetailStatus = orderReceiptDetailStatus == 0 ? '' : orderReceiptDetailStatus;
-        var url = 'orders?size=' + sizePerPage
+        var url = '/orders?size=' + sizePerPage
             + '&page=' + page
             + '&paidType=0';
 

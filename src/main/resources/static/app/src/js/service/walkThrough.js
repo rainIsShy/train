@@ -5,7 +5,7 @@ angular.module('IOne-Production').service('WalkThroughMaster', function ($http, 
         var transferFlag = filter.select.transferFlag == 0 ? '' : filter.select.transferFlag;
         var orderType = filter.select.orderType == 0 ? '' : filter.select.orderType;
 
-        var url = 'walkThroughs?size=' + sizePerPage
+        var url = '/walkThroughs?size=' + sizePerPage
             + '&page=' + page;
 
         if (confirm !== '') {
