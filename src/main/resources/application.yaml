@@ -36,8 +36,13 @@ spring:
 
 
 --- # SIT
+
 banner:
   location: banner-sit.txt
+
+spring:
+  profiles: SIT
+
 
 i1:
   i1-server:
@@ -54,6 +59,9 @@ i1:
 --- # UAT
 banner:
   location: banner-uat.txt
+
+spring:
+  profiles: UAT
 
 i1:
   i1-server:
