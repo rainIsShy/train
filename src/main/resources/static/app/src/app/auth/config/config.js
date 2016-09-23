@@ -118,7 +118,7 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
 
     $scope.getResTree = function() {
         if($scope.isNotValid($scope.resTree)) {
-            $http.get('sysRess/resTree').success(function(data) {
+            $http.get(Constant.BACKEND_BASE + '/sysRess/resTree').success(function(data) {
                 $scope.resTree = data;
             });
         }

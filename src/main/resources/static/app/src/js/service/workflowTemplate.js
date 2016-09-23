@@ -3,7 +3,7 @@ angular.module('IOne-Production').service('WorkflowTemplateMaster', function ($h
         var confirm = filter.confirm == 0 ? '' : filter.confirm;
         var status = filter.status == 0 ? '' : filter.status;
         var transferFlag = filter.transferFlag == 0 ? '' : filter.transferFlag;
-        var url = 'workflowTemplates?size=' + sizePerPage
+        var url = '/workflowTemplates?size=' + sizePerPage
             + '&page=' + page;
 
         if (confirm !== '') {

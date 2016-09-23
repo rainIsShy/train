@@ -3,7 +3,7 @@ angular.module('IOne-Production').service('AssFormMasterService', function ($htt
         var confirm = filter.confirm == 0 ? '' : filter.confirm;
         var status = filter.status == 0 ? '' : filter.status;
         var no = filter.no == 0 ? '' : filter.no;
-        var url = 'assForms?size=' + sizePerPage
+        var url = '/assForms?size=' + sizePerPage
             + '&page=' + page;
 
         if (no != '' && no != undefined) {
@@ -49,7 +49,7 @@ angular.module('IOne-Production').service('AssFormDetailService', function ($htt
         var confirm = filter.confirm == 0 ? '' : filter.confirm;
         var status = filter.status == 0 ? '' : filter.status;
         var transferFlag = filter.transferFlag == 0 ? '' : filter.transferFlag;
-        var url = 'assForms/{assFormUuid}/details?size=' + sizePerPage
+        var url = '/assForms/{assFormUuid}/details?size=' + sizePerPage
             + '&page=' + page;
 
         // if (confirm != '') {
@@ -65,7 +65,7 @@ angular.module('IOne-Production').service('AssFormDetailService', function ($htt
     };
 
     this.get = function (masterUuid) {
-        var url = 'assForms/' + masterUuid + '/details';
+        var url = '/assForms/' + masterUuid + '/details';
         return $http.get(Constant.BACKEND_BASE + url);
     };
 

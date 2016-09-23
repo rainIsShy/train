@@ -2,7 +2,7 @@ angular.module('IOne-Production').service('DeliverWay', function ($http, Constan
     this.getAll = function (sizePerPage, page, filter) {
         var confirm = filter.select.confirm == 0 ? '' : filter.select.confirm;
         var status = filter.select.status == 0 ? '' : filter.select.status;
-        var url = 'deliverWays?size=' + sizePerPage
+        var url = '/deliverWays?size=' + sizePerPage
             + '&page=' + page;
 
         if (confirm !== '') {

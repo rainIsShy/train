@@ -101,7 +101,7 @@ angular.module('IOne-Production').service('SalesOrderDetail', function ($http, C
     };
 
     this.getAllCountByMasterUuids = function (orderMasterUuids) {
-        var url = 'salesOrders/' + orderMasterUuids + '/count/';
+        var url = '/salesOrders/' + orderMasterUuids + '/count/';
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
