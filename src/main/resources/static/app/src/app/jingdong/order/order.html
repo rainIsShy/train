@@ -264,10 +264,19 @@
                     <md-button flex="5" ng-click="openEmployeeDlg()" style="padding-top: 10px;" ng-disabled="searchEmployee.$invalid" class="md-icon-button">
                         <i class="fa fa-search"></i>
                     </md-button>
-                    <md-input-container flex="15">
+                </div>
+                <div flex layout="row" style="position: relative" layout-align="start">
+                    <md-input-container flex="15" style="margin-left: 50px">
                         <label>备注：</label>
-                        <input ng-model="listFilterOption.venderRemark"/>
+                        <input ng-model="listFilterOption.venderRemark" ng-disabled="isVendorRemarkEmpty"/>
                     </md-input-container>
+                    <span>
+                        <md-checkbox style="position: relative;top:15px"
+                                     ng-click="findOrderWithVendorRemarkEmpty(isVendorRemarkEmpty)"
+                                     ng-model="isVendorRemarkEmpty">
+                            篩選出备注未填單
+                        </md-checkbox>
+                    </span>
                     <md-input-container flex="15">
                         <label>销售单号：</label>
                         <input ng-model="listFilterOption.orderId"/>

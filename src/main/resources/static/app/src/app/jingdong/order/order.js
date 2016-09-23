@@ -543,6 +543,11 @@ angular.module('IOne-Production').controller('JdOrderController', function ($sco
             });
         });
     };
+
+    $scope.$watch('isVendorRemarkEmpty', function () {
+        $scope.isVendorRemarkEmpty ? $scope.listFilterOption.venderRemark = "" : $scope.listFilterOption.venderRemark = null;
+    }, true);
+
 });
 
 angular.module('IOne-Production').controller('SelectEmployeeController', function ($scope, $mdDialog, EmployeeService) {
