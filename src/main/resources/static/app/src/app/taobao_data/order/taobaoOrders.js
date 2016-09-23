@@ -432,6 +432,9 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
         });
     };
 
+    $scope.$watch('taobaoOrderListMenu.isSellerMemoEmpty', function () {
+        $scope.taobaoOrderListMenu.isSellerMemoEmpty ? $scope.taobaoOrderListMenu.sellerMemo = "" : $scope.taobaoOrderListMenu.sellerMemo = null;
+    }, true);
 });
 
 angular.module('IOne-Production').controller('TaobaoOrdersDeliveryController', function($scope, $mdDialog, tid) {
