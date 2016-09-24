@@ -5,7 +5,9 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('EpsO2oOrderController', function ($q, $scope, $mdDialog, EpsO2oOrderMaster, EpsO2oOrderDetail, EpsO2oOrderExtendDetail, Constant, SaleTypes) {
+angular.module('IOne-Production').controller('EpsO2oOrderController', function ($q, $scope, $mdDialog, EpsO2oOrderMaster, EpsO2oOrderDetail, EpsO2oOrderExtendDetail, Constant, SaleTypes, SysParameter) {
+    $scope.CHECK_CONFIRMATION_PARAMETER_UUID = '32CDA8EE-C1CD-4A3D-83D2-718387F3F654'; //参数管控: 审核时是否检查O2O配送状态
+    $scope.isCheckConfirmation = true;
     $scope.selectedItemSize = 0;
     $scope.selectedItemAmount = 0;
     $scope.O2O_EPS_ORDER_TYPE = Constant.O2O_EPS_ORDER_TYPE;
@@ -47,6 +49,15 @@ angular.module('IOne-Production').controller('EpsO2oOrderController', function (
             //$scope.disableBatchMenuButtons();
         }).error(function (response) {
             $scope.showError(response.message);
+        });
+
+        SysParameter.get($scope.CHECK_CONFIRMATION_PARAMETER_UUID).success(function (data) {
+            var sysParameter = data.content[0];
+            if(sysParameter != null){
+                if(sysParameter.status === Constant.STATUS[2].value){ //如果参数未启用，审核时不检查O2O配送状态
+                    $scope.isCheckConfirmation = false;
+                }
+            }
         });
     };
 
@@ -146,81 +157,6 @@ angular.module('IOne-Production').controller('EpsO2oOrderController', function (
         $scope.domain = domain;
     };
 
-    /**
-     * Save object according current status and domain.
-     */
-    $scope.saveItemAction = function () {
-        if ($scope.status == 'add') {
-            $scope.addObjectUuidParameters($scope.selectedItem);
-            EpsO2oOrderMaster.add($scope.selectedItem.uuid, $scope.selectedItem).success(function (data) {
-                $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
-                $scope.showInfo('变更单创建成功');
-                $scope.refreshList();
-                $scope.selectedItem = data;
-
-                EpsO2oOrderDetail.get($scope.selectedItem.uuid).success(function (data) {
-                    $scope.selectedItem.detailList = data.content;
-                }).error(function (response) {
-                    $scope.showError('获取变更单单身信息失败，原因：' + response.message);
-                });
-            }).error(function (response) {
-                $scope.showError('变更单创建失败, 原因: ' + response.message);
-            });
-        } else if ($scope.status == 'edit') {
-            $scope.addObjectUuidParameters($scope.selectedItem);
-            EpsO2oOrderMaster.modify($scope.selectedItem.uuid, $scope.selectedItem).success(function (data) {
-                $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
-                $scope.showInfo('变更单修改成功');
-                $scope.refreshList();
-                $scope.selectedItem = data;
-
-                EpsO2oOrderDetail.get($scope.selectedItem.uuid).success(function (data) {
-                    $scope.selectedItem.detailList = data.content;
-                }).error(function (response) {
-                    $scope.showError('获取变更单单身信息失败，原因：' + response.message);
-                });
-            }).error(function (response) {
-                $scope.showError('变更单修改失败, 原因: ' + response.message);
-            });
-        }
-    };
-
-    $scope.addObjectUuidParameters = function (workingEpsO2oOrderMaster) {
-        if (workingEpsO2oOrderMaster.channel != null) {
-            workingEpsO2oOrderMaster.channelUuid = workingEpsO2oOrderMaster.channel.uuid;
-        }
-        if (workingEpsO2oOrderMaster.deliverWay != null) {
-            workingEpsO2oOrderMaster.deliverWayUuid = workingEpsO2oOrderMaster.deliverWay.uuid;
-        }
-        if (workingEpsO2oOrderMaster.groupUser != null) {
-            workingEpsO2oOrderMaster.groupUserUuid = workingEpsO2oOrderMaster.groupUser.uuid;
-        }
-        if (workingEpsO2oOrderMaster.receiveDistrict != null) {
-            workingEpsO2oOrderMaster.receiveDistrictUuid = workingEpsO2oOrderMaster.receiveDistrict.uuid;
-        }
-        if (workingEpsO2oOrderMaster.predictDeliverDate) {
-            workingEpsO2oOrderMaster.predictDeliverDate = moment(workingEpsO2oOrderMaster.predictDeliverDate).format('YYYY-MM-DD');
-        }
-    };
-
-    /**
-     * Delete detail item
-     */
-    $scope.closeDetailAction = function (detail) {
-        EpsO2oOrderDetail.close($scope.selectedItem.uuid, detail.uuid).success(function (detailRep) {
-            detail.status = Constant.STATUS[2].value;
-            //angular.forEach($scope.selectedItem.extendDetailList, function (epsOrderChangeExtDetail, index) {
-            //    if (epsOrderChangeExtDetail.epsOrderChangeDetail.uuid == detail.uuid) {
-            //        epsOrderChangeExtDetail.status = Constant.STATUS[2].value;
-            //    }
-            //});
-
-            $scope.showInfo('变更单单身结案成功！');
-        }).error(function (response) {
-            $scope.showError('变更单单身结案失败，原因：' + response.message);
-        });
-    };
-
     $scope.selectItemAction = function (event, item) {
         $scope.stopEventPropagation(event);
         item.selectedRef = !item.selected;
@@ -239,7 +175,7 @@ angular.module('IOne-Production').controller('EpsO2oOrderController', function (
     };
 
     $scope.agreeDeliver = function (event, item) {
-        if (item.o2oFlag !== '2') {
+        if ($scope.isCheckConfirmation == true && item.o2oFlag !== '2') {
             $scope.showError(item.no + ' 操作失败，只有O2O配送状态为“2确认中”的单据可以做同意配送操作');
             return;
         }
@@ -254,7 +190,7 @@ angular.module('IOne-Production').controller('EpsO2oOrderController', function (
     };
 
     $scope.rejectDeliver = function (event, item) {
-        if (item.o2oFlag !== '2') {
+        if ($scope.isCheckConfirmation == true && item.o2oFlag !== '2') {
             $scope.showError(item.no + ' 操作失败，只有O2O配送状态为“2确认中”的单据可以做拒绝配送操作');
             return;
         }
@@ -280,7 +216,7 @@ angular.module('IOne-Production').controller('EpsO2oOrderController', function (
         var bError = false;
         angular.forEach($scope.itemList, function (item) {
             if (item.selected) {
-                if (item.o2oFlag !== '2') {
+                if ($scope.isCheckConfirmation == true && item.o2oFlag !== '2') {
                     bError = true;
                     $scope.showError(item.no + ' 操作失败，只有O2O配送状态为“2确认中”的单据可以做同意配送操作');
 
@@ -324,7 +260,7 @@ angular.module('IOne-Production').controller('EpsO2oOrderController', function (
         var bError = false;
         angular.forEach($scope.itemList, function (item) {
             if (item.selected) {
-                if (item.o2oFlag !== '2') {
+                if ($scope.isCheckConfirmation == true && item.o2oFlag !== '2') {
                     bError = true;
                     $scope.showError(item.no + ' 操作失败，只有O2O配送状态为“2确认中”的单据可以做拒绝配送操作');
 
@@ -357,296 +293,6 @@ angular.module('IOne-Production').controller('EpsO2oOrderController', function (
         });
     };
 
-    //$scope.confirmClickAction = function (event, item, confirmVal) {
-    //    $scope.stopEventPropagation(event);
-    //    console.info('confirm...');
-    //
-    //    //$scope.showConfirm('审核后预定单的变更将会生效，确认审核吗？', '', function () {
-    //    //    EpsO2oOrderMaster.confirm(item.uuid).success(function () {
-    //    //        item.confirm = Constant.CONFIRM[2].value;
-    //    //        $scope.showInfo('预定单变更审核成功！');
-    //    //        $scope.disableBatchMenuButtons();
-    //    //    }).error(function (response) {
-    //    //        $scope.showError(response.message);
-    //    //    });
-    //    //});
-    //
-    //    var action = "审核";
-    //    var popMessage = "审核后变更将会生效，确认审核吗？";
-    //    if (confirmVal == Constant.CONFIRM[1].value) {
-    //        action = "取消审核";
-    //        popMessage = "取消审核后电商销售单将会回退到之前版本，确认取消审核吗？"
-    //    }
-    //
-    //    $scope.showConfirm(popMessage, '', function () {
-    //        if (confirmVal == Constant.CONFIRM[1].value) {
-    //            EpsO2oOrderMaster.cancelConfirm(item.uuid).success(function () {
-    //                item.confirm = confirmVal;
-    //                $scope.updateOrderChangeDetailsConfirm(item);
-    //                $scope.showInfo('电商销售单变更单' + action + '成功！');
-    //                $scope.disableBatchMenuButtons();
-    //            }).error(function (response) {
-    //                $scope.showError(response.message);
-    //            });
-    //        } else {
-    //            EpsO2oOrderMaster.confirm(item.uuid).success(function () {
-    //                item.confirm = confirmVal;
-    //                $scope.updateOrderChangeDetailsConfirm(item);
-    //                $scope.showInfo('电商销售单变更单' + action + '成功！');
-    //                $scope.disableBatchMenuButtons();
-    //            }).error(function (response) {
-    //                $scope.showError(response.message);
-    //            });
-    //        }
-    //    });
-    //
-    //};
-    //
-    //$scope.statusClickAction = function (event, item) {
-    //    $scope.stopEventPropagation(event);
-    //    console.info('confirm...');
-    //
-    //    $scope.showConfirm('确认启用吗？', '', function () {
-    //        EpsO2oOrderMaster.modify(item.uuid, {'status': '1'}).success(function () {
-    //            item.status = Constant.STATUS[1].value;
-    //            $scope.showInfo('启用成功！');
-    //            $scope.disableBatchMenuButtons();
-    //        }).error(function (response) {
-    //            $scope.showError(response.message);
-    //        });
-    //    });
-    //};
-    //
-    //$scope.cancelStatusClickAction = function (event, item) {
-    //    $scope.stopEventPropagation(event);
-    //    console.info('confirm...');
-    //
-    //    $scope.showConfirm('确认禁用吗？', '', function () {
-    //        EpsO2oOrderMaster.modify(item.uuid, {'status': '2'}).success(function () {
-    //            item.status = Constant.STATUS[2].value;
-    //            $scope.showInfo('禁用成功！');
-    //            $scope.disableBatchMenuButtons();
-    //        }).error(function (response) {
-    //            $scope.showError(response.message);
-    //        });
-    //    });
-    //};
-    //
-    //$scope.transferClickAction = function (event, item) {
-    //    $scope.stopEventPropagation(event);
-    //    console.info('transfer...');
-    //
-    //    $scope.showConfirm('确认抛转吗？', '', function () {
-    //        var uuids = [];
-    //        uuids.push(item.uuid);
-    //        EpsO2oOrderMaster.transfer(uuids).success(function (response) {
-    //            if (response && response[0].code != 0) {
-    //                $scope.showError('抛转失败：' + response[0].msg);
-    //            } else {
-    //                item.transferPsoFlag = Constant.TRANSFER_PSO_FLAG[1].value;
-    //                $scope.updateOrderChangeDetailsTransfer(item);
-    //                $scope.showInfo('电商销售单变更抛转成功！');
-    //                $scope.disableBatchMenuButtons();
-    //            }
-    //        }).error(function (response) {
-    //            $scope.showError(response.message);
-    //        });
-    //    });
-    //};
-
-    //$scope.deleteClickAction = function (event, item) {
-    //    $scope.stopEventPropagation(event);
-    //    console.info('delete...');
-    //
-    //};
-
-    //$scope.confirmAllClickAction = function (event) {
-    //    $scope.stopEventPropagation(event);
-    //
-    //    if ($scope.selectedItemSize == 0) {
-    //        $scope.showWarn('请先选择记录！');
-    //        return;
-    //    }
-    //    $scope.showConfirm('确认审核吗', '', function () {
-    //        var promises = [];
-    //        var bError = false;
-    //        angular.forEach($scope.itemList, function (item) {
-    //            if (item.selected) {
-    //                var response = EpsO2oOrderMaster.confirm(item.uuid).success(function () {
-    //                    item.confirm = '2';
-    //                    $scope.updateOrderChangeDetailsConfirm(item);
-    //                }).error(function (response) {
-    //                    bError = true;
-    //                    $scope.showError(item.no + ' 审核失败：' + response.message);
-    //                });
-    //                promises.push(response);
-    //            }
-    //        });
-    //        $q.all(promises).then(function (data) {
-    //            if (!bError) {
-    //                $scope.showInfo('审核成功！');
-    //            }
-    //            $scope.disableBatchMenuButtons();
-    //        });
-    //    });
-    //};
-    //
-    //$scope.cancelConfirmAllClickAction = function (event) {
-    //    $scope.stopEventPropagation(event);
-    //
-    //    if ($scope.selectedItemSize == 0) {
-    //        $scope.showWarn('请先选择记录！');
-    //        return;
-    //    }
-    //    $scope.showConfirm('确认取消审核吗', '', function () {
-    //        var promises = [];
-    //        var bError = false;
-    //        angular.forEach($scope.itemList, function (item) {
-    //            if (item.selected) {
-    //                var response = EpsO2oOrderMaster.cancelConfirm(item.uuid).success(function () {
-    //                    item.confirm = '1';
-    //                    $scope.updateOrderChangeDetailsConfirm(item);
-    //                }).error(function (response) {
-    //                    bError = true;
-    //                    $scope.showError(item.no + ' 取消审核失败：' + response.message);
-    //                });
-    //                promises.push(response);
-    //            }
-    //        });
-    //        $q.all(promises).then(function (data) {
-    //            if (!bError) {
-    //                $scope.showInfo('取消审核成功！');
-    //            }
-    //            $scope.disableBatchMenuButtons();
-    //        });
-    //    });
-    //};
-
-    /*$scope.cancelConfirmAllClickAction = function (event) {
-     $scope.stopEventPropagation(event);
-
-     if ($scope.selectedItemSize == 0) {
-     $scope.showWarn('请先选择记录！');
-     return;
-     }
-     $scope.showConfirm('确认取消审核吗', '', function () {
-     var promises = [];
-     var bError = false;
-     angular.forEach($scope.itemList, function (item) {
-     if (item.selected) {
-     var response = EpsO2oOrderMaster.modify(item.uuid, {'confirm': '1'}).success(function () {
-     item.confirm = '1';
-     }).error(function (response) {
-     bError = true;
-     $scope.showError(item.no + ' 取消审核失败：' + response.message);
-     });
-     promises.push(response);
-     }
-     });
-     $q.all(promises).then(function (data) {
-     if (!bError) {
-     $scope.showInfo('取消审核成功！');
-     }
-     $scope.disableBatchMenuButtons();
-     });
-     });
-     };*/
-
-    //$scope.statusAllClickAction = function (event) {
-    //    $scope.stopEventPropagation(event);
-    //
-    //    if ($scope.selectedItemSize == 0) {
-    //        $scope.showWarn('请先选择记录！');
-    //        return;
-    //    }
-    //    $scope.showConfirm('确认启用吗', '', function () {
-    //        var promises = [];
-    //        var bError = false;
-    //        angular.forEach($scope.itemList, function (item) {
-    //            if (item.selected) {
-    //                var response = EpsO2oOrderMaster.modify(item.uuid, {'status': '1'}).success(function () {
-    //                    item.status = Constant.STATUS[1].value;
-    //                }).error(function (response) {
-    //                    bError = true;
-    //                    $scope.showError(item.no + ' 启用失败：' + response.message);
-    //                });
-    //                promises.push(response);
-    //            }
-    //        });
-    //        $q.all(promises).then(function (data) {
-    //            if (!bError) {
-    //                $scope.showInfo('启用成功！');
-    //            }
-    //            $scope.disableBatchMenuButtons();
-    //        });
-    //    });
-    //};
-    //
-    //$scope.cancelStatusAllClickAction = function (event) {
-    //    $scope.stopEventPropagation(event);
-    //
-    //    if ($scope.selectedItemSize == 0) {
-    //        $scope.showWarn('请先选择记录！');
-    //        return;
-    //    }
-    //    $scope.showConfirm('确认禁用吗', '', function () {
-    //        var promises = [];
-    //        var bError = false;
-    //        angular.forEach($scope.itemList, function (item) {
-    //            if (item.selected) {
-    //                var response = EpsO2oOrderMaster.modify(item.uuid, {'status': '2'}).success(function () {
-    //                    item.status = Constant.STATUS[2].value;
-    //                }).error(function (response) {
-    //                    bError = true;
-    //                    $scope.showError(item.no + ' 禁用失败：' + response.message);
-    //                });
-    //                promises.push(response);
-    //            }
-    //        });
-    //        $q.all(promises).then(function (data) {
-    //            if (!bError) {
-    //                $scope.showInfo('禁用成功！');
-    //            }
-    //            $scope.disableBatchMenuButtons();
-    //        });
-    //    });
-    //};
-    //
-    //$scope.transferAllClickAction = function (event) {
-    //    $scope.stopEventPropagation(event);
-    //
-    //    if ($scope.selectedItemSize == 0) {
-    //        $scope.showWarn('请先选择记录！');
-    //        return;
-    //    }
-    //    $scope.showConfirm('确认抛转吗', '', function () {
-    //        var uuids = [];
-    //        angular.forEach($scope.itemList, function (item) {
-    //            if (item.selected) {
-    //                uuids.push(item.uuid);
-    //            }
-    //        });
-    //
-    //        var response = EpsO2oOrderMaster.transfer(uuids).success(function () {
-    //            angular.forEach($scope.itemList, function (item) {
-    //                if (item.selected) {
-    //                    item.transferPsoFlag = Constant.TRANSFER_PSO_FLAG[1].value;
-    //                    $scope.updateOrderChangeDetailsTransfer(item);
-    //                }
-    //            });
-    //            $scope.showInfo('抛转成功！');
-    //        }).error(function (response) {
-    //            $scope.showError(item.no + ' 抛转失败：' + response.message);
-    //        });
-    //    });
-    //};
-    //
-    //$scope.deleteAllClickAction = function (event) {
-    //    $scope.stopEventPropagation(event);
-    //    console.info('delete all...');
-    //
-    //};
-
     $scope.selectAllAction = function () {
         angular.forEach($scope.itemList, function (item) {
             if ($scope.selectAllFlag) {
@@ -673,7 +319,7 @@ angular.module('IOne-Production').controller('EpsO2oOrderController', function (
     $scope.refreshExtendDetailTab = function (selectedItem) {
         $scope.selectedItem.extendDetailList = [];
         angular.forEach($scope.selectedItem.detailList, function (orderDetail, index) {
-            EpsO2oOrderExtendDetail.get(selectedItem.uuid, orderDetail.uuid).success(function (data) {
+            EpsO2oOrderExtendDetail.getAll(selectedItem.uuid, orderDetail.uuid).success(function (data) {
                 if (data.totalElements > 0) {
                     $scope.selectedItem.extendDetailList = $scope.selectedItem.extendDetailList.concat(data.content);
                 }
@@ -791,204 +437,4 @@ angular.module('IOne-Production').controller('EpsO2oOrderController', function (
     SaleTypes.getAll().success(function (data) {
         $scope.saleTypes = data;
     });
-
-    $scope.openDetailEditorDlg = function (epsOrderChangeDetail) {
-        if ($scope.selectedItem.transferPsoFlag == '1') {
-            $scope.showError('已抛转的变更单不能修改。');
-            return;
-        }
-        $mdDialog.show({
-            controller: 'EpsO2oOrderDetailController',
-            templateUrl: 'app/src/app/eps/orderChange/detailEditorDlg.html',
-            parent: angular.element(document.body),
-            targetEvent: event,
-            locals: {
-                workingOrderChangeDetail: epsOrderChangeDetail,
-                saleTypes: $scope.saleTypes
-            }
-        }).then(function (data) {
-            EpsO2oOrderDetail.modify($scope.selectedItem.uuid, epsOrderChangeDetail.uuid, data.workingOrderChangeDetail).success(function (detailRep) {
-                $scope.selectedItem = detailRep.epsOrderChange;
-                EpsO2oOrderDetail.get($scope.selectedItem.uuid).success(function (data) {
-                    $scope.selectedItem.detailList = data.content;
-                    //$scope.updateOrderDetailDeliverDate($scope.OrderDetailList);//YYYY-MM-DD
-                    $scope.selectedItem.extendDetailList = [];
-                    angular.forEach($scope.selectedItem.detailList, function (epsOrderChangeDetail, index) {
-                        EpsO2oOrderExtendDetail.get(epsOrderChangeDetail.uuid).success(function (extDetailData) {
-                            if (extDetailData.totalElements > 0) {
-                                $scope.selectedItem.extendDetailList = $scope.selectedItem.extendDetailList.concat(extDetailData.content);
-                            }
-                        }).error(function (response) {
-                            $scope.showError('刷新子单身数据失败，原因：' + response.message);
-                        });
-                    });
-                }).error(function (response) {
-                    $scope.showError('刷新单身数据失败，原因：' + response.message);
-                });
-                $scope.showInfo('变更单单身修改成功！');
-            }).error(function (response) {
-                $scope.showError(response.message);
-            });
-        });
-    };
-
-    $scope.openChannelDlg = function () {
-        $mdDialog.show({
-            controller: 'EChannelSearchController',
-            templateUrl: 'app/src/app/taobao_data/ecommerce_orders/selectChannel.html',
-            parent: angular.element(document.body),
-            targetEvent: event
-        }).then(function (data) {
-            /*            if (angular.isUndefined($scope.selectedItem.channel.mall) || $scope.selectedItem.channel.mall == null) {
-             } else {
-             Mall = $scope.selectedItem.channel.mall;
-             $scope.selectedItem.mallUuid = Mall.uuid;
-             $scope.selectedItem.channel.mall = Mall;
-             $scope.selectedItem.mallUuid = Mall.uuid;
-             }*/
-            $scope.selectedItem.channel = data;
-            $scope.selectedItem.channelUuid = data.uuid;
-            if (data.mall != null) {
-                $scope.selectedItem.mallUuid = data.mall.uuid;
-            }
-        });
-    };
-
-    $scope.openDelivWayDlg = function () {
-        $mdDialog.show({
-            controller: 'EDelivWaySearchController',
-            templateUrl: 'app/src/app/taobao_data/ecommerce_orders/selectDelivWay.html',
-            parent: angular.element(document.body),
-            targetEvent: event
-        }).then(function (data) {
-            $scope.selectedItem.deliverWay = data;
-            $scope.selectedItem.deliverWayUuid = data.uuid;
-        });
-    };
-
-    $scope.openGroupUserDlg = function () {
-        $mdDialog.show({
-            controller: 'EGroupUserSearchController',
-            templateUrl: 'app/src/app/taobao_data/ecommerce_orders/selectGroupUser.html',
-            parent: angular.element(document.body),
-            targetEvent: event
-        }).then(function (data) {
-            $scope.selectedItem.groupUser = data;
-            $scope.selectedItem.groupUserUuid = data.uuid;
-        });
-    };
-
-    $scope.openAreaDlg = function () {
-        $mdDialog.show({
-            controller: 'EAreaSearchController',
-            templateUrl: 'app/src/app/taobao_data/ecommerce_orders/selectArea.html',
-            parent: angular.element(document.body),
-            targetEvent: event
-        }).then(function (data) {
-            $scope.selectedItem.receiveDistrict = data;
-            $scope.selectedItem.receiveDistrictUuid = data.uuid;
-        });
-    };
-
 });
-
-angular.module('IOne-Production').controller('EpsO2oOrderDetailController', function ($scope, $mdDialog, workingOrderChangeDetail, saleTypes) {
-    $scope.workingOrderChangeDetail = angular.copy(workingOrderChangeDetail);
-    $scope.itemSearchParam = {
-        confirm: 2,
-        release: 2,
-        status: 1,
-        eshopType: 2,
-        assemblingFlag: 1
-    };
-
-    //电商销售类型下拉内容,只有'常规ST01'和'赠送ST04'
-    $scope.saleTypes = angular.copy(saleTypes);
-    var eSaleType = [];
-    var i = 0;
-    angular.forEach(saleTypes.content, function (saleType) {
-        if (saleType.no == 'ST01') {
-            eSaleType[i++] = saleType;
-        }
-        if (saleType.no == 'ST04') {
-            eSaleType[i++] = saleType;
-        }
-    });
-    $scope.saleTypes = eSaleType;
-
-    $scope.disableOrderPrice = false;
-    $scope.isChangingProduction = false;
-    $scope.showChangingProductionPanel = function () {
-        $scope.isChangingProduction = true;
-    };
-    $scope.hideChangingProductionPanel = function () {
-        $scope.isChangingProduction = false;
-    };
-    //赠送类型的单价设置为0
-    $scope.setZero = function (saleType) {
-        if (saleType.name == '赠送') {
-            $scope.workingOrderChangeDetail.orderPrice = 0;
-            $scope.disableOrderPrice = true;
-        } else {
-            $scope.disableOrderPrice = false;
-        }
-    };
-    $scope.selectBom = function (production) {
-        if (production) {
-            $scope.workingOrderChangeDetail.item = production;
-            $scope.workingOrderChangeDetail.itemUuid = production.uuid;
-            $scope.isChangingProduction = false;
-        }
-    };
-
-    $scope.hideDlg = function () {
-        $mdDialog.hide({
-            'workingOrderChangeDetail': $scope.workingOrderChangeDetail
-        });
-    };
-    $scope.cancelDlg = function () {
-        $mdDialog.cancel();
-    };
-});
-
-
-//angular.module('IOne-Production').controller('SelectEpsOrderController', function ($scope, Constant, $mdDialog, EpsO2oOrderMaster) {
-//    $scope.STATUS = Constant.STATUS;
-//    $scope.CONFIRM = Constant.CONFIRM;
-//    $scope.TRANSFER_PSO_FLAG = Constant.TRANSFER_PSO_FLAG;
-//    $scope.orderStatus = Constant.STATUS[0].value;
-//    $scope.orderConfirm = Constant.CONFIRM[0].value;
-//    $scope.orderTransferPsoFlag = Constant.TRANSFER_PSO_FLAG[0].value;
-//
-//    $scope.pageOption = {
-//        sizePerPage: 10,
-//        currentPage: 0,
-//        totalPage: 0,
-//        totalElements: 0,
-//        displayModel: 0
-//    };
-//
-//    $scope.refreshOrderList = function () {
-//        EpsO2oOrderMaster.getAll(12, $scope.pageOption.currentPage, null,
-//            $scope.orderConfirm,
-//            $scope.orderStatus,
-//            $scope.orderTransferPsoFlag, null,
-//            $scope.orderNo
-//        ).success(function (data) {
-//            $scope.orderList = data.content;
-//            $scope.pageOption.totalElements = data.totalElements;
-//            $scope.pageOption.totalPage = data.totalPages;
-//        });
-//    };
-//
-//    $scope.refreshOrderList();
-//
-//    $scope.selectOrder = function (order) {
-//        $scope.selectedEpsOrder = order;
-//        $mdDialog.hide($scope.selectedEpsOrder);
-//    };
-//
-//    $scope.cancelDlg = function () {
-//        $mdDialog.cancel();
-//    };
-//});
