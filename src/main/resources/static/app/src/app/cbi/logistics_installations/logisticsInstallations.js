@@ -511,27 +511,8 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
                 editingItem: item
             }
         }).then(function (editingItem) {
-            /*if (editingItem.isModifyLogistic == false) {
-                if (editingItem.logistic.supplier.uuid) {
-                    console.info("新增物流订单");
-                    var Input = {
-                        //supplier: editingItem.logistic.supplier,
-                        supplierUuid: editingItem.logistic.supplier.uuid,
-                        orderDate: moment(new Date()).format('YYYY-MM-DD 00:00:00'),
-                        receiptDate: editingItem.confDeliverDate,
-                        no: "1"
-                    };
-                    WalkThroughLogistic.add(editingItem.uuid, Input).success(function (data) {
-                        $scope.showInfo("新增物流订单成功");
-                        //console.info(data);
-                        item.logistic = data;
-                    }).error(function (response) {
-                        $scope.showError(response.message);
-                    });
-                }
-            } else */
             if (editingItem.isModifyLogistic == true) {
-                if (editingItem.installation.confirm == Constant.CONFIRM[2].value) {
+                if (editingItem.logistic.confirm == Constant.CONFIRM[2].value) {
                     $scope.showInfo("已有审核的物流订单,不再更新");
                     return;
                 }
@@ -539,7 +520,8 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
                     console.info("更新物流订单");
                     var Input = {
                         uuid: editingItem.logistic.uuid,
-                        receiptDate: editingItem.confDeliverDate,
+                        supplierUuid: editingItem.logistic.supplier.uuid,
+                        receiptDate: moment(editingItem.logistic.receiptDate).format('YYYY-MM-DD 00:00:00'),
                         no: editingItem.logistic.no
                     };
                     WalkThroughLogistic.modify(editingItem.uuid, Input).success(function (data) {
@@ -550,7 +532,6 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
                     });
                 }
             }
-
         });
     };
 
@@ -806,12 +787,6 @@ angular.module('IOne-Production').controller('BatchSupplierEditorController', fu
 
 angular.module('IOne-Production').controller('O2oSupplierEditorController', function ($scope, OCMSupplierService, Constant, $mdDialog, editingItem) {
     $scope.editingItem = angular.copy(editingItem);
-    if(editingItem.logistic.receiptDate == null){
-        editingItem.logistic.receiptDate = moment(editingItem.logistic.walkThrough.confDeliverDate).format('YYYY-MM-DD');
-    } else {
-        editingItem.logistic.receiptDate = moment(editingItem.logistic.receiptDate).format('YYYY-MM-DD');
-    }
-
     if (angular.isUndefined($scope.editingItem.logistic) || $scope.editingItem.logistic == null) {
         $scope.editingItem.logistic = {
             supplier: {
@@ -823,19 +798,27 @@ angular.module('IOne-Production').controller('O2oSupplierEditorController', func
         $scope.editingItem.isModifyLogistic = true;
     }
 
-    if (angular.isUndefined($scope.editingItem.installation) || $scope.editingItem.installation == null) {
-        $scope.editingItem.installation = {
-            supplier: {
-                name: null
-            }
-        };
-        $scope.editingItem.isModifyInstallation = false;
-    } else {
-        $scope.editingItem.isModifyInstallation = true;
-        if ($scope.editingItem.installation.installationDate != null) {
-            $scope.editingItem.installation.installationDate = new Date($scope.editingItem.installation.installationDate);
+    if ($scope.editingItem.logistic.receiptDate == null) {
+        if ($scope.editingItem.logistic.walkThrough != null && $scope.editingItem.logistic.walkThrough.confDeliverDate != null) {
+            $scope.editingItem.logistic.receiptDate = new Date($scope.editingItem.logistic.walkThrough.confDeliverDate);
         }
+    } else {
+        $scope.editingItem.logistic.receiptDate = new Date($scope.editingItem.logistic.receiptDate);
     }
+
+    //if (angular.isUndefined($scope.editingItem.installation) || $scope.editingItem.installation == null) {
+    //    $scope.editingItem.installation = {
+    //        supplier: {
+    //            name: null
+    //        }
+    //    };
+    //    $scope.editingItem.isModifyInstallation = false;
+    //} else {
+    //    $scope.editingItem.isModifyInstallation = true;
+    //    if ($scope.editingItem.installation.installationDate != null) {
+    //        $scope.editingItem.installation.installationDate = new Date($scope.editingItem.installation.installationDate);
+    //    }
+    //}
 
     $scope.saveSupplier = function () {
         $mdDialog.hide($scope.editingItem);
@@ -881,9 +864,10 @@ angular.module('IOne-Production').controller('O2oSupplierEditorController', func
         if (supplier) {
             if ($scope.chosenSupplier == "logistics") {
                 $scope.editingItem.logistic.supplier = supplier;
-            } else if ($scope.chosenSupplier == "installations") {
-                $scope.editingItem.installation.supplier = supplier;
             }
+            /* else if ($scope.chosenSupplier == "installations") {
+                $scope.editingItem.installation.supplier = supplier;
+             }*/
             $scope.backAction();
         }
     };
