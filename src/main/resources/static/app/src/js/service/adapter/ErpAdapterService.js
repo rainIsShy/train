@@ -3,7 +3,7 @@
  */
 angular.module('IOne-Production').service('ErpAdapterService', function ($http, $rootScope, $cookieStore) {
 
-    var adapterUrl = $rootScope.globals.adapterInfo.adapterServerUrl;
+    var adapterUrl = $rootScope.globals.adapterInfo.tiptopAdapterServerUrl;
 
     this.transferErpAdapter = function (path, transferObj, serviceScope, callBack) {
 
