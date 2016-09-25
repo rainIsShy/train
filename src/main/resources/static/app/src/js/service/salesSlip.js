@@ -1,4 +1,4 @@
-angular.module('IOne-Production').service('OrderMaster', function ($http, Constant) {
+angular.module('IOne-Production').service('OrderMaster', function ($http, IoneAdapterService, Constant) {
     this.getAll = function (sizePerPage, page, confirm, status, transferPsoFlag, orderMasterNo, customerName, employeeName, orderDateBegin, orderDateEnd, resUuid, channelUuid, orderAmount, paidAmount, unpaidAmount, paidType, paidType2, contractNo) {
         confirm = confirm == 0 ? '' : confirm;
         status = status == 0 ? '' : status;
@@ -89,8 +89,11 @@ angular.module('IOne-Production').service('OrderMaster', function ($http, Consta
     };
 
 //only for throw action
-    this.modifyBatch = function (OrderMasterUpdateInput) {
-        return $http.patch(Constant.BACKEND_BASE + '/orders/' + OrderMasterUpdateInput.uuid + '/batch/', OrderMasterUpdateInput);
+    this.modifyBatch = function (OrderMasterUpdateInput, serviceScope) {
+        // return $http.patch(Constant.BACKEND_BASE + '/orders/' + OrderMasterUpdateInput.uuid + '/batch/', OrderMasterUpdateInput);
+        IoneAdapterService.transferErpAdapter('/pmmOrderTask', OrderMasterUpdateInput, serviceScope, function () {
+
+        });
     };
 
     this.print = function (type, uuid) {

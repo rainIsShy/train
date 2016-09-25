@@ -656,7 +656,7 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                         uuid: $scope.selectedItem.uuid,
                         transferPsoFlag: '1'
                     };
-                    OrderMaster.modifyBatch(OrderMasterUpdateInput).success(function () {
+                    OrderMaster.modifyBatch(OrderMasterUpdateInput, $scope).success(function () {
                         $scope.selectedItem.transferPsoFlag = Constant.TRANSFER_PSO_FLAG[1].value;
                         $scope.refreshMasterAndDetail();
                         $scope.showInfo('修改数据成功。');
@@ -689,7 +689,7 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                         uuid: orderMasterUuids,
                         transferPsoFlag: '1'
                     };
-                    var response = OrderMaster.modifyBatch(OrderMasterUpdateInput).success(function () {
+                    var response = OrderMaster.modifyBatch(OrderMasterUpdateInput, $scope).success(function () {
                         $scope.queryMenuActionWithPaging();
                         $scope.showInfo('修改数据成功。');
                     }).error(function (data) {
