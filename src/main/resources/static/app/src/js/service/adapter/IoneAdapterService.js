@@ -2,7 +2,7 @@
  * Created by xavier on 2016/9/5..
  * Clone from ErpAdapterService.js by ruka on 2016/9/25..
  */
-angular.module('IOne-Production').service('ErpAdapterService', function ($http, $rootScope, $cookieStore) {
+angular.module('IOne-Production').service('IoneAdapterService', function ($http, $rootScope, $cookieStore) {
 
     var adapterUrl = $rootScope.globals.adapterInfo.adapterServerUrl;
 
