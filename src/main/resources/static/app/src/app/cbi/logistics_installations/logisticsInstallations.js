@@ -388,6 +388,11 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
     };
 
     $scope.openSupplierDlg = function (item) {
+        if (item.orderType !== Constant.EPS_ORDER_TYPE[4].value) {
+            $scope.showWarn("只能维护订单类型为" + Constant.EPS_ORDER_TYPE[4].name + "的单据");
+            return;
+        }
+
         $mdDialog.show({
             controller: 'SupplierEditorController',
             templateUrl: 'app/src/app/cbi/logistics_installations/supplierDlg.html',
@@ -491,50 +496,6 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
         });
     };
 
-    $scope.openO2oSupplierDlg = function (item) {
-        if (item.logistic == null) {
-            $scope.showWarn("没有物流服务信息");
-            return;
-        }
-        if (item.logistic.walkThrough.orderType != Constant.EPS_ORDER_TYPE[5].value
-            && item.logistic.walkThrough.orderType != Constant.EPS_ORDER_TYPE[6].value) {
-            $scope.showWarn("O2O维护只能维护订单类型为" + Constant.EPS_ORDER_TYPE[5].name + "或" + Constant.EPS_ORDER_TYPE[6].name + "的单据");
-            return;
-        }
-
-        $mdDialog.show({
-            controller: 'O2oSupplierEditorController',
-            templateUrl: 'app/src/app/cbi/logistics_installations/o2oSupplierDlg.html',
-            parent: angular.element(document.body),
-            targetEvent: event,
-            locals: {
-                editingItem: item
-            }
-        }).then(function (editingItem) {
-            if (editingItem.isModifyLogistic == true) {
-                if (editingItem.logistic.confirm == Constant.CONFIRM[2].value) {
-                    $scope.showInfo("已有审核的物流订单,不再更新");
-                    return;
-                }
-                if (editingItem.logistic.supplier) {
-                    console.info("更新物流订单");
-                    var Input = {
-                        uuid: editingItem.logistic.uuid,
-                        supplierUuid: editingItem.logistic.supplier.uuid,
-                        receiptDate: moment(editingItem.logistic.receiptDate).format('YYYY-MM-DD 00:00:00'),
-                        no: editingItem.logistic.no
-                    };
-                    WalkThroughLogistic.modify(editingItem.uuid, Input).success(function (data) {
-                        $scope.showInfo("更新物流订单成功");
-                        item.logistic = data;
-                    }).error(function (response) {
-                        $scope.showError(response.message);
-                    });
-                }
-            }
-        });
-    };
-
     $scope.openBatchSupplierDlg = function () {
         var countSelected = 0;
         angular.forEach($scope.itemList, function (item) {
@@ -547,6 +508,21 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
             $scope.isLoading = false;
             return;
         }
+
+        // validate
+        var orderTypeError = '';
+        angular.forEach($scope.itemList, function (item) {
+            if (item.selected === true) {
+                if (item.orderType !== Constant.EPS_ORDER_TYPE[4].value) {
+                    orderTypeError = orderTypeError + item.orderId + '; ';
+                }
+            }
+        });
+        if (orderTypeError !== '') {
+            $scope.showWarn("只能维护订单类型为" + Constant.EPS_ORDER_TYPE[4].name + "的单据, 如下单据不能维护：" + orderTypeError);
+            return;
+        }
+
         $mdDialog.show({
             controller: 'BatchSupplierEditorController',
             templateUrl: 'app/src/app/cbi/logistics_installations/batchSupplierDlg.html',
@@ -638,6 +614,140 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
                 $scope.isLoading = false;
                 $scope.showError('批量维护失败！' + data.message);
                 $scope.refreshList();
+            });
+        });
+    };
+
+    $scope.openO2oSupplierDlg = function (item) {
+        if (item.logistic == null) {
+            $scope.showWarn("没有物流服务信息");
+            return;
+        }
+        if (item.orderType != Constant.EPS_ORDER_TYPE[5].value
+            && item.orderType != Constant.EPS_ORDER_TYPE[6].value) {
+            $scope.showWarn("O2O维护只能维护订单类型为" + Constant.EPS_ORDER_TYPE[5].name + "或" + Constant.EPS_ORDER_TYPE[6].name + "的单据");
+            return;
+        }
+
+        $mdDialog.show({
+            controller: 'O2oSupplierEditorController',
+            templateUrl: 'app/src/app/cbi/logistics_installations/o2oSupplierDlg.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            locals: {
+                editingItem: item
+            }
+        }).then(function (editingItem) {
+            if (editingItem.isModifyLogistic == true) {
+                if (editingItem.logistic.confirm == Constant.CONFIRM[2].value) {
+                    $scope.showInfo("已有审核的物流订单,不再更新");
+                    return;
+                }
+                if (editingItem.logistic.supplier) {
+                    console.info("更新物流订单");
+                    var Input = {
+                        uuid: editingItem.logistic.uuid,
+                        supplierUuid: editingItem.logistic.supplier.uuid,
+                        receiptDate: moment(editingItem.logistic.receiptDate).format('YYYY-MM-DD 00:00:00'),
+                        no: editingItem.logistic.no
+                    };
+                    WalkThroughLogistic.modify(editingItem.uuid, Input).success(function (data) {
+                        $scope.showInfo("更新物流订单成功");
+                        item.logistic = data;
+                    }).error(function (response) {
+                        $scope.showError(response.message);
+                    });
+                }
+            }
+        });
+    };
+
+    $scope.openBatchO2oSupplierDlg = function () {
+        var countSelected = 0;
+        angular.forEach($scope.itemList, function (item) {
+            if (item.selected === true) {
+                countSelected++;
+            }
+        });
+        if (countSelected === 0) {
+            $scope.showWarn('请选择要维护的单据！');
+            $scope.isLoading = false;
+            return;
+        }
+
+        // validate
+        var confirmError = '';
+        var orderTypeError = '';
+        angular.forEach($scope.itemList, function (item) {
+            if (item.selected === true) {
+                if (item.logistic != null && item.logistic.confirm == Constant.CONFIRM[2].value) {
+                    confirmError = confirmError + item.orderId + '; ';
+                }
+                if (item.orderType !== Constant.EPS_ORDER_TYPE[5].value
+                    && item.orderType !== Constant.EPS_ORDER_TYPE[6].value) {
+                    orderTypeError = orderTypeError + item.orderId + '; ';
+                }
+            }
+        });
+        if (confirmError !== '') {
+            $scope.showWarn('不能更新已审核的物流单：' + confirmError);
+            return;
+        }
+        if (orderTypeError !== '') {
+            $scope.showWarn("O2O维护只能维护订单类型为" + Constant.EPS_ORDER_TYPE[5].name + "或" + Constant.EPS_ORDER_TYPE[6].name + "的单据，如下订单无法更新：" + orderTypeError);
+            return;
+        }
+
+        $mdDialog.show({
+            controller: 'O2oSupplierEditorController',
+            templateUrl: 'app/src/app/cbi/logistics_installations/o2oSupplierDlg.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            locals: {
+                editingItem: {}
+            }
+        }).then(function (editingItem) {
+            var logisticInput = {
+                supplierUuid: editingItem.logistic.supplier.uuid,
+                receiptDate: moment(editingItem.logistic.receiptDate).format('YYYY-MM-DD 00:00:00'),
+                no: editingItem.logistic.no
+            };
+
+            var bError = false;
+            var promises = [];
+            var count = 0;
+            $scope.isLoading = true;
+            angular.forEach($scope.itemList, function (item) {
+                if (item.selected) {
+                    if (angular.isUndefined(item.logistic) || item.logistic == null) {
+                        var response = WalkThroughLogistic.add(item.uuid, logisticInput).success(function (result) {
+                            item.logistic = result;
+                        }).error(function (response) {
+                            bError = true;
+                            $scope.showError(item.orderId + ' 更新物流失败：' + response.message);
+                        });
+                        promises.push(response);
+                        count++;
+                    } else {
+                        logisticInput.uuid = item.logistic.uuid;
+                        console.info("更新物流:");
+                        var response = WalkThroughLogistic.modify(item.uuid, logisticInput).success(function (result) {
+                            item.logistic = result;
+                        }).error(function (response) {
+                            bError = true;
+                            $scope.showError(item.orderId + ' 更新物流失败：' + response.message);
+                        });
+                        promises.push(response);
+                        count++;
+                    }
+                }
+            });
+
+            $q.all(promises).then(function (data) {
+                if (!bError) {
+                    $scope.showInfo('更新物流成功！');
+                }
+                $scope.isLoading = false;
             });
         });
     };
@@ -799,8 +909,8 @@ angular.module('IOne-Production').controller('O2oSupplierEditorController', func
     }
 
     if ($scope.editingItem.logistic.receiptDate == null) {
-        if ($scope.editingItem.logistic.walkThrough != null && $scope.editingItem.logistic.walkThrough.confDeliverDate != null) {
-            $scope.editingItem.logistic.receiptDate = new Date($scope.editingItem.logistic.walkThrough.confDeliverDate);
+        if ($scope.editingItem.confDeliverDate != null) {
+            $scope.editingItem.logistic.receiptDate = new Date($scope.editingItem.confDeliverDate);
         }
     } else {
         $scope.editingItem.logistic.receiptDate = new Date($scope.editingItem.logistic.receiptDate);
