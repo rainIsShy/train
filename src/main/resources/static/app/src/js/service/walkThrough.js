@@ -36,6 +36,9 @@ angular.module('IOne-Production').service('WalkThroughMaster', function ($http, 
         if (filter.epsOrderNo !== null && filter.epsOrderNo !== undefined) {
             url = url + '&epsOrderNo=' + filter.epsOrderNo;
         }
+        if (filter.select.channelName != null) {
+            url = url + '&ocmBaseChanName=' + filter.select.channelName;
+        }
 
         console.info(Constant.BACKEND_BASE + url);
         return $http.get(Constant.BACKEND_BASE + url);

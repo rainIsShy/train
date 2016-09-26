@@ -9,8 +9,16 @@
                     </md-button>
                     <md-menu-content width="2">
                         <md-menu-item
+                                ng-if="menuDisplayOption['o2oDetailMaintain'].display && (menuAuthDataMap[menuDisplayOption['o2oDetailMaintain'].uuid] || isAdmin() || !menuDisplayOption['o2oDetailMaintain'].uuid)">
+                            <md-button class="md-button" aria-label="More" ng-click="openO2oSupplierDlg(selectedItem)"
+                                       ng-disabled="selectedItem.orderType != '5' && selectedItem.orderType != '6'">
+                                <span>O2O维护</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item
                                 ng-if="menuDisplayOption['detailMaintain'].display && (menuAuthDataMap[menuDisplayOption['detailMaintain'].uuid] || isAdmin() || !menuDisplayOption['detailMaintain'].uuid)">
-                            <md-button class="md-button" aria-label="More" ng-click="openSupplierDlg(selectedItem)">
+                            <md-button class="md-button" aria-label="More" ng-click="openSupplierDlg(selectedItem)"
+                                       ng-disabled="selectedItem.orderType != '4'">
                                 <span>维护</span>
                             </md-button>
                         </md-menu-item>
@@ -74,6 +82,13 @@
                         <ng-md-icon icon="menu"></ng-md-icon>
                     </md-button>
                     <md-menu-content width="2">
+                        <md-menu-item
+                                ng-if="menuDisplayOption['batchO2oMaintain'].display && (menuAuthDataMap[menuDisplayOption['batchO2oMaintain'].uuid] || isAdmin() || !menuDisplayOption['batchO2oMaintain'].uuid)">
+                            <md-button class="md-button" aria-label="More" ng-click="openBatchO2oSupplierDlg()">
+                                <ng-md-icon icon="check"></ng-md-icon>
+                                O2O批量维护
+                            </md-button>
+                        </md-menu-item>
                         <md-menu-item
                                 ng-if="menuDisplayOption['batchMaintain'].display && (menuAuthDataMap[menuDisplayOption['batchMaintain'].uuid] || isAdmin() || !menuDisplayOption['batchMaintain'].uuid)">
                             <md-button class="md-button" aria-label="More" ng-click="openBatchSupplierDlg()">
@@ -302,6 +317,26 @@
                             <label class="label">结束获取日期：</label>
                             <input type="date" ng-model="listFilterOption.select.endWalkThroughDate">
                         </md-input-container>
+                        <md-input-container flex="20" ng-show="selectedItem == null">
+                            <label>订单类型</label>
+                            <md-select ng-model="listFilterOption.select.orderType">
+                                <md-option ng-repeat="(key, value) in EPS_ORDER_TYPE" ng-value="key">{{value.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-button flex="5" ng-click="openChannelDlg()" class="md-icon-button"
+                                   ng-show="selectedItem == null">
+                            <i class="fa fa-search"></i>
+                        </md-button>
+                        <md-input-container flex="20" ng-show="selectedItem == null">
+                            <label>渠道名称</label>
+                            <input type="text" ng-model="listFilterOption.select.channelName" placeholder="开窗选择渠道"
+                                   readonly>
+                        </md-input-container>
+                        <md-button flex="5" ng-click="clearChannel()" class="md-icon-button"
+                                   ng-show="selectedItem == null">
+                            <i class="fa fa-times"></i>
+                        </md-button>
                     </div>
                 </div>
                 <!-- status panel-->
@@ -348,8 +383,15 @@
                                     </div>
                                 </div>
                                 <div layout="row" layout-align="end center">
+                                    <div ng-if="menuDisplayOption['o2oMaintain'].display && (menuAuthDataMap[menuDisplayOption['o2oMaintain'].uuid] || isAdmin() || !menuDisplayOption['o2oMaintain'].uuid)">
+                                        <md-button class="md-fab md-mini" ng-click="openO2oSupplierDlg(item)"
+                                                   ng-disabled="item.orderType != '5' && item.orderType != '6'">
+                                            <span>O2O</span>
+                                        </md-button>
+                                    </div>
                                     <div ng-if="menuDisplayOption['maintain'].display && (menuAuthDataMap[menuDisplayOption['maintain'].uuid] || isAdmin() || !menuDisplayOption['maintain'].uuid)">
-                                        <md-button class="md-fab md-mini" ng-click="openSupplierDlg(item)">
+                                        <md-button class="md-fab md-mini" ng-click="openSupplierDlg(item)"
+                                                   ng-disabled="item.orderType != '4'">
                                             <span>维护</span>
                                         </md-button>
                                     </div>
