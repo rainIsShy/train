@@ -40,7 +40,8 @@ angular.module('IOne-Auth').service('AuthenticationService', function (Base64, $
         $rootScope.globals = {
             currentUser: {
                 username: username,
-                authdata: authdata
+                authdata: authdata,
+                userUuid: loginResponse.userUuid,
             }
         };
         $rootScope.globals.adapterInfo = $rootScope.adapterInfo;

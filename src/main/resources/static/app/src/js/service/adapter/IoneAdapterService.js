@@ -8,7 +8,7 @@ angular.module('IOne-Production').service('IoneAdapterService', function ($http,
 
     this.transferIoneAdapter = function (path, transferObj, serviceScope, callBack) {
 
-        $http.post(adapterUrl + '/adapter/tasks' + path, transferObj).success(function (response, status) {
+        return $http.post(adapterUrl + '/adapter/tasks' + path, transferObj).success(function (response, status) {
             if (status == 201) {
                 callBack(response);
             } else {

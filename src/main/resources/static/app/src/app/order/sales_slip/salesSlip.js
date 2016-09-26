@@ -644,7 +644,6 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                 }
             });
         }
-
     };
 
 
@@ -653,7 +652,7 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
             $scope.showConfirm('确认抛转吗？', '', function () {
                 if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
                     var OrderMasterUpdateInput = {
-                        uuid: $scope.selectedItem.uuid,
+                        PSO_SO_MST_UUID: $scope.selectedItem.uuid,
                         transferPsoFlag: '1'
                     };
                     OrderMaster.modifyBatch(OrderMasterUpdateInput, $scope).success(function () {
@@ -686,7 +685,7 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                         orderMasterUuids = orderMasterUuids + item.uuid + ","
                     });
                     var OrderMasterUpdateInput = {
-                        uuid: orderMasterUuids,
+                        PSO_SO_MST_UUID: orderMasterUuids,
                         transferPsoFlag: '1'
                     };
                     var response = OrderMaster.modifyBatch(OrderMasterUpdateInput, $scope).success(function () {
