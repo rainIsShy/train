@@ -14,6 +14,7 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
     };
     $scope.BUILDING_TYPE = Constant.BUILDING_TYPE;
     $scope.WALK_THROUGH_CONF_STATUS = Constant.WALK_THROUGH_CONF_STATUS;
+    $scope.EPS_ORDER_TYPE = Constant.EPS_ORDER_TYPE;
     $scope.selectAllFlag = false;
     $scope.selectedItemSize = 0;
     $scope.selectedItemAmount = 0;
@@ -24,7 +25,7 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
             confStatus: Constant.WALK_THROUGH_CONF_STATUS[0].value,
             confirm: Constant.CONFIRM[0].value,
             transferFlag: Constant.TRANSFER_PSO_FLAG[1].value,
-            orderType: ''
+            orderType: Constant.EPS_ORDER_TYPE[0].value
         }
     };
 
@@ -363,6 +364,23 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
         $scope.stopEventPropagation(event);
         console.info('delete all...');
         //TODO ...
+    };
+
+    $scope.openChannelDlg = function () {
+        $mdDialog.show({
+            controller: 'selectO2OChannelController',
+            templateUrl: 'app/src/app/cbi/logistics_installations/selectChannel.html',
+            parent: angular.element(document.body),
+            targetEvent: event
+        }).then(function (data) {
+            $scope.listFilterOption.select.channelUuid = data.uuid;
+            $scope.listFilterOption.select.channelName = data.name;
+        });
+    };
+
+    $scope.clearChannel = function () {
+        $scope.listFilterOption.select.channelUuid = '';
+        $scope.listFilterOption.select.channelName = '';
     };
 
     $scope.selectAllAction = function () {
@@ -906,6 +924,38 @@ angular.module('IOne-Production').controller('BatchSupplierEditorController', fu
     };
     $scope.saveSupplier = function () {
         $mdDialog.hide($scope.chosen);
+    };
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+});
+
+angular.module('IOne-Production').controller('selectO2OChannelController', function ($scope, $mdDialog, ChannelService) {
+    $scope.pageOption = {
+        sizePerPage: 5,
+        currentPage: 0,
+        totalPage: 0,
+        totalElements: 0
+    };
+    $scope.queryAction = function () {
+        $scope.pageOption.currentPage = 0;
+        $scope.refreshChannel();
+    };
+    $scope.refreshChannel = function () {
+        //ChannelService in ocm.js
+        ChannelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, $scope.searchKeyword).success(function (data) {
+            $scope.allChannel = data;
+            $scope.pageOption.totalElements = data.totalElements;
+            $scope.pageOption.totalPage = data.totalPages;
+        });
+    };
+    $scope.refreshChannel();
+    $scope.selectChannel = function (channel) {
+        $scope.channel = channel;
+        $mdDialog.hide($scope.channel);
+    };
+    $scope.hideDlg = function () {
+        $mdDialog.hide($scope.channel);
     };
     $scope.cancelDlg = function () {
         $mdDialog.cancel();

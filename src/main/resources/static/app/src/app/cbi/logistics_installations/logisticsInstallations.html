@@ -317,6 +317,26 @@
                             <label class="label">结束获取日期：</label>
                             <input type="date" ng-model="listFilterOption.select.endWalkThroughDate">
                         </md-input-container>
+                        <md-input-container flex="20" ng-show="selectedItem == null">
+                            <label>订单类型</label>
+                            <md-select ng-model="listFilterOption.select.orderType">
+                                <md-option ng-repeat="(key, value) in EPS_ORDER_TYPE" ng-value="key">{{value.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-button flex="5" ng-click="openChannelDlg()" class="md-icon-button"
+                                   ng-show="selectedItem == null">
+                            <i class="fa fa-search"></i>
+                        </md-button>
+                        <md-input-container flex="20" ng-show="selectedItem == null">
+                            <label>渠道名称</label>
+                            <input type="text" ng-model="listFilterOption.select.channelName" placeholder="开窗选择渠道"
+                                   readonly>
+                        </md-input-container>
+                        <md-button flex="5" ng-click="clearChannel()" class="md-icon-button"
+                                   ng-show="selectedItem == null">
+                            <i class="fa fa-times"></i>
+                        </md-button>
                     </div>
                 </div>
                 <!-- status panel-->
