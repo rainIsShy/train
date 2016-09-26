@@ -79,8 +79,8 @@ angular.module('IOne-Production').service('EpsOrderChangeDetail', function ($htt
 });
 
 angular.module('IOne-Production').service('EpsOrderChangeExtendDetail', function ($http, Constant) {
-    this.get = function (detailUuid) {
-        return $http.get(Constant.BACKEND_BASE + '/espOrderChangeDetails/' + detailUuid + '/extendDetails');
+    this.getAll = function (masterUuid, detailUuid) {
+        return $http.get(Constant.BACKEND_BASE + '/epsOrderChanges/' + masterUuid + '/details/' + detailUuid + '/extends');
     };
 });
 

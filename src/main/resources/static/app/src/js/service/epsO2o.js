@@ -92,30 +92,10 @@ angular.module('IOne-Production').service('EpsO2oOrderDetail', function ($http, 
     };
 });
 
-/*angular.module('IOne-Production').service('EpsO2oOrderExtendDetail', function ($http, Constant) {
- this.get = function (detailUuid) {
- return $http.get(Constant.BACKEND_BASE + '/espOrderChangeDetails/' + detailUuid + '/extendDetails');
- };
- });*/
-
 angular.module('IOne-Production').service('EpsO2oOrderExtendDetail', function ($http, Constant) {
     this.getAll = function (masterUuid, detailUuid) {
         return $http.get(Constant.BACKEND_BASE + '/epsOrders/' + masterUuid + '/details/' + detailUuid + '/extends');
     };
-
-    this.modify = function (masterUuid, detailUuid, uuid, extendUpdateInput) {
-        return $http.patch(Constant.BACKEND_BASE + '/epsOrders/' + masterUuid + '/details/' + detailUuid + '/extends/' + uuid, extendUpdateInput);
-    };
-
-    this.delete = function (masterUuid, detailUuid, uuid) {
-        return $http.delete(Constant.BACKEND_BASE + '/epsOrders/' + masterUuid + '/details/' + detailUuid + '/extends/' + uuid);
-    };
-
-    this.add = function (masterUuid, detailUuid, extendUpdateInput) {
-        return $http.post(Constant.BACKEND_BASE + '/epsOrders/' + masterUuid + '/details/' + detailUuid + '/extends', extendUpdateInput);
-    };
-
-
 });
 
 angular.module('IOne-Production').service('EpsO2oOrderChannelService', function ($http, Constant) {

@@ -556,8 +556,7 @@ angular.module('IOne-Production').controller('EpsOrderChangeController', functio
     $scope.refreshExtendDetailTab = function (selectedItem) {
         $scope.selectedItem.extendDetailList = [];
         angular.forEach($scope.selectedItem.detailList, function (orderDetail, index) {
-            //EpsOrderChangeExtendDetail.get(selectedItem.uuid, orderDetail.uuid).success(function (data) {
-            EpsOrderChangeExtendDetail.get(orderDetail.uuid).success(function (data) {
+            EpsOrderChangeExtendDetail.getAll(selectedItem.uuid, orderDetail.uuid).success(function (data) {
                 if (data.totalElements > 0) {
                     $scope.selectedItem.extendDetailList = $scope.selectedItem.extendDetailList.concat(data.content);
                 }
