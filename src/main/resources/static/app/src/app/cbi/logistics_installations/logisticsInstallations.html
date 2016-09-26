@@ -10,13 +10,15 @@
                     <md-menu-content width="2">
                         <md-menu-item
                                 ng-if="menuDisplayOption['o2oDetailMaintain'].display && (menuAuthDataMap[menuDisplayOption['o2oDetailMaintain'].uuid] || isAdmin() || !menuDisplayOption['o2oDetailMaintain'].uuid)">
-                            <md-button class="md-button" aria-label="More" ng-click="openO2oSupplierDlg(selectedItem)">
+                            <md-button class="md-button" aria-label="More" ng-click="openO2oSupplierDlg(selectedItem)"
+                                       ng-disabled="selectedItem.orderType != '5' && selectedItem.orderType != '6'">
                                 <span>O2O维护</span>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item
                                 ng-if="menuDisplayOption['detailMaintain'].display && (menuAuthDataMap[menuDisplayOption['detailMaintain'].uuid] || isAdmin() || !menuDisplayOption['detailMaintain'].uuid)">
-                            <md-button class="md-button" aria-label="More" ng-click="openSupplierDlg(selectedItem)">
+                            <md-button class="md-button" aria-label="More" ng-click="openSupplierDlg(selectedItem)"
+                                       ng-disabled="selectedItem.orderType != '4'">
                                 <span>维护</span>
                             </md-button>
                         </md-menu-item>
@@ -362,12 +364,14 @@
                                 </div>
                                 <div layout="row" layout-align="end center">
                                     <div ng-if="menuDisplayOption['o2oMaintain'].display && (menuAuthDataMap[menuDisplayOption['o2oMaintain'].uuid] || isAdmin() || !menuDisplayOption['o2oMaintain'].uuid)">
-                                        <md-button class="md-fab md-mini" ng-click="openO2oSupplierDlg(item)">
+                                        <md-button class="md-fab md-mini" ng-click="openO2oSupplierDlg(item)"
+                                                   ng-disabled="item.orderType != '5' && item.orderType != '6'">
                                             <span>O2O</span>
                                         </md-button>
                                     </div>
                                     <div ng-if="menuDisplayOption['maintain'].display && (menuAuthDataMap[menuDisplayOption['maintain'].uuid] || isAdmin() || !menuDisplayOption['maintain'].uuid)">
-                                        <md-button class="md-fab md-mini" ng-click="openSupplierDlg(item)">
+                                        <md-button class="md-fab md-mini" ng-click="openSupplierDlg(item)"
+                                                   ng-disabled="item.orderType != '4'">
                                             <span>维护</span>
                                         </md-button>
                                     </div>

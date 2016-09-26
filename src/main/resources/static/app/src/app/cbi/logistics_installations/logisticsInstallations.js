@@ -678,6 +678,8 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
         // validate
         var confirmError = '';
         var orderTypeError = '';
+        var itemWithSameVal;
+        var index = 0;
         angular.forEach($scope.itemList, function (item) {
             if (item.selected === true) {
                 if (item.logistic != null && item.logistic.confirm == Constant.CONFIRM[2].value) {
@@ -687,6 +689,21 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
                     && item.orderType !== Constant.EPS_ORDER_TYPE[6].value) {
                     orderTypeError = orderTypeError + item.orderId + '; ';
                 }
+
+                if (index === 0) {
+                    itemWithSameVal = item;
+                } else if (itemWithSameVal.logistic != null) {
+                    if (itemWithSameVal.logistic.supplier != item.logistic.supplier) {
+                        itemWithSameVal.logistic.supplier = null;
+                    }
+                    if (itemWithSameVal.logistic.receiptDate != item.logistic.receiptDate) {
+                        itemWithSameVal.logistic.receiptDate = null;
+                    }
+                    if (itemWithSameVal.logistic.no != item.logistic.no) {
+                        itemWithSameVal.logistic.no = null;
+                    }
+                }
+                index++;
             }
         });
         if (confirmError !== '') {
@@ -704,7 +721,7 @@ angular.module('IOne-Production').controller('LogisticsInstallationsController',
             parent: angular.element(document.body),
             targetEvent: event,
             locals: {
-                editingItem: {}
+                editingItem: itemWithSameVal
             }
         }).then(function (editingItem) {
             var logisticInput = {
@@ -976,7 +993,7 @@ angular.module('IOne-Production').controller('O2oSupplierEditorController', func
                 $scope.editingItem.logistic.supplier = supplier;
             }
             /* else if ($scope.chosenSupplier == "installations") {
-                $scope.editingItem.installation.supplier = supplier;
+             $scope.editingItem.installation.supplier = supplier;
              }*/
             $scope.backAction();
         }
