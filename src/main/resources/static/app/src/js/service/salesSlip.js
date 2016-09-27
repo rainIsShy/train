@@ -1,4 +1,4 @@
-angular.module('IOne-Production').service('OrderMaster', function ($http, $rootScope, IoneAdapterService, Constant) {
+angular.module('IOne-Production').service('OrderMaster', function ($http, Constant) {
     this.getAll = function (sizePerPage, page, confirm, status, transferPsoFlag, orderMasterNo, customerName, employeeName, orderDateBegin, orderDateEnd, resUuid, channelUuid, orderAmount, paidAmount, unpaidAmount, paidType, paidType2, contractNo) {
         confirm = confirm == 0 ? '' : confirm;
         status = status == 0 ? '' : status;
@@ -89,13 +89,8 @@ angular.module('IOne-Production').service('OrderMaster', function ($http, $rootS
     };
 
 //only for throw action
-    this.modifyBatch = function (OrderMasterUpdateInput, serviceScope) {
-        // return $http.patch(Constant.BACKEND_BASE + '/orders/' + OrderMasterUpdateInput.uuid + '/batch/', OrderMasterUpdateInput);
-        OrderMasterUpdateInput.CREATE_USER_UUID = $rootScope.globals.currentUser.userUuid;
-        OrderMasterUpdateInput.MODI_USER_UUID = $rootScope.globals.currentUser.userUuid;
-        return IoneAdapterService.transferIoneAdapter('/pmmOrderTask', OrderMasterUpdateInput, serviceScope, function () {
-
-        });
+    this.modifyBatch = function (OrderMasterUpdateInput) {
+        return $http.patch(Constant.BACKEND_BASE + '/orders/' + OrderMasterUpdateInput.uuid + '/batch/', OrderMasterUpdateInput);
     };
 
     this.print = function (type, uuid) {
