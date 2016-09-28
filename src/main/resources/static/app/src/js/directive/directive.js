@@ -411,7 +411,7 @@ angular.module('IOne-directives').controller('SearchController', function ($scop
                 param += "&" + key + "=" + $scope.searchInfo[key];
             })
         }
-        var url = Constant.BACKEND_BASE + $scope.fieldInfo.url + '?page=' + $scope.pageOption.currentPage + '&size=' + $scope.pageOption.sizePerPage + param;
+        var url = Constant.BACKEND_BASE + '/' + $scope.fieldInfo.url + '?page=' + $scope.pageOption.currentPage + '&size=' + $scope.pageOption.sizePerPage + param;
         $http.get(url).success(function(data) {
             if(data) {
                 if(data.content) {
