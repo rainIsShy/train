@@ -602,6 +602,9 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     angular.forEach($scope.selected, function (item) {
                         orderMasterUuids += item.uuid + ","
                     });
+                    if (orderMasterUuids.length > 0) {
+                        orderMasterUuids = orderMasterUuids.substr(0, orderMasterUuids.length - 1);
+                    }
                     var OrderMasterUpdateInput = {
                         uuid: orderMasterUuids,
                         transferFlag: '1'
