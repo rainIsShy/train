@@ -1270,8 +1270,8 @@ angular.module('IOne-Constant').constant('Constant', {
         N: {value: 'N', name: '未停售'}
     },
     'PURCHASE_FLAG': {
-        1: {value: '1', name: '采购未发出<'},
-        2: {value: '2', name: '采购发出1'},
-        3: {value: '3', name: '采购退回123'}
+        1: {value: '1', name: '采购未发出'},
+        2: {value: '2', name: '采购发出'},
+        3: {value: '3', name: '采购退回'}
     }
 });
