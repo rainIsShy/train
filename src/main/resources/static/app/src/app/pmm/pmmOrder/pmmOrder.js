@@ -602,6 +602,9 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     angular.forEach($scope.selected, function (item) {
                         orderMasterUuids += item.uuid + ","
                     });
+                    if (orderMasterUuids.length > 0) {
+                        orderMasterUuids = orderMasterUuids.substr(0, orderMasterUuids.length - 1);
+                    }
                     var OrderMasterUpdateInput = {
                         uuid: orderMasterUuids,
                         transferFlag: '1'
@@ -613,7 +616,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                         $scope.showError(data.message);
                     });
                     var transferData = { 'PMM_ORDER_MST_UUID': orderMasterUuids };
-                    ErpAdapterService.transferErpAdapter('/pmmOrderToOeaTask', transferData, function () {
+                    ErpAdapterService.transferErpAdapter('/pmmOrderToOeaTask', transferData, $scope, function () {
                         $scope.showInfo('抛转成功。');
                     });
                 }

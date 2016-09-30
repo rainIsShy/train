@@ -644,6 +644,7 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                 }
             });
         }
+
     };
 
 
@@ -652,10 +653,10 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
             $scope.showConfirm('确认抛转吗？', '', function () {
                 if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
                     var OrderMasterUpdateInput = {
-                        PSO_SO_MST_UUID: $scope.selectedItem.uuid,
+                        uuid: $scope.selectedItem.uuid,
                         transferPsoFlag: '1'
                     };
-                    OrderMaster.modifyBatch(OrderMasterUpdateInput, $scope).success(function () {
+                    OrderMaster.modifyBatch(OrderMasterUpdateInput).success(function () {
                         $scope.selectedItem.transferPsoFlag = Constant.TRANSFER_PSO_FLAG[1].value;
                         $scope.refreshMasterAndDetail();
                         $scope.showInfo('修改数据成功。');
@@ -685,10 +686,10 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                         orderMasterUuids = orderMasterUuids + item.uuid + ","
                     });
                     var OrderMasterUpdateInput = {
-                        PSO_SO_MST_UUID: orderMasterUuids,
+                        uuid: orderMasterUuids,
                         transferPsoFlag: '1'
                     };
-                    var response = OrderMaster.modifyBatch(OrderMasterUpdateInput, $scope).success(function () {
+                    var response = OrderMaster.modifyBatch(OrderMasterUpdateInput).success(function () {
                         $scope.queryMenuActionWithPaging();
                         $scope.showInfo('修改数据成功。');
                     }).error(function (data) {
