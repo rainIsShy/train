@@ -156,6 +156,12 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             $scope.formMenuDisplayOption['101-delete'].display = true;
         }
 
+        // 已经审核(confirm = 2)的订单不可再对订单做删除和编辑
+        if ($scope.selectedItem.confirm == '2') {
+            $scope.formMenuDisplayOption['102-edit'].display = false;
+            $scope.formMenuDisplayOption['101-delete'].display = false;
+        }
+
     };
 
     //更新产品信息
@@ -507,7 +513,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                         $scope.showInfo('修改数据成功。');
                     });
                 } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
-                    //update $scope.selected
+                    //update $scope.selected (multiple confirm)
                     var promises = [];
                     angular.forEach($scope.selected, function (item) {
                         var OrderMasterUpdateInput = {
