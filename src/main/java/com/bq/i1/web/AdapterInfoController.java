@@ -52,33 +52,23 @@ public class AdapterInfoController {
         adapterInfo.setEcAdapterServerUrl(this.ecAdapterServerUrl);
         adapterInfo.setI1ServerUrl(this.i1ServerUrl);
         adapterInfo.setTiptopAdapterServerUrl(this.tiptopAdapterServerUrl);
+        adapterInfo.setTmallServerUrl(this.tmallAdapterServerUrl);
         return adapterInfo;
     }
 
     public static class AdapterInfo {
-        private String modiUserUuid;
-        private String createUserUuid;
-
         private String adapterServerUrl;
         private String ecAdapterServerUrl;
         private String tiptopAdapterServerUrl;
-
         private String i1ServerUrl;
+        private String tmallServerUrl;
 
-        public String getModiUserUuid() {
-            return modiUserUuid;
+        public String getTmallServerUrl() {
+            return tmallServerUrl;
         }
 
-        public void setModiUserUuid(String modiUserUuid) {
-            this.modiUserUuid = modiUserUuid;
-        }
-
-        public String getCreateUserUuid() {
-            return createUserUuid;
-        }
-
-        public void setCreateUserUuid(String createUserUuid) {
-            this.createUserUuid = createUserUuid;
+        public void setTmallServerUrl(String tmallServerUrl) {
+            this.tmallServerUrl = tmallServerUrl;
         }
 
         public String getAdapterServerUrl() {
