@@ -315,11 +315,13 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             $scope.audit_button_disabled = 1;
         }
 
-        if (orderMaster.confirm == '2' && (orderMaster.purchaseFlag == '1' || orderMaster.purchaseFlag == '3')) {
+        if (orderMaster.confirm == '2' && (orderMaster.purchaseFlag == null || orderMaster.purchaseFlag == '1' || orderMaster.purchaseFlag == '3')) {
             // 【采购发出】按钮只有在PMM_ORDER_M ST.CONFIRM='2'已审核且PMM_ORDER_MST.PURCHASE_FLAG='1'采购未发出或'3'采购退回状态才可点击
             $scope.purchase_submit_button_disabled = 0;
+            $scope.purchase_back_button_disabled = 1;
         } else if (orderMaster.confirm == '2' && orderMaster.purchaseFlag == '2') {
             // 【采购退回】按钮只有在PMM_ORDER_MST.CONFIRM='2'已审核且PMM_ORDER_MST.PURCHASE_FLAG='2'采购发出状态才可点击
+            $scope.purchase_submit_button_disabled = 1;
             $scope.purchase_back_button_disabled = 0;
         } else {
             $scope.purchase_submit_button_disabled = 1;
@@ -1313,9 +1315,10 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
     $scope.changePurchaseFlag = function (flag) {
         PmmOrderMaster.changePurchaseFlag($scope.selectedItem.uuid, flag).success(function (data) {
-            console.log(data);
-            $scope.selected[0] = data;
-
+            $scope.selectedItem = data;
+            $scope.changeButtonStatus(data);
+            $scope.refreshDetail(data.uuid);
+            $scope.showInfo('修改成功。');
         });
     }
 
