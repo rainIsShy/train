@@ -331,6 +331,8 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     };
 
     $scope.changeDetailButtonStatus = function () {
+        $scope.purchase_submit_detail_disabled = 0;
+        $scope.purchase_back_detail_disabled = 0;
         angular.forEach($scope.selectedDetail, function (detail) {
             if (detail.confirm == 2 || detail.confirm == 4) {
                 $scope.audit_detail_disabled = 1;
@@ -338,6 +340,14 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
             if (!(detail.confirm == 2)) {
                 $scope.revert_audit_detail_disabled = 1;
+            }
+
+            if ($scope.purchase_submit_detail_disabled != 1 && detail.purchaseFlag == 2) {
+                $scope.purchase_submit_detail_disabled = 1;
+            }
+
+            if ($scope.purchase_back_detail_disabled != 1 && detail.purchaseFlag != 2) {
+                $scope.purchase_back_detail_disabled = 1;
             }
         });
     };
@@ -697,6 +707,8 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     $scope.resetDetailButtonDisabled = function () {
         $scope.audit_detail_disabled = 0;
         $scope.revert_audit_detail_disabled = 0;
+        $scope.purchase_submit_detail_disabled = 0;
+        $scope.purchase_back_detail_disabled = 0;
     };
 
     $scope.queryMenuAction = function () {
@@ -1320,7 +1332,25 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             $scope.refreshDetail(data.uuid);
             $scope.showInfo('修改成功。');
         });
-    }
+    };
+
+    $scope.changeDtlPurchaseFlag = function (flag) {
+        var dtlUuid = '';
+        angular.forEach($scope.selectedDetail, function (dtl) {
+            dtlUuid += (dtlUuid == '' ? '' : ',') + dtl.uuid;
+        });
+        if (dtlUuid == '') {
+            return;
+        }
+        PmmOrderDetail.changeDtlPurchaseFlag($scope.selectedItem.uuid, dtlUuid, flag).success(function (data) {
+            PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
+                $scope.selectedItem = data;
+                $scope.changeButtonStatus(data);
+                $scope.refreshDetail(data.uuid);
+            });
+            $scope.showInfo('修改成功。');
+        });
+    };
 
     $scope.getDetailBgcolor = function (detail) {
         var retObj = {};
@@ -1330,7 +1360,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             retObj = {'background-color': 'yellow'};
         }
         return retObj;
-    }
+    };
 });
 
 

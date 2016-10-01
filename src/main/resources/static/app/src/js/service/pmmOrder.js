@@ -96,6 +96,10 @@ angular.module('IOne-Production').service('PmmOrderDetail', function ($http, Con
     this.delete = function(masterUuid, detailUuid) {
         return $http.delete(Constant.BACKEND_BASE + '/pmmOrders/' + masterUuid + '/details/' + detailUuid);
     }
+
+    this.changeDtlPurchaseFlag = function (uuid, dtlUuids, flag) {
+        return $http.patch(Constant.BACKEND_BASE + '/pmmOrders/' + uuid + '/details/' + dtlUuids + '/purchase/' + flag);
+    }
 });
 
 

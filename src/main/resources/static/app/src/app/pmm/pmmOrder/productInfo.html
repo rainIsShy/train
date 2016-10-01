@@ -10,8 +10,12 @@
         <md-button ng-disabled="revert_audit_detail_disabled == 1" class="md-raised" ng-click="unConfirmOrderItem();">
             取消审核
         </md-button>
-        <md-button class="md-raised" ng-click="purchaseDtlSubmit()">采购发出</md-button>
-        <md-button class="md-raised" ng-click="purchaseDtlBack()">采购退回</md-button>
+        <md-button ng-disabled="purchase_submit_detail_disabled == 1" class="md-raised"
+                   ng-click="changeDtlPurchaseFlag('2')">采购发出
+        </md-button>
+        <md-button ng-disabled="purchase_back_detail_disabled == 1" class="md-raised"
+                   ng-click="changeDtlPurchaseFlag('3')">采购退回
+        </md-button>
     </div>
     <div layout="row">
         <div flex="5" class="verticalLine table-head"
