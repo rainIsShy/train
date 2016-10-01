@@ -109,6 +109,10 @@ angular.module('IOne-Production').service('PmmOrderExtendDetail', function ($htt
         return $http.get(Constant.BACKEND_BASE + '/pmmOrderDetails/' + detailUuid + '/extends/');
     };
 
+    this.getAll = function (masterUuid) {
+        return $http.get(Constant.BACKEND_BASE + '/pmmOrderDetails/_useless/extends/byMstUuid/' + masterUuid);
+    };
+
     this.modify = function (detailUuid, uuid, OrderExtendDetailUpdateInput) {
         return $http.patch(Constant.BACKEND_BASE + '/pmmOrderDetails/' + detailUuid + '/extends/' + uuid, OrderExtendDetailUpdateInput);
     };

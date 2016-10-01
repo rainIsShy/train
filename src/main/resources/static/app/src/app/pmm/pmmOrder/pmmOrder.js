@@ -170,16 +170,14 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             $scope.OrderDetailList = data;
             $scope.updateOrderDetailListDate($scope.OrderDetailList);
             $scope.OrderExtendDetailList = [];
-            angular.forEach($scope.OrderDetailList.content, function (orderDetail) {
-                $scope.refreshDeliveryList(orderDetail.uuid);
-            });
+            $scope.refreshDeliveryList(masterUuid);
             $scope.selectedDetail = [];
             $scope.resetDetailButtonDisabled();
         });
     };
 
-    $scope.refreshDeliveryList = function (detailUuid) {
-        PmmOrderExtendDetail.get(detailUuid).success(function (data) {
+    $scope.refreshDeliveryList = function (masterUuid) {
+        PmmOrderExtendDetail.getAll(masterUuid).success(function (data) {
             $scope.OrderExtendDetailList = data.content;
         });
     };
