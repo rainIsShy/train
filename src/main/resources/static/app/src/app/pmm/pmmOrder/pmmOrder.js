@@ -1326,29 +1326,35 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     };
 
     $scope.changePurchaseFlag = function (flag) {
-        PmmOrderMaster.changePurchaseFlag($scope.selectedItem.uuid, flag).success(function (data) {
-            $scope.selectedItem = data;
-            $scope.changeButtonStatus(data);
-            $scope.refreshDetail(data.uuid);
-            $scope.showInfo('修改成功。');
+        var msg = flag == 2 ? '确认发出采购吗？' : '确认取消采购吗？';
+        $scope.showConfirm(msg, '', function () {
+            PmmOrderMaster.changePurchaseFlag($scope.selectedItem.uuid, flag).success(function (data) {
+                $scope.selectedItem = data;
+                $scope.changeButtonStatus(data);
+                $scope.refreshDetail(data.uuid);
+                $scope.showInfo('修改成功。');
+            });
         });
     };
 
     $scope.changeDtlPurchaseFlag = function (flag) {
-        var dtlUuid = '';
-        angular.forEach($scope.selectedDetail, function (dtl) {
-            dtlUuid += (dtlUuid == '' ? '' : ',') + dtl.uuid;
-        });
-        if (dtlUuid == '') {
-            return;
-        }
-        PmmOrderDetail.changeDtlPurchaseFlag($scope.selectedItem.uuid, dtlUuid, flag).success(function (data) {
-            PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
-                $scope.selectedItem = data;
-                $scope.changeButtonStatus(data);
-                $scope.refreshDetail(data.uuid);
+        var msg = flag == 2 ? '确认发出采购吗？' : '确认取消采购吗？';
+        $scope.showConfirm(msg, '', function () {
+            var dtlUuid = '';
+            angular.forEach($scope.selectedDetail, function (dtl) {
+                dtlUuid += (dtlUuid == '' ? '' : ',') + dtl.uuid;
             });
-            $scope.showInfo('修改成功。');
+            if (dtlUuid == '') {
+                return;
+            }
+            PmmOrderDetail.changeDtlPurchaseFlag($scope.selectedItem.uuid, dtlUuid, flag).success(function (data) {
+                PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
+                    $scope.selectedItem = data;
+                    $scope.changeButtonStatus(data);
+                    $scope.refreshDetail(data.uuid);
+                });
+                $scope.showInfo('修改成功。');
+            });
         });
     };
 
