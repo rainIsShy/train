@@ -329,15 +329,19 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     };
 
     $scope.changeDetailButtonStatus = function () {
+        $scope.audit_detail_disabled = 0;
+        $scope.revert_audit_detail_disabled = 0;
         $scope.purchase_submit_detail_disabled = 0;
         $scope.purchase_back_detail_disabled = 0;
         angular.forEach($scope.selectedDetail, function (detail) {
-            if (detail.confirm == 2 || detail.confirm == 4) {
+            if ($scope.audit_detail_disabled != 1 && (detail.confirm == 2 || detail.confirm == 4)) {
                 $scope.audit_detail_disabled = 1;
             }
 
-            if (!(detail.confirm == 2)) {
+            if ($scope.revert_audit_detail_disabled != 1 && detail.confirm != 2) {
                 $scope.revert_audit_detail_disabled = 1;
+                $scope.purchase_submit_detail_disabled = 1;
+                $scope.purchase_back_detail_disabled = 1;
             }
 
             if ($scope.purchase_submit_detail_disabled != 1 && detail.purchaseFlag == 2) {
@@ -368,6 +372,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         } else {
             $scope.selectedDetail = [];
         }
+        $scope.changeDetailButtonStatus();
     };
 
 
