@@ -4,17 +4,27 @@
                    ng-click="openOrderItemsDlg()" class="md-raised">
             <i class="fa fa-plus">新增产品</i>
         </md-button>
-        <md-button ng-disabled="audit_detail_disabled == 1" class="md-raised" ng-click="confirmOrderItem();">
-            审核
+        <md-button
+                ng-if="itemOperationMenuDisplayOption['502-audit'].display && (menuAuthDataMap[itemOperationMenuDisplayOption['502-audit'].uuid] || isAdmin() || !itemOperationMenuDisplayOption['502-audit'].uuid)"
+                ng-disabled="audit_detail_disabled == 1" class="md-raised" ng-click="confirmOrderItem();">
+            {{itemOperationMenuDisplayOption['502-audit'].name}}
         </md-button>
-        <md-button ng-disabled="revert_audit_detail_disabled == 1" class="md-raised" ng-click="unConfirmOrderItem();">
-            取消审核
+        <md-button
+                ng-if="itemOperationMenuDisplayOption['503-revertAudit'].display && (menuAuthDataMap[itemOperationMenuDisplayOption['503-revertAudit'].uuid] || isAdmin() || !itemOperationMenuDisplayOption['503-revertAudit'].uuid)"
+                ng-disabled="revert_audit_detail_disabled == 1" class="md-raised" ng-click="unConfirmOrderItem();">
+            {{itemOperationMenuDisplayOption['503-revertAudit'].name}}
         </md-button>
-        <md-button ng-disabled="purchase_submit_detail_disabled == 1" class="md-raised"
-                   ng-click="changeDtlPurchaseFlag(2)">采购发出
+        <md-button
+                ng-if="itemOperationMenuDisplayOption['504-purchaseSubmit'].display && (menuAuthDataMap[itemOperationMenuDisplayOption['504-purchaseSubmit'].uuid] || isAdmin() || !itemOperationMenuDisplayOption['504-purchaseSubmit'].uuid)"
+                ng-disabled="purchase_submit_detail_disabled == 1" class="md-raised"
+                ng-click="changeDtlPurchaseFlag(2)">
+            {{itemOperationMenuDisplayOption['504-purchaseSubmit'].name}}
         </md-button>
-        <md-button ng-disabled="purchase_back_detail_disabled == 1" class="md-raised"
-                   ng-click="changeDtlPurchaseFlag(3)">采购退回
+        <md-button
+                ng-if="itemOperationMenuDisplayOption['505-purchaseBack'].display && (menuAuthDataMap[itemOperationMenuDisplayOption['505-purchaseBack'].uuid] || isAdmin() || !itemOperationMenuDisplayOption['505-purchaseBack'].uuid)"
+                ng-disabled="purchase_back_detail_disabled == 1" class="md-raised"
+                ng-click="changeDtlPurchaseFlag(3)">
+            {{itemOperationMenuDisplayOption['505-purchaseBack'].name}}
         </md-button>
     </div>
     <div layout="row">

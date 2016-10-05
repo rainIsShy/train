@@ -65,7 +65,11 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
     $scope.itemOperationMenuDisplayOption = {
         '500-item-edit': {display: true, name: ''},
-        '501-item-delete': {display: true, name: ''}
+        '501-item-delete': {display: true, name: ''},
+        '502-audit': {display: true, name: '审核', uuid: '42e26f5e-6831-4323-8a6e-4b63ffd86a41'},
+        '503-revertAudit': {display: true, name: '取消审核', uuid: '58dd4b20-9d35-4139-9b5d-210c65cb7ff9'},
+        '504-purchaseSubmit': {display: true, name: '采购发出', uuid: '7a23828e-1b29-4c05-8b53-74e57fd6adbb'},
+        '505-purchaseBack': {display: true, name: '采购退回', uuid: '5af5254f-0491-4e71-8ef5-059a5d0402a5'}
     };
 
     $scope.orderListMenuAction = function (menuId, $event) {
