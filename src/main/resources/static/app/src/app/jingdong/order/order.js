@@ -210,10 +210,14 @@ angular.module('IOne-Production').controller('JdOrderController', function ($sco
         }
 
         $scope.showConfirm('确认审核吗？', '', function () {
-            JdTradeMaster.confirm(item.uuid).success(function () {
+            JdTradeMaster.confirm(item.uuid).success(function (returnMsgs) {
                 item.confirm = Constant.CONFIRM[2].value;
 
                 $scope.refreshMenuButtons();
+
+                angular.forEach(returnMsgs, function (msg) {
+                    $scope.showError(msg);
+                });
                 $scope.showInfo('订单审核成功！');
             }).error(function (response) {
                 //$scope.showError($scope.getError(response.message));
@@ -378,7 +382,7 @@ angular.module('IOne-Production').controller('JdOrderController', function ($sco
         }
 
         $scope.showConfirm('确认合并吗？', '', function () {
-            JdTradeMaster.merge(uuids).success(function () {
+            JdTradeMaster.merge(uuids).success(function (returnMsgs) {
                 angular.forEach($scope.itemList, function (item) {
                     if (item.selected === true) {
                         item.confirm = Constant.CONFIRM[2].value;
@@ -386,6 +390,10 @@ angular.module('IOne-Production').controller('JdOrderController', function ($sco
                 });
 
                 $scope.refreshMenuButtons();
+
+                angular.forEach(returnMsgs, function (msg) {
+                    $scope.showError(msg);
+                });
                 $scope.showInfo('订单合并成功！');
             }).error(function (response) {
                 //$scope.showError($scope.getError(response.message));
