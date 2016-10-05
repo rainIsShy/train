@@ -178,8 +178,9 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             $scope.updateOrderDetailListDate($scope.OrderDetailList);
             $scope.OrderExtendDetailList = [];
             $scope.refreshDeliveryList(masterUuid);
-            $scope.selectedDetail = [];
-            $scope.resetDetailButtonDisabled();
+//            $scope.selectedDetail = [];
+//            $scope.resetDetailButtonDisabled();
+            $scope.changeDetailButtonStatus();
         });
     };
 
@@ -359,9 +360,15 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         });
     };
 
-
     $scope.exists = function (item, list) {
-        return list.indexOf(item) > -1;
+        var retval = false;
+        angular.forEach(list, function (ld) {
+            if (!retval && ld.uuid == item.uuid) {
+                retval = true;
+            }
+        });
+        return retval;
+//        return list.indexOf(item) > -1;
     };
 
 
@@ -991,14 +998,13 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 });
                 $q.all(promises).then(function (data) {
                     $scope.refreshDetail($scope.selectedItem.uuid);
-                    var detailConfirmCount = 0;
 
+                    var detailConfirmCount = 0;
                     angular.forEach($scope.OrderDetailList.content, function (detailItem) {
                         if (detailItem.confirm == '2') {
                             detailConfirmCount = detailConfirmCount + 1;
                         }
                     });
-                    $scope.selectedDetail = [];
                     //若所有单身己審核，則自動審核單頭
                     if ($scope.OrderDetailList.totalElements == detailConfirmCount) {
                         var OrderMasterUpdateInput = {
@@ -1340,6 +1346,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 $scope.selectedItem = data;
                 $scope.changeButtonStatus(data);
                 $scope.refreshDetail(data.uuid);
+                $scope.selectedDetail = [];
                 $scope.showInfo('修改成功。');
             });
         });
@@ -1360,6 +1367,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     $scope.selectedItem = data;
                     $scope.changeButtonStatus(data);
                     $scope.refreshDetail(data.uuid);
+                    $scope.selectedDetail = [];
                 });
                 $scope.showInfo('修改成功。');
             });
