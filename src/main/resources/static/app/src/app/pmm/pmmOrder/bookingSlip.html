@@ -134,6 +134,18 @@
                                                        ng-disabled="rollback_transfer_button_disabled == 1"> &nbsp;{{orderListMenuDisplayOption['409-rollbackTransfer'].name}}
                                             </md-button>
                                         </div>
+                                        <div ng-if="orderListMenuDisplayOption['410-purchaseSubmit'].display && (menuAuthDataMap[orderListMenuDisplayOption['410-purchaseSubmit'].uuid] || isAdmin() || !orderListMenuDisplayOption['410-purchaseSubmit'].uuid)">
+                                            <md-button class="md-raised" ng-click="orderListMenuAction(410, $event)"
+                                                       style="margin-top: 0px;height: 20px;" aria-label="采购发出"
+                                                       ng-disabled="purchase_submit_button_disabled == 1"> &nbsp;{{orderListMenuDisplayOption['410-purchaseSubmit'].name}}
+                                            </md-button>
+                                        </div>
+                                        <div ng-if="orderListMenuDisplayOption['411-purchaseBack'].display && (menuAuthDataMap[orderListMenuDisplayOption['411-purchaseBack'].uuid] || isAdmin() || !orderListMenuDisplayOption['411-purchaseBack'].uuid)">
+                                            <md-button class="md-raised" ng-click="orderListMenuAction(411, $event)"
+                                                       style="margin-top: 0px;height: 20px;" aria-label="采购退回"
+                                                       ng-disabled="purchase_back_button_disabled == 1"> &nbsp;{{orderListMenuDisplayOption['411-purchaseBack'].name}}
+                                            </md-button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

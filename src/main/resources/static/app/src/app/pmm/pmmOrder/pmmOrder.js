@@ -60,7 +60,10 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         '404-effective': {display: true, name: '失效作废', uuid: '1d0983c8-8d11-4a40-8140-d267e03d04a4'},
         '405-query': {display: true, name: '查询', uuid: '992b0fef-abca-461c-91b7-07036d54d3f4'},
         '406-revertAudit': {display: true, name: '取消审核', uuid: 'ab4da1cc-be55-4cd3-8a44-afc74d6237dc'},
-        '408-add': {display: true, name: '新增', uuid: '862577df-fa98-4538-acc4-adf0687e787b'}
+        '408-add': {display: true, name: '新增', uuid: '862577df-fa98-4538-acc4-adf0687e787b'},
+        '410-purchaseSubmit': {display: true, name: '采购发出', uuid: '2e7e73a5-c0d8-4f89-96f0-c7e8e898e484'},
+        '411-purchaseBack': {display: true, name: '采购退回', uuid: 'e846e81a-4d02-4344-bebd-9c5b9cf97bb0'}
+
     };
 
     $scope.itemOperationMenuDisplayOption = {
@@ -250,6 +253,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     $scope.selected = [];
     $scope.selectedItemsCount = 0;
     $scope.selectedItemsTotalPrice = 0.00;
+
     $scope.toggle = function (item, selected) {
         var idx = selected.indexOf(item);
         if (idx > -1) {
@@ -333,10 +337,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     };
 
     $scope.changeDetailButtonStatus = function () {
-        $scope.audit_detail_disabled = 0;
-        $scope.revert_audit_detail_disabled = 0;
-        $scope.purchase_submit_detail_disabled = 0;
-        $scope.purchase_back_detail_disabled = 0;
+        $scope.resetDetailButtonDisabled();
         angular.forEach($scope.selectedDetail, function (detail) {
             if ($scope.audit_detail_disabled != 1 && (detail.confirm == 2 || detail.confirm == 4)) {
                 $scope.audit_detail_disabled = 1;
