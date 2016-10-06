@@ -1026,6 +1026,7 @@ angular.module('IOne-Production').controller('bookingSlipAgencyController', func
                             //plm_base_item_file.plm_base_brand_file_uuid=plm_base_custom_scope.plm_base_brand_file_uuid来限制允许定制的属性（如该包件允许定制的颜色）                                             //do nothing
 
                         } else {
+                            console.log($scope.allCustomsScopes);
                             if ($scope.allCustomsScopes[itemCustomDetail.itemCustom.uuid] == undefined) {
                                 var value = {};
                                 value[data.uuid] = data;
@@ -1068,7 +1069,8 @@ angular.module('IOne-Production').controller('bookingSlipAgencyController', func
                 allCustomsScopes: $scope.allCustomsScopes,
                 custom: null,
                 allCustoms: $scope.selectedItemCustoms,
-                op: 'add'
+                op: 'add',
+                itemUuid: $scope.selectedOrderExtendDetail.parentItem.uuid
             }
         }).then(function (data) {
 
@@ -1077,7 +1079,8 @@ angular.module('IOne-Production').controller('bookingSlipAgencyController', func
                 no: Math.random().toString(36).substring(10),
                 itemUuid: $scope.selectedOrderExtendDetail.item.uuid,
                 itemCustomUuid: data.selectedCustom.itemCustom.uuid,
-                information: data.selectedCustom.information
+                // information: data.selectedCustom.information
+                information: data.selectedCustom.informationScope
             };
             // masterUuid, detailUuid, orderExtendDetailUuid, OrderExtendDetail2Input
             var masterUuid = $scope.selectedOrderExtendDetail.salesOrderDetail.salesOrderMaster.uuid;
@@ -1109,7 +1112,8 @@ angular.module('IOne-Production').controller('bookingSlipAgencyController', func
                 allCustoms: $scope.selectedItemCustoms,
                 allCustomsScopes: $scope.allCustomsScopes,
                 custom: custom,
-                op: 'modify'
+                op: 'modify',
+                itemUuid: $scope.selectedOrderExtendDetail.parentItem.uuid
             }
         }).then(function (data) {
             var masterUuid = $scope.selectedOrderExtendDetail.salesOrderDetail.salesOrderMaster.uuid;
@@ -1118,7 +1122,8 @@ angular.module('IOne-Production').controller('bookingSlipAgencyController', func
 
             var OrderExtendDetail2UpdateInput = {
                 itemCustomUuid: data.selectedCustom.itemCustom.uuid,
-                information: data.selectedCustom.information
+                //information: data.selectedCustom.information
+                information: data.selectedCustom.informationScope
             };
 
             SalesOrderExtendDetail2.modify(masterUuid, detailUuid, orderExtendDetailUuid, custom.uuid, OrderExtendDetail2UpdateInput).success(function () {
@@ -1379,12 +1384,13 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
     }
 });
 
-angular.module('IOne-Production').controller('SalesOrderExtendDetail2Controller', function ($scope, $mdDialog, allCustoms, allCustomsScopes, custom, op) {
+angular.module('IOne-Production').controller('SalesOrderExtendDetail2Controller', function ($scope, $mdDialog, allCustoms, allCustomsScopes, custom, op, ItemRelationService, itemUuid) {
 
     $scope.allCustoms = allCustoms.content;
     $scope.allCustomsScopes = allCustomsScopes;
     $scope.selectedCustom = custom;
     $scope.op = op;
+    $scope.itemUuid = itemUuid;
 
     if ($scope.selectedCustom) {
         angular.forEach($scope.selectedCustom.informationUuids, function (value, index) {
@@ -1394,6 +1400,12 @@ angular.module('IOne-Production').controller('SalesOrderExtendDetail2Controller'
                 }
             })
         });
+
+        ItemRelationService.getAll($scope.itemUuid, $scope.selectedCustom.itemCustom.uuid, $scope.selectedCustom.informationUuids).success(function (itemRelationData) {
+            $scope.itemRelationList = itemRelationData.content;
+            $scope.selectedCustom.informationScope = $scope.selectedCustom.information;
+        });
+
 
     } else {
 
@@ -1439,6 +1451,15 @@ angular.module('IOne-Production').controller('SalesOrderExtendDetail2Controller'
                     $scope.selectedCustom.informationUuids.splice(index, 1);
                 }
             });
+        }
+
+        if ($scope.selectedCustom.informationUuids.length > 0) {
+            ItemRelationService.getAll($scope.itemUuid, $scope.selectedCustom.itemCustom.uuid, $scope.selectedCustom.informationUuids).success(function (itemRelationData) {
+                $scope.itemRelationList = itemRelationData.content;
+            });
+        } else {
+            $scope.itemRelationList = null;
+            $scope.selectedCustom.informationScope = null;
         }
     };
 

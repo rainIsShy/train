@@ -23,9 +23,17 @@
                     </md-checkbox>
                 </div>
             </div>
-
+            <div layout="column">
+                <md-radio-group ng-model="selectedCustom.informationScope">
+                    <md-radio-button ng-repeat="item in itemRelationList" ng-value="item.informationScope"
+                                     aria-label="{{item.reference}} {{item.referenceName}} {{item.explain}}">
+                        {{item.reference}} {{item.referenceName}} {{item.explain}}
+                    </md-radio-button>
+                </md-radio-group>
+            </div>
             <div layout="row">
-                <md-button ng-click="hideDlg()" ng-disabled="addCustomForm.$invalid">
+                <md-button ng-click="hideDlg()"
+                           ng-disabled="addCustomForm.$invalid || !selectedCustom.informationScope">
                     <i class="fa fa-check"></i>&nbsp;确定
                 </md-button>
                 <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
