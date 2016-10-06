@@ -306,25 +306,23 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         if ($scope.return_button_disabled != 1 && (orderMaster.confirm == 2 || orderMaster.confirm == 4)) {
             $scope.return_button_disabled = 1;
         }
-        // //如果都是勾选的未审核的，允许审核  只要有一个是已审核的，就不允许审核
-        // if (orderMaster.confirm == 2 || orderMaster.confirm == 4) {
-        //     $scope.audit_button_disabled = 1;
-        // }
         //只有已审核且尚未抛转的单子可以抛转
         if ($scope.throw_button_disabled != 1 && !(orderMaster.confirm == 2 && orderMaster.transferFlag != 1 )) {
             $scope.throw_button_disabled = 1;
         }
 
-        //只有已审核并且尚未抛转的单据可取消审核，若勾选单据中有其他审核状态的单据，则灰显按钮，若用户无权限取消审核，也灰显按钮；
 //        console.log("orderMaster.confirm:" + orderMaster.confirm + 'orderMaster.transferFlag:' + orderMaster.transferFlag);
-        if (!(orderMaster.confirm == 2 || orderMaster.confirm == 4)) {
-            if ($scope.revert_audit_button_disabled != 1) {
-                $scope.revert_audit_button_disabled = 1;
-            }
-        } else {
-            if ($scope.audit_button_disabled != 1) {
-                $scope.audit_button_disabled = 1;
-            }
+        // //如果都是勾选的未审核的，允许审核  只要有一个是已审核的，就不允许审核
+        // if (orderMaster.confirm == 2 || orderMaster.confirm == 4) {
+        //     $scope.audit_button_disabled = 1;
+        // }
+        if ($scope.audit_button_disabled != 1 && (orderMaster.confirm == 2 || orderMaster.confirm == 4)) {
+            $scope.audit_button_disabled = 1;
+        }
+        //只有已审核并且尚未抛转的单据可取消审核，若勾选单据中有其他审核状态的单据，则灰显按钮，若用户无权限取消审核，也灰显按钮；
+        // 已拋轉不可再 取消審核
+        if ($scope.revert_audit_button_disabled != 1 && ((orderMaster.confirm != 2 && orderMaster.confirm != 4) || orderMaster.transferFlag == 1)) {
+            $scope.revert_audit_button_disabled = 1;
         }
 
         if ($scope.purchase_submit_button_disabled != 1) {
