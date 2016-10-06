@@ -94,8 +94,7 @@
                                     <div flex layout="row" layout-align="end center">
                                         <div ng-if="orderListMenuDisplayOption['408-add'].display && (menuAuthDataMap[orderListMenuDisplayOption['408-add'].uuid] || isAdmin() || !orderListMenuDisplayOption['408-add'].uuid)">
                                             <md-button class="md-raised" ng-click="orderListMenuAction(408, $event)"
-                                                       style="margin-top: 0px;height: 20px;" aria-label="新增"
-                                                       ng-disabled="audit_button_disabled == 1"> &nbsp;{{orderListMenuDisplayOption['408-add'].name}}
+                                                       style="margin-top: 0px;height: 20px;" aria-label="新增"> &nbsp;{{orderListMenuDisplayOption['408-add'].name}}
                                             </md-button>
                                         </div>
                                         <div ng-if="orderListMenuDisplayOption['401-audit'].display && (menuAuthDataMap[orderListMenuDisplayOption['401-audit'].uuid] || isAdmin() || !orderListMenuDisplayOption['401-audit'].uuid)">

@@ -97,6 +97,10 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             $scope.preAddMenuAction();
         } else if (menuId == 409) {
             $scope.rollbackTransfer();
+        } else if (menuId == 410) {
+            $scope.purchaseList(true);
+        } else if (menuId == 411) {
+            $scope.purchaseList(false);
         }
     };
 
@@ -274,6 +278,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
     $scope.changeButtonStatusAndCalTotalPrice = function () {
         var firstLoop = true;
+        $scope.resetButtonDisabled();
         angular.forEach($scope.selected, function (orderMaster) {
             $scope.selectedItemsTotalPrice = $scope.selectedItemsTotalPrice + orderMaster.oriPurAmt;
             //initialize effectiveType
@@ -293,12 +298,12 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     $scope.changeButtonStatus = function (orderMaster) {
         //confirm:1=未审核/2=已审核/3=审核中/4=退回   status:"1=有效/2=无效  transferFlag format = "1=是/2=否",
         //只有未审核和退回状态的单据才可以作废,
-        if (orderMaster.confirm == 2 || orderMaster.confirm == 3) {
+        if ($scope.effectiveType_disabled != 1 && (orderMaster.confirm == 2 || orderMaster.confirm == 3)) {
             $scope.effectiveType_disabled = 1;
         }
 
         //未审核和审核中的都可以退回
-        if (orderMaster.confirm == 2 || orderMaster.confirm == 4) {
+        if ($scope.return_button_disabled != 1 && (orderMaster.confirm == 2 || orderMaster.confirm == 4)) {
             $scope.return_button_disabled = 1;
         }
         // //如果都是勾选的未审核的，允许审核  只要有一个是已审核的，就不允许审核
@@ -306,33 +311,33 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         //     $scope.audit_button_disabled = 1;
         // }
         //只有已审核且尚未抛转的单子可以抛转
-        if (!(orderMaster.confirm == 2 && orderMaster.transferFlag != 1 )) {
+        if ($scope.throw_button_disabled != 1 && !(orderMaster.confirm == 2 && orderMaster.transferFlag != 1 )) {
             $scope.throw_button_disabled = 1;
-        } else {
-            $scope.throw_button_disabled = 0;
         }
+
         //只有已审核并且尚未抛转的单据可取消审核，若勾选单据中有其他审核状态的单据，则灰显按钮，若用户无权限取消审核，也灰显按钮；
-        console.log("orderMaster.confirm:" + orderMaster.confirm + 'orderMaster.transferFlag:' + orderMaster.transferFlag);
-
+//        console.log("orderMaster.confirm:" + orderMaster.confirm + 'orderMaster.transferFlag:' + orderMaster.transferFlag);
         if (!(orderMaster.confirm == 2 || orderMaster.confirm == 4)) {
-            $scope.revert_audit_button_disabled = 1;
-            $scope.audit_button_disabled = 0;
+            if ($scope.revert_audit_button_disabled != 1) {
+                $scope.revert_audit_button_disabled = 1;
+            }
         } else {
-            $scope.revert_audit_button_disabled = 0;
-            $scope.audit_button_disabled = 1;
+            if ($scope.audit_button_disabled != 1) {
+                $scope.audit_button_disabled = 1;
+            }
         }
 
-        if (orderMaster.confirm == '2' && (orderMaster.purchaseFlag == null || orderMaster.purchaseFlag == '1' || orderMaster.purchaseFlag == '3')) {
+        if ($scope.purchase_submit_button_disabled != 1) {
             // 【采购发出】按钮只有在PMM_ORDER_M ST.CONFIRM='2'已审核且PMM_ORDER_MST.PURCHASE_FLAG='1'采购未发出或'3'采购退回状态才可点击
-            $scope.purchase_submit_button_disabled = 0;
-            $scope.purchase_back_button_disabled = 1;
-        } else if (orderMaster.confirm == '2' && orderMaster.purchaseFlag == '2') {
+            if (orderMaster.confirm != '2' || !(orderMaster.purchaseFlag == '1' || orderMaster.purchaseFlag == '3' || orderMaster.purchaseFlag == null)) {
+                $scope.purchase_submit_button_disabled = 1;
+            }
+        }
+        if ($scope.purchase_back_button_disabled != 1) {
             // 【采购退回】按钮只有在PMM_ORDER_MST.CONFIRM='2'已审核且PMM_ORDER_MST.PURCHASE_FLAG='2'采购发出状态才可点击
-            $scope.purchase_submit_button_disabled = 1;
-            $scope.purchase_back_button_disabled = 0;
-        } else {
-            $scope.purchase_submit_button_disabled = 1;
-            $scope.purchase_back_button_disabled = 1;
+            if (orderMaster.confirm != '2' || orderMaster.purchaseFlag != '2') {
+                $scope.purchase_back_button_disabled = 1;
+            }
         }
 
     };
@@ -709,14 +714,15 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         $scope.selectedItemsTotalPrice = 0.00;
         $scope.resetButtonDisabled();
     };
+
     $scope.resetButtonDisabled = function () {
         $scope.effectiveType_disabled = 0;
-        $scope.return_button_disabled = 0;
         $scope.audit_button_disabled = 0;
-        $scope.throw_button_disabled = 0;
+        $scope.return_button_disabled = 0;
         $scope.revert_audit_button_disabled = 0;
-        $scope.purchase_submit_button_disabled = 1;
-        $scope.purchase_back_button_disabled = 1;
+        $scope.throw_button_disabled = 0;
+        $scope.purchase_submit_button_disabled = 0;
+        $scope.purchase_back_button_disabled = 0;
     };
 
     $scope.resetDetailButtonDisabled = function () {
@@ -1369,6 +1375,24 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     $scope.refreshDetail(data.uuid);
                     $scope.selectedDetail = [];
                 });
+                $scope.showInfo('修改成功。');
+            });
+        });
+    };
+
+    $scope.purchaseList = function (flag) {
+        var msg = flag ? '确认发出采购吗？' : '确认取消采购吗？';
+        $scope.showConfirm(msg, '', function () {
+            var allUuid = [];
+            angular.forEach($scope.selected, function (data) {
+                allUuid.push(data.uuid);
+            });
+            PmmOrderMaster.purchaseList({allUuid: allUuid, flag: flag}).success(function (data) {
+//                $scope.selectedItem = data;
+//                $scope.changeButtonStatus(data);
+//                $scope.refreshDetail(data.uuid);
+//                $scope.selectedDetail = [];
+                $scope.queryMenuAction();
                 $scope.showInfo('修改成功。');
             });
         });

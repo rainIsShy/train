@@ -71,6 +71,10 @@ angular.module('IOne-Production').service('PmmOrderMaster', function ($http, Con
     this.changePurchaseFlag = function (uuid, flag) {
         return $http.patch(Constant.BACKEND_BASE + '/pmmOrders/' + uuid + '/purchase/' + flag);
     }
+
+    this.purchaseList = function (data) {
+        return $http.patch(Constant.BACKEND_BASE + '/pmmOrders/purchaseList/', data);
+    }
 });
 
 angular.module('IOne-Production').service('PmmOrderDetail', function ($http, Constant) {
