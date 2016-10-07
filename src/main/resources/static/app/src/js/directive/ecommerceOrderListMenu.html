@@ -115,6 +115,14 @@
                     style="margin-top: 0px;height: 20px;" aria-label="逾期拒绝配送">
                 &nbsp;{{ecommerceOrderListMenuDisplayOption['409-o2oOverdue'].name}}
             </md-button>
+
+            <md-button
+                    ng-if="ecommerceOrderListMenuDisplayOption['410-rollbackTransfer'].display && (menuAuthDataMap[ecommerceOrderListMenuDisplayOption['410-rollbackTransfer'].uuid] || isAdmin() || !ecommerceOrderListMenuDisplayOption['410-rollbackTransfer'].uuid)"
+                    ng-disabled="revert_throw_button_disabled == 1"
+                    class="md-raised" ng-click="ecommerceOrderListMenuAction(410, $event)"
+                    style="margin-top: 0px;height: 20px;" aria-label="抛转还原">
+                &nbsp;{{ecommerceOrderListMenuDisplayOption['410-rollbackTransfer'].name}}
+            </md-button>
         </div>
     </div>
 </div>
