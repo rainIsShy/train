@@ -71,6 +71,10 @@ angular.module('IOne-Production').service('PmmOrderMaster', function ($http, Con
     this.changePurchaseFlag = function (uuid, flag) {
         return $http.patch(Constant.BACKEND_BASE + '/pmmOrders/' + uuid + '/purchase/' + flag);
     }
+
+    this.purchaseList = function (data) {
+        return $http.patch(Constant.BACKEND_BASE + '/pmmOrders/purchaseList/', data);
+    }
 });
 
 angular.module('IOne-Production').service('PmmOrderDetail', function ($http, Constant) {
@@ -96,6 +100,10 @@ angular.module('IOne-Production').service('PmmOrderDetail', function ($http, Con
     this.delete = function(masterUuid, detailUuid) {
         return $http.delete(Constant.BACKEND_BASE + '/pmmOrders/' + masterUuid + '/details/' + detailUuid);
     }
+
+    this.changeDtlPurchaseFlag = function (uuid, dtlUuids, flag) {
+        return $http.patch(Constant.BACKEND_BASE + '/pmmOrders/' + uuid + '/details/' + dtlUuids + '/purchase/' + flag);
+    }
 });
 
 
@@ -103,6 +111,10 @@ angular.module('IOne-Production').service('PmmOrderExtendDetail', function ($htt
 
     this.get = function (detailUuid) {
         return $http.get(Constant.BACKEND_BASE + '/pmmOrderDetails/' + detailUuid + '/extends/');
+    };
+
+    this.getAll = function (masterUuid) {
+        return $http.get(Constant.BACKEND_BASE + '/pmmOrderDetails/_useless/extends/byMstUuid/' + masterUuid);
     };
 
     this.modify = function (detailUuid, uuid, OrderExtendDetailUpdateInput) {
