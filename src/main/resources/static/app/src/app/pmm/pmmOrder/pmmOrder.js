@@ -60,12 +60,19 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         '404-effective': {display: true, name: '失效作废', uuid: '1d0983c8-8d11-4a40-8140-d267e03d04a4'},
         '405-query': {display: true, name: '查询', uuid: '992b0fef-abca-461c-91b7-07036d54d3f4'},
         '406-revertAudit': {display: true, name: '取消审核', uuid: 'ab4da1cc-be55-4cd3-8a44-afc74d6237dc'},
-        '408-add': {display: true, name: '新增', uuid: '862577df-fa98-4538-acc4-adf0687e787b'}
+        '408-add': {display: true, name: '新增', uuid: '862577df-fa98-4538-acc4-adf0687e787b'},
+        '410-purchaseSubmit': {display: true, name: '采购发出', uuid: '2e7e73a5-c0d8-4f89-96f0-c7e8e898e484'},
+        '411-purchaseBack': {display: true, name: '采购退回', uuid: 'e846e81a-4d02-4344-bebd-9c5b9cf97bb0'}
+
     };
 
     $scope.itemOperationMenuDisplayOption = {
         '500-item-edit': {display: true, name: ''},
-        '501-item-delete': {display: true, name: ''}
+        '501-item-delete': {display: true, name: ''},
+        '502-audit': {display: true, name: '审核', uuid: '42e26f5e-6831-4323-8a6e-4b63ffd86a41'},
+        '503-revertAudit': {display: true, name: '取消审核', uuid: '58dd4b20-9d35-4139-9b5d-210c65cb7ff9'},
+        '504-purchaseSubmit': {display: true, name: '采购发出', uuid: '7a23828e-1b29-4c05-8b53-74e57fd6adbb'},
+        '505-purchaseBack': {display: true, name: '采购退回', uuid: '5af5254f-0491-4e71-8ef5-059a5d0402a5'}
     };
 
     $scope.orderListMenuAction = function (menuId, $event) {
@@ -90,6 +97,10 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             $scope.preAddMenuAction();
         } else if (menuId == 409) {
             $scope.rollbackTransfer();
+        } else if (menuId == 410) {
+            $scope.purchaseList(true);
+        } else if (menuId == 411) {
+            $scope.purchaseList(false);
         }
     };
 
@@ -156,6 +167,12 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             $scope.formMenuDisplayOption['101-delete'].display = true;
         }
 
+        // 已经审核(confirm = 2)的订单不可再对订单做删除和编辑
+        if ($scope.selectedItem.confirm == '2') {
+            $scope.formMenuDisplayOption['102-edit'].display = false;
+            $scope.formMenuDisplayOption['101-delete'].display = false;
+        }
+
     };
 
     //更新产品信息
@@ -164,16 +181,15 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             $scope.OrderDetailList = data;
             $scope.updateOrderDetailListDate($scope.OrderDetailList);
             $scope.OrderExtendDetailList = [];
-            angular.forEach($scope.OrderDetailList.content, function (orderDetail) {
-                $scope.refreshDeliveryList(orderDetail.uuid);
-            });
-            $scope.selectedDetail = [];
-            $scope.resetDetailButtonDisabled();
+            $scope.refreshDeliveryList(masterUuid);
+//            $scope.selectedDetail = [];
+//            $scope.resetDetailButtonDisabled();
+            $scope.changeDetailButtonStatus();
         });
     };
 
-    $scope.refreshDeliveryList = function (detailUuid) {
-        PmmOrderExtendDetail.get(detailUuid).success(function (data) {
+    $scope.refreshDeliveryList = function (masterUuid) {
+        PmmOrderExtendDetail.getAll(masterUuid).success(function (data) {
             $scope.OrderExtendDetailList = data.content;
         });
     };
@@ -242,6 +258,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     $scope.selected = [];
     $scope.selectedItemsCount = 0;
     $scope.selectedItemsTotalPrice = 0.00;
+
     $scope.toggle = function (item, selected) {
         var idx = selected.indexOf(item);
         if (idx > -1) {
@@ -261,6 +278,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
     $scope.changeButtonStatusAndCalTotalPrice = function () {
         var firstLoop = true;
+        $scope.resetButtonDisabled();
         angular.forEach($scope.selected, function (orderMaster) {
             $scope.selectedItemsTotalPrice = $scope.selectedItemsTotalPrice + orderMaster.oriPurAmt;
             //initialize effectiveType
@@ -280,63 +298,80 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     $scope.changeButtonStatus = function (orderMaster) {
         //confirm:1=未审核/2=已审核/3=审核中/4=退回   status:"1=有效/2=无效  transferFlag format = "1=是/2=否",
         //只有未审核和退回状态的单据才可以作废,
-        if (orderMaster.confirm == 2 || orderMaster.confirm == 3) {
+        if ($scope.effectiveType_disabled != 1 && (orderMaster.confirm == 2 || orderMaster.confirm == 3)) {
             $scope.effectiveType_disabled = 1;
         }
 
         //未审核和审核中的都可以退回
-        if (orderMaster.confirm == 2 || orderMaster.confirm == 4) {
+        if ($scope.return_button_disabled != 1 && (orderMaster.confirm == 2 || orderMaster.confirm == 4)) {
             $scope.return_button_disabled = 1;
         }
+        //只有已审核且尚未抛转的单子可以抛转
+        if ($scope.throw_button_disabled != 1 && !(orderMaster.confirm == 2 && orderMaster.transferFlag != 1 )) {
+            $scope.throw_button_disabled = 1;
+        }
+
+//        console.log("orderMaster.confirm:" + orderMaster.confirm + 'orderMaster.transferFlag:' + orderMaster.transferFlag);
         // //如果都是勾选的未审核的，允许审核  只要有一个是已审核的，就不允许审核
         // if (orderMaster.confirm == 2 || orderMaster.confirm == 4) {
         //     $scope.audit_button_disabled = 1;
         // }
-        //只有已审核且尚未抛转的单子可以抛转
-        if (!(orderMaster.confirm == 2 && orderMaster.transferFlag != 1 )) {
-            $scope.throw_button_disabled = 1;
-        } else {
-            $scope.throw_button_disabled = 0;
-        }
-        //只有已审核并且尚未抛转的单据可取消审核，若勾选单据中有其他审核状态的单据，则灰显按钮，若用户无权限取消审核，也灰显按钮；
-        console.log("orderMaster.confirm:" + orderMaster.confirm + 'orderMaster.transferFlag:' + orderMaster.transferFlag);
-
-        if (!(orderMaster.confirm == 2 || orderMaster.confirm == 4)) {
-            $scope.revert_audit_button_disabled = 1;
-            $scope.audit_button_disabled = 0;
-        } else {
-            $scope.revert_audit_button_disabled = 0;
+        if ($scope.audit_button_disabled != 1 && (orderMaster.confirm == 2 || orderMaster.confirm == 4)) {
             $scope.audit_button_disabled = 1;
         }
+        //只有已审核并且尚未抛转的单据可取消审核，若勾选单据中有其他审核状态的单据，则灰显按钮，若用户无权限取消审核，也灰显按钮；
+        // 已拋轉不可再 取消審核
+        if ($scope.revert_audit_button_disabled != 1 && ((orderMaster.confirm != 2 && orderMaster.confirm != 4) || orderMaster.transferFlag == 1)) {
+            $scope.revert_audit_button_disabled = 1;
+        }
 
-        if (orderMaster.confirm == '2' && (orderMaster.purchaseFlag == '1' || orderMaster.purchaseFlag == '3')) {
+        if ($scope.purchase_submit_button_disabled != 1) {
             // 【采购发出】按钮只有在PMM_ORDER_M ST.CONFIRM='2'已审核且PMM_ORDER_MST.PURCHASE_FLAG='1'采购未发出或'3'采购退回状态才可点击
-            $scope.purchase_submit_button_disabled = 0;
-        } else if (orderMaster.confirm == '2' && orderMaster.purchaseFlag == '2') {
+            if (orderMaster.confirm != '2' || !(orderMaster.purchaseFlag == '1' || orderMaster.purchaseFlag == '3' || orderMaster.purchaseFlag == null)) {
+                $scope.purchase_submit_button_disabled = 1;
+            }
+        }
+        if ($scope.purchase_back_button_disabled != 1) {
             // 【采购退回】按钮只有在PMM_ORDER_MST.CONFIRM='2'已审核且PMM_ORDER_MST.PURCHASE_FLAG='2'采购发出状态才可点击
-            $scope.purchase_back_button_disabled = 0;
-        } else {
-            $scope.purchase_submit_button_disabled = 1;
-            $scope.purchase_back_button_disabled = 1;
+            if (orderMaster.confirm != '2' || orderMaster.purchaseFlag != '2') {
+                $scope.purchase_back_button_disabled = 1;
+            }
         }
 
     };
 
     $scope.changeDetailButtonStatus = function () {
+        $scope.resetDetailButtonDisabled();
         angular.forEach($scope.selectedDetail, function (detail) {
-            if (detail.confirm == 2 || detail.confirm == 4) {
+            if ($scope.audit_detail_disabled != 1 && (detail.confirm == 2 || detail.confirm == 4)) {
                 $scope.audit_detail_disabled = 1;
             }
 
-            if (!(detail.confirm == 2)) {
+            if ($scope.revert_audit_detail_disabled != 1 && detail.confirm != 2) {
                 $scope.revert_audit_detail_disabled = 1;
+                $scope.purchase_submit_detail_disabled = 1;
+                $scope.purchase_back_detail_disabled = 1;
+            }
+
+            if ($scope.purchase_submit_detail_disabled != 1 && detail.purchaseFlag == 2) {
+                $scope.purchase_submit_detail_disabled = 1;
+            }
+
+            if ($scope.purchase_back_detail_disabled != 1 && detail.purchaseFlag != 2) {
+                $scope.purchase_back_detail_disabled = 1;
             }
         });
     };
 
-
     $scope.exists = function (item, list) {
-        return list.indexOf(item) > -1;
+        var retval = false;
+        angular.forEach(list, function (ld) {
+            if (!retval && ld.uuid == item.uuid) {
+                retval = true;
+            }
+        });
+        return retval;
+//        return list.indexOf(item) > -1;
     };
 
 
@@ -352,6 +387,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         } else {
             $scope.selectedDetail = [];
         }
+        $scope.changeDetailButtonStatus();
     };
 
 
@@ -507,7 +543,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                         $scope.showInfo('修改数据成功。');
                     });
                 } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
-                    //update $scope.selected
+                    //update $scope.selected (multiple confirm)
                     var promises = [];
                     angular.forEach($scope.selected, function (item) {
                         var OrderMasterUpdateInput = {
@@ -676,19 +712,22 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         $scope.selectedItemsTotalPrice = 0.00;
         $scope.resetButtonDisabled();
     };
+
     $scope.resetButtonDisabled = function () {
         $scope.effectiveType_disabled = 0;
-        $scope.return_button_disabled = 0;
         $scope.audit_button_disabled = 0;
-        $scope.throw_button_disabled = 0;
+        $scope.return_button_disabled = 0;
         $scope.revert_audit_button_disabled = 0;
-        $scope.purchase_submit_button_disabled = 1;
-        $scope.purchase_back_button_disabled = 1;
+        $scope.throw_button_disabled = 0;
+        $scope.purchase_submit_button_disabled = 0;
+        $scope.purchase_back_button_disabled = 0;
     };
 
     $scope.resetDetailButtonDisabled = function () {
         $scope.audit_detail_disabled = 0;
         $scope.revert_audit_detail_disabled = 0;
+        $scope.purchase_submit_detail_disabled = 0;
+        $scope.purchase_back_detail_disabled = 0;
     };
 
     $scope.queryMenuAction = function () {
@@ -963,14 +1002,13 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 });
                 $q.all(promises).then(function (data) {
                     $scope.refreshDetail($scope.selectedItem.uuid);
-                    var detailConfirmCount = 0;
 
+                    var detailConfirmCount = 0;
                     angular.forEach($scope.OrderDetailList.content, function (detailItem) {
                         if (detailItem.confirm == '2') {
                             detailConfirmCount = detailConfirmCount + 1;
                         }
                     });
-                    $scope.selectedDetail = [];
                     //若所有单身己審核，則自動審核單頭
                     if ($scope.OrderDetailList.totalElements == detailConfirmCount) {
                         var OrderMasterUpdateInput = {
@@ -1306,12 +1344,57 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     };
 
     $scope.changePurchaseFlag = function (flag) {
-        PmmOrderMaster.changePurchaseFlag($scope.selectedItem.uuid, flag).success(function (data) {
-            console.log(data);
-            $scope.selected[0] = data;
-
+        var msg = flag == 2 ? '确认发出采购吗？' : '确认取消采购吗？';
+        $scope.showConfirm(msg, '', function () {
+            PmmOrderMaster.changePurchaseFlag($scope.selectedItem.uuid, flag).success(function (data) {
+                $scope.selectedItem = data;
+                $scope.changeButtonStatus(data);
+                $scope.refreshDetail(data.uuid);
+                $scope.selectedDetail = [];
+                $scope.showInfo('修改成功。');
+            });
         });
-    }
+    };
+
+    $scope.changeDtlPurchaseFlag = function (flag) {
+        var msg = flag == 2 ? '确认发出采购吗？' : '确认取消采购吗？';
+        $scope.showConfirm(msg, '', function () {
+            var dtlUuid = '';
+            angular.forEach($scope.selectedDetail, function (dtl) {
+                dtlUuid += (dtlUuid == '' ? '' : ',') + dtl.uuid;
+            });
+            if (dtlUuid == '') {
+                return;
+            }
+            PmmOrderDetail.changeDtlPurchaseFlag($scope.selectedItem.uuid, dtlUuid, flag).success(function (data) {
+                PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
+                    $scope.selectedItem = data;
+                    $scope.changeButtonStatus(data);
+                    $scope.refreshDetail(data.uuid);
+                    $scope.selectedDetail = [];
+                });
+                $scope.showInfo('修改成功。');
+            });
+        });
+    };
+
+    $scope.purchaseList = function (flag) {
+        var msg = flag ? '确认发出采购吗？' : '确认取消采购吗？';
+        $scope.showConfirm(msg, '', function () {
+            var allUuid = [];
+            angular.forEach($scope.selected, function (data) {
+                allUuid.push(data.uuid);
+            });
+            PmmOrderMaster.purchaseList({allUuid: allUuid, flag: flag}).success(function (data) {
+//                $scope.selectedItem = data;
+//                $scope.changeButtonStatus(data);
+//                $scope.refreshDetail(data.uuid);
+//                $scope.selectedDetail = [];
+                $scope.queryMenuAction();
+                $scope.showInfo('修改成功。');
+            });
+        });
+    };
 
     $scope.getDetailBgcolor = function (detail) {
         var retObj = {};
@@ -1321,7 +1404,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             retObj = {'background-color': 'yellow'};
         }
         return retObj;
-    }
+    };
 });
 
 

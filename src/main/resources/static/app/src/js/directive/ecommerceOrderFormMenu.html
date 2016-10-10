@@ -42,6 +42,12 @@
         &nbsp;{{ecommerceFormMenuDisplayOption['418-print'].name}}
     </md-button>
 
+    <md-button class="md-raised" ng-click="ecommerceOrderListMenuAction(420, $event)"
+               ng-if="ecommerceFormMenuDisplayOption['420-rollbackTransfer'].display && (menuAuthDataMap[ecommerceFormMenuDisplayOption['420-rollbackTransfer'].uuid] || isAdmin() || !ecommerceFormMenuDisplayOption['420-rollbackTransfer'].uuid)"
+               ng-disabled="rollback_transfer_button_disabled == 1"
+               style="margin-top: 0px;height: 20px;" aria-label="抛转还原">
+        &nbsp;{{ecommerceFormMenuDisplayOption['420-rollbackTransfer'].name}}
+    </md-button>
 </div>
 
 
