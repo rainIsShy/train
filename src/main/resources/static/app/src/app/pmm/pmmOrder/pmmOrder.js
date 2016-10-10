@@ -634,6 +634,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                         });
                     });
                 } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
+                    // 多筆拋轉
                     var orderMasterUuids = "";
                     angular.forEach($scope.selected, function (item) {
                         orderMasterUuids += item.uuid + ","
