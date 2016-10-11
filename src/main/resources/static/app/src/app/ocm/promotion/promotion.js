@@ -383,6 +383,7 @@ angular.module('IOne-Production').controller('ChannelPromotionController', funct
                                 $scope.showInfo("新增成功!");
                                 $scope.listItemAction();
                                 $scope.selectedItem = data;
+                                $scope.refreshProductList($scope.selectedItem);
                             });
                         }
                     });
@@ -432,7 +433,6 @@ angular.module('IOne-Production').controller('ChannelPromotionController', funct
 
     $scope.validForm = function () {
         var isPass = true;
-        console.log($scope.addItem.startPurchaseDate);
         if ($scope.addItem.no == '') {
             $scope.showError('請輸入活动主题编号');
             isPass = false;
@@ -580,8 +580,9 @@ angular.module('IOne-Production').controller('ChannelPromotionController', funct
             if ($scope.selectedItem) {
                 ChannelPromotionService.delete(item.uuid).success(function () {
                     $scope.refreshList();
-                    $scope.selectedItem = [];
+
                     $scope.showInfo("刪除促销活动成功!");
+                    $scope.selectedItem = null
                 });
             }
         });
