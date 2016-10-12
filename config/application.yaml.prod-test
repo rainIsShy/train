@@ -7,14 +7,12 @@ spring:
 
 i1:
   i1-server:
-    url: http://210.21.91.198:20004
+    url: http://localhost:20004
   i1-adapter:
-    url: http://210.21.91.198:9092
+    url: http://localhost:9092
   tiptop-adapter:
-    url: http://210.21.91.198:9093
+    url: http://localhost:9093
   ec-adapter:
-    url: http://210.21.91.198:9094
+    url: http://localhost:9094
   tmall-adapter:
     url: http://121.41.43.91:30000
-
-
