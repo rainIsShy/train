@@ -7,12 +7,12 @@ spring:
 
 i1:
   i1-server:
-    url: http://localhost:10821
+    url: http://project.benchmarkchina.com:10821
   i1-adapter:
-    url: http://localhost:10822
+    url: http://project.benchmarkchina.com:10822
   tiptop-adapter:
-    url: http://localhost:10823
+    url: http://project.benchmarkchina.com:10823
   ec-adapter:
-    url: http://localhost:10824
+    url: http://project.benchmarkchina.com:10824
   tmall-adapter:
-    url: http://localhost:10825
+    url: http://project.benchmarkchina.com:10825
