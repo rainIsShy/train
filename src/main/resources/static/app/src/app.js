@@ -146,15 +146,15 @@ angular.module('IOne').controller('MainController', function($rootScope, $scope,
         $mdDialog.show(confirm).then(success_fn, fail_fn);
     };
 
-    $scope.DEFAULT_IMAGE_PATH = '/app/img/item.jpeg';
+    $scope.DEFAULT_IMAGE_PATH = Constant.BACKEND_BASE + '/app/img/item.jpeg';
     $scope.getImageFullPath = function(path) {
         if(path == null) {
             return $scope.DEFAULT_IMAGE_PATH;
         }
         if(path && path.indexOf('IMAGE') == 0) {
-            return '/app/assets/' + path;
+            return Constant.BACKEND_BASE + '/app/assets/' + path;
         } else {
-            return '/app/assets/IMAGE/' + path;
+            return Constant.BACKEND_BASE + '/app/assets/IMAGE/' + path;
         }
     };
 
