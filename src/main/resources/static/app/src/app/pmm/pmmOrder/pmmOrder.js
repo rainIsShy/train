@@ -311,7 +311,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             $scope.throw_button_disabled = 1;
         }
 
-//        console.log("orderMaster.confirm:" + orderMaster.confirm + 'orderMaster.transferFlag:' + orderMaster.transferFlag);
+        console.log("orderMaster.confirm:" + orderMaster.confirm + 'orderMaster.transferFlag:' + orderMaster.transferFlag);
         // //如果都是勾选的未审核的，允许审核  只要有一个是已审核的，就不允许审核
         // if (orderMaster.confirm == 2 || orderMaster.confirm == 4) {
         //     $scope.audit_button_disabled = 1;
@@ -320,8 +320,8 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             $scope.audit_button_disabled = 1;
         }
         //只有已审核并且尚未抛转的单据可取消审核，若勾选单据中有其他审核状态的单据，则灰显按钮，若用户无权限取消审核，也灰显按钮；
-        // 已拋轉不可再 取消審核
-        if ($scope.revert_audit_button_disabled != 1 && ((orderMaster.confirm != 2 && orderMaster.confirm != 4) || orderMaster.transferFlag == 1)) {
+        // 已拋轉或已采购发出，不可再 取消審核
+        if ($scope.revert_audit_button_disabled != 1 && ((orderMaster.confirm != 2 && orderMaster.confirm != 4) || orderMaster.transferFlag == 1 || orderMaster.purchaseFlag == 2)) {
             $scope.revert_audit_button_disabled = 1;
         }
 
@@ -347,10 +347,14 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 $scope.audit_detail_disabled = 1;
             }
 
-            if ($scope.revert_audit_detail_disabled != 1 && detail.confirm != 2) {
-                $scope.revert_audit_detail_disabled = 1;
-                $scope.purchase_submit_detail_disabled = 1;
-                $scope.purchase_back_detail_disabled = 1;
+            if ($scope.revert_audit_detail_disabled != 1) {
+                if (detail.confirm != 2) {
+                    $scope.revert_audit_detail_disabled = 1;
+                    $scope.purchase_submit_detail_disabled = 1;
+                    $scope.purchase_back_detail_disabled = 1;
+                } else if (detail.purchaseFlag == 2) {
+                    $scope.revert_audit_detail_disabled = 1;
+                }
             }
 
             if ($scope.purchase_submit_detail_disabled != 1 && detail.purchaseFlag == 2) {
@@ -1349,6 +1353,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         $scope.showConfirm(msg, '', function () {
             PmmOrderMaster.changePurchaseFlag($scope.selectedItem.uuid, flag).success(function (data) {
                 $scope.selectedItem = data;
+                $scope.resetButtonDisabled();
                 $scope.changeButtonStatus(data);
                 $scope.refreshDetail(data.uuid);
                 $scope.selectedDetail = [];
@@ -1370,6 +1375,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             PmmOrderDetail.changeDtlPurchaseFlag($scope.selectedItem.uuid, dtlUuid, flag).success(function (data) {
                 PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
                     $scope.selectedItem = data;
+                    $scope.resetButtonDisabled();
                     $scope.changeButtonStatus(data);
                     $scope.refreshDetail(data.uuid);
                     $scope.selectedDetail = [];
