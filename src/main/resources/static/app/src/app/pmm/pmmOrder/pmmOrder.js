@@ -166,13 +166,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             $scope.formMenuDisplayOption['102-edit'].display = true;
             $scope.formMenuDisplayOption['101-delete'].display = true;
         }
-
-        // 已经审核(confirm = 2)的订单不可再对订单做删除和编辑
-        if ($scope.selectedItem.confirm == '2') {
-            $scope.formMenuDisplayOption['102-edit'].display = false;
-            $scope.formMenuDisplayOption['101-delete'].display = false;
-        }
-
     };
 
     //更新产品信息
@@ -296,6 +289,12 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     };
 
     $scope.changeButtonStatus = function (orderMaster) {
+        // 已经审核(confirm = 2)的订单不可再对订单做删除和编辑，改灰顯
+        if (orderMaster.confirm == '2') {
+            $scope.form_delete_button_disabled = 1;
+            $scope.form_edit_button_disabled = 1;
+        }
+
         //confirm:1=未审核/2=已审核/3=审核中/4=退回   status:"1=有效/2=无效  transferFlag format = "1=是/2=否",
         //只有未审核和退回状态的单据才可以作废,
         if ($scope.effectiveType_disabled != 1 && (orderMaster.confirm == 2 || orderMaster.confirm == 3)) {
@@ -719,6 +718,8 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     };
 
     $scope.resetButtonDisabled = function () {
+        $scope.form_delete_button_disabled = 0;
+        $scope.form_edit_button_disabled = 0;
         $scope.effectiveType_disabled = 0;
         $scope.audit_button_disabled = 0;
         $scope.return_button_disabled = 0;

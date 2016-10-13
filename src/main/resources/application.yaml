@@ -123,7 +123,8 @@ spring:
 
 i1:
   i1-server:
-    url: http://project.benchmarkchina.com:10811
+    url: http://10.10.80.19:8081
+    #url: http://project.benchmarkchina.com:10811
   i1-adapter:
     url: http://project.benchmarkchina.com:10812
   tiptop-adapter:
