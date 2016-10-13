@@ -1276,7 +1276,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
             PmmOrderExtendDetail2.modify(orderExtendDetailUuid, custom.uuid, OrderExtendDetail2UpdateInput).success(function () {
                 $scope.OrderExtendDetailList = [];
-                $scope.refreshDeliveryList(detailUuid);
+                $scope.refreshDeliveryList(masterUuid);
                 $scope.editItemCustom($scope.selectedOrderExtendDetail);
                 $scope.showInfo('修改自定义信息成功。');
             })
