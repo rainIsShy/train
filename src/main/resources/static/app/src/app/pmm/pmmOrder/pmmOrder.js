@@ -1236,7 +1236,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 $scope.orderExtendDetail2List.content.push(response);
                 $scope.OrderExtendDetailList = [];
 
-                $scope.refreshDeliveryList(detailUuid);
+                $scope.refreshDeliveryList(masterUuid);
                 $scope.editItemCustom($scope.selectedOrderExtendDetail);
                 // angular.forEach($scope.OrderDetailList.content, function (orderDetail, index) {
                 //     PmmOrderExtendDetail.get(orderDetail.uuid).success(function (data) {
@@ -1302,7 +1302,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     //         $scope.OrderExtendDetailList = $scope.OrderExtendDetailList.concat(data.content);
                     //     });
                     // });
-                    $scope.refreshDeliveryList(detailUuid);
+                    $scope.refreshDeliveryList(masterUuid);
                     $scope.editItemCustom($scope.selectedOrderExtendDetail);
 
                     $scope.showInfo('删除成功。');
