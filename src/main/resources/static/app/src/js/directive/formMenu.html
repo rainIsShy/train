@@ -5,10 +5,14 @@
                 <i class="fa fa-plus"></i>&nbsp;{{formMenuDisplayOption['100-add'].name}}
             </md-button>
             <!--Go back to view status after deleting current object-->
-            <md-button ng-click="menuAction(101)" ng-if="formMenuDisplayOption['101-delete'].display && (menuAuthDataMap[formMenuDisplayOption['101-delete'].uuid] || isAdmin() || !formMenuDisplayOption['101-delete'].uuid)">
+            <md-button ng-click="menuAction(101)"
+                       ng-if="formMenuDisplayOption['101-delete'].display && (menuAuthDataMap[formMenuDisplayOption['101-delete'].uuid] || isAdmin() || !formMenuDisplayOption['101-delete'].uuid)"
+                       ng-disabled="form_delete_button_disabled == 1">
                 <i class="fa fa-times"></i>&nbsp;{{formMenuDisplayOption['101-delete'].name}}
             </md-button>
-            <md-button ng-click="menuAction(102)" ng-if="formMenuDisplayOption['102-edit'].display && (menuAuthDataMap[formMenuDisplayOption['102-edit'].uuid] || isAdmin() || !formMenuDisplayOption['102-edit'].uuid)">
+            <md-button ng-click="menuAction(102)"
+                       ng-if="formMenuDisplayOption['102-edit'].display && (menuAuthDataMap[formMenuDisplayOption['102-edit'].uuid] || isAdmin() || !formMenuDisplayOption['102-edit'].uuid)"
+                       ng-disabled="form_edit_button_disabled == 1">
                 <i class="fa fa-pencil-square-o"></i>&nbsp;{{formMenuDisplayOption['102-edit'].name}}
             </md-button>
             <md-button ng-click="menuAction(103)" ng-if="formMenuDisplayOption['103-copy'].display && (menuAuthDataMap[formMenuDisplayOption['103-copy'].uuid] || isAdmin() || !formMenuDisplayOption['103-copy'].uuid)">

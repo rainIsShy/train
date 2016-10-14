@@ -127,7 +127,8 @@
             <div align="center" flex="15" class="table-item">{{orderDetail.psoTransferNo}}</div>
             <div align="center" flex="10" class="table-item">{{orderDetail.remark}}</div>
             <div align="center" flex="10" class="table-item">{{CONFIRM[orderDetail.confirm].name}}</div>
-            <div align="center" flex="10" class="table-item">{{orderDetail.transferFlag}}</div><!-- 抛转否 -->
+            <div align="center" flex="10" class="table-item">{{TRANSFER_PSO_FLAG[orderDetail.transferFlag].name}}</div>
+            <!-- 抛转否 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.standardPrice}}</div><!-- 标准价 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.oriStandardAmt}}</div><!-- 标准金额(原币) -->
             <div align="center" flex="10" class="table-item">{{orderDetail.natStandardAmt}}</div><!-- 标准金额(本币) -->
