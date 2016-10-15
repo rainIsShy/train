@@ -143,7 +143,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
 
         //需要考虑灰化其他按钮
-        $scope.resetButtonDisabled();
+        $scope.resetButtonDisabled(0);
         $scope.orderListMenu.effectiveType = orderMaster.status;
         $scope.refreshDetail(orderMaster.uuid);
         $scope.changeButtonStatus(orderMaster);
@@ -253,11 +253,16 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     $scope.selectedItemsTotalPrice = 0.00;
 
     $scope.toggle = function (item, selected) {
-        var idx = selected.indexOf(item);
+        var idx = -1;
+        angular.forEach(selected, function (d, rIdx) {
+            if (d.uuid == item.uuid) {
+                idx = rIdx;
+                return;
+            }
+        });
         if (idx > -1) {
             selected.splice(idx, 1);
-        }
-        else {
+        } else {
             selected.push(item);
         }
 
@@ -271,7 +276,11 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
     $scope.changeButtonStatusAndCalTotalPrice = function () {
         var firstLoop = true;
-        $scope.resetButtonDisabled();
+        if ($scope.selected.length == 0) {
+            $scope.resetButtonDisabled(1);
+        } else {
+            $scope.resetButtonDisabled(0);
+        }
         angular.forEach($scope.selected, function (orderMaster) {
             $scope.selectedItemsTotalPrice = $scope.selectedItemsTotalPrice + orderMaster.oriPurAmt;
             //initialize effectiveType
@@ -340,7 +349,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     };
 
     $scope.changeDetailButtonStatus = function () {
-        $scope.resetDetailButtonDisabled();
+        $scope.resetDetailButtonDisabled($scope.selectedDetail.length > 0 ? 0 : 1);
         angular.forEach($scope.selectedDetail, function (detail) {
             if ($scope.audit_detail_disabled != 1 && (detail.confirm == 2 || detail.confirm == 4)) {
                 $scope.audit_detail_disabled = 1;
@@ -395,12 +404,16 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
 
     $scope.toggleDetail = function (item, selectedDetail) {
-        var idx = selectedDetail.indexOf(item);
+        var idx = -1;
+        angular.forEach(selectedDetail, function(d, rIdx) {
+            if (d.uuid == item.uuid) {
+                idx = rIdx;
+                return;
+            }
+        });
         if (idx > -1) {
             selectedDetail.splice(idx, 1);
-            $scope.resetDetailButtonDisabled();
-        }
-        else {
+        } else {
             selectedDetail.push(item);
         }
 
@@ -437,12 +450,12 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     }
                 });
                 //需要考虑灰化其他按钮
-                $scope.resetButtonDisabled();
+                $scope.resetButtonDisabled(0);
                 $scope.changeButtonStatuOnly();
             } else if ($scope.orderListMenu.selectAll == false) {
                 $scope.selected = [];
                 $scope.orderListMenu.effectiveType = '1';
-                $scope.resetButtonDisabled();
+                $scope.resetButtonDisabled(1);    // 按鈕初始狀態改為顯
             }
         } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
             if ($scope.orderListMenu.selectAll == true) {
@@ -463,6 +476,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 //           $scope.orderListMenu.selectAll = false;
                 $scope.orderListMenu.effectiveType = '1';
                 $scope.resetInitialValue();
+                $scope.resetButtonDisabled(1);
             }
         }
 
@@ -476,7 +490,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             $scope.orderListMenu.selectAll = false;
 
             //需要考虑灰化其他按钮
-            $scope.resetButtonDisabled();
+            $scope.resetButtonDisabled(1);
 
             $scope.orderListMenu.effectiveType = data.status;
 
@@ -714,26 +728,26 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         $scope.selectedItem = null;
         $scope.selectedItemsCount = 0;
         $scope.selectedItemsTotalPrice = 0.00;
-        $scope.resetButtonDisabled();
+        $scope.resetButtonDisabled(0);
     };
 
-    $scope.resetButtonDisabled = function () {
-        $scope.form_delete_button_disabled = 0;
-        $scope.form_edit_button_disabled = 0;
-        $scope.effectiveType_disabled = 0;
-        $scope.audit_button_disabled = 0;
-        $scope.return_button_disabled = 0;
-        $scope.revert_audit_button_disabled = 0;
-        $scope.throw_button_disabled = 0;
-        $scope.purchase_submit_button_disabled = 0;
-        $scope.purchase_back_button_disabled = 0;
+    $scope.resetButtonDisabled = function (val) {
+        $scope.form_delete_button_disabled = val;
+        $scope.form_edit_button_disabled = val;
+        $scope.effectiveType_disabled = val;
+        $scope.audit_button_disabled = val;
+        $scope.return_button_disabled = val;
+        $scope.revert_audit_button_disabled = val;
+        $scope.throw_button_disabled = val;
+        $scope.purchase_submit_button_disabled = val;
+        $scope.purchase_back_button_disabled = val;
     };
 
-    $scope.resetDetailButtonDisabled = function () {
-        $scope.audit_detail_disabled = 0;
-        $scope.revert_audit_detail_disabled = 0;
-        $scope.purchase_submit_detail_disabled = 0;
-        $scope.purchase_back_detail_disabled = 0;
+    $scope.resetDetailButtonDisabled = function (val) {
+        $scope.audit_detail_disabled = val;
+        $scope.revert_audit_detail_disabled = val;
+        $scope.purchase_submit_detail_disabled = val;
+        $scope.purchase_back_detail_disabled = val;
     };
 
     $scope.queryMenuAction = function () {
@@ -751,6 +765,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         $scope.orderListMenu.effectiveType = '2';
 
         $scope.resetInitialValue();
+        $scope.resetButtonDisabled(1);
 
         if ($scope.orderListMenu.select.startDate !== undefined) {
             if ($scope.orderListMenu.select.startDate !== null) {
@@ -1023,7 +1038,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                         };
                         PmmOrderMaster.modify(OrderMasterUpdateInput).success(function () {
                             $scope.selectedItem.confirm = 2;
-                            $scope.resetButtonDisabled();
+                            $scope.resetButtonDisabled(0);
                             $scope.changeButtonStatus($scope.selectedItem);
                         });
                     }
@@ -1367,7 +1382,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         $scope.showConfirm(msg, '', function () {
             PmmOrderMaster.changePurchaseFlag($scope.selectedItem.uuid, flag).success(function (data) {
                 $scope.selectedItem = data;
-                $scope.resetButtonDisabled();
+                $scope.resetButtonDisabled(0);
                 $scope.changeButtonStatus(data);
                 $scope.refreshDetail(data.uuid);
                 $scope.selectedDetail = [];
@@ -1389,7 +1404,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             PmmOrderDetail.changeDtlPurchaseFlag($scope.selectedItem.uuid, dtlUuid, flag).success(function (data) {
                 PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
                     $scope.selectedItem = data;
-                    $scope.resetButtonDisabled();
+                    $scope.resetButtonDisabled(0);
                     $scope.changeButtonStatus(data);
                     $scope.refreshDetail(data.uuid);
                     $scope.selectedDetail = [];
