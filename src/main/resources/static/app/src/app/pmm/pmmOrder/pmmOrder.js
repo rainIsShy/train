@@ -100,7 +100,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         } else if (menuId == 410) {
             $scope.purchaseList(true);
         } else if (menuId == 411) {
-            $scope.purchaseList(false);
+            $scope.openPurchaseReturnRemarkDlg('mstList');
         }
     };
 
@@ -1023,6 +1023,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                         };
                         PmmOrderMaster.modify(OrderMasterUpdateInput).success(function () {
                             $scope.selectedItem.confirm = 2;
+                            $scope.resetButtonDisabled();
                             $scope.changeButtonStatus($scope.selectedItem);
                         });
                     }
@@ -1341,6 +1342,18 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         $mdDialog.show({
             controller: 'OrderPromotionSearchController',
             templateUrl: 'app/src/app/pmm/pmmOrder/selectPromotion.html',
+            parent: angular.element(document.body),
+            targetEvent: event
+        }).then(function (data) {
+            $scope.selectedItem.promotion = data;
+            $scope.selectedItem.promotionUuid = data.uuid;
+        });
+    };
+
+    $scope.openPurchaseReturnRemarkDlg = function (rtnType) {
+        $mdDialog.show({
+            controller: 'OrderPurchaseBackController',
+            templateUrl: 'app/src/app/pmm/pmmOrder/returnRemark.html',
             parent: angular.element(document.body),
             targetEvent: event
         }).then(function (data) {
@@ -1770,4 +1783,31 @@ angular.module('IOne-Production').controller('OrderPromotionSearchController', f
     };
 });
 
+angular.module('IOne-Production').controller('OrderPurchaseBackController', function ($scope, $mdDialog) {
+    $scope.pageOption = {
+        sizePerPage: 6,
+        currentPage: 0,
+        totalPage: 0,
+        totalElements: 0,
+        displayModel: 0  //0 : image + text //1 : image
+    };
+
+    $scope.refresh = function () {
+    };
+
+    $scope.refresh();
+
+    $scope.select = function (data) {
+//        $scope.promotion = data;
+//        $mdDialog.hide($scope.promotion);
+    };
+
+    $scope.hideDlg = function () {
+        $mdDialog.hide($scope.promotion);
+    };
+
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+});
 

@@ -23,7 +23,7 @@
         <md-button
                 ng-if="itemOperationMenuDisplayOption['505-purchaseBack'].display && (menuAuthDataMap[itemOperationMenuDisplayOption['505-purchaseBack'].uuid] || isAdmin() || !itemOperationMenuDisplayOption['505-purchaseBack'].uuid)"
                 ng-disabled="purchase_back_detail_disabled == 1" class="md-raised"
-                ng-click="changeDtlPurchaseFlag(3)">
+                ng-click="openPurchaseReturnRemarkDlg('dtlList')">
             {{itemOperationMenuDisplayOption['505-purchaseBack'].name}}
         </md-button>
     </div>
