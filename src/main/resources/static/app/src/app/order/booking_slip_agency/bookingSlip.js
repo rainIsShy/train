@@ -1042,7 +1042,6 @@ angular.module('IOne-Production').controller('bookingSlipAgencyController', func
                 });
             });
 
-            // });
         });
 
         //get this particular orderExtendDetail's cutom detail which come from orderExtendDetail2
@@ -1097,6 +1096,7 @@ angular.module('IOne-Production').controller('bookingSlipAgencyController', func
                         $scope.OrderExtendDetailList = $scope.OrderExtendDetailList.concat(data.content);
                     });
                 });
+                $scope.editItemCustom($scope.selectedOrderExtendDetail);
                 $scope.showInfo('新增自定义信息成功。');
             })
         });
@@ -1133,7 +1133,7 @@ angular.module('IOne-Production').controller('bookingSlipAgencyController', func
                         $scope.OrderExtendDetailList = $scope.OrderExtendDetailList.concat(data.content);
                     });
                 });
-
+                $scope.editItemCustom($scope.selectedOrderExtendDetail);
                 $scope.showInfo('修改自定义信息成功。');
             })
         });
@@ -1404,6 +1404,8 @@ angular.module('IOne-Production').controller('SalesOrderExtendDetail2Controller'
         ItemRelationService.getAll($scope.itemUuid, $scope.selectedCustom.itemCustom.uuid, $scope.selectedCustom.informationUuids).success(function (itemRelationData) {
             $scope.itemRelationList = itemRelationData.content;
             $scope.selectedCustom.informationScope = $scope.selectedCustom.information;
+            console.log($scope.selectedCustom.information);
+
         });
 
 
