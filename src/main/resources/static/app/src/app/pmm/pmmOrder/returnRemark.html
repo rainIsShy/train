@@ -7,17 +7,17 @@
                 <div align="center" flex="45" class="table-head">规格</div>
             </div>
 
-            <div ng-repeat="">
+            <div ng-repeat="dtl in dtls">
                 <div layout="row">
-                    <div align="center" flex="10" class="table-item"></div>
-                    <div align="center" flex="40" class="table-item"></div>
-                    <div align="center" flex="45" class="table-item"></div>
+                    <div align="center" flex="10" class="table-item">{{dtl.no}}</div>
+                    <div align="center" flex="40" class="table-item">{{dtl.item.name}}</div>
+                    <div align="center" flex="45" class="table-item">{{dtl.item.standard}}</div>
                 </div>
             </div>
             <div layout="row">
                 <md-input-container flex="95">
                     <label>退回备注:</label>
-                    <textarea ng-model="item.sql" md-maxlength="250" md-select-on-focus></textarea>
+                    <textarea ng-model="returnRemark" md-maxlength="250" md-select-on-focus></textarea>
                 </md-input-container>
             </div>
             <div layout="row">
