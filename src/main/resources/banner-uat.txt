@@ -11,11 +11,11 @@ ${AnsiColor.BRIGHT_RED}                                                         
 
 ${AnsiColor.CYAN}:: Power By Spring Boot ${spring-boot.version} ::${AnsiColor.BLACK}
 
-${AnsiColor.GREEN}
-     _______. __  .___________.
-    /       ||  | |           |
-   |   (----`|  | `---|  |----`
-    \   \    |  |     |  |
-.----)   |   |  |     |  |
-|_______/    |__|     |__|
+${AnsiColor.YELLOW}
+ __    __       ___      .___________.
+|  |  |  |     /   \     |           |
+|  |  |  |    /  ^  \    `---|  |----`
+|  |  |  |   /  /_\  \       |  |
+|  `--'  |  /  _____  \      |  |
+ \______/  /__/     \__\     |__|
 ${AnsiColor.BLACK}

@@ -1,0 +1,18 @@
+--- # UAT
+banner:
+  location: banner-uat.txt
+
+spring:
+  profiles: UAT
+
+i1:
+  i1-server:
+    url: http://project.benchmarkchina.com:10821
+  i1-adapter:
+    url: http://project.benchmarkchina.com:10822
+  tiptop-adapter:
+    url: http://project.benchmarkchina.com:10823
+  ec-adapter:
+    url: http://project.benchmarkchina.com:10824
+  tmall-adapter:
+    url: http://project.benchmarkchina.com:10825

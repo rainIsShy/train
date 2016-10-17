@@ -361,7 +361,7 @@ angular.module('IOne').controller('MainController', function($rootScope, $scope,
 
     $scope.stopEventPropagation = function(event) {
         event.stopPropagation();
-    }
+    };
 
     $scope.changeCurrentUserPw = function() {
         $mdDialog.show({

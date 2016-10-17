@@ -1,0 +1,102 @@
+<div class="main-panel">
+    <div layout="row" class="top-title">
+        <div flex class="right-title">
+            <span>客户订单明细表</span>
+        </div>
+    </div>
+    <div layout="row" layout-md="column" layout-sm="column" class="menu" style="margin: 0px 18px; width: 1050px;">
+        <md-input-container flex="15">
+            <label>省份</label>
+            <input type="text" ng-model="proName">
+            <md-button ng-click="openProDlg()" class="md-icon-button float-right md-button" style="margin-top: 10px;">
+                <ng-md-icon icon="search"></ng-md-icon>
+            </md-button>
+        </md-input-container>
+        <md-input-container flex="15">
+            <label>城市</label>
+            <input type="text" ng-model="cityName">
+            <md-button ng-click="openCityDlg()" class="md-icon-button float-right md-button" style="margin-top: 10px;">
+                <ng-md-icon icon="search"></ng-md-icon>
+            </md-button>
+        </md-input-container>
+        <md-input-container flex="15">
+            <label>经销商</label>
+            <input type="text" ng-model="channelName">
+            <md-button ng-click="openChannelDlg()" class="md-icon-button float-right md-button"
+                       style="margin-top: 10px;">
+                <ng-md-icon icon="search"></ng-md-icon>
+            </md-button>
+        </md-input-container>
+        <md-input-container flex="15">
+            <label>商品型号</label>
+            <input type="text" ng-model="itemNo">
+            <md-button ng-click="openItemNoDlg()" class="md-icon-button float-right md-button"
+                       style="margin-top: 10px;">
+                <ng-md-icon icon="search"></ng-md-icon>
+            </md-button>
+        </md-input-container>
+        <md-button style="margin-top: 22px;height: 20px;" class="md-raised" ng-click="queryReport()">搜索</md-button>
+    </div>
+
+    <div layout="row" layout-md="column" layout-sm="column" class="menu" style="margin: 0px 18px; width : 1050px;">
+        <md-input-container flex="15">
+            <label class="label">下单日起</label>
+            <input type="date" ng-model="orderDateStart" min="0000-01-01" max="9999-12-31">
+        </md-input-container>
+        <md-input-container flex="15">
+            <label class="label">下单日止</label>
+            <input type="date" ng-model="orderDateEnd" min="0000-01-01" max="9999-12-31">
+        </md-input-container>
+        <md-input-container flex="15">
+            <label class="label">预交货日起</label>
+            <input type="date" ng-model="deliverDateStart" min="0000-01-01" max="9999-12-31">
+        </md-input-container>
+        <md-input-container flex="15">
+            <label class="label">预交货日止</label>
+            <input type="date" ng-model="deliverDateEnd" min="0000-01-01" max="9999-12-31">
+        </md-input-container>
+
+        <md-button style="margin-top: 22px;height: 20px;" class="md-raised" ng-click="exportXls()">导出EXCEL</md-button>
+    </div>
+
+    <md-content>
+        <md-divider style="margin-bottom:5px;"></md-divider>
+
+        <md-data-table-container>
+            <table md-data-table md-row-select="selected" md-progress="deferred">
+                <thead>
+                <tr>
+                    <th><span class="md-subhead">省份</span></th>
+                    <th><span class="md-subhead">城市</span></th>
+                    <th><span class="md-subhead">经销商</span></th>
+                    <th><span class="md-subhead">商品型号</span></th>
+                    <th><span class="md-subhead">预定量</span></th>
+                    <th><span class="md-subhead">成交价</span></th>
+                    <th><span class="md-subhead">挂牌价</span></th>
+                    <th><span class="md-subhead">折扣率</span></th>
+                    <th><span class="md-subhead">下单日</span></th>
+                    <th><span class="md-subhead">预交货日</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="r in allReportData.content" ng-class="">
+                    <td><span class="md-body-1">{{r.orderMaster.channel.area.fullPath[2]}}</span></td>
+                    <td><span class="md-body-1">{{r.orderMaster.channel.area.fullPath[3]}}</span></td>
+                    <td><span class="md-body-1">{{r.orderMaster.channel.name}}</span></td>
+                    <td><span class="md-body-1">{{r.item.no}}</span></td>
+                    <td><span class="md-body-1">{{r.orderQuantity}}</span></td>
+                    <td><span class="md-body-1">{{r.orderPrice}}</span></td>
+                    <td><span class="md-body-1">{{r.standardPrice}}</span></td>
+                    <td><span class="md-body-1">{{r.orderPrice / r.standardPrice | number:2}}</span></td>
+                    <td><span class="md-body-1">{{r.orderMaster.orderDate | date:'yyyy-MM-dd'}}</span></td>
+                    <td><span class="md-body-1">{{r.deliverDate | date:'yyyy-MM-dd'}}</span></td>
+                </tr>
+                </tbody>
+            </table>
+        </md-data-table-container>
+
+        <div pagination option="pageOption" callback="queryReport()"></div>
+        <div ng-show="pageOption.totalElements > 0">总预定量: {{totalOrderQty}}</div>
+    </md-content>
+
+</div>

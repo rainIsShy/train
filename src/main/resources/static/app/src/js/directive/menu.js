@@ -249,6 +249,8 @@ angular.module('IOne-directives').directive('ecommerceOrderListMenu', function(C
                      $scope.cancelThrowMenuAction();
                 } else if (menuId == 409) {
                     $scope.o2oOverdueMenuAction();
+                } else if (menuId == 410) {
+                    $scope.rollbackTransfer();
                 }
 
             }
@@ -277,6 +279,8 @@ angular.module('IOne-directives').directive('ecommerceOrderFormMenu', function(C
                     $scope.cancelThrowMenuAction();
                 }else if(menuId == 418) {
                     $scope.printAction();
+                }else if(menuId == 420) {
+                    $scope.rollbackTransfer();
                 }
             }
         }

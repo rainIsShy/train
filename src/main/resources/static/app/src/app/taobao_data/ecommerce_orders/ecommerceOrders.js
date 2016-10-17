@@ -37,7 +37,8 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
         '406-revertAudit': {display: true, name: '取消审核', uuid: 'CE277D5B-EF09-4648-8706-E4A44766E745'},
         '407-add': {display: true, name: '新增', uuid: '6A8F9438-C2FF-4BF3-8797-7B680AAA068E'},
         '408-supervisorAudit': {display: true, name: '主管审核', uuid: 'C515BAEB-758F-4265-AD6A-50FBDD614DD3'},
-        '409-o2oOverdue': {display: true, name: '逾期拒绝配送', uuid: 'ADAA19C6-424B-4BE7-B2E2-F8D5B9ECCFC9'}
+        '409-o2oOverdue': {display: true, name: '逾期拒绝配送', uuid: 'ADAA19C6-424B-4BE7-B2E2-F8D5B9ECCFC9'},
+        '410-rollbackTransfer': {display: true, name: '抛转还原', uuid: '324a85e8-6f5b-46bf-a42d-3e8926276a0d'}
     };
 
     $scope.ecommerceFormMenuDisplayOption = {
@@ -46,7 +47,8 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
         '416-revertAudit': {display: true, name: '取消审核', uuid: '543C075A-3E18-491F-9726-F063D589D084'},
         '417-cancelthrow': {display: true, name: '取消抛转预订单', uuid: 'AE4CF2E4-4CCE-40DA-B060-0D00FCDA76C8'},
         '418-print': {display: true, name: '打印', uuid: '753C7E95-FC29-40DA-8296-DA858325FCF0'},
-        '419-supervisorAudit': {display: true, name: '主管审核', uuid: 'F97D8B53-AF71-448F-AB73-63BAFB83F77F'}
+        '419-supervisorAudit': {display: true, name: '主管审核', uuid: 'F97D8B53-AF71-448F-AB73-63BAFB83F77F'},
+        '420-rollbackTransfer': {display: true, name: '抛转还原', uuid: 'fb882032-4d7f-4998-854e-6217a5089a25'}
     };
 
     $scope.pageOption = {
@@ -96,6 +98,7 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
         $scope.revert_audit_button_disabled = 0;
         $scope.supervisorAudit_button_disabled = 0;
         $scope.o2o_overdue_button_disabled = 0;
+        $scope.rollback_transfer_button_disabled = 0;
     };
 
     //初始调用查询订单
@@ -242,6 +245,10 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
         //已审核并且尚未抛转的单据可逾期拒绝配送
         if (!(orderMaster.confirm == 2 && orderMaster.transferPsoFlag != 1 )) {
             $scope.o2o_overdue_button_disabled = 1;
+        }
+
+        if (!(orderMaster.confirm == 2 && orderMaster.transferPsoFlag == 1 )) {
+            $scope.rollback_transfer_button_disabled = 1;
         }
     };
 
@@ -1357,6 +1364,37 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
             }
         });
 
+    };
+
+    $scope.rollbackTransfer = function () {
+        $scope.showConfirm('确认抛转还原吗？', '', function () {
+            if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
+
+                EcommerceOrdersMaster.rollback($scope.selectedItem.uuid).success(function () {
+                    $scope.selectedItem.transferPsoFlag = Constant.TRANSFER_PSO_FLAG[2].value;
+                    $scope.queryMenuActionWithPaging();
+                    $scope.showInfo('还原成功！');
+                }).error(function (data) {
+                    $scope.showError(data.message);
+                });
+
+            }
+
+            else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
+
+                var uuids = "";
+                angular.forEach($scope.selected, function (item) {
+                    uuids = uuids + item.uuid + ","
+                });
+
+                var response = EcommerceOrdersMaster.rollback(uuids).success(function () {
+                    $scope.queryMenuActionWithPaging();
+                    $scope.showInfo('还原成功！');
+                }).error(function (data) {
+                    $scope.showError(data.message);
+                });
+            }
+        });
     };
 
 });

@@ -345,7 +345,6 @@ angular.module('IOne-Production').controller('ChannelPromotionController', funct
             $scope.addItem.endPurchaseDate = source.endPurchaseDate != null ? new Date(source.endPurchaseDate) : '';
         } else {
             $scope.addDetailItem = source;
-            console.log(source);
         }
     };
 
@@ -379,9 +378,12 @@ angular.module('IOne-Production').controller('ChannelPromotionController', funct
                         if (data.totalElements > 0) {
                             $scope.showError("活动主题编号重覆!");
                         } else {
-                            ChannelPromotionService.add($scope.addItem).success(function () {
+                            ChannelPromotionService.add($scope.addItem).success(function (data) {
                                 $scope.refreshList();
                                 $scope.showInfo("新增成功!");
+                                $scope.listItemAction();
+                                $scope.selectedItem = data;
+                                $scope.refreshProductList($scope.selectedItem);
                             });
                         }
                     });
@@ -408,16 +410,22 @@ angular.module('IOne-Production').controller('ChannelPromotionController', funct
                 ChannelPromotionService.modify($scope.selectedItem.uuid, $scope.selectedItem).success(function () {
                     $scope.refreshList();
                     $scope.showInfo("修改成功!");
+                    $scope.listItemAction();
+                    $scope.selectedItem = data;
                 });
             } else if ($scope.domain == 'OCM_PROM_PRODUCT_DTL') {
                 PromotionProductService.modify($scope.selectedItem.uuid, $scope.addDetailItem.uuid, $scope.addDetailItem).success(function () {
                     $scope.refreshProductList($scope.selectedItem);
+                    $scope.listItemAction();
                     $scope.showInfo("修改商品成功!");
+
                 });
             } else if ($scope.domain == 'OCM_PROM_CHANNEL_DTL') {
                 PromotionChannelService.modify($scope.selectedItem.uuid, $scope.addDetailItem.uuid, $scope.addDetailItem).success(function () {
                     $scope.refreshChannelList($scope.selectedItem);
+                    $scope.listItemAction();
                     $scope.showInfo("修改渠道成功!");
+
                 });
             }
         }
@@ -425,7 +433,6 @@ angular.module('IOne-Production').controller('ChannelPromotionController', funct
 
     $scope.validForm = function () {
         var isPass = true;
-        console.log($scope.addItem.startPurchaseDate);
         if ($scope.addItem.no == '') {
             $scope.showError('請輸入活动主题编号');
             isPass = false;
@@ -573,8 +580,9 @@ angular.module('IOne-Production').controller('ChannelPromotionController', funct
             if ($scope.selectedItem) {
                 ChannelPromotionService.delete(item.uuid).success(function () {
                     $scope.refreshList();
-                    $scope.selectedItem = [];
+
                     $scope.showInfo("刪除促销活动成功!");
+                    $scope.selectedItem = null
                 });
             }
         });

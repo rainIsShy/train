@@ -273,8 +273,13 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
             angular.forEach($scope.selected, function(item) {
                 uuids.push(item.uuid);
             });
-            TaobaoOrders.merge(uuids).success(function() {
+            TaobaoOrders.merge(uuids).success(function (returnMsgs) {
                 $scope.queryMenuActionWithPaging();
+
+                angular.forEach(returnMsgs, function (msg) {
+                    $scope.showError(msg);
+                });
+
                 $scope.showInfo('合并订单成功。');
             }).error(function() {
                 $scope.showError('合并订单失败。');
@@ -309,8 +314,11 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
                         uuid: orderMasterUuids,
                         confirm: '2'
                     };
-                    var response = TaobaoOrders.modify(OrderMasterUpdateInput).success(function () {
+                    var response = TaobaoOrders.modify(OrderMasterUpdateInput).success(function (returnMsgs) {
                         $scope.queryMenuActionWithPaging();//刷新查询
+                        angular.forEach(returnMsgs, function (msg) {
+                            $scope.showError(msg);
+                        });
                         $scope.showInfo('审核成功，数据已刷新');
                     }).error(function (data) {
                         $scope.showError(data.message);

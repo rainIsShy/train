@@ -29,7 +29,6 @@ i1:
     url: http://localhost:8085
 
 
-
 --- # default profile
 spring:
   profiles: default
@@ -56,24 +55,15 @@ i1:
   tmall-adapter:
     url: http://project.benchmarkchina.com:10815
 
---- # UAT
+
+--- # DEV
+
 banner:
-  location: banner-uat.txt
+  location: banner-dev.txt
 
 spring:
-  profiles: UAT
+  profiles: DEV
 
-i1:
-  i1-server:
-    url: http://project.benchmarkchina.com:10821
-  i1-adapter:
-    url: http://project.benchmarkchina.com:10822
-  tiptop-adapter:
-    url: http://project.benchmarkchina.com:10823
-  ec-adapter:
-    url: http://project.benchmarkchina.com:10824
-  tmall-adapter:
-    url: http://project.benchmarkchina.com:10825
 
 --- # Kent's Dev
 
@@ -153,6 +143,26 @@ i1:
   tmall-adapter:
     url: http://project.benchmarkchina.com:10815
 
+
+--- # Chris Dev
+
+spring:
+
+  profiles: junea
+
+i1:
+  i1-server:
+    #url: http://project.benchmarkchina.com:10811
+    url: http://localhost:8081
+  i1-adapter:
+    url: http://project.benchmarkchina.com:10812
+  tiptop-adapter:
+    url: http://project.benchmarkchina.com:10813
+  ec-adapter:
+    url: http://project.benchmarkchina.com:10814
+    #url: http://localhost:8084
+  tmall-adapter:
+    url: http://project.benchmarkchina.com:10815
 
 
 
