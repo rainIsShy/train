@@ -65,7 +65,7 @@
                                                 <div ng-message="max">笔数不能大于200笔</div>
                                             </div>
                                         </md-input-container>
-                                        <md-button flex="10" class="md-raised" ng-disabled="listForm.$invalid"
+                                        <md-button class="md-raised" ng-disabled="listForm.$invalid"
                                                    ng-if="orderListMenuDisplayOption['405-query'].display && (menuAuthDataMap[orderListMenuDisplayOption['405-query'].uuid] || isAdmin() || !orderListMenuDisplayOption['405-query'].uuid)"
                                                    style="margin-top: 22px;height: 20px;"
                                                    ng-click="orderListMenuAction(405, $event)">&nbsp;{{orderListMenuDisplayOption['405-query'].name}}

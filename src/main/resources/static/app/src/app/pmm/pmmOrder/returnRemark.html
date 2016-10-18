@@ -9,7 +9,7 @@
             </div>
 
             <div ng-repeat="dtl in dtls">
-                <div layout="row">
+                <div layout="row" ng-if="dtl.orderQty != 0">
                     <div align="center" flex="5" class="table-item">{{dtl.no}}</div>
                     <div align="center" flex="25" class="table-item">{{dtl.item.name}}</div>
                     <div align="center" flex="35" class="table-item">{{dtl.item.standard}}</div>
