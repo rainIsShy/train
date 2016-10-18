@@ -1386,23 +1386,52 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         });
     };
 
-    $scope.changePurchaseFlag = function (flag, returnRemark) {
-        var msg = flag == 2 ? '确认发出采购吗？' : '确认取消采购吗？';
-        $scope.showConfirm(msg, '', function () {
-            PmmOrderMaster.changePurchaseFlag($scope.selectedItem.uuid, flag, { returnRemark: returnRemark }).success(function (data) {
+    $scope.changePurchaseFlag = function (flag, dtls) {
+        if (flag == 2) {
+            $scope.showConfirm('确认发出采购吗？', '', function () {
+                PmmOrderMaster.changePurchaseFlag($scope.selectedItem.uuid, flag, []).success(function (data) {
+                    $scope.selectedItem = data;
+                    $scope.resetButtonDisabled(0);
+                    $scope.changeButtonStatus(data);
+                    $scope.refreshDetail(data.uuid);
+                    $scope.selectedDetail = [];
+                    $scope.showInfo('发出采购成功。');
+                });
+            });
+        } else {
+            PmmOrderMaster.changePurchaseFlag($scope.selectedItem.uuid, flag, dtls).success(function (data) {
                 $scope.selectedItem = data;
                 $scope.resetButtonDisabled(0);
                 $scope.changeButtonStatus(data);
                 $scope.refreshDetail(data.uuid);
                 $scope.selectedDetail = [];
-                $scope.showInfo('修改成功。');
+                $scope.showInfo('退回采购成功。');
             });
-        });
+        }
     };
 
-    $scope.changeDtlPurchaseFlag = function (flag, returnRemark) {
-        var msg = flag == 2 ? '确认发出采购吗？' : '确认取消采购吗？';
-        $scope.showConfirm(msg, '', function () {
+    $scope.changeDtlPurchaseFlag = function (flag, dtls) {
+        if (flag == 2) {
+            $scope.showConfirm('确认发出采购吗？', '', function () {
+                var dtlUuid = '';
+                angular.forEach($scope.selectedDetail, function (dtl) {
+                    dtlUuid += (dtlUuid == '' ? '' : ',') + dtl.uuid;
+                });
+                if (dtlUuid == '') {
+                    return;
+                }
+                PmmOrderDetail.changeDtlPurchaseFlag($scope.selectedItem.uuid, dtlUuid, flag, []).success(function (data) {
+                    PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
+                        $scope.selectedItem = data;
+                        $scope.resetButtonDisabled(0);
+                        $scope.changeButtonStatus(data);
+                        $scope.refreshDetail(data.uuid);
+                        $scope.selectedDetail = [];
+                    });
+                    $scope.showInfo('发出采购成功。');
+                });
+            });
+        } else {
             var dtlUuid = '';
             angular.forEach($scope.selectedDetail, function (dtl) {
                 dtlUuid += (dtlUuid == '' ? '' : ',') + dtl.uuid;
@@ -1410,7 +1439,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             if (dtlUuid == '') {
                 return;
             }
-            PmmOrderDetail.changeDtlPurchaseFlag($scope.selectedItem.uuid, dtlUuid, flag, { returnRemark: returnRemark }).success(function (data) {
+            PmmOrderDetail.changeDtlPurchaseFlag($scope.selectedItem.uuid, dtlUuid, flag, dtls).success(function (data) {
                 PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
                     $scope.selectedItem = data;
                     $scope.resetButtonDisabled(0);
@@ -1418,23 +1447,33 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     $scope.refreshDetail(data.uuid);
                     $scope.selectedDetail = [];
                 });
-                $scope.showInfo('修改成功。');
+                $scope.showInfo('退回采购成功。');
             });
-        });
+        }
     };
 
-    $scope.purchaseList = function (flag, returnRemark) {
-        var msg = flag ? '确认发出采购吗？' : '确认取消采购吗？';
-        $scope.showConfirm(msg, '', function () {
+    $scope.purchaseList = function (flag, dtls) {
+        if (flag) {
+            $scope.showConfirm('确认发出采购吗？', '', function () {
+                var allUuid = [];
+                angular.forEach($scope.selected, function (data) {
+                    allUuid.push(data.uuid);
+                });
+                PmmOrderMaster.purchaseList({allUuid: allUuid, flag: flag }).success(function (data) {
+                    $scope.queryMenuAction();
+                    $scope.showInfo('发出采购成功。');
+                });
+            });
+        } else {
             var allUuid = [];
             angular.forEach($scope.selected, function (data) {
                 allUuid.push(data.uuid);
             });
-            PmmOrderMaster.purchaseList({allUuid: allUuid, flag: flag, returnRemark: returnRemark }).success(function (data) {
+            PmmOrderMaster.purchaseList({allUuid: allUuid, flag: flag, dtls: dtls }).success(function (data) {
                 $scope.queryMenuAction();
-                $scope.showInfo('修改成功。');
+                $scope.showInfo('退回采购成功。');
             });
-        });
+        }
     };
 
     $scope.getDetailBgcolor = function (detail) {
@@ -1816,7 +1855,7 @@ angular.module('IOne-Production').controller('OrderPurchaseReturnController', fu
     }
 
     $scope.hideDlg = function () {
-        $mdDialog.hide($scope.returnRemark);
+        $mdDialog.hide($scope.dtls);
     };
 
     $scope.cancelDlg = function () {
