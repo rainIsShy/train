@@ -112,7 +112,16 @@ angular.module('IOne-Production').service('TaoBaoAdapterService', function ($htt
 
     this.deleteConfig = function (deleteObj, controllerScope, successCallBack) {
         var url = ecAdapterUrl + '/taobao/config/delete';
-        return $http.delete(url, deleteObj).success(function (response, status) {
+        angular.forEach(deleteObj, function (item) {
+            delete(item.createDate);
+            delete(item.modifiedDate);
+        });
+        return $http({
+            method: 'DELETE',
+            url: url,
+            data: deleteObj,
+            headers: {'Content-Type': 'application/json;charset=utf-8'}
+        }).success(function (response, status) {
             if (status == 200) {
                 successCallBack(response);
             } else {

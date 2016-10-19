@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('EPSInterfaceConfigController', function ($scope, TaoBaoAdapterService, ChannelService, Constant, $mdDialog, $q) {
+angular.module('IOne-Production').controller('EPSInterfaceConfigController', function ($scope, TaoBaoAdapterService, ChannelService, OCMMallService, Constant, $mdDialog, $q) {
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
@@ -69,7 +69,11 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                         if (angular.isDefined(item.ocmBaseChanUuid) && item.ocmBaseChanUuid != null) {
                             ChannelService.get(item.ocmBaseChanUuid).success(function (data) {
                                 item.channel = data;
-                                item.mall = data.mall;
+                            });
+                        }
+                        if (angular.isDefined(item.ocmBaseMallUuid) && item.ocmBaseMallUuid != null) {
+                            OCMMallService.get(item.ocmBaseMallUuid).success(function (data) {
+                                item.mall = data;
                             });
                         }
                     });
@@ -214,9 +218,6 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                 itemList.push($scope.source);
                 TaoBaoAdapterService.updateConfig(itemList, $scope, function (data) {
                     $scope.showInfo("修改成功");
-                    $scope.source = data;
-                    $scope.selectedItem = data;
-                    $scope.selectedItemBackUp = angular.copy($scope.selectedItem);
                 });
                 /*
                  EPSInterfaceConfigService.modify($scope.source.uuid, $scope.source).success(function (data) {
