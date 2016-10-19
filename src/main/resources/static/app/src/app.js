@@ -39,7 +39,7 @@ angular.module('IOne').factory('AuthInterceptor', function($rootScope, $q, $cook
     return {
         request: function(config) {
             // keep user logged in after page refresh
-            $rootScope.globals = $cookieStore.get('globals') || {};
+            $rootScope.globals = $rootScope.globals || $cookieStore.get(GLOBAL_COOKIE) || {};
 
             if ($rootScope.globals.currentUser || config.url == "/auth/login" || config.url == "/auth/logout") {
                 return config;
@@ -63,8 +63,8 @@ angular.module('IOne').config(['$httpProvider', function($httpProvider) {
 
 angular.module('IOne').run(function($rootScope, $cookieStore, $window, $http) {
     // keep user logged in after page refresh
-    $rootScope.globals = $cookieStore.get('globals') || {};
-    $rootScope.autoLogin = $cookieStore.get('autoLogin') || 0;
+    $rootScope.globals = $cookieStore.get(GLOBAL_COOKIE) || {};
+    $rootScope.autoLogin = $cookieStore.get(AUTO_LOGIN_COOKIE) || 0;
 
     if ($rootScope.globals.currentUser) {
         $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
@@ -89,8 +89,8 @@ angular.module('IOne').controller('MainController', function($rootScope, $scope,
 
     /////////////////////////////////////////////////////////////
     $scope.currentUser = $scope.globals.currentUser.username;
-    $scope.displayName = $cookieStore.get('displayName');
-    $scope.displayType = $cookieStore.get('displayType');
+    $scope.displayName = $cookieStore.get(DISPLAY_NAME_COOKIE);
+    $scope.displayType = $cookieStore.get(DISPLAY_TYPE_COOKIE);
 
     ///////////////////////////////////Nav, will refactor to a single controller
     $scope.menuAction = function(mainMenu, menu) {
