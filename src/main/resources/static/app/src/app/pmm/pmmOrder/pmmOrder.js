@@ -289,6 +289,10 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     };
 
     $scope.changeButtonStatus = function (orderMaster) {
+        // 已抛转的不可再修改状态，不可失效作废，不可取消审核，不可采购退回
+        if (orderMaster.transferFlag == 1) {
+            $scope.resetButtonDisabled(1);
+        }
         //若有来源单号，说明是被抛转的单据，此时不允许点删除按钮
         if ($scope.form_delete_button_disabled != 1 && orderMaster.psoTransferNo != undefined && orderMaster.psoTransferNo != null) {
             $scope.form_delete_button_disabled = 1;
@@ -348,6 +352,9 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     $scope.changeDetailButtonStatus = function () {
         $scope.resetDetailButtonDisabled($scope.selectedDetail.length > 0 ? 0 : 1);
         angular.forEach($scope.selectedDetail, function (detail) {
+            if (detail.transferFlag == 1) {
+                $scope.resetDetailButtonDisabled(1);
+            }
             if ($scope.audit_detail_disabled != 1 && (detail.confirm == 2 || detail.confirm == 4)) {
                 $scope.audit_detail_disabled = 1;
             }
@@ -418,7 +425,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         $scope.changeDetailButtonStatus();
     };
 
-
     $scope.changeButtonStatuOnly = function () {
         var firstLoop = true;
         angular.forEach($scope.selectedDetail, function (orderDetail) {
@@ -436,7 +442,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         });
     };
 
-
     $scope.selectAllMenuAction = function () {
         if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
             if ($scope.orderListMenu.selectAll == true) {
@@ -452,7 +457,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             } else if ($scope.orderListMenu.selectAll == false) {
                 $scope.selected = [];
                 $scope.orderListMenu.effectiveType = '1';
-                $scope.resetButtonDisabled(1);    // 按鈕初始狀態改為顯
+                $scope.resetButtonDisabled(1);    // 按鈕初始狀態改為灰顯
             }
         } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
             if ($scope.orderListMenu.selectAll == true) {
