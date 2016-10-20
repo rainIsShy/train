@@ -94,8 +94,9 @@ angular.module('IOne-Production').service('OrderMaster', function ($http, Consta
     };
 
     this.print = function (type, uuid) {
-        return $http.get(Constant.BACKEND_BASE + '/reports/', {
-            params: {type: type, params: uuid}
+        return $http.get(Constant.BACKEND_BASE + '/reports?action=exportPdf', {
+            params: {type: type, params: uuid},
+            responseType: 'arraybuffer'
         });
     };
 
