@@ -54,8 +54,10 @@ angular.module('IOne-Production').controller('ShoppingCartController', function 
     };
 
     $scope.dataLoad = function (shoppingCartItem) {
+        console.log(shoppingCartItem);
         if (shoppingCartItem.itemDetails == null) {
-            ShoppingCart.getAll(1000, 0, shoppingCartItem.employeeName, shoppingCartItem.customerName, RES_UUID_MAP.PSO.CART.LIST_PAGE.RES_UUID, "")
+
+            ShoppingCart.getAll(1000, 0, shoppingCartItem.employeeName, shoppingCartItem.customerName, RES_UUID_MAP.PSO.CART.LIST_PAGE.RES_UUID, "", shoppingCartItem.customerNo, shoppingCartItem.employeeNo)
                 .success(function (data) {
                         shoppingCartItem.itemDetails = data.content;
                     }
@@ -66,6 +68,7 @@ angular.module('IOne-Production').controller('ShoppingCartController', function 
 
     $scope.editItem = function (shoppingCartItem) {
         $scope.selectedItem = shoppingCartItem;
+        console.log(shoppingCartItem);
         $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
 
     };

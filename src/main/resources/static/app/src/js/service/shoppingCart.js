@@ -1,5 +1,5 @@
 angular.module('IOne-Production').service('ShoppingCart', function($http, Constant) {
-    this.getAll = function (sizePerPage, page, employeeName, customerName, resUuid, all) {
+    this.getAll = function (sizePerPage, page, employeeName, customerName, resUuid, all, customerNo, employeeNo) {
         var url = '/carts' + all + '?size=' + sizePerPage
                               + '&page=' + page;
 
@@ -9,6 +9,14 @@ angular.module('IOne-Production').service('ShoppingCart', function($http, Consta
 
         if(employeeName !== null) {
             url = url + '&employeeName=' + employeeName;
+        }
+
+        if (customerNo !== null) {
+            url = url + '&customerNo=' + customerNo;
+        }
+
+        if (employeeNo !== null) {
+            url = url + '&employeeNo=' + employeeNo;
         }
 
         if(resUuid !== undefined && resUuid !== null) {
