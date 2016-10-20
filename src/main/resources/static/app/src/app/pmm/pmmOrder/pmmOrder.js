@@ -1024,26 +1024,13 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     promises.push(response);
                 });
                 $q.all(promises).then(function (data) {
-                    $scope.refreshDetail($scope.selectedItem.uuid);
-
-                    var detailConfirmCount = 0;
-                    angular.forEach($scope.OrderDetailList.content, function (detailItem) {
-                        if (detailItem.confirm == '2') {
-                            detailConfirmCount = detailConfirmCount + 1;
-                        }
+                    PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
+                        $scope.selectedItem = data;
+                        $scope.resetButtonDisabled(0);
+                        $scope.changeButtonStatus(data);
                     });
-                    //若所有单身己審核，則自動審核單頭
-                    if ($scope.OrderDetailList.totalElements == detailConfirmCount) {
-                        var OrderMasterUpdateInput = {
-                            uuid: $scope.selectedItem.uuid,
-                            confirm: '2'
-                        };
-                        PmmOrderMaster.modify(OrderMasterUpdateInput).success(function () {
-                            $scope.selectedItem.confirm = 2;
-                            $scope.resetButtonDisabled(0);
-                            $scope.changeButtonStatus($scope.selectedItem);
-                        });
-                    }
+
+                    $scope.refreshDetail($scope.selectedItem.uuid);
 
                     $scope.showInfo('审核成功。');
                 });
@@ -1054,17 +1041,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     $scope.unConfirmOrderItem = function () {
         if ($scope.selectedDetail.length > 0) {
             $scope.showConfirm('确认取消审核吗？', '', function () {
-                var allDetailConfirm = false;
-                var detailConfirmCount = 0;
-                angular.forEach($scope.OrderDetailList.content, function (detailItem) {
-                    if (detailItem.confirm == '2') {
-                        detailConfirmCount = detailConfirmCount + 1;
-                    }
-                });
-                if ($scope.OrderDetailList.totalElements == detailConfirmCount) {
-                    allDetailConfirm = true;
-                }
-
                 var promises = [];
                 angular.forEach($scope.selectedDetail, function (item) {
                     var PmmOrderDetailUpdateInput = {
@@ -1076,19 +1052,13 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     promises.push(response);
                 });
                 $q.all(promises).then(function (data) {
+                    PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
+                        $scope.selectedItem = data;
+                        $scope.resetButtonDisabled(0);
+                        $scope.changeButtonStatus(data);
+                    });
                     $scope.refreshDetail($scope.selectedItem.uuid);
                     $scope.selectedDetail = [];
-                    //若有其它一筆單身取消審核，則自動取消審核單頭'
-                    if (allDetailConfirm) {
-                        var OrderMasterUpdateInput = {
-                            uuid: $scope.selectedItem.uuid,
-                            confirm: '1'
-                        };
-                        PmmOrderMaster.modify(OrderMasterUpdateInput).success(function () {
-                            $scope.selectedItem.confirm = '1';
-                            $scope.changeButtonStatus($scope.selectedItem);
-                        });
-                    }
 
                     $scope.showInfo('取消审核成功。');
                 });
