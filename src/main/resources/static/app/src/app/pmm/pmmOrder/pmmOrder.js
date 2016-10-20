@@ -296,7 +296,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         //若有来源单号，说明是被抛转的单据，此时不允许点删除按钮
         if ($scope.form_delete_button_disabled != 1 && orderMaster.psoTransferNo != undefined && orderMaster.psoTransferNo != null) {
             $scope.form_delete_button_disabled = 1;
-            $scope.form_edit_button_disabled = 1;
         }
 
         // 已经审核(confirm = 2)的订单不可再对订单做删除和编辑，改灰顯
