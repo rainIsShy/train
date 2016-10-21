@@ -1400,15 +1400,11 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
     };
 
     $scope.onOrderFlagChange = function (orderFlag) {
-
         if (orderFlag == Constant.ORDER_FLAG[1].value || orderFlag == Constant.ORDER_FLAG[2].value || orderFlag == Constant.ORDER_FLAG[4].value) {
             $scope.selectedItem.o2oFlag = Constant.EPS_ORDER_O2O_FLAG[1].value;
         }
-        if (orderFlag == Constant.ORDER_FLAG[6].value) {
+        if (orderFlag == Constant.ORDER_FLAG[3].value || orderFlag == Constant.ORDER_FLAG[5].value || orderFlag == Constant.ORDER_FLAG[6].value) {
             $scope.selectedItem.o2oFlag = Constant.EPS_ORDER_O2O_FLAG[3].value;
-        }
-        if (orderFlag == Constant.ORDER_FLAG[3].value || orderFlag == Constant.ORDER_FLAG[5].value) {
-            $scope.selectedItem.o2oFlag = Constant.EPS_ORDER_O2O_FLAG[2].value;
         }
     }
 
