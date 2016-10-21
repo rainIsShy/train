@@ -58,6 +58,8 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
         totalElements: 100
     };
 
+    $scope.o2oFlags = Constant.EPS_ORDER_O2O_FLAG;
+
     $scope.printAction = function () {
         EcommerceOrdersMaster.print('e_sale_order_reports', $scope.selectedItem.uuid).success(function (data) {
             $window.open(data.content);
@@ -1396,6 +1398,19 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
             }
         });
     };
+
+    $scope.onOrderFlagChange = function (orderFlag) {
+
+        if (orderFlag == Constant.ORDER_FLAG[1].value || orderFlag == Constant.ORDER_FLAG[2].value || orderFlag == Constant.ORDER_FLAG[4].value) {
+            $scope.selectedItem.o2oFlag = Constant.EPS_ORDER_O2O_FLAG[1].value;
+        }
+        if (orderFlag == Constant.ORDER_FLAG[6].value) {
+            $scope.selectedItem.o2oFlag = Constant.EPS_ORDER_O2O_FLAG[3].value;
+        }
+        if (orderFlag == Constant.ORDER_FLAG[3].value || orderFlag == Constant.ORDER_FLAG[5].value) {
+            $scope.selectedItem.o2oFlag = Constant.EPS_ORDER_O2O_FLAG[2].value;
+        }
+    }
 
 });
 
