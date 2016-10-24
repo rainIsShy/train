@@ -433,15 +433,16 @@ angular.module('IOne-Production').controller('ChannelPromotionController', funct
 
     $scope.validForm = function () {
         var isPass = true;
-        if ($scope.addItem.no == '') {
+        if (angular.isUndefined($scope.addItem.no) || $scope.addItem.no == '') {
             $scope.showError('請輸入活动主题编号');
             isPass = false;
         }
-        if ($scope.addItem.name == '') {
+        if (angular.isUndefined($scope.addItem.name) || $scope.addItem.name == '') {
             $scope.showError('請輸入活动主题名称');
             isPass = false;
         }
-        if ($scope.addItem.salePromotionDesc == '') {
+        console.log();
+        if ($scope.addItem.salePromotionDesc == '' || angular.isUndefined($scope.addItem.salePromotionDesc)) {
             $scope.showError('請輸入活动内容');
             isPass = false;
         }
@@ -454,6 +455,12 @@ angular.module('IOne-Production').controller('ChannelPromotionController', funct
             $scope.showError('請輸入活动开始日期');
             isPass = false;
         }
+
+        if ($scope.addItem.startPromotionDate > $scope.addItem.endPromotionDate) {
+            $scope.showError('活动起始日期不可大於活动结束日期');
+            isPass = false;
+        }
+
         if ($scope.addItem.startPurchaseDate == null) {
             $scope.showError('請輸入可采购起始日期');
             isPass = false;
@@ -462,6 +469,12 @@ angular.module('IOne-Production').controller('ChannelPromotionController', funct
             $scope.showError('請輸入可采购结束日期');
             isPass = false;
         }
+
+        if ($scope.addItem.startPurchaseDate > $scope.addItem.endPurchaseDate) {
+            $scope.showError('可采购起始日期不可大於可采购结束日期');
+            isPass = false;
+        }
+
 
         return isPass;
     };
