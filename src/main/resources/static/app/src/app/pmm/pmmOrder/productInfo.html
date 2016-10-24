@@ -90,11 +90,11 @@
             <div flex="5" class="table-item"
                  ng-show="selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2">
                 <div layout="row" layout-sm="column" layout-align="center center">
-                    <div ng-show="selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2"
+                    <div ng-show="orderDetail.confirm == 1 && orderDetail.status == 1 && orderDetail.transferFlag == 2"
                          align="center"
                          ng-click="orderDetailEditMenuAction(orderDetail)"><i class="fa fa-pencil-square-o"></i>&nbsp;{{itemOperationMenuDisplayOption['500-item-edit'].name}}
                     </div>
-                    <div ng-show=" selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2"
+                    <div ng-show=" orderDetail.confirm == 1 && orderDetail.status == 1 && orderDetail.transferFlag == 2"
                          align="center"
                          ng-click="orderDetailDeleteMenuAction(orderDetail)"><i class="fa fa-times"></i>&nbsp;{{itemOperationMenuDisplayOption['500-item-delete'].name}}
                     </div>
