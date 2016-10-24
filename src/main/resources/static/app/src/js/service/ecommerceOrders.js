@@ -59,8 +59,10 @@ angular.module('IOne-Production').service('EcommerceOrdersMaster', function ($ht
     };
 
     this.print = function (type, uuid) {
-        return $http.get(Constant.BACKEND_BASE + '/reports', {
-            params: {type: type, params: uuid}
+        return $http.get(Constant.BACKEND_BASE + '/reports?action=exportPdf', {
+            params: {type: type, params: uuid},
+            responseType: 'arraybuffer'
+
         });
     };
 
