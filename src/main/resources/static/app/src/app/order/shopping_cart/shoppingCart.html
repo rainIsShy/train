@@ -72,12 +72,21 @@
                                         </div>
                                         <div flex="20" layout="column"
                                              style=" padding: 20px 0px 0px 0px; border-right-style: ridge; border-right-width: thin;">
-                                            <div class="name">
-                                                {{itemDetail.item.brand.name}}
-                                            </div>
-                                            <div class="name">
-                                                {{itemDetail.item.series}}
-                                            </div>
+                                            <!--<div class="name">-->
+                                            <!--{{itemDetail.item.brand.name}}-->
+                                            <!--</div>-->
+                                            <!--<div class="name">-->
+                                            <!--{{itemDetail.item.series}}-->
+                                            <!--</div>-->
+                                            <md-input-container class="md-default-theme md-input-has-value">
+                                                <label style="font-size: 15pt;">编号: {{itemDetail.item.no}}</label>
+                                            </md-input-container>
+                                            <md-input-container class="md-default-theme md-input-has-value">
+                                                <label style="font-size: 15pt;">型号: {{itemDetail.item.name}}</label>
+                                            </md-input-container>
+                                            <md-input-container class="md-default-theme md-input-has-value">
+                                                <label style="font-size: 15pt;">规格: {{itemDetail.item.standard}}</label>
+                                            </md-input-container>
                                         </div>
                                         <div flex="25" layout="column" style=" padding: 20px 0px 0px 20px; ">
                                             <md-input-container class="md-default-theme md-input-has-value">
@@ -105,7 +114,7 @@
                                             <md-input-container class="md-default-theme md-input-has-value">
                                                 <label style="font-size: 15pt;">单价:</label>
                                                 <input type="number" ng-disabled="true"
-                                                       style="color:blue !important;font-size: 14pt;"
+                                                       style="color:blue !important;"
                                                        ng-model="itemDetail.priceFromChannel">
                                             </md-input-container>
 
