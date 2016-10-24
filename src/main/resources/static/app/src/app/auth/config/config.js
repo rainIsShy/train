@@ -433,7 +433,7 @@ angular.module('IOne-Production').controller('DataListController', function($mdD
     $scope.selectedSysRes = selectedSysRes;
 
     if($scope.selectedSysCpt.objectFlag == '1') {
-        var url = Constant.BACKEND_BASE;
+        var url = Constant.BACKEND_BASE + "/";
 
         if(SYS_CPT_API_MAP[$scope.selectedSysCpt.value]) {
             url += SYS_CPT_API_MAP[$scope.selectedSysCpt.value]
@@ -442,7 +442,7 @@ angular.module('IOne-Production').controller('DataListController', function($mdD
         }
 
         url += '?resUuid=' + selectedSysRes.uuid + '&size=1000000';
-
+        console.log('the url is : ' + url);
         $http.get(url).success(function(data) {
             if(angular.isDefined(data.content)) {
                 $scope.dataList = data.content;
