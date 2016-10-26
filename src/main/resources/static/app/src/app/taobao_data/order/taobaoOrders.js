@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('TaobaoOrdersController', function ($scope, $q, TaobaoOrders, TaobaoOrderDetail, TaobaoAmountMaster, TaobaoAmountDetail, TaoBaoAdapterService, $mdDialog, $timeout, Constant) {
+angular.module('IOne-Production').controller('TaobaoOrdersController', function ($location,$scope, $q, TaobaoOrders, TaobaoOrderDetail, TaobaoAmountMaster, TaobaoAmountDetail, TaoBaoAdapterService, $mdDialog, $timeout, Constant) {
     $scope.taobaoOrderListMenu = {
         selectAll: false,
         effectiveType: '2', //失效作废
