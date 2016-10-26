@@ -1625,10 +1625,13 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         $scope.addOrderDetail.promotionPrice = '';
         if ($scope.addOrderDetail.saleTypeUuid == '162A8B4C-3C3A-4D72-BB3E-47538CFA5CE8') { // 常规
             $scope.addOrderDetail.oriTransactionPrice = $scope.addOrderDetail.item.suggestPrice;
+            $scope.addOrderDetail.specialPrice = 0;
         } else if ($scope.addOrderDetail.saleTypeUuid == 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E') { // 折扣
             $scope.addOrderDetail.oriTransactionPrice = 0;
+            $scope.addOrderDetail.specialPrice = 0;
         } else if ($scope.addOrderDetail.saleTypeUuid == 'AA929EC9-4392-4C23-A12D-346936F26DCC') { // 赠送
             $scope.addOrderDetail.oriTransactionPrice = 0;
+            $scope.addOrderDetail.specialPrice = 0;
         } else if ($scope.addOrderDetail.saleTypeUuid == 'F1DEDA0E-A607-4934-B305-EEC3C447C509') { // 特价
             $scope.addOrderDetail.oriTransactionPrice = $scope.addOrderDetail.specialPrice;
         }
@@ -1770,6 +1773,12 @@ angular.module('IOne-Production').controller('PmmOrderExtendDetailController', f
 angular.module('IOne-Production').controller('PmmOrderDetailController', function ($scope, $mdDialog, selectedOrderDetail, saleTypes) {
     $scope.selectedOrderDetail = angular.copy(selectedOrderDetail);
     $scope.saleTypes = saleTypes;
+
+    $scope.onChgDtlEditSaleType = function (saleTypeUuid) {
+        if (saleTypeUuid != 'F1DEDA0E-A607-4934-B305-EEC3C447C509') { // 特价
+            $scope.selectedOrderDetail.specialPrice = 0;
+        }
+    };
 
     $scope.hideDlg = function () {
         $mdDialog.hide({

@@ -10,7 +10,7 @@
                 </md-input-container>
                 <md-input-container>
                     <label class="label">销售类型：</label>
-                    <md-select placeholder="" ng-model="selectedOrderDetail.saleType.uuid" class="select">
+                    <md-select placeholder="" ng-model="selectedOrderDetail.saleType.uuid" class="select" ng-change="onChgDtlEditSaleType(selectedOrderDetail.saleType.uuid)">
                         <!-- <md-option ng-selected="saleType.uuid == selectedOrderDetail.saleType.uuid" ng-repeat="saleType in saleTypes" value="{{saleType.uuid}}" >{{saleType.name}}</md-option> -->
                         <md-option value="162A8B4C-3C3A-4D72-BB3E-47538CFA5CE8">常规</md-option>
                         <md-option value="D3DE3DF8-5D38-4083-A41A-B0E440E3786E">折扣</md-option>
