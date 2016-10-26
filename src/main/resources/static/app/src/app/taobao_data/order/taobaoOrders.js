@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('TaobaoOrdersController', function ($location,$scope, $q, TaobaoOrders, TaobaoOrderDetail, TaobaoAmountMaster, TaobaoAmountDetail, TaoBaoAdapterService, $mdDialog, $timeout, Constant) {
+angular.module('IOne-Production').controller('TaobaoOrdersController', function ($scope, $q, TaobaoOrders, TaobaoOrderDetail, TaobaoAmountMaster, TaobaoAmountDetail, TaoBaoAdapterService, $mdDialog, $timeout, Constant) {
     $scope.taobaoOrderListMenu = {
         selectAll: false,
         effectiveType: '2', //失效作废
@@ -274,17 +274,15 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
                 uuids.push(item.uuid);
             });
             TaobaoOrders.merge(uuids).success(function (returnMsgs) {
-                $scope.queryMenuActionWithPaging();
-
-                angular.forEach(returnMsgs, function (msg) {
-                    $scope.showError(msg);
-                });
-
-                $scope.showInfo('合并订单成功。');
+                  $location.path('ecommerce-orders');
+//                $scope.queryMenuActionWithPaging();
+//
+//                angular.forEach(returnMsgs, function (msg) {
+//                    $scope.showError(msg);
+//                });
+//                $scope.showInfo('合并订单成功。');
             }).error(function() {
-                //$scope.showError('合并订单失败。');
-                alert("合并");
-                $location.path('ecommerce-orders');
+                $scope.showError('合并订单失败。');
             })
         } else {
             $scope.showWarn('请先选择待合并的订单。');
@@ -317,15 +315,14 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
                         confirm: '2'
                     };
                     var response = TaobaoOrders.modify(OrderMasterUpdateInput).success(function (returnMsgs) {
-                        $scope.queryMenuActionWithPaging();//刷新查询
-                        angular.forEach(returnMsgs, function (msg) {
-                            $scope.showError(msg);
-                        });
-                        $scope.showInfo('审核成功，数据已刷新');
+                          $location.path('ecommerce-orders');
+//                        $scope.queryMenuActionWithPaging();//刷新查询
+//                        angular.forEach(returnMsgs, function (msg) {
+//                            $scope.showError(msg);
+//                        });
+//                        $scope.showInfo('审核成功，数据已刷新');
                     }).error(function (data) {
-                        //$scope.showError(data.message);
-                         alert("审核");
-                         $location.path('ecommerce-orders');
+                        $scope.showError(data.message);
                     });
                 } else {
                     $scope.showError('请检查');
