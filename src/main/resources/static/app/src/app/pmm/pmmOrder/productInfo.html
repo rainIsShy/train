@@ -78,11 +78,11 @@
         <div align="center" flex="10" class=" table-head">退回备注</div>
     </div>
     <div ng-repeat="orderDetail in OrderDetailList.content  | orderBy:'no'">
-        <div  layout="row"   >
+        <div layout="row" ng-style="orderDetail.orderQty == 0 && { 'color': 'lightgray'}">
             <div flex="5"
                  ng-disabled="!(selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2)"
                  style="padding:0px 0px 0px 0px;" layout-align="center" class=" table-item">
-                <md-checkbox ng-checked="exists(orderDetail, selectedDetail)"
+                <md-checkbox ng-checked="exists(orderDetail, selectedDetail)" ng-show="orderDetail.orderQty > 0"
                              ng-click="toggleDetail(orderDetail, selectedDetail)">
                 </md-checkbox>
             </div>
