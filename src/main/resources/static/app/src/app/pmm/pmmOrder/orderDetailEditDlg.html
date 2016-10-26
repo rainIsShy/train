@@ -10,20 +10,21 @@
                 </md-input-container>
                 <md-input-container>
                     <label class="label">销售类型：</label>
-                    <md-select placeholder="" ng-model="selectedOrderDetail.saleTypeUuid" class="select">
-                        <md-option ng-selected="saleType.uuid == selectedOrderDetail.saleType.uuid" ng-repeat="saleType in saleTypes" value="{{saleType.uuid}}" >{{saleType.name}}</md-option>
+                    <md-select placeholder="" ng-model="selectedOrderDetail.saleType.uuid" class="select">
+                        <!-- <md-option ng-selected="saleType.uuid == selectedOrderDetail.saleType.uuid" ng-repeat="saleType in saleTypes" value="{{saleType.uuid}}" >{{saleType.name}}</md-option> -->
+                        <md-option value="162A8B4C-3C3A-4D72-BB3E-47538CFA5CE8">常规</md-option>
+                        <md-option value="D3DE3DF8-5D38-4083-A41A-B0E440E3786E">折扣</md-option>
+                        <md-option value="AA929EC9-4392-4C23-A12D-346936F26DCC">赠送</md-option>
+                        <md-option value="F1DEDA0E-A607-4934-B305-EEC3C447C509">特价</md-option>
                     </md-select>
                 </md-input-container>
                 <md-input-container>
                     <label class="label">单套定制费：</label>
-                    <input type="number" ng-model="selectedOrderDetail.perCustomizePrice" string-to-number required
-                           min="1"
-                           step="1">
+                    <input type="number" ng-model="selectedOrderDetail.perCustomizePrice" string-to-number required min="0" step="1">
                 </md-input-container>
                 <md-input-container>
                     <label class="label">特价单价：</label>
-                    <input type="number" ng-model="selectedOrderDetail.specialPrice" string-to-number required min="1"
-                           step="1">
+                    <input type="number" ng-model="selectedOrderDetail.specialPrice" string-to-number required min="0" step="1" ng-disabled="selectedOrderDetail.saleType.uuid != 'F1DEDA0E-A607-4934-B305-EEC3C447C509'">
                 </md-input-container>
                 <md-input-container>
                     <label class="label">备注：</label>
