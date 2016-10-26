@@ -5,6 +5,12 @@ SYS_CPT_API_MAP = {
     catalogue: '/catalogues/data'
 };
 
+GLOBAL_COOKIE = 'globals' + location.port;
+DISPLAY_NAME_COOKIE = 'displayName' + location.port;
+DISPLAY_TYPE_COOKIE = 'displayType' + location.port;
+AUTO_LOGIN_COOKIE = 'autoLogin' + location.port;
+URLS_COOKIE = 'urls' + location.port;
+
 //Global variable
 RES_UUID_MAP = {
     //production
