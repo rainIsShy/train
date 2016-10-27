@@ -76,6 +76,7 @@
         <div align="center" flex="10" class=" table-head">促销单价</div>
         <div align="center" flex="10" class=" table-head">采购状态</div>
         <div align="center" flex="10" class=" table-head">退回备注</div>
+        <div align="center" flex="10" class=" table-head">预计送货日</div>
     </div>
     <div ng-repeat="orderDetail in OrderDetailList.content  | orderBy:'no'">
         <div  layout="row"   >
@@ -140,6 +141,8 @@
             <div align="center" flex="10" class="table-item">{{PURCHASE_FLAG[orderDetail.purchaseFlag].name}}</div>
             <!-- 采购状态 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.returnRemark}}</div><!-- 退回备注 -->
+            <div align="center" flex="10" class="table-item">{{orderDetail.deliverDate | date: 'yyyy-MM-dd'}}</div>
+            <!-- 预计送货日 -->
         </div>
     </div>
 </md-content>
