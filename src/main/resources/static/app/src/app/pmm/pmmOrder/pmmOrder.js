@@ -1077,6 +1077,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 saleTypes: $scope.saleTypes
             }
         }).then(function (data) {
+            data.selectedOrderDetail.saleTypeUuid = data.selectedOrderDetail.saleType.uuid;
 
             PmmOrderDetail.modify(data.selectedOrderDetail.pmmOrderMst.uuid, data.selectedOrderDetail.uuid, data.selectedOrderDetail).success(function () {
                 $scope.refreshDetail(data.selectedOrderDetail.pmmOrderMst.uuid);
