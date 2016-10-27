@@ -90,13 +90,14 @@
                     <md-input-container>
                         <label class="label">促销折扣率：</label>
                         <input type="number" aria-label="..." string-to-number required
-                               ng-model="addOrderDetail.promotionDiscountRate" min="0" step="0.1" ng-change="calcPurAmt()"
+                               ng-model="addOrderDetail.promotionDiscountRate" min="0" step="0.1" ng-change="chgProR()"
                                ng-disabled="addOrderDetail.saleTypeUuid != 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E'">
                     </md-input-container>
                     <md-input-container>
                         <label class="label">促销单价：</label>
                         <input type="number" aria-label="..." string-to-number required
-                               ng-model="addOrderDetail.promotionPrice" min="0" ng-disabled="true">
+                               ng-model="addOrderDetail.promotionPrice" min="0" ng-change="chgProP()"
+                               ng-disabled="addOrderDetail.saleTypeUuid != 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E">
                     </md-input-container>
                 </div>
                 <div layout="column" flex="20">

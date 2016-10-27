@@ -1586,6 +1586,13 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
             $scope.showError("请输入采购数量");
         } else if (null == $scope.addOrderDetail.oriPurPrice) {
             $scope.showError("请输入采购单价");
+        } else if ($scope.addOrderDetail.saleTypeUuid == 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E') {
+            if ($scope.addOrderDetail.promotionDiscountRate == '') {
+                $scope.showError("请输入促销折扣率");
+            }
+            if ($scope.addOrderDetail.promotionPrice == '') {
+                $scope.showError("请输入促销单价");
+            }
         } else {
             $scope.addOrderDetail.oriPurPrice = $scope.addOrderDetail.oriTransactionPrice + $scope.addOrderDetail.perCustomizePrice;
             $scope.addOrderDetail.natPurPrice = $scope.addOrderDetail.natTransactionPrice + $scope.addOrderDetail.perCustomizePrice;
@@ -1613,15 +1620,9 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
     };
 
     $scope.calcPurAmt = function () {
-        var customizePrice = 0;
-
         if ($scope.addOrderDetail.saleTypeUuid == '162A8B4C-3C3A-4D72-BB3E-47538CFA5CE8') { // 常规
             $scope.addOrderDetail.oriTransactionPrice = $scope.addOrderDetail.item.suggestPrice;
         } else if ($scope.addOrderDetail.saleTypeUuid == 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E') { // 折扣
-            $scope.addOrderDetail.promotionPrice = 0;
-            if ($scope.addOrderDetail.promotionDiscountRate != '') {
-                $scope.addOrderDetail.promotionPrice = parseFloat(($scope.addOrderDetail.item.suggestPrice * $scope.addOrderDetail.promotionDiscountRate).toFixed(2));
-            }
             $scope.addOrderDetail.oriTransactionPrice = $scope.addOrderDetail.promotionPrice;
         } else if ($scope.addOrderDetail.saleTypeUuid == 'AA929EC9-4392-4C23-A12D-346936F26DCC') { // 赠送
             $scope.addOrderDetail.oriTransactionPrice = 0;
@@ -1634,6 +1635,7 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
             }
         }
 
+        var customizePrice = 0;
         if ($scope.addOrderDetail.customizeFlag == '1') {
             if ($scope.addOrderDetail.perCustomizePrice != '') {
                 customizePrice = $scope.addOrderDetail.perCustomizePrice;
@@ -1652,6 +1654,20 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         $scope.addOrderDetail.oriPurAmtTax = $scope.addOrderDetail.oriPurAmt + $scope.addOrderDetail.oriPurTax;
         $scope.addOrderDetail.natPurAmt = $scope.addOrderDetail.natPurPrice * $scope.addOrderDetail.orderQty;
         $scope.addOrderDetail.natPurAmtTax = $scope.addOrderDetail.natPurAmt + $scope.addOrderDetail.natPurTax;
+    };
+
+    $scope.chgProR = function () {
+        if ($scope.addOrderDetail.promotionDiscountRate != '') {
+            $scope.addOrderDetail.promotionPrice = parseFloat(($scope.addOrderDetail.promotionDiscountRate * $scope.addOrderDetail.item.suggestPrice).toFixed(2));
+        }
+        $scope.calcPurAmt();
+    };
+
+    $scope.chgProP = function () {
+        if ($scope.addOrderDetail.promotionPrice != '') {
+            $scope.addOrderDetail.promotionDiscountRate = parseFloat(($scope.addOrderDetail.promotionPrice / $scope.addOrderDetail.item.suggestPrice).toFixed(2));
+        }
+        $scope.calcPurAmt();
     };
 });
 
