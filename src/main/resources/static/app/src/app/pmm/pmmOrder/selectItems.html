@@ -54,21 +54,9 @@
                                ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                     </md-input-container>
                     <md-input-container>
-                        <label class="label">标准金额(原币)：</label>
+                        <label class="label">标准金额：</label>
                         <input type="number" aria-label="..." string-to-number required
                                ng-model="addOrderDetail.oriStandardAmt" min="0"
-                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
-                    </md-input-container>
-                    <md-input-container>
-                        <label class="label">标准金额(本币)：</label>
-                        <input type="number" aria-label="..." string-to-number required
-                               ng-model="addOrderDetail.natStandardAmt" min="0"
-                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
-                    </md-input-container>
-                    <md-input-container>
-                        <label class="label">采购状态：</label>
-                        <input type="number" aria-label="..." string-to-number required
-                               ng-model="addOrderDetail.purchaseFlag" min="0"
                                ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                     </md-input-container>
                 </div>
@@ -84,7 +72,7 @@
                     <md-input-container>
                         <label class="label">采购数量：</label>
                         <input type="number" ng-model="addOrderDetail.orderQty" string-to-number required min="1"
-                               step="1" ng-change="changePurAmt();">
+                               step="1" ng-change="calcPurAmt()">
                     </md-input-container>
 
                     <!--<md-input-container>-->
@@ -99,27 +87,10 @@
                                ng-model="addOrderDetail.oriPurAmt" min="0"
                                ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                     </md-input-container>
-
-                    <!--<md-input-container>-->
-                    <!--<label class="label">采购金额(含税)</label>-->
-                    <!--<input type="number" aria-label="..." string-to-number required-->
-                    <!--ng-model="addOrderDetail.oriPurAmtTax" min="0">-->
-                    <!--</md-input-container>-->
-
-                    <md-input-container>
-                        <label class="label">成交价(原币)：</label>
-                        <input type="number" aria-label="..." string-to-number required
-                               ng-model="addOrderDetail.oriTransactionPrice" min="0" ng-disabled="true">
-                    </md-input-container>
-                    <md-input-container>
-                        <label class="label">成交价(本币)：</label>
-                        <input type="number" aria-label="..." string-to-number required
-                               ng-model="addOrderDetail.natTransactionPrice" min="0" ng-disabled="true">
-                    </md-input-container>
                     <md-input-container>
                         <label class="label">促销折扣率：</label>
                         <input type="number" aria-label="..." string-to-number required
-                               ng-model="addOrderDetail.promotionDiscountRate" min="0" ng-change="calcPromotionPrice()"
+                               ng-model="addOrderDetail.promotionDiscountRate" min="0" step="0.1" ng-change="calcPurAmt()"
                                ng-disabled="addOrderDetail.saleTypeUuid != 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E'">
                     </md-input-container>
                     <md-input-container>
@@ -127,20 +98,12 @@
                         <input type="number" aria-label="..." string-to-number required
                                ng-model="addOrderDetail.promotionPrice" min="0" ng-disabled="true">
                     </md-input-container>
-                    <md-input-container>
-                        <md-checkbox style=" padding: 0px 0px 0px 25px;" ng-model="addOrderDetail.transferFlag"
-                                     ng-disabled="true"
-                                     aria-label="抛转否" ng-true-value="'1'" ng-false-value="'2'">
-                            抛转否
-                        </md-checkbox>
-                    </md-input-container>
                 </div>
                 <div layout="column" flex="20">
-
                     <md-input-container>
                         <label>销售类型：</label>
-                        <md-select placeholder="" ng-model="addOrderDetail.saleTypeUuid" class="select"
-                                   ng-change="refreshUI()">
+                        <md-select placeholder="" ng-model="addOrderDetail.saleTypeUuid" class="select" ng-change="refreshUI()"
+                                   ng-disabled="addOrderDetail.saleTypeUuid == null || addOrderDetail.saleTypeUuid == undefined">
                             <!--
                             <md-option ng-selected="saleType.uuid == selectedOrderDetail.saleType.uuid"
                                        ng-repeat="saleType in saleTypes" value="{{saleType.uuid}}">{{saleType.name}}
@@ -152,26 +115,16 @@
                             <md-option value="F1DEDA0E-A607-4934-B305-EEC3C447C509">特价</md-option>
                         </md-select>
                     </md-input-container>
-
                     <md-input-container>
                         <label class="label">特价单价：</label>
                         <input type="number" aria-label="..." string-to-number ng-model="addOrderDetail.specialPrice"
-                               ng-change="changePurPrice(addOrderDetail.specialPrice)"
+                               ng-change="calcPurAmt()"
                                ng-disabled="addOrderDetail.saleTypeUuid != 'F1DEDA0E-A607-4934-B305-EEC3C447C509'">
                     </md-input-container>
-
                     <md-input-container>
                         <div class="md-input-has-value"><label>定制否：</label></div>
                         <md-select placeholder="" ng-model="addOrderDetail.customizeFlag" class="select"
-                                   ng-change="chgCustomizeFlag(addOrderDetail)">
-                            <md-option value="1">是</md-option>
-                            <md-option value="2">否</md-option>
-                        </md-select>
-                    </md-input-container>
-
-                    <md-input-container>
-                        <div class="md-input-has-value"><label>赠品否：</label></div>
-                        <md-select placeholder="" ng-model="addOrderDetail.presentFlag" class="select">
+                                   ng-change="calcPurAmt()">
                             <md-option value="1">是</md-option>
                             <md-option value="2">否</md-option>
                         </md-select>
@@ -179,7 +132,7 @@
                     <md-input-container>
                         <label class="label">单套定制费：</label>
                         <input type="number" aria-label="..." string-to-number min="0" step="0.01"
-                               ng-model="addOrderDetail.perCustomizePrice"
+                               ng-model="addOrderDetail.perCustomizePrice" ng-change="calcPurAmt()"
                                ng-disabled="addOrderDetail.customizeFlag == '2'">
                     </md-input-container>
                     <md-input-container>
@@ -187,12 +140,9 @@
                         <input type="text" aria-label="..." ng-model="addOrderDetail.remark" md-maxlength="20">
                     </md-input-container>
                     <md-input-container>
-                        <label class="label">退回备注：</label>
-                        <input type="text" aria-label="..." ng-model="addOrderDetail.returnRemark" md-maxlength="20">
-                    </md-input-container>
-                    <md-input-container>
                         <label class="label">定制备注：</label>
-                        <input type="text" aria-label="..." ng-model="addOrderDetail.customizeRemark" md-maxlength="20">
+                        <input type="text" aria-label="..." ng-model="addOrderDetail.customizeRemark" md-maxlength="20"
+                               ng-disabled="addOrderDetail.customizeFlag != '1'">
                     </md-input-container>
                 </div>
             </div>
