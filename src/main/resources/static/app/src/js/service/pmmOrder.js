@@ -82,7 +82,6 @@ angular.module('IOne-Production').service('PmmOrderDetail', function ($http, Con
         return $http.get(Constant.BACKEND_BASE + '/pmmOrders/' + masterUuid + '/details');
     };
 
-
     this.modify = function(masterUuid, uuid, OrderDetailUpdateInput) {
         return $http.patch(Constant.BACKEND_BASE + '/pmmOrders/' + masterUuid + '/details/' + uuid, OrderDetailUpdateInput);
     };
