@@ -1133,22 +1133,19 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 selectedOrderExtendDetail: orderExtendDetail
             }
         }).then(function (data) {
-            PmmOrderExtendDetail.modify(data.selectedOrderExtendDetail.pmmOrderDetail.uuid, data.selectedOrderExtendDetail.uuid, data.selectedOrderExtendDetail)
-                .success(function () {
-                    PmmOrderDetail.get(data.selectedOrderExtendDetail.pmmOrderDetail.pmmOrderMaster.uuid, data.selectedOrderExtendDetail.pmmOrderDetail.uuid).success(function (data) {
-                        $scope.OrderDetailList = data;
-                        $scope.updateOrderDetailListDate($scope.OrderDetailList);
-                        $scope.OrderExtendDetailList = [];
-                        angular.forEach($scope.OrderDetailList.content, function (orderDetail, index) {
-                            PmmOrderExtendDetail.get(orderDetail.uuid).success(function (data) {
-                                $scope.OrderExtendDetailList = $scope.OrderExtendDetailList.concat(data.content);
-                            });
+            PmmOrderExtendDetail.modify(data.selectedOrderExtendDetail.pmmOrderDetail.uuid, data.selectedOrderExtendDetail.uuid, data.selectedOrderExtendDetail).success(function () {
+                PmmOrderDetail.get(data.selectedOrderExtendDetail.pmmOrderDetail.pmmOrderMaster.uuid, data.selectedOrderExtendDetail.pmmOrderDetail.uuid).success(function (data) {
+                    $scope.OrderDetailList = data;
+                    $scope.updateOrderDetailListDate($scope.OrderDetailList);
+                    $scope.OrderExtendDetailList = [];
+                    angular.forEach($scope.OrderDetailList.content, function (orderDetail, index) {
+                        PmmOrderExtendDetail.get(orderDetail.uuid).success(function (data) {
+                            $scope.OrderExtendDetailList = $scope.OrderExtendDetailList.concat(data.content);
                         });
-                        $scope.showInfo('修改成功。');
                     });
-
-
+                    $scope.showInfo('修改成功。');
                 });
+            });
         });
     };
 
