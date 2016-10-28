@@ -248,7 +248,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         angular.forEach(selected, function (d, rIdx) {
             if (d.uuid == item.uuid) {
                 idx = rIdx;
-                return;
+
             }
         });
         if (idx > -1) {
@@ -411,7 +411,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         angular.forEach(selectedDetail, function(d, rIdx) {
             if (d.uuid == item.uuid) {
                 idx = rIdx;
-                return;
+
             }
         });
         if (idx > -1) {
@@ -1530,7 +1530,7 @@ angular.module('IOne-Production').controller('OrderCustomerSearchController', fu
 });
 
 
-angular.module('IOne-Production').controller('OrderItemsSearchController', function ($scope, $q, $mdDialog, OrderItems, channelUuid, saleTypes) {
+angular.module('IOne-Production').controller('OrderItemsSearchController', function ($scope, $q, $mdDialog, OrderItems, ChannelItemInfoService, channelUuid, saleTypes) {
 
     $scope.channelUuid = channelUuid;
     $scope.saleTypes = saleTypes;
@@ -1562,8 +1562,8 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         $scope.addOrderDetail.oriPurPrice = data.suggestPrice;
         $scope.addOrderDetail.orderQty = 1;
         $scope.addOrderDetail.oriPurAmt = parseFloat(($scope.addOrderDetail.oriPurPrice * $scope.addOrderDetail.orderQty).toFixed(2));
-        $scope.addOrderDetail.standardPrice = data.standardPrice;
         $scope.addOrderDetail.customizeFlag = data.customizationFlag == 'Y' ? 1 : 2;
+        // $scope.addOrderDetail.standardPrice = data.standardPrice;
 
         // 常规
         $scope.addOrderDetail.saleTypeUuid = '162A8B4C-3C3A-4D72-BB3E-47538CFA5CE8';
@@ -1571,8 +1571,14 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         $scope.addOrderDetail.customizeFlag = 2;
         $scope.addOrderDetail.presentFlag = 2;
         // $scope.addOrderDetail.originalStandardAmount = parseFloat(($scope.addOrderDetail.standardPrice * $scope.addOrderDetail.orderQuantity).toFixed(2));
-        $scope.addOrderDetail.itemUuid = data.uuid;
-        $scope.refreshUI();
+        ChannelItemInfoService.getByItem(channelUuid,  data.uuid).success(function (icr) {
+            $scope.addOrderDetail.standardPrice = 0;
+            if (icr.content.length > 0) {
+                $scope.addOrderDetail.standardPrice = icr.content[0].standardPrice;
+            }
+        }).then(function () {
+            $scope.refreshUI();
+        });
     };
 
     $scope.cancelDlg = function () {
@@ -1580,19 +1586,26 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
     };
 
     $scope.hideDlg = function () {
+        var errMsgs = [];
         if (null == $scope.addOrderDetail.item) {
-            $scope.showError("请选择商品");
+            errMsgs.push("请选择商品");
         } else if (null == $scope.addOrderDetail.orderQty) {
-            $scope.showError("请输入采购数量");
+            errMsgs.push("请输入采购数量");
         } else if (null == $scope.addOrderDetail.oriPurPrice) {
-            $scope.showError("请输入采购单价");
+            errMsgs.push("请输入采购单价");
         } else if ($scope.addOrderDetail.saleTypeUuid == 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E') {
             if ($scope.addOrderDetail.promotionDiscountRate == '') {
-                $scope.showError("请输入促销折扣率");
+                errMsgs.push("请输入促销折扣率");
             }
             if ($scope.addOrderDetail.promotionPrice == '') {
-                $scope.showError("请输入促销单价");
+                errMsgs.push("请输入促销单价");
             }
+        }
+
+        if (errMsgs.length > 0) {
+            angular.forEach(errMsgs, function (val, idx) {
+                $scope.showError(val);
+            });
         } else {
             $scope.addOrderDetail.oriPurPrice = $scope.addOrderDetail.oriTransactionPrice + $scope.addOrderDetail.perCustomizePrice;
             $scope.addOrderDetail.natPurPrice = $scope.addOrderDetail.natTransactionPrice + $scope.addOrderDetail.perCustomizePrice;
@@ -1623,16 +1636,12 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         if ($scope.addOrderDetail.saleTypeUuid == '162A8B4C-3C3A-4D72-BB3E-47538CFA5CE8') { // 常规
             $scope.addOrderDetail.oriTransactionPrice = $scope.addOrderDetail.item.suggestPrice;
         } else if ($scope.addOrderDetail.saleTypeUuid == 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E') { // 折扣
-            $scope.addOrderDetail.oriTransactionPrice = $scope.addOrderDetail.promotionPrice;
+            $scope.addOrderDetail.oriTransactionPrice = $scope.addOrderDetail.promotionPrice == '' ? 0 : $scope.addOrderDetail.promotionPrice;
         } else if ($scope.addOrderDetail.saleTypeUuid == 'AA929EC9-4392-4C23-A12D-346936F26DCC') { // 赠送
             $scope.addOrderDetail.oriTransactionPrice = 0;
         } else if ($scope.addOrderDetail.saleTypeUuid == 'F1DEDA0E-A607-4934-B305-EEC3C447C509') { // 特价
             // 若有特价，则采购单价预设为特別單價
-            if ($scope.addOrderDetail.specialPrice == '') {
-                $scope.addOrderDetail.oriTransactionPrice = 0;
-            } else  {
-                $scope.addOrderDetail.oriTransactionPrice = $scope.addOrderDetail.specialPrice;
-            }
+            $scope.addOrderDetail.oriTransactionPrice = $scope.addOrderDetail.specialPrice == '' ? 0 : $scope.addOrderDetail.specialPrice;
         }
 
         var customizePrice = 0;
@@ -1645,27 +1654,27 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
             $scope.addOrderDetail.customizeRemark = '';
         }
         $scope.addOrderDetail.natTransactionPrice = $scope.addOrderDetail.oriTransactionPrice;
-        $scope.addOrderDetail.oriStandardAmt = $scope.addOrderDetail.item.standardPrice * $scope.addOrderDetail.orderQty;
+        $scope.addOrderDetail.oriStandardAmt = $scope.addOrderDetail.standardPrice * $scope.addOrderDetail.orderQty;
         $scope.addOrderDetail.natStandardAmt = $scope.addOrderDetail.oriStandardAmt;
 
         $scope.addOrderDetail.oriPurPrice = $scope.addOrderDetail.oriTransactionPrice + customizePrice;
         $scope.addOrderDetail.natPurPrice = $scope.addOrderDetail.natTransactionPrice + customizePrice;
         $scope.addOrderDetail.oriPurAmt = $scope.addOrderDetail.oriPurPrice * $scope.addOrderDetail.orderQty;
-        $scope.addOrderDetail.oriPurAmtTax = $scope.addOrderDetail.oriPurAmt + $scope.addOrderDetail.oriPurTax;
         $scope.addOrderDetail.natPurAmt = $scope.addOrderDetail.natPurPrice * $scope.addOrderDetail.orderQty;
+        $scope.addOrderDetail.oriPurAmtTax = $scope.addOrderDetail.oriPurAmt + $scope.addOrderDetail.oriPurTax;
         $scope.addOrderDetail.natPurAmtTax = $scope.addOrderDetail.natPurAmt + $scope.addOrderDetail.natPurTax;
     };
 
     $scope.chgProR = function () {
         if ($scope.addOrderDetail.promotionDiscountRate != '') {
-            $scope.addOrderDetail.promotionPrice = parseFloat(($scope.addOrderDetail.promotionDiscountRate * $scope.addOrderDetail.item.suggestPrice).toFixed(2));
+            $scope.addOrderDetail.promotionPrice = parseFloat(($scope.addOrderDetail.promotionDiscountRate * $scope.addOrderDetail.item.suggestPrice / 100).toFixed(2));
         }
         $scope.calcPurAmt();
     };
 
     $scope.chgProP = function () {
         if ($scope.addOrderDetail.promotionPrice != '') {
-            $scope.addOrderDetail.promotionDiscountRate = parseFloat(($scope.addOrderDetail.promotionPrice / $scope.addOrderDetail.item.suggestPrice).toFixed(2));
+            $scope.addOrderDetail.promotionDiscountRate = parseFloat(($scope.addOrderDetail.promotionPrice / $scope.addOrderDetail.item.suggestPrice * 100).toFixed(2));
         }
         $scope.calcPurAmt();
     };
