@@ -487,6 +487,10 @@ RES_UUID_MAP = {
         SYS_BASE_MENU: {
             RES_UUID: '2659f005-7b50-4027-b73a-de2dc4850b98',
             TITLE: '系统菜单管理'
+        },
+        APPLICATION_VERSION: {
+            RES_UUID: '31af0a4c-7479-449c-96f1-d32544b4dc3a',
+            TITLE: 'APP版本管理'
         }
     },
 
@@ -684,7 +688,8 @@ angular.module('IOne-Constant').constant('Constant', {
                     name: '系统菜单管理',
                     link: '/sys/sysMenus',
                     uuid: RES_UUID_MAP.SYS.SYS_BASE_MENU.RES_UUID
-                }
+                },
+                {id: '/sys/applicationVersion', name: 'APP版本管理', link: '/sys/applicationVersion', uuid: RES_UUID_MAP.SYS.SYS_BASE_RES.RES_UUID},
             ]
         },
         {

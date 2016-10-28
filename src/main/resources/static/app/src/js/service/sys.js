@@ -118,3 +118,47 @@ angular.module('IOne-Production').service('SYSMapsService', function ($http, Con
     };
 });
 
+angular.module('IOne-Production').service('SYSApplicationVersionService', function ($http, Constant) {
+    this.getAll = function (sizePerPage, page, status, no, name, releaseDate, keyWord, resUuid) {
+        status = status == 0 ? '' : status;
+
+        var url = '/applicationVersions?size=' + sizePerPage + '&page=' + page  + '&status=' + status;
+
+        if (no !== undefined && no !== null && no !== '') {
+            url = url + '&no=' + no;
+        }
+        if (name !== undefined && name !== null && name !== '') {
+            url = url + '&name=' + name;
+        }
+        if (releaseDate !== undefined && releaseDate !== null && releaseDate !== '') {
+            url = url + '&releaseDate=' + releaseDate;
+        }
+        if (keyWord !== undefined && keyWord !== null && keyWord !== '') {
+            url = url + '&keyWord=' + keyWord;
+        }
+        if (resUuid !== undefined && resUuid !== null) {
+            url = url + '&resUuid=' + resUuid;
+        }
+
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
+    this.get = function (uuid) {
+        return $http.get(Constant.BACKEND_BASE + '/applicationVersions/' + uuid);
+    };
+
+    this.delete = function (uuid) {
+        return $http.delete(Constant.BACKEND_BASE + '/applicationVersions/' + uuid);
+    };
+
+    this.modify = function (uuid, UpdateInput) {
+
+        return $http.patch(Constant.BACKEND_BASE + '/applicationVersions/' + uuid, UpdateInput);
+    };
+
+    this.add = function (AddInput) {
+
+        return $http.post(Constant.BACKEND_BASE + '/applicationVersions/', AddInput);
+    };
+});
+
