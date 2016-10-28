@@ -689,7 +689,7 @@ angular.module('IOne-Constant').constant('Constant', {
                     link: '/sys/sysMenus',
                     uuid: RES_UUID_MAP.SYS.SYS_BASE_MENU.RES_UUID
                 },
-                {id: '/sys/applicationVersion', name: 'APP版本管理', link: '/sys/applicationVersion', uuid: RES_UUID_MAP.SYS.SYS_BASE_RES.RES_UUID},
+                {id: '/sys/applicationVersion', name: 'APP版本管理', link: '/sys/applicationVersion', uuid: RES_UUID_MAP.SYS.APPLICATION_VERSION.RES_UUID},
             ]
         },
         {
