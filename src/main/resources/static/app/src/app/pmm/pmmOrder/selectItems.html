@@ -87,11 +87,12 @@
                                ng-model="addOrderDetail.oriPurAmt" min="0"
                                ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                     </md-input-container>
-                    <md-input-container>
-                        <label class="label">促销折扣率：</label>
+                    <md-input-container class="md-icon-float" style="margin: 0px;">
+                        <label class="label" style="margin: 0px;">促销折扣率：</label>
                         <input type="number" aria-label="..." string-to-number required
-                               ng-model="addOrderDetail.promotionDiscountRate" min="0" step="0.1" ng-change="chgProR()"
+                               ng-model="addOrderDetail.promotionDiscountRate" min="0" ng-change="chgProR()"
                                ng-disabled="addOrderDetail.saleTypeUuid != 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E'">
+                        <md-icon style="right: 6px; left: auto;">%</md-icon>
                     </md-input-container>
                     <md-input-container>
                         <label class="label">促销单价：</label>
