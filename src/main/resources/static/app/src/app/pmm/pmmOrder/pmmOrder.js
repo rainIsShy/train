@@ -1130,11 +1130,12 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             parent: angular.element(document.body),
             targetEvent: event,
             locals: {
-                selectedOrderExtendDetail: orderExtendDetail
+                selectedOrderExtendDetail: orderExtendDetail,
+                channelUuid: $scope.selectedItem.channel.uuid
             }
         }).then(function (data) {
             PmmOrderExtendDetail.modify(data.selectedOrderExtendDetail.pmmOrderDetail.uuid, data.selectedOrderExtendDetail.uuid, data.selectedOrderExtendDetail).success(function () {
-                PmmOrderDetail.get(data.selectedOrderExtendDetail.pmmOrderDetail.pmmOrderMaster.uuid, data.selectedOrderExtendDetail.pmmOrderDetail.uuid).success(function (data) {
+                PmmOrderDetail.get(data.selectedOrderExtendDetail.pmmOrderDetail.pmmOrderMst.uuid, data.selectedOrderExtendDetail.pmmOrderDetail.uuid).success(function (data) {
                     $scope.OrderDetailList = data;
                     $scope.updateOrderDetailListDate($scope.OrderDetailList);
                     $scope.OrderExtendDetailList = [];
@@ -1774,13 +1775,36 @@ angular.module('IOne-Production').controller('PmmOrderExtendDetail2Controller', 
 });
 
 
-angular.module('IOne-Production').controller('PmmOrderExtendDetailController', function ($scope, $mdDialog, selectedOrderExtendDetail) {
+angular.module('IOne-Production').controller('PmmOrderExtendDetailController', function ($scope, $mdDialog, selectedOrderExtendDetail, channelUuid) {
     $scope.selectedOrderExtendDetail = angular.copy(selectedOrderExtendDetail);
+
+    $scope.openExtItemDlg = function () {
+        $mdDialog.show({
+            controller: 'SelectItemsController',
+            templateUrl: 'app/src/app/pmm/pmmOrder/selectItemsDlg.html',
+            targetEvent: event,
+            preserveScope: true,
+            autoWrap: true,
+            skipHide: true,
+            locals: {
+                fieldName: '归属补件',
+                channelUuid: channelUuid
+            }
+        }).then(function (data) {
+            if (!$scope.selectedOrderExtendDetail.baseItem) {
+                $scope.selectedOrderExtendDetail.baseItem = {};
+            }
+            $scope.selectedOrderExtendDetail.baseItem.name = data.name;
+            $scope.selectedOrderExtendDetail.plmBaseItemFileBUuid = data.uuid;
+        });
+    };
+
     $scope.hideDlg = function () {
         $mdDialog.hide({
             'selectedOrderExtendDetail': $scope.selectedOrderExtendDetail
         });
     };
+
     $scope.cancelDlg = function () {
         $mdDialog.cancel();
     };
@@ -1856,6 +1880,42 @@ angular.module('IOne-Production').controller('OrderPurchaseReturnController', fu
 
     $scope.hideDlg = function () {
         $mdDialog.hide($scope.dtls);
+    };
+
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+});
+
+
+angular.module('IOne-Production').controller('SelectItemsController', function ($scope, $mdDialog, fieldName, channelUuid, OrderItems) {
+    $scope.pageOption = {
+        sizePerPage: 5,
+        currentPage: 0,
+        totalPage: 0,
+        totalElements: 0
+    };
+
+    $scope.queryAction = function () {
+        $scope.pageOption.currentPage = 0;
+        $scope.refreshList();
+    };
+
+    $scope.refreshList = function () {
+        OrderItems.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, channelUuid, $scope.searchNo, $scope.searchName).success(function (data) {
+            $scope.searchResult = data;
+            if ($scope.searchResult.content.length < 1) {
+                $scope.showError('当前经销商没有商品，请检查渠道定价是否设置。');
+            }
+            $scope.pageOption.totalElements = data.totalElements;
+            $scope.pageOption.totalPage = data.totalPages;
+        });
+    };
+
+    $scope.refreshList();
+
+    $scope.select = function (data) {
+        $mdDialog.hide(data);
     };
 
     $scope.cancelDlg = function () {
