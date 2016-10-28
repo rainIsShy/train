@@ -1,0 +1,50 @@
+<div class="main-panel">
+    <div ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS">
+        <div layout="row" class="top-title">
+            <div flex class="right-title">
+                <span>商品停产同步管理</span>
+            </div>
+        </div>
+
+        <div layout="row" class="main-body border">
+            <div flex class="right-body">
+                <div flex layout="row" style="position: relative; margin: 0px 18px;" layout-align="start start">
+
+                    <md-input-container flex="20">
+                        <label>开始日期：</label>
+                        <input type="date" ng-model="listFilterOption.startDate" min="0000-01-01" max="9999-12-31">
+                    </md-input-container>
+                    <md-input-container flex="20">
+                        <label>截止日期：</label>
+                        <input type="date" ng-model="listFilterOption.endDate" min="0000-01-01" max="9999-12-31">
+                    </md-input-container>
+                    <md-input-container flex="20">
+                        <label>TIPTOP DB ：</label>
+                        <md-select placeholder="" ng-model="listFilterOption.tiptopDb" class="select">
+                            <md-option ng-repeat="tiptop in tiptopDbList" ng-value="tiptop.tiptopDb">
+                                {{tiptop.tiptopClientName}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-button style="margin-top: 22px;height: 20px;" class="md-raised" ng-click="execute()">同步
+                    </md-button>
+
+                    <!--<span flex style="padding-top: 10px;" align="right">-->
+                    <!--<md-button class="md-icon-button" aria-label="Eat cake" ng-click="showAdvancedSearchAction()">-->
+                    <!--<ng-md-icon icon="expand_more" ng-show="!displayAdvancedSearPanel"></ng-md-icon>-->
+                    <!--<ng-md-icon icon="expand_less" ng-show="displayAdvancedSearPanel"></ng-md-icon>-->
+                    <!--</md-button>-->
+                    <!--</span>-->
+                </div>
+                <!-- advanced search-->
+                <!--<div class="search-bar" layout="row" ng-show="displayAdvancedSearPanel" layout-align="start center">-->
+
+                <!--</div>-->
+                <!-- status panel-->
+
+            </div>
+        </div>
+    </div>
+
+</div>
