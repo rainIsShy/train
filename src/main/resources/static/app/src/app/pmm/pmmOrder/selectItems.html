@@ -132,12 +132,6 @@
                         </md-select>
                     </md-input-container>
                     <md-input-container>
-                        <label class="label">单套定制费：</label>
-                        <input type="number" aria-label="..." string-to-number min="0" step="0.01"
-                               ng-model="addOrderDetail.perCustomizePrice" ng-change="calcPurAmt()"
-                               ng-disabled="addOrderDetail.customizeFlag == '2'">
-                    </md-input-container>
-                    <md-input-container>
                         <label class="label">备注：</label>
                         <input type="text" aria-label="..." ng-model="addOrderDetail.remark" md-maxlength="20">
                     </md-input-container>
@@ -145,6 +139,12 @@
                         <label class="label">定制备注：</label>
                         <input type="text" aria-label="..." ng-model="addOrderDetail.customizeRemark" md-maxlength="20"
                                ng-disabled="addOrderDetail.customizeFlag != '1'">
+                    </md-input-container>
+                    <md-input-container>
+                        <label class="label">单套定制费：</label>
+                        <input type="number" aria-label="..." string-to-number min="0" step="0.01"
+                               ng-model="addOrderDetail.perCustomizePrice" ng-change="calcPurAmt()"
+                               ng-disabled="addOrderDetail.customizeFlag == '2'">
                     </md-input-container>
                 </div>
             </div>
