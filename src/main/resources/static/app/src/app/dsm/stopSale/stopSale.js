@@ -28,8 +28,10 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
             };
 
             IoneAdapterService.transferIoneAdapter("/tcDsbTask", param, $scope, function (response) {
-                var totalCount = response.updateCount + response.insertCount;
-                $scope.showInfo('共 ' + totalCount + '笔数据同步成功，');
+                var totalDsbCount = response.updateDsbCount + response.insertDsbCount;
+                var totalPlmCount = response.updatePlmCount + response.insertPlmCount;
+                $scope.showInfo('ERP同步到tiptop_tc_dsb_file，共 ' + totalDsbCount + '笔数据同步成功!');
+                $scope.showInfo('tiptop_tc_dsb_file 同步到 plm，共 ' + totalPlmCount + '笔数据同步成功!');
             });
         }
     };
