@@ -1565,7 +1565,7 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         // 常规
         $scope.addOrderDetail.saleTypeUuid = '162A8B4C-3C3A-4D72-BB3E-47538CFA5CE8';
 
-        $scope.addOrderDetail.customizeFlag = 2;
+        $scope.addOrderDetail.customizeFlag = data.customizationFlag == 'Y' ? '1' : '2';
         $scope.addOrderDetail.presentFlag = 2;
         // $scope.addOrderDetail.originalStandardAmount = parseFloat(($scope.addOrderDetail.standardPrice * $scope.addOrderDetail.orderQuantity).toFixed(2));
         ChannelItemInfoService.getByItem(channelUuid,  data.uuid).success(function (icr) {
