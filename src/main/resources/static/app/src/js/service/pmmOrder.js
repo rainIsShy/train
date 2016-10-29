@@ -70,7 +70,7 @@ angular.module('IOne-Production').service('PmmOrderMaster', function ($http, Con
 
     this.changePurchaseFlag = function (uuid, flag, data) {
         return $http.patch(Constant.BACKEND_BASE + '/pmmOrders/' + uuid + '/purchase/' + flag, data);
-    }
+    };
 
     this.purchaseList = function (data) {
         return $http.patch(Constant.BACKEND_BASE + '/pmmOrders/purchaseList/', data);
@@ -98,7 +98,7 @@ angular.module('IOne-Production').service('PmmOrderDetail', function ($http, Con
 
     this.delete = function(masterUuid, detailUuid) {
         return $http.delete(Constant.BACKEND_BASE + '/pmmOrders/' + masterUuid + '/details/' + detailUuid);
-    }
+    };
 
     this.changeDtlPurchaseFlag = function (uuid, dtlUuids, flag, data) {
         return $http.patch(Constant.BACKEND_BASE + '/pmmOrders/' + uuid + '/details/' + dtlUuids + '/purchase/' + flag, data);
@@ -154,6 +154,28 @@ angular.module('IOne-Production').service('OrderCustomers', function($http, Cons
 angular.module('IOne-Production').service('OrderItems', function($http, Constant) {
     this.getAll = function(sizePerPage, page, channelUuid, no, name) {
         var url = '/channelPrices/' + channelUuid + '/items?size=' + sizePerPage + '&page=' + page;
+        if(no !== undefined && no !== null) {
+            url = url + '&no=' + no;
+        }
+
+        if(name !== undefined && name !== null) {
+            url = url + '&name=' + name;
+        }
+
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
+    this.getCustomDetail = function (itemUuid, itemCustomUuid) {
+        var url = '/items/' + itemUuid + '/customs?size=100&page=0&itemCustomUuid=' + itemCustomUuid;
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
+    this.getCustomScope = function (itemCustomUuid, scopeUuid) {
+        return $http.get(Constant.BACKEND_BASE + 'itemCustoms/' + itemCustomUuid + '/scopes/' + scopeUuid);
+    };
+
+    this.getAllCustomScope = function (sizePerPage, page, itemCustomUuid, no, name) {
+        var url = '/itemCustoms/' + itemCustomUuid + '/scopes/?size=' + sizePerPage + '&page=' + page;
         if(no !== undefined && no !== null) {
             url = url + '&no=' + no;
         }

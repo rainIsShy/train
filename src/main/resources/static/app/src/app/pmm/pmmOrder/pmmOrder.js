@@ -1568,6 +1568,19 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
 
         $scope.addOrderDetail.customizeFlag = data.customizationFlag == 'Y' ? '1' : '2';
         $scope.addOrderDetail.presentFlag = 2;
+
+        if (data.brand.no != '98') {
+            OrderItems.getCustomDetail(data.uuid, '9B4E43F4-56C8-495B-952D-9CCDA6D31DA8').success(function (idata) {
+                if (idata.content.length > 0) {
+                    $scope.addOrderDetail.itemCustomScopeUuid = data.content[0].information.substring(2, 38);
+                    OrderItems.getCustomScope('9B4E43F4-56C8-495B-952D-9CCDA6D31DA8', $scope.addOrderDetail.itemCustomScopeUuid).success(function (scopeData) {
+                        $scope.addOrderDetail.itemCustomScope.no = scopeData.no;
+                        $scope.addOrderDetail.itemCustomScope.name = scopeData.name
+                    });
+                }
+            });
+        }
+
         // $scope.addOrderDetail.originalStandardAmount = parseFloat(($scope.addOrderDetail.standardPrice * $scope.addOrderDetail.orderQuantity).toFixed(2));
         ChannelItemInfoService.getByItem(channelUuid,  data.uuid).success(function (icr) {
             $scope.addOrderDetail.standardPrice = 0;
@@ -1677,8 +1690,21 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         $scope.calcPurAmt();
     };
 
-    $scope.test = function () {
-        console.log('1231231#!@#!');
+    $scope.openItemCustScopeDlg = function () {
+        $mdDialog.show({
+            controller: 'SelectItemScopeController',
+            templateUrl: 'app/src/app/pmm/pmmOrder/selectItemScopeDlg.html',
+            targetEvent: event,
+            preserveScope: true,
+            autoWrap: true,
+            skipHide: true,
+            locals: {
+                itemUuid: $scope.addOrderDetail.item.uuid
+            }
+        }).then(function (data) {
+            $scope.addOrderDetail.itemCustomScopeUuid = data.uuid;
+            $scope.addOrderDetail.itemCustomScope = { no: data.no, name: data.name };
+        });
     };
 });
 
@@ -1941,6 +1967,39 @@ angular.module('IOne-Production').controller('SelectItemsController', function (
             if ($scope.searchResult.content.length < 1) {
                 $scope.showError('当前经销商没有商品，请检查渠道定价是否设置。');
             }
+            $scope.pageOption.totalElements = data.totalElements;
+            $scope.pageOption.totalPage = data.totalPages;
+        });
+    };
+
+    $scope.refreshList();
+
+    $scope.select = function (data) {
+        $mdDialog.hide(data);
+    };
+
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+});
+
+angular.module('IOne-Production').controller('SelectItemScopeController', function ($scope, $mdDialog, itemUuid, OrderItems) {
+    $scope.pageOption = {
+        sizePerPage: 5,
+        currentPage: 0,
+        totalPage: 0,
+        totalElements: 0
+    };
+    var itemCustomUuid = '9B4E43F4-56C8-495B-952D-9CCDA6D31DA8';
+
+    $scope.queryAction = function () {
+        $scope.pageOption.currentPage = 0;
+        $scope.refreshList();
+    };
+
+    $scope.refreshList = function () {
+        OrderItems.getAllCustomScope($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, itemCustomUuid, $scope.searchNo, $scope.searchName).success(function (data) {
+            $scope.searchResult = data;
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
         });
