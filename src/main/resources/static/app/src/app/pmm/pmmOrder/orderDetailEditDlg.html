@@ -18,6 +18,19 @@
                         <md-option value="F1DEDA0E-A607-4934-B305-EEC3C447C509">特价</md-option>
                     </md-select>
                 </md-input-container>
+                <md-input-container class="md-icon-float" style="margin: 0px;">
+                    <label class="label" style="margin: 0px;">促销折扣率：</label>
+                    <input type="number" aria-label="..." string-to-number required
+                           ng-model="selectedOrderDetail.promotionDiscountRate" min="0" ng-change="chgProR()"
+                           ng-disabled="selectedOrderDetail.saleType.uuid != 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E'">
+                    <md-icon style="right: 6px; left: auto;">%</md-icon>
+                </md-input-container>
+                <md-input-container>
+                    <label class="label">促销单价：</label>
+                    <input type="number" aria-label="..." string-to-number required
+                           ng-model="selectedOrderDetail.promotionPrice" min="0" ng-change="chgProP()"
+                           ng-disabled="selectedOrderDetail.saleType.uuid != 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E'">
+                </md-input-container>
                 <md-input-container>
                     <label class="label">单套定制费：</label>
                     <input type="number" ng-model="selectedOrderDetail.perCustomizePrice" string-to-number required min="0" step="1"

@@ -1619,7 +1619,7 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
     };
 
     $scope.showError = function (info) {
-        toastr["error"](info)
+        toastr["error"](info);
     };
 
     $scope.refreshUI = function () {
@@ -1675,6 +1675,10 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
             $scope.addOrderDetail.promotionDiscountRate = parseFloat(($scope.addOrderDetail.promotionPrice / $scope.addOrderDetail.item.suggestPrice * 100).toFixed(2));
         }
         $scope.calcPurAmt();
+    };
+
+    $scope.test = function () {
+        console.log('1231231#!@#!');
     };
 });
 
@@ -1818,10 +1822,28 @@ angular.module('IOne-Production').controller('PmmOrderDetailController', functio
     $scope.onChgDtlEditSaleType = function (saleTypeUuid) {
         if (saleTypeUuid != 'F1DEDA0E-A607-4934-B305-EEC3C447C509') { // 特价
             $scope.selectedOrderDetail.specialPrice = 0;
+        } else if (saleTypeUuid != 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E') {
+            $scope.selectedOrderDetail.promotionDiscountRate = '';
+            $scope.selectedOrderDetail.promotionPrice = '';
         }
     };
 
     $scope.hideDlg = function () {
+        var errMsgs = [];
+        if ($scope.selectedOrderDetail.saleType.uuid == 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E') {
+            if ($scope.selectedOrderDetail.promotionDiscountRate == '') {
+                errMsgs.push("请输入促销折扣率");
+            }
+            if ($scope.selectedOrderDetail.promotionPrice == '') {
+                errMsgs.push("请输入促销单价");
+            }
+        }
+        if (errMsgs.length > 0) {
+            angular.forEach(errMsgs, function (val) {
+                toastr["error"](val);
+            });
+            return;
+        }
         $mdDialog.hide({
             'selectedOrderDetail': $scope.selectedOrderDetail
         });
@@ -1829,6 +1851,18 @@ angular.module('IOne-Production').controller('PmmOrderDetailController', functio
 
     $scope.cancelDlg = function () {
         $mdDialog.cancel();
+    };
+
+    $scope.chgProR = function () {
+        if ($scope.selectedOrderDetail.promotionDiscountRate != '') {
+            $scope.selectedOrderDetail.promotionPrice = parseFloat(($scope.selectedOrderDetail.promotionDiscountRate * $scope.selectedOrderDetail.item.suggestPrice / 100).toFixed(2));
+        }
+    };
+
+    $scope.chgProP = function () {
+        if ($scope.selectedOrderDetail.promotionPrice != '') {
+            $scope.selectedOrderDetail.promotionDiscountRate = parseFloat(($scope.selectedOrderDetail.promotionPrice / $scope.selectedOrderDetail.item.suggestPrice * 100).toFixed(2));
+        }
     };
 });
 
