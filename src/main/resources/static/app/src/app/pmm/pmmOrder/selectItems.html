@@ -17,7 +17,7 @@
                                 <label>商品名称</label>
                                 <input name="no" type="text" ng-model="searchName" md-maxlength="20">
                             </md-input-container>
-                            <md-button ng-click="refreshData()" ng-disabled="searchData.$invalid">
+                            <md-button ng-click="search()" ng-disabled="searchData.$invalid">
                                 <i class="fa fa-search"></i>
                             </md-button>
                         </div>
@@ -41,9 +41,7 @@
                     </md-input-container>
                     <md-input-container>
                         <label class="label">品牌编号：</label>
-                        <input type="text" ng-model="addOrderDetail.itemCustomScope.no" ng-click="openItemCustScopeDlg()"
-                               ng-disabled="addOrderDetail.item.brand.no != '98' || !addOrderDetail.item"
-                               ng-readonly="addOrderDetail.item.brand.no == '98'">
+                        <input type="text" ng-model="addOrderDetail.itemCustomScope.no" disabled>
                     </md-input-container>
                     <md-input-container>
                         <label class="label">品牌名称：</label>

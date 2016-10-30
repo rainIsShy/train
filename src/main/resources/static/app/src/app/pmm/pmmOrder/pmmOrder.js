@@ -1541,6 +1541,11 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         displayModel: 0  //0 : image + text //1 : image
     };
 
+    $scope.search = function () {
+        $scope.pageOption.currentPage = 0;
+        $scope.refreshData();
+    };
+
     $scope.refreshData = function () {
         OrderItems.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, channelUuid, $scope.searchNo, $scope.searchName).success(function (data) {
             $scope.allData = data;
@@ -1569,16 +1574,15 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         $scope.addOrderDetail.customizeFlag = data.customizationFlag == 'Y' ? '1' : '2';
         $scope.addOrderDetail.presentFlag = 2;
 
-        if (data.brand.no != '98') {
-            OrderItems.getCustomDetail(data.uuid, '9B4E43F4-56C8-495B-952D-9CCDA6D31DA8').success(function (idata) {
-                if (idata.content.length > 0) {
-                    $scope.addOrderDetail.itemCustomScopeUuid = idata.content[0].information.substring(2, 38);
-                    OrderItems.getCustomScope('9B4E43F4-56C8-495B-952D-9CCDA6D31DA8', $scope.addOrderDetail.itemCustomScopeUuid).success(function (scopeData) {
-                        $scope.addOrderDetail.itemCustomScope = { no: scopeData.no, name: scopeData.name };
-                    });
-                }
-            });
-        }
+        $scope.addOrderDetail.itemCustomScope = { no: null, name: null };
+        OrderItems.getCustomDetail(data.uuid, '9B4E43F4-56C8-495B-952D-9CCDA6D31DA8').success(function (idata) {
+            if (idata.content.length > 0) {
+                $scope.addOrderDetail.itemCustomScopeUuid = idata.content[0].information.substring(2, 38);
+                OrderItems.getCustomScope('9B4E43F4-56C8-495B-952D-9CCDA6D31DA8', $scope.addOrderDetail.itemCustomScopeUuid).success(function (scopeData) {
+                    $scope.addOrderDetail.itemCustomScope = { no: scopeData.no, name: scopeData.name };
+                });
+            }
+        });
 
         // $scope.addOrderDetail.originalStandardAmount = parseFloat(($scope.addOrderDetail.standardPrice * $scope.addOrderDetail.orderQuantity).toFixed(2));
         ChannelItemInfoService.getByItem(channelUuid,  data.uuid).success(function (icr) {
@@ -1688,23 +1692,6 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         }
         $scope.calcPurAmt();
     };
-
-    $scope.openItemCustScopeDlg = function () {
-        $mdDialog.show({
-            controller: 'SelectItemScopeController',
-            templateUrl: 'app/src/app/pmm/pmmOrder/selectItemScopeDlg.html',
-            targetEvent: event,
-            preserveScope: true,
-            autoWrap: true,
-            skipHide: true,
-            locals: {
-                itemUuid: $scope.addOrderDetail.item.uuid
-            }
-        }).then(function (data) {
-            $scope.addOrderDetail.itemCustomScopeUuid = data.uuid;
-            $scope.addOrderDetail.itemCustomScope = { no: data.no, name: data.name };
-        });
-    };
 });
 
 angular.module('IOne-Production').controller('PmmOrderExtendDetail2Controller', function ($scope, $mdDialog, allCustoms, allCustomsScopes, custom, op, ItemRelationService, itemUuid) {
@@ -1729,14 +1716,11 @@ angular.module('IOne-Production').controller('PmmOrderExtendDetail2Controller', 
             $scope.itemRelationList = itemRelationData.content;
             $scope.selectedCustom.informationScope = $scope.selectedCustom.information;
         });
-
     } else {
-
         $scope.selectedCustom = {
             informationUuids: [],
             //astrict: 2
             itemCustom: {astrict: 2}
-
         };
     }
 
