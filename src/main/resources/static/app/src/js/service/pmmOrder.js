@@ -171,7 +171,7 @@ angular.module('IOne-Production').service('OrderItems', function($http, Constant
     };
 
     this.getCustomScope = function (itemCustomUuid, scopeUuid) {
-        return $http.get(Constant.BACKEND_BASE + 'itemCustoms/' + itemCustomUuid + '/scopes/' + scopeUuid);
+        return $http.get(Constant.BACKEND_BASE + '/itemCustoms/' + itemCustomUuid + '/scopes/' + scopeUuid);
     };
 
     this.getAllCustomScope = function (sizePerPage, page, itemCustomUuid, no, name) {

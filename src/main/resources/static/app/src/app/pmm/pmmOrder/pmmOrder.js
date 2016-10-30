@@ -1572,10 +1572,9 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         if (data.brand.no != '98') {
             OrderItems.getCustomDetail(data.uuid, '9B4E43F4-56C8-495B-952D-9CCDA6D31DA8').success(function (idata) {
                 if (idata.content.length > 0) {
-                    $scope.addOrderDetail.itemCustomScopeUuid = data.content[0].information.substring(2, 38);
+                    $scope.addOrderDetail.itemCustomScopeUuid = idata.content[0].information.substring(2, 38);
                     OrderItems.getCustomScope('9B4E43F4-56C8-495B-952D-9CCDA6D31DA8', $scope.addOrderDetail.itemCustomScopeUuid).success(function (scopeData) {
-                        $scope.addOrderDetail.itemCustomScope.no = scopeData.no;
-                        $scope.addOrderDetail.itemCustomScope.name = scopeData.name
+                        $scope.addOrderDetail.itemCustomScope = { no: scopeData.no, name: scopeData.name };
                     });
                 }
             });

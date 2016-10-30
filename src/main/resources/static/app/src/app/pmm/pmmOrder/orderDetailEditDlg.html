@@ -34,11 +34,17 @@
                 <md-input-container>
                     <label class="label">单套定制费：</label>
                     <input type="number" ng-model="selectedOrderDetail.perCustomizePrice" string-to-number required min="0" step="1"
-                           ng-disabled="selectedOrderDetail.customizeFlag == '2'">
+                           ng-disabled="selectedOrderDetail.customizeFlag != '1'">
+                </md-input-container>
+                <md-input-container>
+                    <label class="label">定制备注：</label>
+                    <input type="text" aria-label="..." ng-model="selectedOrderDetail.customizeRemark" md-maxlength="20"
+                           ng-disabled="selectedOrderDetail.customizeFlag != '1'">
                 </md-input-container>
                 <md-input-container>
                     <label class="label">特价单价：</label>
-                    <input type="number" ng-model="selectedOrderDetail.specialPrice" string-to-number required min="0" step="1" ng-disabled="selectedOrderDetail.saleType.uuid != 'F1DEDA0E-A607-4934-B305-EEC3C447C509'">
+                    <input type="number" ng-model="selectedOrderDetail.specialPrice" string-to-number required min="0" step="1"
+                           ng-disabled="selectedOrderDetail.saleType.uuid != 'F1DEDA0E-A607-4934-B305-EEC3C447C509'">
                 </md-input-container>
                 <md-input-container>
                     <label class="label">备注：</label>
