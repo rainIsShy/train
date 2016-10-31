@@ -141,6 +141,10 @@
                             <span class="item-content">{{selectedItem.channelBoothCode}}</span>
                         </span>
                         <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">所属城市</span>
+                            <span class="item-content">{{selectedItem.area.fullPath[2] + '-' + selectedItem.area.fullPath[3] + '-' +  selectedItem.area.fullPath[4]}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
                             <span class="item-name">渠道/直营店类型</span>
                             <span class="item-content">{{CHANNEL_FLAG[selectedItem.channelFlag].name}}</span>
                         </span>
