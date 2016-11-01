@@ -12,15 +12,17 @@ angular.module('IOne-Production').controller('EpsOrderReport_plmBaseItemFile_con
     var thisMonth = new Date();
     var previousMonth = new Date();
     previousMonth.setMonth(-1);
-    $scope.report = {
-        orderDateFrom: previousMonth,
-        orderDateTo: thisMonth
+    $scope.orderDate = {
+        from: previousMonth,
+        to: thisMonth
     }
-    $scope.$watch('report', function (newValue, oldValue) {
-        var orderDateFrom = $filter('date')(newValue.orderDateFrom, 'yyyy-MM-dd');
-        var orderDateTo = $filter('date')(newValue.orderDateTo, 'yyyy-MM-dd');
+    $scope.report;
+    $scope.$watch('orderDate', function (newValue) {
+        var orderDateFrom = $filter('date')(newValue.from, 'yyyy-MM-dd');
+        var orderDateTo = $filter('date')(newValue.to, 'yyyy-MM-dd');
         EpsOrderReportService.getPlmBaseItemFile(orderDateFrom, orderDateTo, $scope.pageOption).success(function (data) {
             console.log(data);
+            $scope.report = data;
         }).error(function (response) {
             $scope.showError(response.message);
         });

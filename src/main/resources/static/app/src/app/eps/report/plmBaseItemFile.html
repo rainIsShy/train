@@ -1,16 +1,24 @@
-<div layout-fill>
+<div>
     <div layout="row">
         <md-input-container flex="20">
             <label>起始日期：</label>
-            <input type="date" ng-model="report.orderDateFrom" placeholder="yyyy-MM-dd"/>
+            <input type="date" ng-model="orderDate.from" placeholder="yyyy-MM-dd"/>
         </md-input-container>
         <md-input-container flex="20">
             <label>結束日期：</label>
-            <input type="date" ng-model="report.orderDateTo" placeholder="yyyy-MM-dd"/>
+            <input type="date" ng-model="orderDate.to" placeholder="yyyy-MM-dd"/>
         </md-input-container>
     </div>
-    <div layout="column">
 
+
+</div>
+<div>
+    <div layout="row">
+        <div style="border: 1px solid black;width: 70px ;word-break: break-all;"
+             ng-repeat="(key, value) in report.content[0]" ng-bind="key"></div>
     </div>
-
+    <div layout="row" ng-repeat="row in report.content">
+        <div style="border: 1px solid black;width: 70px ;word-break: break-all;"
+             ng-repeat="(key, value) in row" ng-bind="value"></div>
+    </div>
 </div>
