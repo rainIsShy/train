@@ -710,6 +710,7 @@ angular.module('IOne-Constant').constant('Constant', {
             icon: 'fa fa-history',
             subList: [
                 {id: '/reports', name: '报表查询', link: '/reports', uuid: ''},
+                {id: '/eps/report/plmBaseItemFile', name: '电商订单料件明细(包件)', link: '/eps/report/plmBaseItemFile', uuid: ''}
             ]
         },
         {
