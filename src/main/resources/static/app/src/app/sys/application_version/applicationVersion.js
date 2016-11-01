@@ -43,7 +43,7 @@ angular.module('IOne-Production').controller('SYSApplicationVersionController', 
     $scope.disabledBatchStatus = true;
     $scope.disabledBatchCancelStatus = true;
     $scope.disabledBatchDelete = true;
-    $scope.sortByField = 'no';
+    $scope.sortByField = '-no';
 
     $scope.sortByAction = function (field) {
         $scope.sortByField = field;
@@ -172,13 +172,12 @@ angular.module('IOne-Production').controller('SYSApplicationVersionController', 
         //     $scope.showError("不允许状态是已审核又无效,请调整后再保存");
         //     return;
         // }
-        console.info($scope.source.releaseDate);
+
         if ($scope.source.releaseDate != undefined && $scope.source.releaseDate !== null && $scope.source.releaseDate !== '') {
             releaseDate = new Date($scope.source.releaseDate);
             console.info($scope.source.releaseDate);
             $scope.source.releaseDate = moment(releaseDate).format('YYYY-MM-DD');
         }
-        console.info($scope.source.releaseDate);
 
         if ($scope.status == 'add') {
             if ($scope.domain == 'SYS_BASE_APP_VERSION') {
@@ -372,10 +371,10 @@ angular.module('IOne-Production').controller('SYSApplicationVersionController', 
 
     $scope.deleteClickAction = function (event, item) {
         $scope.stopEventPropagation(event);
-        if (item.status != '1' || item.confirm != '1') {
-            $scope.showWarn('仅当APP版本的状态是有效且未审核时才允许删除!');
-            return;
-        }
+        // if (item.status != '1' || item.confirm != '1') {
+        //     $scope.showWarn('仅当APP版本的状态是有效且未审核时才允许删除!');
+        //     return;
+        // }
         $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
             SYSApplicationVersionService.delete(item.uuid).success(function () {
                 $scope.selectedItem = null;
@@ -388,18 +387,13 @@ angular.module('IOne-Production').controller('SYSApplicationVersionController', 
     $scope.deleteAllClickAction = function (event) {
         $scope.stopEventPropagation(event);
         var promises = [];
-        var noDeleteNos = '';
         var count = 0;
         angular.forEach($scope.itemList, function (item) {
             if (item.selected === true) {
-                if (item.status == '1' && item.confirm == '1') {
-                    var response = SYSApplicationVersionService.delete(item.uuid).success(function () {
-                    });
-                    promises.push(response);
-                    count++;
-                } else {
-                    noDeleteNos = noDeleteNos + item.no + '<br>';
-                }
+                var response = SYSApplicationVersionService.delete(item.uuid).success(function () {
+                });
+                promises.push(response);
+                count++;
             }
         });
         if (count == 0) {
@@ -407,11 +401,7 @@ angular.module('IOne-Production').controller('SYSApplicationVersionController', 
             return;
         }
         $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
-            if (noDeleteNos !== '') {
-                $scope.showWarn('以下状态是失效或已审核的的项目将不会删除：' + '<br>' + noDeleteNos);
-            }
             $q.all(promises).then(function (data) {
-                //console.info(data);
                 $scope.refreshList();
                 $scope.showInfo('删除成功！');
             }, function (data) {
