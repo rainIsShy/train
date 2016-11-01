@@ -722,7 +722,7 @@ angular.module('IOne-Constant').constant('Constant', {
                 {id: '/dsm/rule', name: '同步规则管理', link: '/dsm/rule', uuid: ''},
                 {id: '/dsm/schedule', name: '同步任务管理', link: '/dsm/schedule', uuid: ''},
                 {id: '/dsm/log', name: '日志管理', link: '/dsm/log', uuid: ''},
-                {id: '/dsm/stopSale', name: '商品停产同步管理', link: '/dsm/stopSale', uuid: ''}
+                {id: '/dsm/stopSale', name: '商品数据同步管理', link: '/dsm/stopSale', uuid: ''}
             ]
         },
         {
