@@ -1614,6 +1614,8 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
             if ($scope.addOrderDetail.promotionPrice == '') {
                 errMsgs.push("请输入促销单价");
             }
+        } else if ($scope.addOrderDetail.saleTypeUuid == 'F1DEDA0E-A607-4934-B305-EEC3C447C509' && (!$scope.addOrderDetail.specialPrice || $scope.addOrderDetail.specialPrice == '')) { // 特价
+            errMsgs.push("请输入特价单价");
         }
 
         if (errMsgs.length > 0) {
@@ -1846,6 +1848,8 @@ angular.module('IOne-Production').controller('PmmOrderDetailController', functio
             if ($scope.selectedOrderDetail.promotionPrice == '') {
                 errMsgs.push("请输入促销单价");
             }
+        } else if ($scope.selectedOrderDetail.saleType.uuid == 'F1DEDA0E-A607-4934-B305-EEC3C447C509' && (!$scope.selectedOrderDetail.specialPrice || $scope.selectedOrderDetail.specialPrice == '')) { // 特价
+            errMsgs.push("请输入特价单价");
         }
         if (errMsgs.length > 0) {
             angular.forEach(errMsgs, function (val) {
