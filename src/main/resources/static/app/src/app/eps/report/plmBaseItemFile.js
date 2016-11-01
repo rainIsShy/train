@@ -7,25 +7,31 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
 angular.module('IOne-Production').controller('EpsOrderReport_plmBaseItemFile_controller', function ($scope, $filter, EpsOrderReportService) {
     $scope.pageOption = {
         sizePerPage: 10,
-        currentPage: 0
+        currentPage: 0,
+        totalPage: 100,
+        totalElements: 100
     };
     var thisMonth = new Date();
     var previousMonth = new Date();
-    previousMonth.setMonth(-1);
+    previousMonth.setMonth(previousMonth.getMonth() - 1);
     $scope.orderDate = {
         from: previousMonth,
         to: thisMonth
     }
     $scope.report;
-    $scope.$watch('orderDate', function (newValue) {
-        var orderDateFrom = $filter('date')(newValue.from, 'yyyy-MM-dd');
-        var orderDateTo = $filter('date')(newValue.to, 'yyyy-MM-dd');
+    $scope.$watch('orderDate', function () {
+        $scope.refreshList();
+    }, true);
+    $scope.refreshList = function () {
+        var orderDateFrom = $filter('date')($scope.orderDate.from, 'yyyy-MM-dd');
+        var orderDateTo = $filter('date')($scope.orderDate.to, 'yyyy-MM-dd');
         EpsOrderReportService.getPlmBaseItemFile(orderDateFrom, orderDateTo, $scope.pageOption).success(function (data) {
-            console.log(data);
+            $scope.pageOption.totalPage = data.totalPages;
+            $scope.pageOption.totalElements = data.totalElements;
             $scope.report = data;
         }).error(function (response) {
             $scope.showError(response.message);
         });
-    }, true);
+    }
 
 });
