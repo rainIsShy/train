@@ -5,23 +5,23 @@
                 <md-input-container>
                     <label class="label">数量：</label>
                     <input type="number" ng-model="selectedOrderDetail.orderQuantity" string-to-number required min="1"
-                           step="1">
+                           step="1" disabled>
                 </md-input-container>
                 <md-input-container>
                     <label class="label">产品定制描述：</label>
-                    <input type="text" ng-model="selectedOrderExtendDetail.productCustomizeDescription">
+                    <input type="text" ng-model="selectedOrderExtendDetail.productCustomizeDescription" disabled>
                 </md-input-container>
                 <md-input-container>
                     <label class="label">定制备注：</label>
-                    <input type="text" ng-model="selectedOrderExtendDetail.customizeRemark">
+                    <input type="text" ng-model="selectedOrderExtendDetail.customizeRemark" disabled>
                 </md-input-container>
                 <md-input-container>
                     <label class="label">单包定制费：</label>
-                    <input type="text" ng-model="selectedOrderExtendDetail.perCustomizePrice">
+                    <input type="text" ng-model="selectedOrderExtendDetail.perCustomizePrice" disabled>
                 </md-input-container>
                 <md-input-container>
                     <label class="label">备注：</label>
-                    <input type="text" ng-model="selectedOrderExtendDetail.remark">
+                    <input type="text" ng-model="selectedOrderExtendDetail.remark" disabled>
                 </md-input-container>
                 <md-input-container>
                     <label class="label">归属补件：</label>
@@ -30,41 +30,41 @@
                 <md-input-container>
                     <label class="label">标准价</label>
                     <input type="number" aria-label="..." string-to-number
-                           ng-model="selectedOrderExtendDetail.standardPrice" min="0">
+                           ng-model="selectedOrderExtendDetail.standardPrice" min="0" disabled>
                 </md-input-container>
                 <md-input-container>
                     <label class="label">标准金额(原币)</label>
                     <input type="number" aria-label="..." string-to-number
-                           ng-model="selectedOrderExtendDetail.oriStandardAmt" min="0">
+                           ng-model="selectedOrderExtendDetail.oriStandardAmt" min="0" disabled>
                 </md-input-container>
                 <md-input-container>
                     <label class="label">标准金额(本币)</label>
                     <input type="number" aria-label="..." string-to-number
-                           ng-model="selectedOrderExtendDetail.natStandardAmt" min="0">
+                           ng-model="selectedOrderExtendDetail.natStandardAmt" min="0" disabled>
                 </md-input-container>
                 <md-input-container>
                     <label class="label">成交价(原币)</label>
                     <input type="number" aria-label="..." string-to-number
-                           ng-model="selectedOrderExtendDetail.oriTransactionPrice" min="0">
+                           ng-model="selectedOrderExtendDetail.oriTransactionPrice" min="0" disabled>
                 </md-input-container>
                 <md-input-container>
                     <label class="label">成交价(本币)</label>
                     <input type="number" aria-label="..." string-to-number
-                           ng-model="selectedOrderExtendDetail.natTransactionPrice" min="0">
+                           ng-model="selectedOrderExtendDetail.natTransactionPrice" min="0" disabled>
                 </md-input-container>
                 <md-input-container>
                     <label class="label">促销折扣率</label>
                     <input type="number" aria-label="..." string-to-number
-                           ng-model="selectedOrderExtendDetail.promotionDiscountRate" min="0">
+                           ng-model="selectedOrderExtendDetail.promotionDiscountRate" min="0" disabled>
                 </md-input-container>
                 <md-input-container>
                     <label class="label">促销单价</label>
                     <input type="number" aria-label="..." string-to-number
-                           ng-model="selectedOrderExtendDetail.promotionPrice" min="0">
+                           ng-model="selectedOrderExtendDetail.promotionPrice" min="0" disabled>
                 </md-input-container>
                 <md-input-container>
                     <label class="label">商品颜色</label>
-                    <input type="text" ng-model="selectedOrderExtendDetail.itemColor">
+                    <input type="text" ng-model="selectedOrderExtendDetail.itemColor" disabled>
                 </md-input-container>
             </div>
 
