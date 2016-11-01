@@ -1806,11 +1806,10 @@ angular.module('IOne-Production').controller('PmmOrderExtendDetailController', f
                 channelUuid: channelUuid
             }
         }).then(function (data) {
-            if (!$scope.selectedOrderExtendDetail.baseItem) {
-                $scope.selectedOrderExtendDetail.baseItem = {};
+            if (!data.isCancel) {
+                $scope.selectedOrderExtendDetail.baseItem = { name: data.name };
+                $scope.selectedOrderExtendDetail.plmBaseItemFileBUuid = data.uuid;
             }
-            $scope.selectedOrderExtendDetail.baseItem.name = data.name;
-            $scope.selectedOrderExtendDetail.plmBaseItemFileBUuid = data.uuid;
         });
     };
 
@@ -1962,11 +1961,12 @@ angular.module('IOne-Production').controller('SelectItemsController', function (
     $scope.refreshList();
 
     $scope.select = function (data) {
+        data.isCancel = false;
         $mdDialog.hide(data);
     };
 
     $scope.cancelDlg = function () {
-        $mdDialog.cancel();
+        $mdDialog.hide({ isCancel: true });
     };
 });
 
