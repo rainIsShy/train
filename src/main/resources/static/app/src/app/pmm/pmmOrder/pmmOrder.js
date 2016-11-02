@@ -1662,7 +1662,7 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
 
         var customizePrice = 0;
         if ($scope.addOrderDetail.customizeFlag == '1') {
-            if ($scope.addOrderDetail.perCustomizePrice != '') {
+            if ($scope.addOrderDetail.perCustomizePrice && $scope.addOrderDetail.perCustomizePrice != '') {
                 customizePrice = $scope.addOrderDetail.perCustomizePrice;
             }
         } else {
