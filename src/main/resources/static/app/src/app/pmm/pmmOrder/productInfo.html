@@ -75,7 +75,7 @@
         <div align="center" flex="10" class=" table-head">退回备注</div>
     </div>
     <div ng-repeat="orderDetail in OrderDetailList.content  | orderBy:'no'">
-        <div  layout="row"   >
+        <div layout="row" ng-style="orderDetail.orderQty == 0 && { 'color': 'gray' }">
             <div flex="5"
                  ng-disabled="!(selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2)"
                  style="padding:0px 0px 0px 0px;" layout-align="center" class=" table-item">
@@ -88,11 +88,11 @@
                  ng-show="selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2">
                 <div layout="row" layout-sm="column" layout-align="center center">
                     <div ng-show="orderDetail.confirm == 1 && orderDetail.status == 1 && orderDetail.transferFlag == 2"
-                         align="center"
+                         align="center" style="color: rgba(0,0,0,.87);"
                          ng-click="orderDetailEditMenuAction(orderDetail)"><i class="fa fa-pencil-square-o"></i>&nbsp;{{itemOperationMenuDisplayOption['500-item-edit'].name}}
                     </div>
                     <div ng-show=" orderDetail.confirm == 1 && orderDetail.status == 1 && orderDetail.transferFlag == 2"
-                         align="center"
+                         align="center" style="color: rgba(0,0,0,.87);"
                          ng-click="orderDetailDeleteMenuAction(orderDetail)"><i class="fa fa-times"></i>&nbsp;{{itemOperationMenuDisplayOption['500-item-delete'].name}}
                     </div>
                 </div>
