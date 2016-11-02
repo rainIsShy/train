@@ -1682,19 +1682,19 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
     };
 
     $scope.chgProR = function () {
-        if ($scope.addOrderDetail.promotionDiscountRate === 0) {
-            $scope.addOrderDetail.promotionPrice = 0;
-        } else if (!$scope.addOrderDetail.promotionDiscountRate) {
+        if ($scope.addOrderDetail.promotionDiscountRate) {
             $scope.addOrderDetail.promotionPrice = parseFloat(($scope.addOrderDetail.promotionDiscountRate * $scope.addOrderDetail.item.suggestPrice / 100).toFixed(2));
+        } else {
+            $scope.addOrderDetail.promotionPrice = $scope.addOrderDetail.promotionDiscountRate;
         }
         $scope.calcPurAmt();
     };
 
     $scope.chgProP = function () {
-        if ($scope.addOrderDetail.promotionPrice === 0) {
-            $scope.addOrderDetail.promotionDiscountRate = 0;
-        } else if (!$scope.addOrderDetail.promotionPrice) {
+        if ($scope.addOrderDetail.promotionPrice) {
             $scope.addOrderDetail.promotionDiscountRate = parseFloat(($scope.addOrderDetail.promotionPrice / $scope.addOrderDetail.item.suggestPrice * 100).toFixed(2));
+        } else {
+            $scope.addOrderDetail.promotionDiscountRate = $scope.addOrderDetail.promotionPrice;
         }
         $scope.calcPurAmt();
     };
@@ -1867,18 +1867,18 @@ angular.module('IOne-Production').controller('PmmOrderDetailController', functio
     };
 
     $scope.chgProR = function () {
-        if ($scope.selectedOrderDetail.promotionDiscountRate === 0) {
-            $scope.selectedOrderDetail.promotionPrice = 0;
-        } else if (!$scope.selectedOrderDetail.promotionDiscountRate) {
+        if ($scope.selectedOrderDetail.promotionDiscountRate) {
             $scope.selectedOrderDetail.promotionPrice = parseFloat(($scope.selectedOrderDetail.promotionDiscountRate * $scope.selectedOrderDetail.item.suggestPrice / 100).toFixed(2));
+        } else {
+            $scope.selectedOrderDetail.promotionPrice = $scope.selectedOrderDetail.promotionDiscountRate;
         }
     };
 
     $scope.chgProP = function () {
-        if ($scope.selectedOrderDetail.promotionPrice === 0) {
-            $scope.selectedOrderDetail.promotionDiscountRate = 0;
-        } else if (!$scope.selectedOrderDetail.promotionPrice) {
+        if ($scope.selectedOrderDetail.promotionPrice) {
             $scope.selectedOrderDetail.promotionDiscountRate = parseFloat(($scope.selectedOrderDetail.promotionPrice / $scope.selectedOrderDetail.item.suggestPrice * 100).toFixed(2));
+        } else {
+            $scope.selectedOrderDetail.promotionDiscountRate = $scope.selectedOrderDetail.promotionPrice;
         }
     };
 });
