@@ -11,5 +11,13 @@ angular.module('IOne-Production').service('EpsOrderReportService', function ($ht
         };
         return $http.get(adapterUrl + '/epsOrderReport/plmBaseItemFile', config);
     };
-
+    this.getPlmBaseItemFile_Csvfile = function (orderDateFrom, orderDateTo) {
+        var config = {
+            params: {
+                ORDER_DATE_FROM: orderDateFrom,
+                ORDER_DATE_TO: orderDateTo
+            }
+        };
+        return $http.get(adapterUrl + '/epsOrderReport/plmBaseItemFile/csv', config);
+    };
 });
