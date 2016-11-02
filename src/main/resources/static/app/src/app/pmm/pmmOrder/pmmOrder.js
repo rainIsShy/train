@@ -1608,18 +1608,18 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         } else if (null == $scope.addOrderDetail.oriPurPrice) {
             errMsgs.push("请输入采购单价");
         } else if ($scope.addOrderDetail.saleTypeUuid == 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E') {
-            if (!$scope.addOrderDetail.promotionDiscountRate || $scope.addOrderDetail.promotionDiscountRate == '') {
+            if (!$scope.addOrderDetail.promotionDiscountRate && $scope.addOrderDetail.promotionDiscountRate !== 0) {
                 errMsgs.push("请输入促销折扣率");
             }
-            if (!$scope.addOrderDetail.promotionPrice || $scope.addOrderDetail.promotionPrice == '') {
+            if (!$scope.addOrderDetail.promotionPrice && $scope.addOrderDetail.promotionPrice !== 0) {
                 errMsgs.push("请输入促销单价");
             }
-        } else if ($scope.addOrderDetail.saleTypeUuid == 'F1DEDA0E-A607-4934-B305-EEC3C447C509' && (!$scope.addOrderDetail.specialPrice || $scope.addOrderDetail.specialPrice == '')) { // 特价
+        } else if ($scope.addOrderDetail.saleTypeUuid == 'F1DEDA0E-A607-4934-B305-EEC3C447C509' && !$scope.addOrderDetail.specialPrice && $scope.addOrderDetail.specialPrice !== 0) { // 特价
             errMsgs.push("请输入特价单价");
         }
 
         if (errMsgs.length > 0) {
-            angular.forEach(errMsgs, function (val, idx) {
+            angular.forEach(errMsgs, function (val) {
                 $scope.showError(val);
             });
         } else {
@@ -1652,17 +1652,17 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         if ($scope.addOrderDetail.saleTypeUuid == '162A8B4C-3C3A-4D72-BB3E-47538CFA5CE8') { // 常规
             $scope.addOrderDetail.oriTransactionPrice = $scope.addOrderDetail.item.suggestPrice;
         } else if ($scope.addOrderDetail.saleTypeUuid == 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E') { // 折扣
-            $scope.addOrderDetail.oriTransactionPrice = $scope.addOrderDetail.promotionPrice == '' ? 0 : $scope.addOrderDetail.promotionPrice;
+            $scope.addOrderDetail.oriTransactionPrice = !$scope.addOrderDetail.promotionPrice ? 0 : $scope.addOrderDetail.promotionPrice;
         } else if ($scope.addOrderDetail.saleTypeUuid == 'AA929EC9-4392-4C23-A12D-346936F26DCC') { // 赠送
             $scope.addOrderDetail.oriTransactionPrice = 0;
         } else if ($scope.addOrderDetail.saleTypeUuid == 'F1DEDA0E-A607-4934-B305-EEC3C447C509') { // 特价
             // 若有特价，则采购单价预设为特別單價
-            $scope.addOrderDetail.oriTransactionPrice = $scope.addOrderDetail.specialPrice == '' ? 0 : $scope.addOrderDetail.specialPrice;
+            $scope.addOrderDetail.oriTransactionPrice = !$scope.addOrderDetail.specialPrice ? 0 : $scope.addOrderDetail.specialPrice;
         }
 
         var customizePrice = 0;
         if ($scope.addOrderDetail.customizeFlag == '1') {
-            if ($scope.addOrderDetail.perCustomizePrice && $scope.addOrderDetail.perCustomizePrice != '') {
+            if ($scope.addOrderDetail.perCustomizePrice) {
                 customizePrice = $scope.addOrderDetail.perCustomizePrice;
             }
         } else {
@@ -1682,14 +1682,18 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
     };
 
     $scope.chgProR = function () {
-        if ($scope.addOrderDetail.promotionDiscountRate != '') {
+        if ($scope.addOrderDetail.promotionDiscountRate === 0) {
+            $scope.addOrderDetail.promotionPrice = 0;
+        } else if (!$scope.addOrderDetail.promotionDiscountRate) {
             $scope.addOrderDetail.promotionPrice = parseFloat(($scope.addOrderDetail.promotionDiscountRate * $scope.addOrderDetail.item.suggestPrice / 100).toFixed(2));
         }
         $scope.calcPurAmt();
     };
 
     $scope.chgProP = function () {
-        if ($scope.addOrderDetail.promotionPrice != '') {
+        if ($scope.addOrderDetail.promotionPrice === 0) {
+            $scope.addOrderDetail.promotionDiscountRate = 0;
+        } else if (!$scope.addOrderDetail.promotionPrice) {
             $scope.addOrderDetail.promotionDiscountRate = parseFloat(($scope.addOrderDetail.promotionPrice / $scope.addOrderDetail.item.suggestPrice * 100).toFixed(2));
         }
         $scope.calcPurAmt();
@@ -1830,24 +1834,21 @@ angular.module('IOne-Production').controller('PmmOrderDetailController', functio
     $scope.saleTypes = saleTypes;
 
     $scope.onChgDtlEditSaleType = function (saleTypeUuid) {
-        if (saleTypeUuid != 'F1DEDA0E-A607-4934-B305-EEC3C447C509') { // 特价
-            $scope.selectedOrderDetail.specialPrice = 0;
-        } else if (saleTypeUuid != 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E') {
-            $scope.selectedOrderDetail.promotionDiscountRate = '';
-            $scope.selectedOrderDetail.promotionPrice = '';
-        }
+        $scope.selectedOrderDetail.specialPrice = '';
+        $scope.selectedOrderDetail.promotionDiscountRate = '';
+        $scope.selectedOrderDetail.promotionPrice = '';
     };
 
     $scope.hideDlg = function () {
         var errMsgs = [];
         if ($scope.selectedOrderDetail.saleType.uuid == 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E') {
-            if (!$scope.selectedOrderDetail.promotionDiscountRate || $scope.selectedOrderDetail.promotionDiscountRate == '') {
+            if (!$scope.selectedOrderDetail.promotionDiscountRate && $scope.selectedOrderDetail.promotionDiscountRate !== 0) {
                 errMsgs.push("请输入促销折扣率");
             }
-            if (!$scope.selectedOrderDetail.promotionPrice || $scope.selectedOrderDetail.promotionPrice == '') {
+            if (!$scope.selectedOrderDetail.promotionPrice && $scope.selectedOrderDetail.promotionPrice !== 0) {
                 errMsgs.push("请输入促销单价");
             }
-        } else if ($scope.selectedOrderDetail.saleType.uuid == 'F1DEDA0E-A607-4934-B305-EEC3C447C509' && (!$scope.selectedOrderDetail.specialPrice || $scope.selectedOrderDetail.specialPrice == '')) { // 特价
+        } else if ($scope.selectedOrderDetail.saleType.uuid == 'F1DEDA0E-A607-4934-B305-EEC3C447C509' && !$scope.selectedOrderDetail.specialPrice && $scope.selectedOrderDetail.specialPrice !== 0) { // 特价
             errMsgs.push("请输入特价单价");
         }
         if (errMsgs.length > 0) {
@@ -1866,13 +1867,17 @@ angular.module('IOne-Production').controller('PmmOrderDetailController', functio
     };
 
     $scope.chgProR = function () {
-        if ($scope.selectedOrderDetail.promotionDiscountRate != '') {
+        if ($scope.selectedOrderDetail.promotionDiscountRate === 0) {
+            $scope.selectedOrderDetail.promotionPrice = 0;
+        } else if (!$scope.selectedOrderDetail.promotionDiscountRate) {
             $scope.selectedOrderDetail.promotionPrice = parseFloat(($scope.selectedOrderDetail.promotionDiscountRate * $scope.selectedOrderDetail.item.suggestPrice / 100).toFixed(2));
         }
     };
 
     $scope.chgProP = function () {
-        if ($scope.selectedOrderDetail.promotionPrice != '') {
+        if ($scope.selectedOrderDetail.promotionPrice === 0) {
+            $scope.selectedOrderDetail.promotionDiscountRate = 0;
+        } else if (!$scope.selectedOrderDetail.promotionPrice) {
             $scope.selectedOrderDetail.promotionDiscountRate = parseFloat(($scope.selectedOrderDetail.promotionPrice / $scope.selectedOrderDetail.item.suggestPrice * 100).toFixed(2));
         }
     };

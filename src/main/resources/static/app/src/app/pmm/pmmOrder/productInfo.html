@@ -128,7 +128,7 @@
             <div align="center" flex="10" class="table-item">{{orderDetail.oriStandardAmt}}</div><!-- 标准金额 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.oriTransactionPrice}}</div><!-- 成交价 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.customizeRemark}}</div><!-- 定制备注 -->
-            <div align="center" flex="10" class="table-item">{{orderDetail.promotionDiscountRate}}{{orderDetail.promotionDiscountRate ? '%' : ''}}</div><!-- 促销折扣率 -->
+            <div align="center" flex="10" class="table-item">{{orderDetail.promotionDiscountRate}}{{orderDetail.promotionDiscountRate || orderDetail.promotionDiscountRate === 0 ? '%' : ''}}</div><!-- 促销折扣率 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.promotionPrice}}</div><!-- 促销单价 -->
             <div align="center" flex="10" class="table-item">{{PURCHASE_FLAG[orderDetail.purchaseFlag].name}}</div><!-- 采购状态 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.returnRemark}}</div><!-- 退回备注 -->
