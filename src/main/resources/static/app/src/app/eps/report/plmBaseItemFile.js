@@ -21,13 +21,13 @@ angular.module('IOne-Production').controller('EpsOrderReport_plmBaseItemFile_con
     }
 
     $scope.$watch('orderDate', function () {
-        getReportByIsCsvFile(false);
+        $scope.getReportByIsCsvFile(false);
     }, true);
 
 
     $scope.report;
     $scope.reportKeys = [];
-    function getReportByIsCsvFile(isCsvFile) {
+    $scope.getReportByIsCsvFile = function (isCsvFile) {
         var orderDateFrom = $filter('date')($scope.orderDate.from, 'yyyy-MM-dd');
         var orderDateTo = $filter('date')($scope.orderDate.to, 'yyyy-MM-dd');
         if (orderDateFrom == null || orderDateFrom == null) {
