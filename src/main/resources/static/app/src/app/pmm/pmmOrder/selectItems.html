@@ -61,6 +61,24 @@
                     </md-input-container>
                 </div>
                 <div layout="column" flex="20">
+                    <md-input-container>
+                        <label class="label">采购单价：</label>
+                        <input type="number" aria-label="..." string-to-number required
+                               ng-model="addOrderDetail.oriPurPrice" min="0"
+                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label class="label">采购数量：</label>
+                        <input type="number" ng-model="addOrderDetail.orderQty" string-to-number required min="1"
+                               step="1" ng-change="changePurAmt();">
+                    </md-input-container>
+                    <md-input-container>
+                        <label class="label">采购金额：</label>
+                        <input type="number" aria-label="..." string-to-number required
+                               ng-model="addOrderDetail.oriPurAmt" min="0"
+                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                    </md-input-container>
                     <md-input-container class="md-icon-float" style="margin: 0px;">
                         <label class="label" style="margin: 0px;">促销折扣率：</label>
                         <input type="number" aria-label="..." string-to-number required
