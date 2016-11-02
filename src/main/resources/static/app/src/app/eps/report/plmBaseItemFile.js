@@ -30,6 +30,7 @@ angular.module('IOne-Production').controller('EpsOrderReport_plmBaseItemFile_con
     $scope.getReportByIsCsvFile = function (isCsvFile) {
         var orderDateFrom = $filter('date')($scope.orderDate.from, 'yyyy-MM-dd');
         var orderDateTo = $filter('date')($scope.orderDate.to, 'yyyy-MM-dd');
+
         if (orderDateFrom == null || orderDateFrom == null) {
             $scope.showError("日期不可為空");
             return;
@@ -37,6 +38,22 @@ angular.module('IOne-Production').controller('EpsOrderReport_plmBaseItemFile_con
         ;
 
         if (isCsvFile) {
+            getPlmBaseItemFile_Csvfile(orderDateFrom, orderDateTo);
+        } else {
+            getPlmBaseItemFile(orderDateFrom, orderDateTo);
+        }
+
+        function fetchKeys(object) {
+            angular.forEach(object, function (value, key) {
+                if (key == 'RNUM') {
+                    $scope.reportKeys.unshift(key);
+                } else {
+                    $scope.reportKeys.push(key);
+                }
+            });
+        }
+
+        function getPlmBaseItemFile_Csvfile(orderDateFrom, orderDateTo) {
             EpsOrderReportService.getPlmBaseItemFile_Csvfile(orderDateFrom, orderDateTo).then(function (response) {
                 var hiddenElement = document.createElement('a');
                 hiddenElement.href = 'data:attachment/csv;charset=utf-8,\uFEFF' + encodeURIComponent(response.data);
@@ -46,8 +63,9 @@ angular.module('IOne-Production').controller('EpsOrderReport_plmBaseItemFile_con
             }, function (response) {
                 $scope.showError(response.message);
             });
+        }
 
-        } else {
+        function getPlmBaseItemFile(orderDateFrom, orderDateTo) {
             EpsOrderReportService.getPlmBaseItemFile(orderDateFrom, orderDateTo, $scope.pageOption).then(function (response) {
                 $scope.pageOption.totalPage = response.data.totalPages;
                 $scope.pageOption.totalElements = response.data.totalElements;
@@ -60,16 +78,6 @@ angular.module('IOne-Production').controller('EpsOrderReport_plmBaseItemFile_con
 
             }, function (response) {
                 $scope.showError(response.message);
-            });
-        }
-
-        function fetchKeys(object) {
-            angular.forEach(object, function (value, key) {
-                if (key == 'RNUM') {
-                    $scope.reportKeys.unshift(key);
-                } else {
-                    $scope.reportKeys.push(key);
-                }
             });
         }
     }
