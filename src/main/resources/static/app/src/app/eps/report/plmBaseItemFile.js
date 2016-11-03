@@ -51,10 +51,7 @@ angular.module('IOne-Production').controller('EpsOrderReport_plmBaseItemFile_con
                 hiddenElement.target = '_blank';
                 hiddenElement.download = orderDateFrom + '_' + orderDateTo + '.csv';
                 hiddenElement.click();
-            }, function (response) {
-                console.error(response);
-                $scope.showError(response);
-            });
+            }, errorHandle);
         }
 
         function getPlmBaseItemFile(orderDateFrom, orderDateTo) {
@@ -68,11 +65,7 @@ angular.module('IOne-Production').controller('EpsOrderReport_plmBaseItemFile_con
                     $scope.reportKeys = fetchKeys(response.data.content[0]);
                 }
 
-            }, function (response) {
-                var errorMsg = "服務存取失敗";
-                if (response.status < 0) errorMsg = "報表服務未啟動";
-                $scope.showError(errorMsg);
-            });
+            }, errorHandle);
         }
 
         function fetchKeys(object) {
@@ -85,6 +78,12 @@ angular.module('IOne-Production').controller('EpsOrderReport_plmBaseItemFile_con
                 }
             });
             return reportKeys;
+        }
+
+        function errorHandle(response) {
+            var errorMsg = "服務存取失敗";
+            if (response.status < 0) errorMsg = "報表服務未啟動";
+            $scope.showError(errorMsg);
         }
     }
 
