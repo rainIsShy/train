@@ -47,16 +47,16 @@ angular.module('IOne-Auth').service('AuthenticationService', function (Base64, $
         $rootScope.globals.adapterInfo = $rootScope.adapterInfo;
 
         $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
-        $cookieStore.put('globals', $rootScope.globals);
-        $cookieStore.put('displayName', loginResponse.userName);
-        $cookieStore.put('displayType', loginResponse.type);
+        $cookieStore.put(GLOBAL_COOKIE, $rootScope.globals);
+        $cookieStore.put(DISPLAY_NAME_COOKIE, loginResponse.userName);
+        $cookieStore.put(DISPLAY_TYPE_COOKIE, loginResponse.type);
     };
 
     this.ClearCredentials = function () {
         $rootScope.globals = {};
-        $cookieStore.remove('globals');
-        $cookieStore.remove('displayName');
-        $cookieStore.remove('displayType');
+        $cookieStore.remove(GLOBAL_COOKIE);
+        $cookieStore.remove(DISPLAY_NAME_COOKIE);
+        $cookieStore.remove(DISPLAY_TYPE_COOKIE);
         $http.defaults.headers.common.Authorization = 'Basic';
     };
 });

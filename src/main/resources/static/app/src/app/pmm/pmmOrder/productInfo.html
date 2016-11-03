@@ -2,7 +2,7 @@
     <div >
         <md-button ng-show="selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2"
                    ng-click="openOrderItemsDlg()" class="md-raised">
-            <i class="fa fa-plus"></i>新增产品
+            <i class="fa fa-plus">新增产品</i>
         </md-button>
         <md-button
                 ng-if="itemOperationMenuDisplayOption['502-audit'].display && (menuAuthDataMap[itemOperationMenuDisplayOption['502-audit'].uuid] || isAdmin() || !itemOperationMenuDisplayOption['502-audit'].uuid)"
@@ -23,7 +23,7 @@
         <md-button
                 ng-if="itemOperationMenuDisplayOption['505-purchaseBack'].display && (menuAuthDataMap[itemOperationMenuDisplayOption['505-purchaseBack'].uuid] || isAdmin() || !itemOperationMenuDisplayOption['505-purchaseBack'].uuid)"
                 ng-disabled="purchase_back_detail_disabled == 1" class="md-raised"
-                ng-click="openPurchaseReturnRemarkDlg('dtlList')">
+                ng-click="changeDtlPurchaseFlag(3)">
             {{itemOperationMenuDisplayOption['505-purchaseBack'].name}}
         </md-button>
     </div>
@@ -49,10 +49,11 @@
         <div align="center" flex="10"  class=" table-head">商品属性</div>
         <!--//modify-->
         <div align="center" flex="10" class=" table-head">销售类型</div>
-        <div align="center" flex="10" class=" table-head">采购数量</div>
+        <div align="center" flex="10" class=" table-head">订单数量</div>
         <div align="center" flex="10" class=" table-head">出货数量</div>
         <div align="center" flex="10" class=" table-head">欠货数量</div>
         <div align="center" flex="10" class=" table-head">销售单位</div>
+        <div align="center" flex="10" class=" table-head">采购数量</div>
         <div align="center" flex="10" class=" table-head">采购单价</div>
         <div align="center" flex="10" class=" table-head">采购税额</div>
         <div align="center" flex="10" class=" table-head">采购金额(未税)</div>
@@ -66,8 +67,10 @@
         <div align="center" flex="10" class=" table-head">审核否</div>
         <div align="center" flex="10" class=" table-head">抛转否</div>
         <div align="center" flex="10" class=" table-head">标准价</div>
-        <div align="center" flex="10" class=" table-head">标准金额</div>
-        <div align="center" flex="10" class=" table-head">成交价</div>
+        <div align="center" flex="10" class=" table-head">标准金额(原币)</div>
+        <div align="center" flex="10" class=" table-head">标准金额(本币)</div>
+        <div align="center" flex="10" class=" table-head">成交价(原币)</div>
+        <div align="center" flex="10" class=" table-head">成交价(本币)</div>
         <div align="center" flex="10" class=" table-head">定制备注</div>
         <div align="center" flex="10" class=" table-head">促销折扣率</div>
         <div align="center" flex="10" class=" table-head">促销单价</div>
@@ -87,12 +90,12 @@
             <div flex="5" class="table-item"
                  ng-show="selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2">
                 <div layout="row" layout-sm="column" layout-align="center center">
-                    <div ng-show="orderDetail.confirm == 1 && orderDetail.status == 1 && orderDetail.transferFlag == 2"
-                         align="center" style="color: rgba(0,0,0,.87);"
+                    <div ng-show="selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2"
+                         align="center"
                          ng-click="orderDetailEditMenuAction(orderDetail)"><i class="fa fa-pencil-square-o"></i>&nbsp;{{itemOperationMenuDisplayOption['500-item-edit'].name}}
                     </div>
-                    <div ng-show=" orderDetail.confirm == 1 && orderDetail.status == 1 && orderDetail.transferFlag == 2"
-                         align="center" style="color: rgba(0,0,0,.87);"
+                    <div ng-show=" selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2"
+                         align="center"
                          ng-click="orderDetailDeleteMenuAction(orderDetail)"><i class="fa fa-times"></i>&nbsp;{{itemOperationMenuDisplayOption['500-item-delete'].name}}
                     </div>
                 </div>
@@ -103,8 +106,8 @@
             </div>
             <div align="center" flex="10" class="table-item">{{orderDetail.item.name}}</div>
             <div align="center" flex="10" class="table-item">{{orderDetail.item.standard}}</div>
-            <div align="center" flex="10" class="table-item">{{orderDetail.itemCustomScope.no}}</div>
-            <div align="center" flex="10" class="table-item">{{orderDetail.itemCustomScope.name}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.item.brand.no}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.item.brand.name}}</div>
             <div align="center" flex="10" class="table-item">{{CUSTOMIZE_FLAG[orderDetail.customizeFlag].name}}</div>
             <div align="center" flex="10" class="table-item">{{orderDetail.itemAttribute}}</div>
             <div align="center" flex="10" class="table-item">{{orderDetail.saleType.name}}</div>
@@ -112,6 +115,7 @@
             <div align="center" flex="10" class="table-item">{{orderDetail.transferOrderQty}}</div>
             <div align="center" flex="10" class="table-item">{{orderDetail.untransferOrderQty}}</div>
             <div align="center" flex="10" class="table-item">{{orderDetail.item.unit}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.orderQty}}</div>
             <div align="center" flex="10" class="table-item">{{orderDetail.oriPurPrice}}</div>
             <div align="center" flex="10" class="table-item">{{orderDetail.oriPurTax}}</div>
             <div align="center" flex="10" class="table-item">{{orderDetail.oriPurAmt}}</div>
@@ -123,14 +127,18 @@
             <div align="center" flex="15" class="table-item">{{orderDetail.psoTransferNo}}</div>
             <div align="center" flex="10" class="table-item">{{orderDetail.remark}}</div>
             <div align="center" flex="10" class="table-item">{{CONFIRM[orderDetail.confirm].name}}</div>
-            <div align="center" flex="10" class="table-item">{{TRANSFER_PSO_FLAG[orderDetail.transferFlag].name}}</div><!-- 抛转否 -->
+            <div align="center" flex="10" class="table-item">{{TRANSFER_PSO_FLAG[orderDetail.transferFlag].name}}</div>
+            <!-- 抛转否 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.standardPrice}}</div><!-- 标准价 -->
-            <div align="center" flex="10" class="table-item">{{orderDetail.oriStandardAmt}}</div><!-- 标准金额 -->
-            <div align="center" flex="10" class="table-item">{{orderDetail.oriTransactionPrice}}</div><!-- 成交价 -->
+            <div align="center" flex="10" class="table-item">{{orderDetail.oriStandardAmt}}</div><!-- 标准金额(原币) -->
+            <div align="center" flex="10" class="table-item">{{orderDetail.natStandardAmt}}</div><!-- 标准金额(本币) -->
+            <div align="center" flex="10" class="table-item">{{orderDetail.oriTransactionPrice}}</div><!-- 成交价(原币) -->
+            <div align="center" flex="10" class="table-item">{{orderDetail.natTransactionPrice}}</div><!-- 成交价(本币) -->
             <div align="center" flex="10" class="table-item">{{orderDetail.customizeRemark}}</div><!-- 定制备注 -->
-            <div align="center" flex="10" class="table-item">{{orderDetail.promotionDiscountRate}}{{orderDetail.promotionDiscountRate || orderDetail.promotionDiscountRate === 0 ? '%' : ''}}</div><!-- 促销折扣率 -->
+            <div align="center" flex="10" class="table-item">{{orderDetail.promotionDiscountRate}}</div><!-- 促销折扣率 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.promotionPrice}}</div><!-- 促销单价 -->
-            <div align="center" flex="10" class="table-item">{{PURCHASE_FLAG[orderDetail.purchaseFlag].name}}</div><!-- 采购状态 -->
+            <div align="center" flex="10" class="table-item">{{PURCHASE_FLAG[orderDetail.purchaseFlag].name}}</div>
+            <!-- 采购状态 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.returnRemark}}</div><!-- 退回备注 -->
         </div>
     </div>

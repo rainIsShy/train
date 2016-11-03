@@ -60,7 +60,9 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
 
     $scope.printAction = function () {
         EcommerceOrdersMaster.print('e_sale_order_reports', $scope.selectedItem.uuid).success(function (data) {
-            $window.open(data.content);
+            var file = new Blob([data], {type: 'application/pdf'});
+            var fileURL = URL.createObjectURL(file);
+            $window.open(fileURL);
         }).error(function () {
             $scope.showError('获取打印信息失败。');
         })

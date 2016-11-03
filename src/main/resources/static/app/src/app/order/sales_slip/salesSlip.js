@@ -66,8 +66,11 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
         Parameters.getAll($scope.selectedItem.channel.uuid).success(function (data) {
             if (data.content && data.content.length > 0) {
                 if ($scope.selectedItem.paidRate.substring(0, $scope.selectedItem.paidRate.length - 1) / 100 >= data.content[0].depositRate) {
-                    OrderMaster.print('sale_order_reports', $scope.selectedItem.uuid).success(function (response) {
-                        $window.open(response.content);
+                    OrderMaster.print('sale_order_reports', $scope.selectedItem.uuid).success(function (data) {
+                        // $window.open(response.content);
+                        var file = new Blob([data], {type: 'application/pdf'});
+                        var fileURL = URL.createObjectURL(file);
+                        $window.open(fileURL);
                     }).error(function () {
                         $scope.showError('获取打印信息失败。');
                     })
