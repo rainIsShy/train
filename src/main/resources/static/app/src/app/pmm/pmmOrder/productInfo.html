@@ -76,19 +76,18 @@
         <div align="center" flex="10" class=" table-head">促销单价</div>
         <div align="center" flex="10" class=" table-head">采购状态</div>
         <div align="center" flex="10" class=" table-head">退回备注</div>
-        <div align="center" flex="10" class=" table-head">预计送货日</div>
     </div>
     <div ng-repeat="orderDetail in OrderDetailList.content  | orderBy:'no'">
-        <div layout="row" ng-style="orderDetail.orderQty == 0 && { 'color': 'gray'}">
+        <div layout="row" ng-style="orderDetail.orderQty == 0 && { 'color': 'gray' }">
             <div flex="5"
                  ng-disabled="!(selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2)"
                  style="padding:0px 0px 0px 0px;" layout-align="center" class=" table-item">
-                <md-checkbox ng-checked="exists(orderDetail, selectedDetail)" ng-show="orderDetail.orderQty > 0"
+                <md-checkbox ng-checked="exists(orderDetail, selectedDetail)"
                              ng-click="toggleDetail(orderDetail, selectedDetail)">
                 </md-checkbox>
             </div>
 
-            <div flex="5" class="table-item" style="color: rgba(0,0,0,0.87);"
+            <div flex="5" class="table-item"
                  ng-show="selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2">
                 <div layout="row" layout-sm="column" layout-align="center center">
                     <div ng-show="selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2"
@@ -141,8 +140,6 @@
             <div align="center" flex="10" class="table-item">{{PURCHASE_FLAG[orderDetail.purchaseFlag].name}}</div>
             <!-- 采购状态 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.returnRemark}}</div><!-- 退回备注 -->
-            <div align="center" flex="10" class="table-item">{{orderDetail.deliverDate | date: 'yyyy-MM-dd'}}</div>
-            <!-- 预计送货日 -->
         </div>
     </div>
 </md-content>

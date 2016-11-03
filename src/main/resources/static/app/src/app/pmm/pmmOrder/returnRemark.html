@@ -1,0 +1,37 @@
+<md-dialog style="padding: 30px;min-width: 500px;" class="prod">
+    <md-content>
+        <form>
+            <div layout="row">
+                <div align="center" flex="5" class="table-head">项次</div>
+                <div align="center" flex="25" class="table-head">品名</div>
+                <div align="center" flex="35" class="table-head">规格</div>
+                <div align="center" flex="30" class="table-head">退回备注:</div>
+            </div>
+
+            <div ng-repeat="dtl in dtls">
+                <div layout="row" ng-if="dtl.orderQty != 0">
+                    <div align="center" flex="5" class="table-item">{{dtl.no}}</div>
+                    <div align="center" flex="25" class="table-item">{{dtl.item.name}}</div>
+                    <div align="center" flex="35" class="table-item">{{dtl.item.standard}}</div>
+                    <div align="center" flex="30" class="table-item">
+                        <md-input-container style="padding: 0px;">
+                            <textarea ng-model="dtl.returnRemark" md-select-on-focus></textarea>
+                        </md-input-container>
+                    </div>
+                </div>
+            </div>
+            <!--
+                        <div layout="row">
+                            <md-input-container flex="95">
+                                <label>退回备注:</label>
+                                <textarea ng-model="returnRemark" md-maxlength="250" md-select-on-focus></textarea>
+                            </md-input-container>
+                        </div>
+            -->
+            <div layout="row">
+                <md-button ng-click="hideDlg()" ng-disabled=""><i class="fa fa-check"></i>&nbsp;确定</md-button>
+                <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+            </div>
+        </form>
+    </md-content>
+</md-dialog>
