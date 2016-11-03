@@ -1,0 +1,285 @@
+<div class="main-panel">
+    <div ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS">
+        <div layout="row" class="top-title">
+            <div flex="70" hide-sm hide-md class="left-title" ng-show="selectedItem" style="position: relative;">
+                <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
+                           ng-click="editItemAction(selectedItem, 'SYS_BASE_APP_VERSION', 'APP版本: ' + selectedItem.no)">
+                    <ng-md-icon icon="edit"></ng-md-icon>
+                </md-button>
+                <md-menu>
+                    <md-button class="md-icon-button close-btn" aria-label="More" style="float: left;margin-left: 36px;" ng-click="$mdOpenMenu($event)">
+                        <ng-md-icon icon="menu"></ng-md-icon>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <!--<md-menu-item-->
+                                <!--ng-if="menuDisplayOption['detailConfirm'].display && (menuAuthDataMap[menuDisplayOption['detailConfirm'].uuid] || isAdmin() || !menuDisplayOption['detailConfirm'].uuid)">-->
+                            <!--<md-button class="md-button" aria-label="More" ng-click="confirmClickAction($event, selectedItem)"-->
+                                       <!--ng-disabled="selectedItem.confirm == '2' || selectedItem.status != '1'">-->
+                                <!--<ng-md-icon icon="lock"></ng-md-icon>-->
+                                <!--审核-->
+                            <!--</md-button>-->
+                        <!--</md-menu-item>-->
+                        <!--<md-menu-item-->
+                                <!--ng-if="menuDisplayOption['detailRevertConfirm'].display && (menuAuthDataMap[menuDisplayOption['detailRevertConfirm'].uuid] || isAdmin() || !menuDisplayOption['detailRevertConfirm'].uuid)">-->
+                            <!--<md-button class="md-button" aria-label="More" ng-click="confirmClickAction($event, selectedItem)"-->
+                                       <!--ng-disabled="selectedItem.confirm != '2'">-->
+                                <!--<ng-md-icon icon="lock_open"></ng-md-icon>-->
+                                <!--取审-->
+                            <!--</md-button>-->
+                        <!--</md-menu-item>-->
+                        <md-menu-item
+                                ng-if="menuDisplayOption['detailStatus'].display && (menuAuthDataMap[menuDisplayOption['detailStatus'].uuid] || isAdmin() || !menuDisplayOption['detailStatus'].uuid)">
+                            <md-button class="md-button" aria-label="More" ng-click="statusClickAction($event, selectedItem)"
+                                       ng-disabled="selectedItem.status == '1'">
+                                <ng-md-icon icon="lock"></ng-md-icon>
+                                启用
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item
+                                ng-if="menuDisplayOption['detailRevertStatus'].display && (menuAuthDataMap[menuDisplayOption['detailRevertStatus'].uuid] || isAdmin() || !menuDisplayOption['detailRevertStatus'].uuid)">
+                            <md-button class="md-button" aria-label="More" ng-click="statusClickAction($event, selectedItem)"
+                                       ng-disabled="selectedItem.status != '1'">
+                                <ng-md-icon icon="lock_open"></ng-md-icon>
+                                禁用
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item
+                                ng-if="menuDisplayOption['detailDelete'].display && (menuAuthDataMap[menuDisplayOption['detailDelete'].uuid] || isAdmin() || !menuDisplayOption['detailDelete'].uuid)">
+                            <md-button class="md-button" aria-label="More" ng-click="deleteClickAction($event, selectedItem)">
+                                <ng-md-icon icon="delete"></ng-md-icon>
+                                删除
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+                <span>APP版本详细信息</span>
+                <md-button class="md-icon-button close-btn float-right" aria-label="More" ng-click="hideItemDetailsAction($event)">
+                    <ng-md-icon icon="chevron_left"></ng-md-icon>
+                </md-button>
+            </div>
+            <div flex class="right-title">
+                <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
+                           ng-click="preAddItemAction({}, 'SYS_BASE_APP_VERSION')">
+                    <ng-md-icon icon="add"></ng-md-icon>
+                </md-button>
+                <span>APP版本列表</span>
+                <md-menu>
+                    <md-button class="md-icon-button close-btn float-right" aria-label="More" ng-click="$mdOpenMenu($event)">
+                        <ng-md-icon icon="menu"></ng-md-icon>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <!--<md-menu-item-->
+                                <!--ng-if="menuDisplayOption['batchConfirm'].display && (menuAuthDataMap[menuDisplayOption['batchConfirm'].uuid] || isAdmin() || !menuDisplayOption['batchConfirm'].uuid)">-->
+                            <!--<md-button class="md-button" aria-label="More" ng-click="confirmAllClickAction($event)"-->
+                                       <!--ng-disabled="disabledBatchConfirm">-->
+                                <!--<ng-md-icon icon="lock"></ng-md-icon>-->
+                                <!--批量审核-->
+                            <!--</md-button>-->
+                        <!--</md-menu-item>-->
+                        <!--<md-menu-item-->
+                                <!--ng-if="menuDisplayOption['batchRevertConfirm'].display && (menuAuthDataMap[menuDisplayOption['batchRevertConfirm'].uuid] || isAdmin() || !menuDisplayOption['batchRevertConfirm'].uuid)">-->
+                            <!--<md-button class="md-button" aria-label="More" ng-click="revertConfirmAllClickAction($event)"-->
+                                       <!--ng-disabled="disabledBatchCancelConfirm">-->
+                                <!--<ng-md-icon icon="lock_open"></ng-md-icon>-->
+                                <!--批量取审-->
+                            <!--</md-button>-->
+                        <!--</md-menu-item>-->
+                        <md-menu-item
+                                ng-if="menuDisplayOption['batchStatus'].display && (menuAuthDataMap[menuDisplayOption['batchStatus'].uuid] || isAdmin() || !menuDisplayOption['batchStatus'].uuid)">
+                            <md-button class="md-button" aria-label="More" ng-click="statusAllClickAction($event)"
+                                       ng-disabled="disabledBatchStatus">
+                                <ng-md-icon icon="lock"></ng-md-icon>
+                                批量启用
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item
+                                ng-if="menuDisplayOption['batchRevertStatus'].display && (menuAuthDataMap[menuDisplayOption['batchRevertStatus'].uuid] || isAdmin() || !menuDisplayOption['batchRevertStatus'].uuid)">
+                            <md-button class="md-button" aria-label="More" ng-click="revertStatusAllClickAction($event)"
+                                       ng-disabled="disabledBatchCancelStatus">
+                                <ng-md-icon icon="lock_open"></ng-md-icon>
+                                批量禁用
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item
+                                ng-if="menuDisplayOption['batchDelete'].display && (menuAuthDataMap[menuDisplayOption['batchDelete'].uuid] || isAdmin() || !menuDisplayOption['batchDelete'].uuid)">
+                            <md-button class="md-button" aria-label="More" ng-click="deleteAllClickAction($event)">
+                                <ng-md-icon icon="delete"></ng-md-icon>
+                                批量删除
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+        </div>
+
+        <div layout="row" class="main-body border">
+            <div flex="70" hide-sm hide-md layout="column" class="left-body" ng-show="selectedItem">
+                <div flex="100" layout-padding>
+                    <div layout="row" layout-padding style="font-size: 20px;padding-top: 2px; font-weight: bold;">
+                        <span flex>编号: {{selectedItem.no}}</span>
+                    </div>
+                    <md-divider></md-divider>
+                    <div layout="row" layout-wrap layout-margin>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">APP版本</span>
+                            <span class="item-content">{{selectedItem.name}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">发布时间</span>
+                            <span class="item-content">{{selectedItem.releaseDate| date:'yyyy-MM-dd'}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">版本说明</span>
+                            <span class="item-content">{{selectedItem.remark}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">有效状态</span>
+                            <span class="item-content">{{STATUS[selectedItem.status].name}}</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div flex class="right-body">
+                <!-- basic search-->
+                <div flex layout="row" style="position: relative" layout-align="start start">
+                    <span style="position: absolute; top: 15px; left: 10px;">
+                        <md-checkbox ng-model="selectAllFlag" aria-label="Checkbox" ng-change="selectAllAction()"></md-checkbox>
+                    </span>
+                    <md-input-container flex="20" style="margin-left: 55px;" ng-show="selectedItem == null">
+                        <label>有效状态</label>
+                        <md-select ng-model="listFilterOption.select.status">
+                            <md-option ng-repeat="(key, value) in STATUS" ng-value="key">{{value.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex="20" ng-show="selectedItem == null">
+                        <label>编号：</label>
+                        <input type="text" ng-model="listFilterOption.no" ng-keypress="queryEnter($event)">
+                    </md-input-container>
+                    <md-input-container flex="20" ng-show="selectedItem == null">
+                        <label>名称：</label>
+                        <input type="text" ng-model="listFilterOption.name" ng-keypress="queryEnter($event)">
+                    </md-input-container>
+                    <md-input-container flex="20" ng-show="selectedItem == null">
+                        <label>发布日期：</label>
+                        <input type="date" ng-model="listFilterOption.select.releaseDate"/>
+                    </md-input-container>
+                    <md-input-container flex="70" style="margin-left: 55px;" ng-show="selectedItem != null">
+                        <label>输入关键字查询</label>
+                        <input ng-model="listFilterOption.keyWord" ng-keypress="queryEnter($event)">
+                    </md-input-container>
+
+                    <span flex style="padding-top: 10px;" align="right">
+                        <md-button class="md-icon-button" aria-label="Eat cake" ng-click="showAdvancedSearchAction()">
+                            <ng-md-icon icon="expand_more" ng-show="!displayAdvancedSearPanel"></ng-md-icon>
+                            <ng-md-icon icon="expand_less" ng-show="displayAdvancedSearPanel"></ng-md-icon>
+                        </md-button>
+                    </span>
+                </div>
+                <!-- advanced search-->
+                <div class="search-bar" layout="row" ng-show="displayAdvancedSearPanel" layout-align="start center">
+                </div>
+                <!-- status panel-->
+                <div layout="row" layout-warp layout-padding layout-margin ng-show="!selectedItem"
+                     style="margin: 20px 0px 20px 0px; padding-left: 60px;background-color: whitesmoke;position: relative;height: 50px;padding-top: 15px;">
+
+                    <span flex="20">总记录数: {{pageOption.totalElements}}</span>
+                    <span flex="20">已选记录数: {{selectedItemSize}}</span>
+                    <md-menu>
+                        <md-button class="md-button close-btn" aria-label="More" ng-click="$mdOpenMenu($event)" style="position: absolute;right: 0px;top: 0px;">
+                            <ng-md-icon icon="sort"></ng-md-icon>
+                            排序
+                        </md-button>
+                        <md-menu-content width="2">
+                            <md-menu-item>
+                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('-no')">
+                                    <ng-md-icon ng-show="sortByField == '-no'" icon="play_arrow"></ng-md-icon>
+                                    按编号
+                                </md-button>
+                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('name')">
+                                    <ng-md-icon ng-show="sortByField == 'name'" icon="play_arrow"></ng-md-icon>
+                                    按名称
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </div>
+                <div ng-repeat="item in itemList | orderBy:sortByField" ng-class="selectedItem.no == item.no ? 'selected-item':''">
+                    <div class="summary-item">
+                        <div layout="row" layout-wrap>
+                            <span style="position: absolute">
+                                <md-checkbox ng-model="item.selected" aria-label="Checkbox" ng-click="selectItemAction($event, item)"></md-checkbox>
+                            </span>
+
+                            <div flex="100" layout="row" style="padding-left: 50px;padding-top: 10px; font-weight: bold;">
+                                <span flex ng-click="showDetailPanelAction(item)" class="summary-item__title">{{item.no}}</span>
+                            </div>
+                            <div flex="100" layout="row" style="padding-left: 50px;padding-top: 10px;font-size: 14px;" layout-align="space-between center" ng-hide="selectedItem">
+                                <div flex layout="row" style="color:#7f8fa4">
+                                    <span>APP版本: <span style="font-style: italic">{{item.name}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                    <span>发布时间: <span style="font-style: italic">{{item.releaseDate| date:'yyyy-MM-dd'}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                    <span>版本说明: <span style="font-style: italic">{{item.remark}}</span></span>
+                                </div>
+                                <div layout="row" layout-align="end center">
+                                    <!--<md-switch ng-model="item.confirm" aria-label="Switch 1" class="md-block"-->
+                                    <!--ng-true-value="'2'" ng-false-value="'1'"-->
+                                    <!--ng-click="confirmSwitchAction($event, item)"-->
+                                    <!--ng-if="menuDisplayOption['switchConfirm'].display && (menuAuthDataMap[menuDisplayOption['switchConfirm'].uuid] || isAdmin() || !menuDisplayOption['switchConfirm'].uuid)">-->
+                                    <!--审核-->
+                                    <!--</md-switch>-->
+                                    <md-switch ng-model="item.status" aria-label="Switch 1" class="md-block"
+                                               ng-true-value="'1'" ng-false-value="'2'"
+                                               ng-click="statusSwitchAction($event, item)"
+                                               ng-if="menuDisplayOption['switchStatus'].display && (menuAuthDataMap[menuDisplayOption['switchStatus'].uuid] || isAdmin() || !menuDisplayOption['switchStatus'].uuid)">
+                                        启用
+                                    </md-switch>
+                                    <!--<div ng-if="item.confirm != CONFIRM[2].value">
+                                        <md-button class="md-fab md-mini" ng-click="confirmClickAction($event, item)">
+                                            <span>审核</span>
+                                        </md-button>
+                                    </div>
+                                    <div ng-if="item.confirm == CONFIRM[2].value">
+                                        <md-button class="md-fab md-primary md-mini" ng-click="confirmClickAction($event, item)">
+                                            <span>取审</span>
+                                        </md-button>
+                                    </div>
+                                    <div ng-if="item.status != STATUS[1].value">
+                                        <md-button class="md-fab md-mini" ng-click="statusClickAction($event, item)">
+                                            <span>有效</span>
+                                        </md-button>
+                                    </div>
+                                    <div ng-if="item.status == STATUS[1].value">
+                                        <md-button class="md-fab md-primary md-mini" ng-click="statusClickAction($event, item)">
+                                            <span>失效</span>
+                                        </md-button>
+                                    </div>-->
+                                </div>
+                            </div>
+                            <div flex="100" style="padding-left: 50px;padding-top: 30px;font-size: 14px;color:#7f8fa4" ng-show="selectedItem">
+                                APP版本:<span style="font-style: italic">{{item.name}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--查看-->
+                    <md-divider></md-divider>
+                </div>
+                <div pagination option="pageOption" callback="refreshList()"></div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS">
+        <div layout="row" class="top-title">
+            <div flex="100" class="left-title">
+                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="listItemAction()" style="float: left; margin-left: 36px;">
+                    <ng-md-icon icon="chevron_left"></ng-md-icon>
+                </md-button>
+                <span>{{desc}}</span>
+                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="saveItemAction()">
+                    <ng-md-icon icon="save"></ng-md-icon>
+                </md-button>
+            </div>
+        </div>
+        <object-editor class="object-editor" status="status" source="source" domain="domain"></object-editor>
+    </div>
+
+</div>
