@@ -52,7 +52,8 @@ angular.module('IOne-Production').controller('EpsOrderReport_plmBaseItemFile_con
                 hiddenElement.download = orderDateFrom + '_' + orderDateTo + '.csv';
                 hiddenElement.click();
             }, function (response) {
-                $scope.showError(response.message);
+                console.error(response);
+                $scope.showError(response);
             });
         }
 
@@ -68,7 +69,9 @@ angular.module('IOne-Production').controller('EpsOrderReport_plmBaseItemFile_con
                 }
 
             }, function (response) {
-                $scope.showError(response.message);
+                var errorMsg = "服務存取失敗";
+                if (response.status < 0) errorMsg = "報表服務未啟動";
+                $scope.showError(errorMsg);
             });
         }
 
