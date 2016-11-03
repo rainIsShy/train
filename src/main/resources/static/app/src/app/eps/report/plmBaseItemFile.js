@@ -35,7 +35,6 @@ angular.module('IOne-Production').controller('EpsOrderReport_plmBaseItemFile_con
             $scope.showError("日期不可為空");
             return;
         }
-        ;
 
         if (isCsvFile) {
             getPlmBaseItemFile_Csvfile(orderDateFrom, orderDateTo);
@@ -43,15 +42,7 @@ angular.module('IOne-Production').controller('EpsOrderReport_plmBaseItemFile_con
             getPlmBaseItemFile(orderDateFrom, orderDateTo);
         }
 
-        function fetchKeys(object) {
-            angular.forEach(object, function (value, key) {
-                if (key == 'RNUM') {
-                    $scope.reportKeys.unshift(key);
-                } else {
-                    $scope.reportKeys.push(key);
-                }
-            });
-        }
+
 
         function getPlmBaseItemFile_Csvfile(orderDateFrom, orderDateTo) {
             EpsOrderReportService.getPlmBaseItemFile_Csvfile(orderDateFrom, orderDateTo).then(function (response) {
@@ -73,12 +64,24 @@ angular.module('IOne-Production').controller('EpsOrderReport_plmBaseItemFile_con
                 if (response.data.content.length == 0)$scope.showInfo("沒有任何資料");
 
                 if ($scope.reportKeys.length == 0) {
-                    fetchKeys(response.data.content[0]);
+                    $scope.reportKeys = fetchKeys(response.data.content[0]);
                 }
 
             }, function (response) {
                 $scope.showError(response.message);
             });
+        }
+
+        function fetchKeys(object) {
+            var reportKeys = [];
+            angular.forEach(object, function (value, key) {
+                if (key == 'RNUM') {
+                    reportKeys.unshift(key);
+                } else {
+                    reportKeys.push(key);
+                }
+            });
+            return reportKeys;
         }
     }
 
