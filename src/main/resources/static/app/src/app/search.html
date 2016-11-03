@@ -21,9 +21,10 @@
                     </div>
                     <md-list-item class="md-2-line" ng-repeat="data in dataList" ng-click="select(data)">
                         <div class="md-list-item-text">
-                            <h3> {{data.no}}&nbsp;|&nbsp;{{ data.name }} </h3>
+                            <h3 ng-if="!data.fullPath"> {{data.no}}&nbsp;|&nbsp;{{ data.name }} </h3>
+                            <h3 ng-if="data.fullPath"> {{data.no}}&nbsp;|&nbsp;{{data.fullPath[0] + '&nbsp;' + data.fullPath[1] + '&nbsp;' + data.fullPath[2] + '&nbsp;' + data.fullPath[3] + '&nbsp;' + data.fullPath[4]}}</h3>
                         </div>
-                        <md-divider ></md-divider>
+                        <md-divider></md-divider>
                     </md-list-item>
                     <div pagination option="pageOption" callback="queryAction()"></div>
                 </div>
