@@ -79,7 +79,7 @@
         <div align="center" flex="10" class=" table-head">预计送货日</div>
     </div>
     <div ng-repeat="orderDetail in OrderDetailList.content  | orderBy:'no'">
-        <div layout="row" ng-style="orderDetail.orderQty == 0 && { 'color': 'gray'}">
+        <div layout="row" ng-style="orderDetail.orderQty == 0 && { 'color': 'gray' }">
             <div flex="5"
                  ng-disabled="!(selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2)"
                  style="padding:0px 0px 0px 0px;" layout-align="center" class=" table-item">
