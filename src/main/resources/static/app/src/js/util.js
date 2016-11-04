@@ -1076,10 +1076,10 @@ angular.module('IOne-Constant').constant('Constant', {
         0: {value: '0', name: '全部'},
         1: {value: '1', name: '网销种菜'},
         2: {value: '2', name: 'o2o种菜'},
-        3: {value: '3', name: 'o2o单'},
+        3: {value: '3', name: '线下O2O'},
         4: {value: '4', name: '网销订单'},
         5: {value: '5', name: '网销o2o'},
-        6: {value: '6', name: '线下O2O单'}
+        6: {value: '6', name: '手工O2O'}
     },
 
     'EPS_ORDER_TYPE': {
