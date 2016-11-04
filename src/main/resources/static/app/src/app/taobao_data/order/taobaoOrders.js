@@ -274,7 +274,7 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
                 uuids.push(item.uuid);
             });
             TaobaoOrders.merge(uuids).success(function (returnMsgs) {
-                  $location.path('ecommerce-orders');
+                  $location.path('/#/ecommerce-orders');
 //                $scope.queryMenuActionWithPaging();
 //
 //                angular.forEach(returnMsgs, function (msg) {
@@ -314,16 +314,24 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
                         uuid: orderMasterUuids,
                         confirm: '2'
                     };
-                    var response = TaobaoOrders.modify(OrderMasterUpdateInput).success(function (returnMsgs) {
-                          $location.path('ecommerce-orders');
+//                    var response = TaobaoOrders.modify(OrderMasterUpdateInput).success(function (returnMsgs) {
+//                          $location.path('ecommerce-orders');
 //                        $scope.queryMenuActionWithPaging();//刷新查询
 //                        angular.forEach(returnMsgs, function (msg) {
 //                            $scope.showError(msg);
 //                        });
 //                        $scope.showInfo('审核成功，数据已刷新');
-                    }).error(function (data) {
-                        $scope.showError(data.message);
-                    });
+//                    }).error(function (data) {
+//                        $scope.showError(data.message);
+//                    });
+
+                      var mainMenu = Constant.MENU_LIST[8];
+                      var menu = mainMenu.subList[4];
+                      $scope.path(menu.link);
+                      $scope.selectedMenuId = menu.id;
+                      $scope.selectedMainMenu = mainMenu;
+                      $scope.selectedMenu = menu;
+                      $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS, 0);
                 } else {
                     $scope.showError('请检查');
                 }
