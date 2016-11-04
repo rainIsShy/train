@@ -35,7 +35,8 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
         '416-revertAudit': {display: true, name: '取消审核', uuid: 'D7CCBC12-4B71-44A4-A269-CC4125458F02'},
         '417-print': {display: true, name: '打印', uuid: '31964B09-78B1-4C27-A2CD-DC0837E746B8'},
         '418-oneOffSync': {display: true, name: '一键抛转', uuid: '71E103D7-D859-401F-8F0C-6154234AD4F0'},
-        '419-rollbackTransfer': {display: true, name: '抛转还原', uuid: 'D7A760B7-576F-41AD-938A-E4FFAD2D1012'}
+        '419-rollbackTransfer': {display: true, name: '抛转还原', uuid: 'D7A760B7-576F-41AD-938A-E4FFAD2D1012'},
+        '422-auditTransfer': {display: true, name: '审核抛转', uuid: 'e63bbabc-b6c2-46c6-a541-416dedb7ed00'}
     };
 
     $scope.orderListMenuDisplayOption = {
@@ -47,7 +48,8 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
         '405-query': {display: true, name: '查询', uuid: '30B731D9-180C-4846-BA14-9FB614DD41B9'},
         '406-revertAudit': {display: true, name: '取消审核', uuid: '6E7EABF4-69FD-4C37-91C2-7BDDCD7164A6'},
         '407-oneOffSync': {display: true, name: '一键抛转', uuid: '8ee02864-f13f-4323-bf4c-914720f325aa'},
-        '409-rollbackTransfer': {display: true, name: '抛转还原', uuid: 'F00E4D66-111D-457E-AD69-F4B215A4CE5F'}
+        '409-rollbackTransfer': {display: true, name: '抛转还原', uuid: 'F00E4D66-111D-457E-AD69-F4B215A4CE5F'},
+        '410-auditTransfer': {display: true, name: '审核抛转', uuid: 'fc1de7f4-402c-4e72-a8b8-f042efd9d67d'}
     };
 
     $scope.itemOperationMenuDisplayOption = {

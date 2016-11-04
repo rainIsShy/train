@@ -89,6 +89,8 @@ angular.module('IOne-directives').directive('orderListMenu', function(Constant) 
                     $scope.preAddMenuAction();
                 } else if (menuId == 409) {
                     $scope.rollbackTransfer();
+                } else if (menuId == 410) {
+                    $scope.auditTransfer();
                 }
            }
         }
@@ -123,6 +125,8 @@ angular.module('IOne-directives').directive('orderFormMenu', function(Constant) 
                     $scope.changePurchaseFlag(2);
                 } else if (menuId == 421) {
                     $scope.changePurchaseFlag(3);
+                } else if (menuId == 422) {
+                    $scope.auditTransferForm();
                 }
             }
         }
