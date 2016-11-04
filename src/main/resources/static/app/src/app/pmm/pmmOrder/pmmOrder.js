@@ -389,13 +389,12 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 //        return list.indexOf(item) > -1;
     };
 
-
     $scope.selectedDetail = [];
+
     $scope.selectDetailAllAction = function (selectDetailAllFlag) {
         if (selectDetailAllFlag == true) {
             angular.forEach($scope.OrderDetailList.content, function (item) {
-                var idx = $scope.selectedDetail.indexOf(item);
-                if (idx < 0) {
+                if (!$scope.exists(item, $scope.selectedDetail) && item.orderQty > 0) {
                     $scope.selectedDetail.push(item);
                 }
             });
@@ -411,7 +410,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         angular.forEach(selectedDetail, function(d, rIdx) {
             if (d.uuid == item.uuid) {
                 idx = rIdx;
-
             }
         });
         if (idx > -1) {
@@ -445,8 +443,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
             if ($scope.orderListMenu.selectAll == true) {
                 angular.forEach($scope.OrderDetailList.content, function (item) {
-                    var idx = $scope.selected.indexOf(item);
-                    if (idx < 0) {
+                    if (!$scope.exists(item, $scope.selected)) {
                         $scope.selected.push(item);
                     }
                 });
@@ -461,8 +458,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
             if ($scope.orderListMenu.selectAll == true) {
                 angular.forEach($scope.OrderMasterList.content, function (item) {
-                    var idx = $scope.selected.indexOf(item);
-                    if (idx < 0) {
+                    if (!scope.exists(item, $scope.selected)) {
                         $scope.selected.push(item);
                     }
                 });
@@ -1390,7 +1386,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 angular.forEach($scope.selectedDetail, function (dtl) {
                     dtlUuid += (dtlUuid == '' ? '' : ',') + dtl.uuid;
                 });
-                if (dtlUuid == '') {
+                if (!dtlUuid) {
                     return;
                 }
                 PmmOrderDetail.changeDtlPurchaseFlag($scope.selectedItem.uuid, dtlUuid, flag, []).success(function (data) {
@@ -1922,7 +1918,7 @@ angular.module('IOne-Production').controller('OrderPurchaseReturnController', fu
         $scope.dtls = localData.dtls;
     } else {
         $scope.dtls = [];
-        angular.forEach(localData.msts, function (val, idx) {
+        angular.forEach(localData.msts, function (val) {
             PmmOrderDetail.get(val.uuid).success(function (data) {
                 $scope.dtls = $scope.dtls.concat(data.content);
             });
