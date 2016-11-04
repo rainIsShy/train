@@ -2,7 +2,7 @@
     <div >
         <md-button ng-show="selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2"
                    ng-click="openOrderItemsDlg()" class="md-raised">
-            <i class="fa fa-plus">新增产品</i>
+            <i class="fa fa-plus"></i>新增产品
         </md-button>
         <md-button
                 ng-if="itemOperationMenuDisplayOption['502-audit'].display && (menuAuthDataMap[itemOperationMenuDisplayOption['502-audit'].uuid] || isAdmin() || !itemOperationMenuDisplayOption['502-audit'].uuid)"
