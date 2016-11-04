@@ -5,6 +5,12 @@ SYS_CPT_API_MAP = {
     catalogue: '/catalogues/data'
 };
 
+GLOBAL_COOKIE = 'globals' + location.port;
+DISPLAY_NAME_COOKIE = 'displayName' + location.port;
+DISPLAY_TYPE_COOKIE = 'displayType' + location.port;
+AUTO_LOGIN_COOKIE = 'autoLogin' + location.port;
+URLS_COOKIE = 'urls' + location.port;
+
 //Global variable
 RES_UUID_MAP = {
     //production
@@ -481,6 +487,10 @@ RES_UUID_MAP = {
         SYS_BASE_MENU: {
             RES_UUID: '2659f005-7b50-4027-b73a-de2dc4850b98',
             TITLE: '系统菜单管理'
+        },
+        APPLICATION_VERSION: {
+            RES_UUID: '31af0a4c-7479-449c-96f1-d32544b4dc3a',
+            TITLE: 'APP版本管理'
         }
     },
 
@@ -678,7 +688,8 @@ angular.module('IOne-Constant').constant('Constant', {
                     name: '系统菜单管理',
                     link: '/sys/sysMenus',
                     uuid: RES_UUID_MAP.SYS.SYS_BASE_MENU.RES_UUID
-                }
+                },
+                {id: '/sys/applicationVersion', name: 'APP版本管理', link: '/sys/applicationVersion', uuid: RES_UUID_MAP.SYS.APPLICATION_VERSION.RES_UUID},
             ]
         },
         {
@@ -715,7 +726,8 @@ angular.module('IOne-Constant').constant('Constant', {
             subList: [
                 {id: '/dsm/rule', name: '同步规则管理', link: '/dsm/rule', uuid: ''},
                 {id: '/dsm/schedule', name: '同步任务管理', link: '/dsm/schedule', uuid: ''},
-                {id: '/dsm/log', name: '日志管理', link: '/dsm/log', uuid: ''}
+                {id: '/dsm/log', name: '日志管理', link: '/dsm/log', uuid: ''},
+                {id: '/dsm/stopSale', name: '商品数据同步管理', link: '/dsm/stopSale', uuid: ''}
             ]
         },
         {

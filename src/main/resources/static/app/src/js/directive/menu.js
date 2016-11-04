@@ -122,7 +122,7 @@ angular.module('IOne-directives').directive('orderFormMenu', function(Constant) 
                 } else if (menuId == 420) {
                     $scope.changePurchaseFlag(2);
                 } else if (menuId == 421) {
-                    $scope.changePurchaseFlag(3);
+                    $scope.openPurchaseReturnRemarkDlg('mstForm');
                 }
             }
         }

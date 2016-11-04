@@ -1,0 +1,27 @@
+<md-dialog style="padding: 30px;min-width: 400px;max-height: 500px;">
+    <md-content layout="column">
+        <div>
+            <form name="searchForm" novalidate="">
+                <div layout="row" layout-align="start center">
+                    <md-input-container flex="35">
+                        <label>商品编号</label>
+                        <input name="no" type="text" ng-model="searchNo">
+                    </md-input-container>
+                    <md-input-container flex="35">
+                        <label>商品名称</label>
+                        <input name="no" type="text" ng-model="searchName" md-maxlength="20">
+                    </md-input-container>
+                    <md-button ng-click="refreshList()" style="min-width: 10%;"><i class="fa fa-search"></i></md-button>
+                    <md-button ng-click="cancelDlg()" style="min-width: 10%;"><i class="fa fa-times"></i></md-button>
+                </div>
+                <md-list-item class="md-2-line" ng-repeat="r in searchResult.content" ng-click="select(r)">
+                    <div class="md-list-item-text">
+                        <h3>{{r.no}} | {{r.name}}</h3>
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
+            </form>
+            <div pagination option="pageOption" callback="refreshList()"></div>
+        </div>
+    </md-content>
+</md-dialog>

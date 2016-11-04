@@ -100,7 +100,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         } else if (menuId == 410) {
             $scope.purchaseList(true);
         } else if (menuId == 411) {
-            $scope.purchaseList(false);
+            $scope.openPurchaseReturnRemarkDlg('mstList');
         }
     };
 
@@ -143,7 +143,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
 
         //需要考虑灰化其他按钮
-        $scope.resetButtonDisabled();
+        $scope.resetButtonDisabled(0);
         $scope.orderListMenu.effectiveType = orderMaster.status;
         $scope.refreshDetail(orderMaster.uuid);
         $scope.changeButtonStatus(orderMaster);
@@ -152,20 +152,11 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         });
 
         OrderChannelTax.getAll().success(function (data) {
-            $scope.channelTaxs = data.content;
+            $scope.cchanhannelTaxs = data.content;
         });
         SaleTypes.getAll().success(function (data) {
             $scope.saleTypes = data.content;
         });
-
-        //若有来源单号，说明是被抛转的单据，此时不允许点删除按钮
-        if ($scope.selectedItem.psoTransferNo != undefined && $scope.selectedItem.psoTransferNo != null) {
-            $scope.formMenuDisplayOption['102-edit'].display = false;
-            $scope.formMenuDisplayOption['101-delete'].display = false;
-        } else {
-            $scope.formMenuDisplayOption['102-edit'].display = true;
-            $scope.formMenuDisplayOption['101-delete'].display = true;
-        }
     };
 
     //更新产品信息
@@ -253,11 +244,16 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     $scope.selectedItemsTotalPrice = 0.00;
 
     $scope.toggle = function (item, selected) {
-        var idx = selected.indexOf(item);
+        var idx = -1;
+        angular.forEach(selected, function (d, rIdx) {
+            if (d.uuid == item.uuid) {
+                idx = rIdx;
+
+            }
+        });
         if (idx > -1) {
             selected.splice(idx, 1);
-        }
-        else {
+        } else {
             selected.push(item);
         }
 
@@ -271,7 +267,11 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
     $scope.changeButtonStatusAndCalTotalPrice = function () {
         var firstLoop = true;
-        $scope.resetButtonDisabled();
+        if ($scope.selected.length == 0) {
+            $scope.resetButtonDisabled(1);
+        } else {
+            $scope.resetButtonDisabled(0);
+        }
         angular.forEach($scope.selected, function (orderMaster) {
             $scope.selectedItemsTotalPrice = $scope.selectedItemsTotalPrice + orderMaster.oriPurAmt;
             //initialize effectiveType
@@ -289,6 +289,15 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     };
 
     $scope.changeButtonStatus = function (orderMaster) {
+        // 已抛转的不可再修改状态，不可失效作废，不可取消审核，不可采购退回
+        if (orderMaster.transferFlag == 1) {
+            $scope.resetButtonDisabled(1);
+        }
+        //若有来源单号，说明是被抛转的单据，此时不允许点删除按钮
+        if ($scope.form_delete_button_disabled != 1 && orderMaster.psoTransferNo != undefined && orderMaster.psoTransferNo != null) {
+            $scope.form_delete_button_disabled = 1;
+        }
+
         // 已经审核(confirm = 2)的订单不可再对订单做删除和编辑，改灰顯
         if (orderMaster.confirm == '2') {
             $scope.form_delete_button_disabled = 1;
@@ -340,8 +349,11 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     };
 
     $scope.changeDetailButtonStatus = function () {
-        $scope.resetDetailButtonDisabled();
+        $scope.resetDetailButtonDisabled($scope.selectedDetail.length > 0 ? 0 : 1);
         angular.forEach($scope.selectedDetail, function (detail) {
+            if (detail.transferFlag == 1) {
+                $scope.resetDetailButtonDisabled(1);
+            }
             if ($scope.audit_detail_disabled != 1 && (detail.confirm == 2 || detail.confirm == 4)) {
                 $scope.audit_detail_disabled = 1;
             }
@@ -395,19 +407,22 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
 
     $scope.toggleDetail = function (item, selectedDetail) {
-        var idx = selectedDetail.indexOf(item);
+        var idx = -1;
+        angular.forEach(selectedDetail, function(d, rIdx) {
+            if (d.uuid == item.uuid) {
+                idx = rIdx;
+
+            }
+        });
         if (idx > -1) {
             selectedDetail.splice(idx, 1);
-            $scope.resetDetailButtonDisabled();
-        }
-        else {
+        } else {
             selectedDetail.push(item);
         }
 
         $scope.orderListMenu.effectiveType = item.status;
         $scope.changeDetailButtonStatus();
     };
-
 
     $scope.changeButtonStatuOnly = function () {
         var firstLoop = true;
@@ -426,7 +441,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         });
     };
 
-
     $scope.selectAllMenuAction = function () {
         if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
             if ($scope.orderListMenu.selectAll == true) {
@@ -437,12 +451,12 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     }
                 });
                 //需要考虑灰化其他按钮
-                $scope.resetButtonDisabled();
+                $scope.resetButtonDisabled(0);
                 $scope.changeButtonStatuOnly();
             } else if ($scope.orderListMenu.selectAll == false) {
                 $scope.selected = [];
                 $scope.orderListMenu.effectiveType = '1';
-                $scope.resetButtonDisabled();
+                $scope.resetButtonDisabled(1);    // 按鈕初始狀態改為灰顯
             }
         } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
             if ($scope.orderListMenu.selectAll == true) {
@@ -463,6 +477,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 //           $scope.orderListMenu.selectAll = false;
                 $scope.orderListMenu.effectiveType = '1';
                 $scope.resetInitialValue();
+                $scope.resetButtonDisabled(1);
             }
         }
 
@@ -476,7 +491,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             $scope.orderListMenu.selectAll = false;
 
             //需要考虑灰化其他按钮
-            $scope.resetButtonDisabled();
+            $scope.resetButtonDisabled(1);
 
             $scope.orderListMenu.effectiveType = data.status;
 
@@ -714,26 +729,26 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         $scope.selectedItem = null;
         $scope.selectedItemsCount = 0;
         $scope.selectedItemsTotalPrice = 0.00;
-        $scope.resetButtonDisabled();
+        $scope.resetButtonDisabled(0);
     };
 
-    $scope.resetButtonDisabled = function () {
-        $scope.form_delete_button_disabled = 0;
-        $scope.form_edit_button_disabled = 0;
-        $scope.effectiveType_disabled = 0;
-        $scope.audit_button_disabled = 0;
-        $scope.return_button_disabled = 0;
-        $scope.revert_audit_button_disabled = 0;
-        $scope.throw_button_disabled = 0;
-        $scope.purchase_submit_button_disabled = 0;
-        $scope.purchase_back_button_disabled = 0;
+    $scope.resetButtonDisabled = function (val) {
+        $scope.form_delete_button_disabled = val;
+        $scope.form_edit_button_disabled = val;
+        $scope.effectiveType_disabled = val;
+        $scope.audit_button_disabled = val;
+        $scope.return_button_disabled = val;
+        $scope.revert_audit_button_disabled = val;
+        $scope.throw_button_disabled = val;
+        $scope.purchase_submit_button_disabled = val;
+        $scope.purchase_back_button_disabled = val;
     };
 
-    $scope.resetDetailButtonDisabled = function () {
-        $scope.audit_detail_disabled = 0;
-        $scope.revert_audit_detail_disabled = 0;
-        $scope.purchase_submit_detail_disabled = 0;
-        $scope.purchase_back_detail_disabled = 0;
+    $scope.resetDetailButtonDisabled = function (val) {
+        $scope.audit_detail_disabled = val;
+        $scope.revert_audit_detail_disabled = val;
+        $scope.purchase_submit_detail_disabled = val;
+        $scope.purchase_back_detail_disabled = val;
     };
 
     $scope.queryMenuAction = function () {
@@ -751,6 +766,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         $scope.orderListMenu.effectiveType = '2';
 
         $scope.resetInitialValue();
+        $scope.resetButtonDisabled(1);
 
         if ($scope.orderListMenu.select.startDate !== undefined) {
             if ($scope.orderListMenu.select.startDate !== null) {
@@ -1007,25 +1023,13 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     promises.push(response);
                 });
                 $q.all(promises).then(function (data) {
-                    $scope.refreshDetail($scope.selectedItem.uuid);
-
-                    var detailConfirmCount = 0;
-                    angular.forEach($scope.OrderDetailList.content, function (detailItem) {
-                        if (detailItem.confirm == '2') {
-                            detailConfirmCount = detailConfirmCount + 1;
-                        }
+                    PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
+                        $scope.selectedItem = data;
+                        $scope.resetButtonDisabled(0);
+                        $scope.changeButtonStatus(data);
                     });
-                    //若所有单身己審核，則自動審核單頭
-                    if ($scope.OrderDetailList.totalElements == detailConfirmCount) {
-                        var OrderMasterUpdateInput = {
-                            uuid: $scope.selectedItem.uuid,
-                            confirm: '2'
-                        };
-                        PmmOrderMaster.modify(OrderMasterUpdateInput).success(function () {
-                            $scope.selectedItem.confirm = 2;
-                            $scope.changeButtonStatus($scope.selectedItem);
-                        });
-                    }
+
+                    $scope.refreshDetail($scope.selectedItem.uuid);
 
                     $scope.showInfo('审核成功。');
                 });
@@ -1036,17 +1040,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     $scope.unConfirmOrderItem = function () {
         if ($scope.selectedDetail.length > 0) {
             $scope.showConfirm('确认取消审核吗？', '', function () {
-                var allDetailConfirm = false;
-                var detailConfirmCount = 0;
-                angular.forEach($scope.OrderDetailList.content, function (detailItem) {
-                    if (detailItem.confirm == '2') {
-                        detailConfirmCount = detailConfirmCount + 1;
-                    }
-                });
-                if ($scope.OrderDetailList.totalElements == detailConfirmCount) {
-                    allDetailConfirm = true;
-                }
-
                 var promises = [];
                 angular.forEach($scope.selectedDetail, function (item) {
                     var PmmOrderDetailUpdateInput = {
@@ -1058,19 +1051,13 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     promises.push(response);
                 });
                 $q.all(promises).then(function (data) {
+                    PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
+                        $scope.selectedItem = data;
+                        $scope.resetButtonDisabled(0);
+                        $scope.changeButtonStatus(data);
+                    });
                     $scope.refreshDetail($scope.selectedItem.uuid);
                     $scope.selectedDetail = [];
-                    //若有其它一筆單身取消審核，則自動取消審核單頭'
-                    if (allDetailConfirm) {
-                        var OrderMasterUpdateInput = {
-                            uuid: $scope.selectedItem.uuid,
-                            confirm: '1'
-                        };
-                        PmmOrderMaster.modify(OrderMasterUpdateInput).success(function () {
-                            $scope.selectedItem.confirm = '1';
-                            $scope.changeButtonStatus($scope.selectedItem);
-                        });
-                    }
 
                     $scope.showInfo('取消审核成功。');
                 });
@@ -1090,6 +1077,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 saleTypes: $scope.saleTypes
             }
         }).then(function (data) {
+            data.selectedOrderDetail.saleTypeUuid = data.selectedOrderDetail.saleType.uuid;
 
             PmmOrderDetail.modify(data.selectedOrderDetail.pmmOrderMst.uuid, data.selectedOrderDetail.uuid, data.selectedOrderDetail).success(function () {
                 $scope.refreshDetail(data.selectedOrderDetail.pmmOrderMst.uuid);
@@ -1142,25 +1130,23 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             parent: angular.element(document.body),
             targetEvent: event,
             locals: {
-                selectedOrderExtendDetail: orderExtendDetail
+                selectedOrderExtendDetail: orderExtendDetail,
+                channelUuid: $scope.selectedItem.channel.uuid
             }
         }).then(function (data) {
-            PmmOrderExtendDetail.modify(data.selectedOrderExtendDetail.pmmOrderDetail.uuid, data.selectedOrderExtendDetail.uuid, data.selectedOrderExtendDetail)
-                .success(function () {
-                    PmmOrderDetail.get(data.selectedOrderExtendDetail.pmmOrderDetail.pmmOrderMaster.uuid, data.selectedOrderExtendDetail.pmmOrderDetail.uuid).success(function (data) {
-                        $scope.OrderDetailList = data;
-                        $scope.updateOrderDetailListDate($scope.OrderDetailList);
-                        $scope.OrderExtendDetailList = [];
-                        angular.forEach($scope.OrderDetailList.content, function (orderDetail, index) {
-                            PmmOrderExtendDetail.get(orderDetail.uuid).success(function (data) {
-                                $scope.OrderExtendDetailList = $scope.OrderExtendDetailList.concat(data.content);
-                            });
+            PmmOrderExtendDetail.modify(data.selectedOrderExtendDetail.pmmOrderDetail.uuid, data.selectedOrderExtendDetail.uuid, data.selectedOrderExtendDetail).success(function () {
+                PmmOrderDetail.get(data.selectedOrderExtendDetail.pmmOrderDetail.pmmOrderMst.uuid, data.selectedOrderExtendDetail.pmmOrderDetail.uuid).success(function (data) {
+                    $scope.OrderDetailList = data;
+                    $scope.updateOrderDetailListDate($scope.OrderDetailList);
+                    $scope.OrderExtendDetailList = [];
+                    angular.forEach($scope.OrderDetailList.content, function (orderDetail, index) {
+                        PmmOrderExtendDetail.get(orderDetail.uuid).success(function (data) {
+                            $scope.OrderExtendDetailList = $scope.OrderExtendDetailList.concat(data.content);
                         });
-                        $scope.showInfo('修改成功。');
                     });
-
-
+                    $scope.showInfo('修改成功。');
                 });
+            });
         });
     };
 
@@ -1320,9 +1306,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         }).then(function (data) {
             $scope.selectedItem.channel = data;
             $scope.selectedItem.channelUuid = data.uuid;
-
         });
-
     };
 
     $scope.openOrderCustomerDlg = function () {
@@ -1349,23 +1333,78 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         });
     };
 
-    $scope.changePurchaseFlag = function (flag) {
-        var msg = flag == 2 ? '确认发出采购吗？' : '确认取消采购吗？';
-        $scope.showConfirm(msg, '', function () {
-            PmmOrderMaster.changePurchaseFlag($scope.selectedItem.uuid, flag).success(function (data) {
-                $scope.selectedItem = data;
-                $scope.resetButtonDisabled();
-                $scope.changeButtonStatus(data);
-                $scope.refreshDetail(data.uuid);
-                $scope.selectedDetail = [];
-                $scope.showInfo('修改成功。');
-            });
+    $scope.openPurchaseReturnRemarkDlg = function (rtnType) {
+        var localData = null;
+        if (rtnType == 'mstList') {
+            localData = { localData: { msts: $scope.selected }};
+        } else if (rtnType == 'mstForm') {
+            localData = { localData: { dtls: $scope.OrderDetailList.content }};
+        } else if (rtnType == 'dtlList') {
+            localData = { localData: { dtls: $scope.selectedDetail }};
+        }
+        $mdDialog.show({
+            controller: 'OrderPurchaseReturnController',
+            templateUrl: 'app/src/app/pmm/pmmOrder/returnRemark.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            locals: localData
+        }).then(function (data) {
+            if (rtnType == 'mstList') {
+                $scope.purchaseList(false, data);
+            } else if (rtnType == 'mstForm') {
+                $scope.changePurchaseFlag(3, data);
+            } else if (rtnType == 'dtlList') {
+                $scope.changeDtlPurchaseFlag(3, data);
+            }
         });
     };
 
-    $scope.changeDtlPurchaseFlag = function (flag) {
-        var msg = flag == 2 ? '确认发出采购吗？' : '确认取消采购吗？';
-        $scope.showConfirm(msg, '', function () {
+    $scope.changePurchaseFlag = function (flag, dtls) {
+        if (flag == 2) {
+            $scope.showConfirm('确认发出采购吗？', '', function () {
+                PmmOrderMaster.changePurchaseFlag($scope.selectedItem.uuid, flag, []).success(function (data) {
+                    $scope.selectedItem = data;
+                    $scope.resetButtonDisabled(0);
+                    $scope.changeButtonStatus(data);
+                    $scope.refreshDetail(data.uuid);
+                    $scope.selectedDetail = [];
+                    $scope.showInfo('发出采购成功。');
+                });
+            });
+        } else {
+            PmmOrderMaster.changePurchaseFlag($scope.selectedItem.uuid, flag, dtls).success(function (data) {
+                $scope.selectedItem = data;
+                $scope.resetButtonDisabled(0);
+                $scope.changeButtonStatus(data);
+                $scope.refreshDetail(data.uuid);
+                $scope.selectedDetail = [];
+                $scope.showInfo('退回采购成功。');
+            });
+        }
+    };
+
+    $scope.changeDtlPurchaseFlag = function (flag, dtls) {
+        if (flag == 2) {
+            $scope.showConfirm('确认发出采购吗？', '', function () {
+                var dtlUuid = '';
+                angular.forEach($scope.selectedDetail, function (dtl) {
+                    dtlUuid += (dtlUuid == '' ? '' : ',') + dtl.uuid;
+                });
+                if (dtlUuid == '') {
+                    return;
+                }
+                PmmOrderDetail.changeDtlPurchaseFlag($scope.selectedItem.uuid, dtlUuid, flag, []).success(function (data) {
+                    PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
+                        $scope.selectedItem = data;
+                        $scope.resetButtonDisabled(0);
+                        $scope.changeButtonStatus(data);
+                        $scope.refreshDetail(data.uuid);
+                        $scope.selectedDetail = [];
+                    });
+                    $scope.showInfo('发出采购成功。');
+                });
+            });
+        } else {
             var dtlUuid = '';
             angular.forEach($scope.selectedDetail, function (dtl) {
                 dtlUuid += (dtlUuid == '' ? '' : ',') + dtl.uuid;
@@ -1373,35 +1412,41 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             if (dtlUuid == '') {
                 return;
             }
-            PmmOrderDetail.changeDtlPurchaseFlag($scope.selectedItem.uuid, dtlUuid, flag).success(function (data) {
+            PmmOrderDetail.changeDtlPurchaseFlag($scope.selectedItem.uuid, dtlUuid, flag, dtls).success(function (data) {
                 PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
                     $scope.selectedItem = data;
-                    $scope.resetButtonDisabled();
+                    $scope.resetButtonDisabled(0);
                     $scope.changeButtonStatus(data);
                     $scope.refreshDetail(data.uuid);
                     $scope.selectedDetail = [];
                 });
-                $scope.showInfo('修改成功。');
+                $scope.showInfo('退回采购成功。');
             });
-        });
+        }
     };
 
-    $scope.purchaseList = function (flag) {
-        var msg = flag ? '确认发出采购吗？' : '确认取消采购吗？';
-        $scope.showConfirm(msg, '', function () {
+    $scope.purchaseList = function (flag, dtls) {
+        if (flag) {
+            $scope.showConfirm('确认发出采购吗？', '', function () {
+                var allUuid = [];
+                angular.forEach($scope.selected, function (data) {
+                    allUuid.push(data.uuid);
+                });
+                PmmOrderMaster.purchaseList({allUuid: allUuid, flag: flag }).success(function (data) {
+                    $scope.queryMenuAction();
+                    $scope.showInfo('发出采购成功。');
+                });
+            });
+        } else {
             var allUuid = [];
             angular.forEach($scope.selected, function (data) {
                 allUuid.push(data.uuid);
             });
-            PmmOrderMaster.purchaseList({allUuid: allUuid, flag: flag}).success(function (data) {
-//                $scope.selectedItem = data;
-//                $scope.changeButtonStatus(data);
-//                $scope.refreshDetail(data.uuid);
-//                $scope.selectedDetail = [];
+            PmmOrderMaster.purchaseList({allUuid: allUuid, flag: flag, dtls: dtls }).success(function (data) {
                 $scope.queryMenuAction();
-                $scope.showInfo('修改成功。');
+                $scope.showInfo('退回采购成功。');
             });
-        });
+        }
     };
 
     $scope.getDetailBgcolor = function (detail) {
@@ -1483,7 +1528,7 @@ angular.module('IOne-Production').controller('OrderCustomerSearchController', fu
 });
 
 
-angular.module('IOne-Production').controller('OrderItemsSearchController', function ($scope, $q, $mdDialog, OrderItems, channelUuid, saleTypes) {
+angular.module('IOne-Production').controller('OrderItemsSearchController', function ($scope, $q, $mdDialog, OrderItems, ChannelItemInfoService, channelUuid, saleTypes) {
 
     $scope.channelUuid = channelUuid;
     $scope.saleTypes = saleTypes;
@@ -1494,6 +1539,11 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         totalPage: 0,
         totalElements: 0,
         displayModel: 0  //0 : image + text //1 : image
+    };
+
+    $scope.search = function () {
+        $scope.pageOption.currentPage = 0;
+        $scope.refreshData();
     };
 
     $scope.refreshData = function () {
@@ -1510,36 +1560,39 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
     $scope.refreshData();
 
     $scope.selectData = function (data) {
-    console.log($scope.addOrderDetail);
         $scope.addOrderDetail.item = data;
         $scope.addOrderDetail.itemUuid = data.uuid;
         $scope.addOrderDetail.oriPurPrice = data.suggestPrice;
         $scope.addOrderDetail.orderQty = 1;
         $scope.addOrderDetail.oriPurAmt = parseFloat(($scope.addOrderDetail.oriPurPrice * $scope.addOrderDetail.orderQty).toFixed(2));
-        $scope.addOrderDetail.standardPrice = data.standardPrice;
         $scope.addOrderDetail.customizeFlag = data.customizationFlag == 'Y' ? 1 : 2;
+        // $scope.addOrderDetail.standardPrice = data.standardPrice;
 
-//        angular.forEach($scope.saleTypes, function (saleType, index) {
-//            if (saleType.name == '常规') {
-                $scope.addOrderDetail.saleTypeUuid = '162A8B4C-3C3A-4D72-BB3E-47538CFA5CE8';
-//            }
-//        });
-        $scope.addOrderDetail.customizeFlag = 2;
+        // 常规
+        $scope.addOrderDetail.saleTypeUuid = '162A8B4C-3C3A-4D72-BB3E-47538CFA5CE8';
+
+        $scope.addOrderDetail.customizeFlag = data.customizationFlag == 'Y' ? '1' : '2';
         $scope.addOrderDetail.presentFlag = 2;
+
+        $scope.addOrderDetail.itemCustomScope = { no: null, name: null };
+        OrderItems.getCustomDetail(data.uuid, '9B4E43F4-56C8-495B-952D-9CCDA6D31DA8').success(function (idata) {
+            if (idata.content.length > 0) {
+                $scope.addOrderDetail.itemCustomScopeUuid = idata.content[0].information.substring(2, 38);
+                OrderItems.getCustomScope('9B4E43F4-56C8-495B-952D-9CCDA6D31DA8', $scope.addOrderDetail.itemCustomScopeUuid).success(function (scopeData) {
+                    $scope.addOrderDetail.itemCustomScope = { no: scopeData.no, name: scopeData.name };
+                });
+            }
+        });
+
         // $scope.addOrderDetail.originalStandardAmount = parseFloat(($scope.addOrderDetail.standardPrice * $scope.addOrderDetail.orderQuantity).toFixed(2));
-        $scope.addOrderDetail.itemUuid = data.uuid;
-        $scope.refreshUI();
-    };
-
-    $scope.changePurPrice = function (price) {
-        //若有特价，则采购单价预设为特別單價
-        $scope.addOrderDetail.oriPurPrice = price;
-        $scope.changePurAmt();
-    };
-
-    //数量= 金额*单价
-    $scope.changePurAmt = function () {
-        $scope.addOrderDetail.oriPurAmt = $scope.addOrderDetail.oriPurPrice * $scope.addOrderDetail.orderQty;
+        ChannelItemInfoService.getByItem(channelUuid,  data.uuid).success(function (icr) {
+            $scope.addOrderDetail.standardPrice = 0;
+            if (icr.content.length > 0) {
+                $scope.addOrderDetail.standardPrice = icr.content[0].standardPrice;
+            }
+        }).then(function () {
+            $scope.refreshUI();
+        });
     };
 
     $scope.cancelDlg = function () {
@@ -1547,12 +1600,28 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
     };
 
     $scope.hideDlg = function () {
+        var errMsgs = [];
         if (null == $scope.addOrderDetail.item) {
-            $scope.showError("请选择商品");
+            errMsgs.push("请选择商品");
         } else if (null == $scope.addOrderDetail.orderQty) {
-            $scope.showError("请输入采购数量");
+            errMsgs.push("请输入采购数量");
         } else if (null == $scope.addOrderDetail.oriPurPrice) {
-            $scope.showError("请输入采购单价");
+            errMsgs.push("请输入采购单价");
+        } else if ($scope.addOrderDetail.saleTypeUuid == 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E') {
+            if (!$scope.addOrderDetail.promotionDiscountRate && $scope.addOrderDetail.promotionDiscountRate !== 0) {
+                errMsgs.push("请输入促销折扣率");
+            }
+            if (!$scope.addOrderDetail.promotionPrice && $scope.addOrderDetail.promotionPrice !== 0) {
+                errMsgs.push("请输入促销单价");
+            }
+        } else if ($scope.addOrderDetail.saleTypeUuid == 'F1DEDA0E-A607-4934-B305-EEC3C447C509' && !$scope.addOrderDetail.specialPrice && $scope.addOrderDetail.specialPrice !== 0) { // 特价
+            errMsgs.push("请输入特价单价");
+        }
+
+        if (errMsgs.length > 0) {
+            angular.forEach(errMsgs, function (val) {
+                $scope.showError(val);
+            });
         } else {
             $scope.addOrderDetail.oriPurPrice = $scope.addOrderDetail.oriTransactionPrice + $scope.addOrderDetail.perCustomizePrice;
             $scope.addOrderDetail.natPurPrice = $scope.addOrderDetail.natTransactionPrice + $scope.addOrderDetail.perCustomizePrice;
@@ -1568,46 +1637,66 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
     };
 
     $scope.showError = function (info) {
-        toastr["error"](info)
+        toastr["error"](info);
     };
 
     $scope.refreshUI = function () {
-        $scope.addOrderDetail.oriStandardAmt = $scope.addOrderDetail.item.standardPrice * $scope.addOrderDetail.orderQty;
-        $scope.addOrderDetail.natStandardAmt = $scope.addOrderDetail.oriStandardAmt;
         $scope.addOrderDetail.specialPrice = '';
         $scope.addOrderDetail.promotionDiscountRate = '';
         $scope.addOrderDetail.promotionPrice = '';
+
+        $scope.calcPurAmt();
+    };
+
+    $scope.calcPurAmt = function () {
         if ($scope.addOrderDetail.saleTypeUuid == '162A8B4C-3C3A-4D72-BB3E-47538CFA5CE8') { // 常规
             $scope.addOrderDetail.oriTransactionPrice = $scope.addOrderDetail.item.suggestPrice;
         } else if ($scope.addOrderDetail.saleTypeUuid == 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E') { // 折扣
-            $scope.addOrderDetail.oriTransactionPrice = 0;
+            $scope.addOrderDetail.oriTransactionPrice = !$scope.addOrderDetail.promotionPrice ? 0 : $scope.addOrderDetail.promotionPrice;
         } else if ($scope.addOrderDetail.saleTypeUuid == 'AA929EC9-4392-4C23-A12D-346936F26DCC') { // 赠送
             $scope.addOrderDetail.oriTransactionPrice = 0;
         } else if ($scope.addOrderDetail.saleTypeUuid == 'F1DEDA0E-A607-4934-B305-EEC3C447C509') { // 特价
-            $scope.addOrderDetail.oriTransactionPrice = $scope.addOrderDetail.specialPrice;
+            // 若有特价，则采购单价预设为特別單價
+            $scope.addOrderDetail.oriTransactionPrice = !$scope.addOrderDetail.specialPrice ? 0 : $scope.addOrderDetail.specialPrice;
+        }
+
+        var customizePrice = 0;
+        if ($scope.addOrderDetail.customizeFlag == '1') {
+            if ($scope.addOrderDetail.perCustomizePrice) {
+                customizePrice = $scope.addOrderDetail.perCustomizePrice;
+            }
+        } else {
+            $scope.addOrderDetail.perCustomizePrice = '';
+            $scope.addOrderDetail.customizeRemark = '';
         }
         $scope.addOrderDetail.natTransactionPrice = $scope.addOrderDetail.oriTransactionPrice;
-//        $scope.specialPriceDisplay = false;
-//        $scope.promotionDisplay = false;
-//        angular.forEach($scope.saleTypes, function (saleType, index) {
-//            if (saleType.uuid == saleTypeUuid) {
-//                if (saleType.no == 'ST05') {
-//                    $scope.specialPriceDisplay = true;
-//                }
-//
-//                if (saleType.no == 'ST07') {
-//                    $scope.promotionDisplay = true;
-//                }
-//            }
-//        });
+        $scope.addOrderDetail.oriStandardAmt = $scope.addOrderDetail.standardPrice * $scope.addOrderDetail.orderQty;
+        $scope.addOrderDetail.natStandardAmt = $scope.addOrderDetail.oriStandardAmt;
+
+        $scope.addOrderDetail.oriPurPrice = $scope.addOrderDetail.oriTransactionPrice + customizePrice;
+        $scope.addOrderDetail.natPurPrice = $scope.addOrderDetail.natTransactionPrice + customizePrice;
+        $scope.addOrderDetail.oriPurAmt = $scope.addOrderDetail.oriPurPrice * $scope.addOrderDetail.orderQty;
+        $scope.addOrderDetail.natPurAmt = $scope.addOrderDetail.natPurPrice * $scope.addOrderDetail.orderQty;
+        $scope.addOrderDetail.oriPurAmtTax = $scope.addOrderDetail.oriPurAmt + $scope.addOrderDetail.oriPurTax;
+        $scope.addOrderDetail.natPurAmtTax = $scope.addOrderDetail.natPurAmt + $scope.addOrderDetail.natPurTax;
     };
 
-    $scope.chgCustomizeFlag = function (orderDetail) {
-        orderDetail.perCustomizePrice = '';
+    $scope.chgProR = function () {
+        if ($scope.addOrderDetail.promotionDiscountRate) {
+            $scope.addOrderDetail.promotionPrice = parseFloat(($scope.addOrderDetail.promotionDiscountRate * $scope.addOrderDetail.item.suggestPrice / 100).toFixed(2));
+        } else {
+            $scope.addOrderDetail.promotionPrice = $scope.addOrderDetail.promotionDiscountRate;
+        }
+        $scope.calcPurAmt();
     };
 
-    $scope.calcPromotionPrice = function () {
-        $scope.addOrderDetail.promotionPrice = parseFloat(($scope.addOrderDetail.item.suggestPrice * $scope.addOrderDetail.promotionDiscountRate).toFixed(2));
+    $scope.chgProP = function () {
+        if ($scope.addOrderDetail.promotionPrice) {
+            $scope.addOrderDetail.promotionDiscountRate = parseFloat(($scope.addOrderDetail.promotionPrice / $scope.addOrderDetail.item.suggestPrice * 100).toFixed(2));
+        } else {
+            $scope.addOrderDetail.promotionDiscountRate = $scope.addOrderDetail.promotionPrice;
+        }
+        $scope.calcPurAmt();
     };
 });
 
@@ -1633,14 +1722,11 @@ angular.module('IOne-Production').controller('PmmOrderExtendDetail2Controller', 
             $scope.itemRelationList = itemRelationData.content;
             $scope.selectedCustom.informationScope = $scope.selectedCustom.information;
         });
-
     } else {
-
         $scope.selectedCustom = {
             informationUuids: [],
             //astrict: 2
             itemCustom: {astrict: 2}
-
         };
     }
 
@@ -1708,13 +1794,35 @@ angular.module('IOne-Production').controller('PmmOrderExtendDetail2Controller', 
 });
 
 
-angular.module('IOne-Production').controller('PmmOrderExtendDetailController', function ($scope, $mdDialog, selectedOrderExtendDetail) {
+angular.module('IOne-Production').controller('PmmOrderExtendDetailController', function ($scope, $mdDialog, selectedOrderExtendDetail, channelUuid) {
     $scope.selectedOrderExtendDetail = angular.copy(selectedOrderExtendDetail);
+
+    $scope.openExtItemDlg = function () {
+        $mdDialog.show({
+            controller: 'SelectItemsController',
+            templateUrl: 'app/src/app/pmm/pmmOrder/selectItemsDlg.html',
+            targetEvent: event,
+            preserveScope: true,
+            autoWrap: true,
+            skipHide: true,
+            locals: {
+                fieldName: '归属补件',
+                channelUuid: channelUuid
+            }
+        }).then(function (data) {
+            if (!data.isCancel) {
+                $scope.selectedOrderExtendDetail.baseItem = { name: data.name };
+                $scope.selectedOrderExtendDetail.plmBaseItemFileBUuid = data.uuid;
+            }
+        });
+    };
+
     $scope.hideDlg = function () {
         $mdDialog.hide({
             'selectedOrderExtendDetail': $scope.selectedOrderExtendDetail
         });
     };
+
     $scope.cancelDlg = function () {
         $mdDialog.cancel();
     };
@@ -1725,7 +1833,30 @@ angular.module('IOne-Production').controller('PmmOrderDetailController', functio
     $scope.selectedOrderDetail = angular.copy(selectedOrderDetail);
     $scope.saleTypes = saleTypes;
 
+    $scope.onChgDtlEditSaleType = function (saleTypeUuid) {
+        $scope.selectedOrderDetail.specialPrice = '';
+        $scope.selectedOrderDetail.promotionDiscountRate = '';
+        $scope.selectedOrderDetail.promotionPrice = '';
+    };
+
     $scope.hideDlg = function () {
+        var errMsgs = [];
+        if ($scope.selectedOrderDetail.saleType.uuid == 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E') {
+            if (!$scope.selectedOrderDetail.promotionDiscountRate && $scope.selectedOrderDetail.promotionDiscountRate !== 0) {
+                errMsgs.push("请输入促销折扣率");
+            }
+            if (!$scope.selectedOrderDetail.promotionPrice && $scope.selectedOrderDetail.promotionPrice !== 0) {
+                errMsgs.push("请输入促销单价");
+            }
+        } else if ($scope.selectedOrderDetail.saleType.uuid == 'F1DEDA0E-A607-4934-B305-EEC3C447C509' && !$scope.selectedOrderDetail.specialPrice && $scope.selectedOrderDetail.specialPrice !== 0) { // 特价
+            errMsgs.push("请输入特价单价");
+        }
+        if (errMsgs.length > 0) {
+            angular.forEach(errMsgs, function (val) {
+                toastr["error"](val);
+            });
+            return;
+        }
         $mdDialog.hide({
             'selectedOrderDetail': $scope.selectedOrderDetail
         });
@@ -1733,6 +1864,22 @@ angular.module('IOne-Production').controller('PmmOrderDetailController', functio
 
     $scope.cancelDlg = function () {
         $mdDialog.cancel();
+    };
+
+    $scope.chgProR = function () {
+        if ($scope.selectedOrderDetail.promotionDiscountRate) {
+            $scope.selectedOrderDetail.promotionPrice = parseFloat(($scope.selectedOrderDetail.promotionDiscountRate * $scope.selectedOrderDetail.item.suggestPrice / 100).toFixed(2));
+        } else {
+            $scope.selectedOrderDetail.promotionPrice = $scope.selectedOrderDetail.promotionDiscountRate;
+        }
+    };
+
+    $scope.chgProP = function () {
+        if ($scope.selectedOrderDetail.promotionPrice) {
+            $scope.selectedOrderDetail.promotionDiscountRate = parseFloat(($scope.selectedOrderDetail.promotionPrice / $scope.selectedOrderDetail.item.suggestPrice * 100).toFixed(2));
+        } else {
+            $scope.selectedOrderDetail.promotionDiscountRate = $scope.selectedOrderDetail.promotionPrice;
+        }
     };
 });
 
@@ -1770,4 +1917,94 @@ angular.module('IOne-Production').controller('OrderPromotionSearchController', f
     };
 });
 
+angular.module('IOne-Production').controller('OrderPurchaseReturnController', function ($scope, $mdDialog, PmmOrderDetail, localData) {
+    if (localData.dtls != null) {
+        $scope.dtls = localData.dtls;
+    } else {
+        $scope.dtls = [];
+        angular.forEach(localData.msts, function (val, idx) {
+            PmmOrderDetail.get(val.uuid).success(function (data) {
+                $scope.dtls = $scope.dtls.concat(data.content);
+            });
+        });
+    }
+
+    $scope.hideDlg = function () {
+        $mdDialog.hide($scope.dtls);
+    };
+
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+});
+
+
+angular.module('IOne-Production').controller('SelectItemsController', function ($scope, $mdDialog, fieldName, channelUuid, OrderItems) {
+    $scope.pageOption = {
+        sizePerPage: 5,
+        currentPage: 0,
+        totalPage: 0,
+        totalElements: 0
+    };
+
+    $scope.queryAction = function () {
+        $scope.pageOption.currentPage = 0;
+        $scope.refreshList();
+    };
+
+    $scope.refreshList = function () {
+        OrderItems.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, channelUuid, $scope.searchNo, $scope.searchName).success(function (data) {
+            $scope.searchResult = data;
+            if ($scope.searchResult.content.length < 1) {
+                $scope.showError('当前经销商没有商品，请检查渠道定价是否设置。');
+            }
+            $scope.pageOption.totalElements = data.totalElements;
+            $scope.pageOption.totalPage = data.totalPages;
+        });
+    };
+
+    $scope.refreshList();
+
+    $scope.select = function (data) {
+        data.isCancel = false;
+        $mdDialog.hide(data);
+    };
+
+    $scope.cancelDlg = function () {
+        $mdDialog.hide({ isCancel: true });
+    };
+});
+
+angular.module('IOne-Production').controller('SelectItemScopeController', function ($scope, $mdDialog, itemUuid, OrderItems) {
+    $scope.pageOption = {
+        sizePerPage: 5,
+        currentPage: 0,
+        totalPage: 0,
+        totalElements: 0
+    };
+    var itemCustomUuid = '9B4E43F4-56C8-495B-952D-9CCDA6D31DA8';
+
+    $scope.queryAction = function () {
+        $scope.pageOption.currentPage = 0;
+        $scope.refreshList();
+    };
+
+    $scope.refreshList = function () {
+        OrderItems.getAllCustomScope($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, itemCustomUuid, $scope.searchNo, $scope.searchName).success(function (data) {
+            $scope.searchResult = data;
+            $scope.pageOption.totalElements = data.totalElements;
+            $scope.pageOption.totalPage = data.totalPages;
+        });
+    };
+
+    $scope.refreshList();
+
+    $scope.select = function (data) {
+        $mdDialog.hide(data);
+    };
+
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+});
 

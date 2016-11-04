@@ -1,11 +1,11 @@
 angular.module('IOne-Production').config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/cbi/area', {
-        controller: 'AreaController',
+        controller: 'CBIAreaController',
         templateUrl: 'app/src/app/cbi/area/area.html'
     })
 }]);
 
-angular.module('IOne-Production').controller('AreaController', function ($scope, Area, Constant, $mdDialog) {
+angular.module('IOne-Production').controller('CBIAreaController', function ($scope, Area, Constant, $mdDialog) {
     $scope.editNodeDisabled = false;
     $scope.saveNodeDisabled = true;
     $scope.cancelModifyDisabled = true;

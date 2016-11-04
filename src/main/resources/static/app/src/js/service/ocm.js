@@ -456,6 +456,9 @@ angular.module('IOne-Production').service('ChannelItemInfoService', function ($h
         return $http.delete(Constant.BACKEND_BASE + '/itemChannelRelations/' + ChannelPriceUuid);
     };
 
+    this.getByItem = function (channelUuid, itemUuid) {
+        return $http.get(Constant.BACKEND_BASE + '/itemChannelRelations?channelUuid=' + channelUuid + '&itemUuid=' + itemUuid);
+    };
 
 });
 

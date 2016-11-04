@@ -1,0 +1,83 @@
+<div class="main-panel">
+    <div ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS">
+        <div layout="row" class="top-title">
+            <div flex class="right-title">
+                <span>数据同步管理</span>
+            </div>
+        </div>
+
+        <div layout="row" class="main-body border">
+            <div flex class="right-body">
+                <div flex layout="row" style="position: relative; margin: 0px 18px;" layout-align="start start">
+                    <md-input-container flex="30">
+                        <label>同步类型：</label>
+                        <md-select placeholder="请选择同步类型" ng-model="listFilterOption.syncType"
+                                   ng-change="getTiptopDbByType(listFilterOption.syncType)">
+                            <md-option ng-repeat="(key, value) in TIPTOP_SYNC_TYPE" ng-value="key">
+                                {{value.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <div flex layout="row">
+                        <md-input-container flex="30">
+                            <label>开始日期：</label>
+                            <input type="date" ng-model="listFilterOption.startDate" min="0000-01-01" max="9999-12-31">
+                        </md-input-container>
+                        <md-input-container flex="30">
+                            <label>截止日期：</label>
+                            <input type="date" ng-model="listFilterOption.endDate" min="0000-01-01" max="9999-12-31">
+                        </md-input-container>
+                        <md-button style="margin-top: 22px;height: 20px;" class="md-raised" ng-click="execute()"
+                                   ng-disabled="logining == true">同步
+                        </md-button>
+                    </div>
+                </div>
+                <!-- advanced search-->
+                <!--<div class="search-bar" layout="row" ng-show="displayAdvancedSearPanel" layout-align="start center">-->
+
+                <!--</div>-->
+                <!-- status panel-->
+                <div layout="row" style="position: relative; margin: 0px 18px;" layout-align="start start">
+
+                </div>
+                <div align="center"><span ng-if="logining"><img style="width: 20px;padding-top: 13px;"
+                                                                src="app/img/spinner.gif"/> {{syncingDb}}同步中，请稍候...</span>
+                </div>
+                <div style="margin: 0px 18px;"><h3>数据库列表 :　</h3></div>
+                <!--<div layout="row" layout-warp layout-padding layout-margin ng-show="!selectedItem"-->
+                <!--style="margin: 0px 18px;background-color: whitesmoke;position: relative;height: 50px;padding-top: 15px;">-->
+
+                <!--<span flex="20">总记录数: {{pageOption.totalElements}}</span>-->
+                <!--<span flex="20">已选记录数: {{selectItemCount}}</span>-->
+
+                <!--</div>-->
+                <div ng-repeat="item in tiptopDbList | orderBy:'tiptopDb'"
+                     ng-class="selectedItem.tiptopDb == item.tiptopDb ? 'selected-item':''">
+                    <div class="summary-item">
+                        <div layout="row" layout-wrap>
+                            <span style="position: absolute">
+                                <md-checkbox ng-model="item.selected" aria-label="Checkbox"
+                                             ng-click="selectItemAction($event, item)"></md-checkbox>
+                            </span>
+
+                            <div flex="100" layout="row"
+                                 style="padding-left: 50px;padding-top: 10px; font-weight: bold;">
+                                <span flex ng-click="showDetailPanelAction(item)" class="summary-item__title">{{item.tiptopDb}}</span>
+                            </div>
+                            <div flex="100" layout="row" style="padding-left: 50px;padding-top: 10px;font-size: 14px;"
+                                 layout-align="space-between center" ng-hide="selectedItem">
+                                <div flex layout="row" style="color:#7f8fa4">
+                                    <span>易拓客户名称: <span style="font-style: italic">{{item.tiptopClientName}}&nbsp;&nbsp;&nbsp;&nbsp;</span></span>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
