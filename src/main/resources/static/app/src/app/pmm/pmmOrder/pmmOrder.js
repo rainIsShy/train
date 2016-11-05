@@ -494,12 +494,11 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             PmmOrderDetail.get($scope.selectedItem.uuid).success(function (data) {
                 $scope.OrderDetailList = data;
                 $scope.updateOrderDetailListDate($scope.OrderDetailList);
-                $scope.showInfo('修改数据成功。');
+                // $scope.showInfo('修改数据成功。');
             });
 
         })
     };
-
 
     $scope.effectiveMenuAction = function () {
         if ($scope.selected.length > 0 || $scope.selectedTabIndex == 1) {
@@ -536,7 +535,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 }
             });
         }
-
     };
 
     //操作更新pso_so_mst.confirm='2' 或 '3'，视用户审核权限
@@ -580,10 +578,8 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                         $scope.showInfo('修改数据成功。');
                     });
                 }
-
             });
         }
-
     };
 
     $scope.returnMenuAction = function () {
@@ -619,11 +615,9 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                         $scope.queryMenuActionWithPaging();
                         $scope.showInfo('修改数据成功。');
                     });
-
                 }
             });
         }
-
     };
 
     $scope.throwMenuAction = function () {
@@ -631,43 +625,22 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         if ($scope.selected.length > 0 || $scope.selectedTabIndex == 1) {
             $scope.showConfirm('确认抛转吗？', '', function () {
                 if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
-                    var OrderMasterUpdateInput = {
-                        uuid: $scope.selectedItem.uuid,
-                        transferFlag: '1'
-                    };
-                    PmmOrderMaster.modify(OrderMasterUpdateInput).success(function () {
-                        $scope.selectedItem.transferFlag = '1';
-                        $scope.editItem($scope.selectedItem);
-                        PmmOrderMaster.getOrderMasterCount(Constant.AUDIT[1].value, Constant.STATUS[1].value, Constant.TRANSFER_PSO_FLAG[2].value, RES_UUID_MAP.PO.PMM_ORDER.LIST_PAGE.RES_UUID).success(function (data) {
-                            $scope.menuList[1].subList[2].suffix = data;
-                        });
-                        $scope.showInfo('修改数据成功。');
-                        var transferData = { 'PMM_ORDER_MST_UUID': $scope.selectedItem.uuid };
-                        ErpAdapterService.transferErpAdapter('/pmmOrderToOeaTask', transferData, function () {
-                            $scope.showInfo('抛转成功。');
-                        });
+                    var transferData = { 'PMM_ORDER_MST_UUID': $scope.selectedItem.uuid };
+                    ErpAdapterService.transferErpAdapter('/pmmOrderToOeaTask', transferData, $scope, function (resp) {
+                        console.log(resp);
+                        $scope.refreshMasterAndDetail();
+                        $scope.showInfo('抛转成功。');
                     });
                 } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
                     // 多筆拋轉
-                    var orderMasterUuids = "";
+                    var orderMasterUuids = '';
                     angular.forEach($scope.selected, function (item) {
-                        orderMasterUuids += item.uuid + ","
-                    });
-                    if (orderMasterUuids.length > 0) {
-                        orderMasterUuids = orderMasterUuids.substr(0, orderMasterUuids.length - 1);
-                    }
-                    var OrderMasterUpdateInput = {
-                        uuid: orderMasterUuids,
-                        transferFlag: '1'
-                    };
-                    var response = PmmOrderMaster.modify(OrderMasterUpdateInput).success(function () {
-                        $scope.queryMenuActionWithPaging();
-                        $scope.showInfo('修改数据成功。');
-                    }).error(function (data) {
-                        $scope.showError(data.message);
+                        orderMasterUuids += (orderMasterUuids ? ',' : '') + item.uuid;
                     });
                     var transferData = { 'PMM_ORDER_MST_UUID': orderMasterUuids };
-                    ErpAdapterService.transferErpAdapter('/pmmOrderToOeaTask', transferData, $scope, function () {
+                    ErpAdapterService.transferErpAdapter('/pmmOrderToOeaTask', transferData, $scope, function (resp) {
+                        console.log(resp);
+                        $scope.queryAction();
                         $scope.showInfo('抛转成功。');
                     });
                 }
@@ -714,11 +687,9 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                         //$scope.queryMenuActionWithPaging();
                         $scope.showInfo('修改数据成功。');
                     });
-
                 }
             });
         }
-
     };
 
     $scope.resetInitialValue = function () {
@@ -1453,6 +1424,10 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             retObj = {'background-color': 'yellow'};
         }
         return retObj;
+    };
+
+    $scope.showError = function (info) {
+        toastr["error"](info);
     };
 });
 
