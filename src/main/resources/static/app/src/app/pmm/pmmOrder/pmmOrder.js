@@ -627,7 +627,14 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     var transferData = { 'PMM_ORDER_MST_UUID': $scope.selectedItem.uuid, 'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid };
                     ErpAdapterService.transferErpAdapter('/pmmOrderToOeaTask', transferData, $scope, function (resp) {
                         console.log(resp);
-                        $scope.refreshMasterAndDetail();
+                        PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
+                            $scope.selectedItem = data;
+                            $scope.resetButtonDisabled(0);
+                            $scope.changeButtonStatus(data);
+                        });
+                        $scope.refreshDetail($scope.selectedItem.uuid);
+                        $scope.selectedDetail = [];
+
                         $scope.showInfo('抛转成功。');
                     });
                 } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
