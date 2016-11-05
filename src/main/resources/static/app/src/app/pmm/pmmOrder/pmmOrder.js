@@ -315,7 +315,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             $scope.return_button_disabled = 1;
         }
         //只有已审核且尚未抛转的单子可以抛转
-        if ($scope.throw_button_disabled != 1 && !(orderMaster.confirm == 2 && orderMaster.transferFlag != 1 )) {
+        if ($scope.throw_button_disabled != 1 && !(orderMaster.confirm == 2 && orderMaster.transferFlag != 1)) {
             $scope.throw_button_disabled = 1;
         }
 
@@ -335,7 +335,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
         if ($scope.purchase_submit_button_disabled != 1) {
             // 【采购发出】按钮只有在PMM_ORDER_M ST.CONFIRM='2'已审核且PMM_ORDER_MST.PURCHASE_FLAG='1'采购未发出或'3'采购退回状态才可点击
-            if (orderMaster.confirm != '2' || !(orderMaster.purchaseFlag == '1' || orderMaster.purchaseFlag == '3' || orderMaster.purchaseFlag == null)) {
+            if (orderMaster.confirm != '2' || !(orderMaster.purchaseFlag == '1' || orderMaster.purchaseFlag == '3' || !orderMaster.purchaseFlag)) {
                 $scope.purchase_submit_button_disabled = 1;
             }
         }
@@ -1556,7 +1556,7 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
 
         // $scope.addOrderDetail.originalStandardAmount = parseFloat(($scope.addOrderDetail.standardPrice * $scope.addOrderDetail.orderQuantity).toFixed(2));
         ChannelItemInfoService.getByItem(channelUuid,  data.uuid).success(function (icr) {
-            $scope.addOrderDetail.standardPrice = 0;
+            $scope.addOrderDetail.standardPrice = '';
             if (icr.content.length > 0) {
                 $scope.addOrderDetail.standardPrice = icr.content[0].standardPrice;
             }
@@ -1640,7 +1640,7 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
             $scope.addOrderDetail.customizeRemark = '';
         }
         $scope.addOrderDetail.natTransactionPrice = $scope.addOrderDetail.oriTransactionPrice;
-        $scope.addOrderDetail.oriStandardAmt = $scope.addOrderDetail.standardPrice * $scope.addOrderDetail.orderQty;
+        $scope.addOrderDetail.oriStandardAmt = $scope.addOrderDetail.standardPrice ? $scope.addOrderDetail.standardPrice * $scope.addOrderDetail.orderQty : '';
         $scope.addOrderDetail.natStandardAmt = $scope.addOrderDetail.oriStandardAmt;
 
         $scope.addOrderDetail.oriPurPrice = $scope.addOrderDetail.oriTransactionPrice + customizePrice;
