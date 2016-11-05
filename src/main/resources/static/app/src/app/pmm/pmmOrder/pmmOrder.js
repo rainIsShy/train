@@ -621,7 +621,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     };
 
     $scope.throwMenuAction = function () {
-    console.log($scope);
         if ($scope.selected.length > 0 || $scope.selectedTabIndex == 1) {
             $scope.showConfirm('确认抛转吗？', '', function () {
                 if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
@@ -640,7 +639,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     var transferData = { 'PMM_ORDER_MST_UUID': orderMasterUuids };
                     ErpAdapterService.transferErpAdapter('/pmmOrderToOeaTask', transferData, $scope, function (resp) {
                         console.log(resp);
-                        $scope.queryAction();
+                        $scope.queryMenuAction();
                         $scope.showInfo('抛转成功。');
                     });
                 }
