@@ -34,7 +34,7 @@
                          ng-change="selectDetailAllAction(selectDetailAllFlag)"></md-checkbox>
         </div>
         <div align="center" flex="5"
-             ng-show="selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2"
+             ng-show="showDtlOpt"
              class=" table-head">操作
         </div>
         <div align="center" flex="5"  class=" table-head">项次</div>
@@ -86,7 +86,7 @@
             </div>
 
             <div flex="5" class="table-item" style="color: rgba(0, 0, 0, 0.87)"
-                 ng-show="selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2">
+                 ng-show="showDtlOpt">
                 <div layout="row" layout-sm="column" layout-align="center center">
                     <div ng-show="orderDetail.confirm == 1 && orderDetail.status == 1 && orderDetail.transferFlag == 2"
                          align="center" style="color: rgba(0, 0, 0, 0.87)"

@@ -24,6 +24,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         'orderMasterNo': {display: true, name: '预订单单号'},
         showPsoOrderMstNo: true
     };
+    $scope.showDtlOpt = false;
 
     $scope.PURCHASE_FLAG = Constant.PURCHASE_FLAG;
 
@@ -63,7 +64,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         '408-add': {display: true, name: '新增', uuid: '862577df-fa98-4538-acc4-adf0687e787b'},
         '410-purchaseSubmit': {display: true, name: '采购发出', uuid: '2e7e73a5-c0d8-4f89-96f0-c7e8e898e484'},
         '411-purchaseBack': {display: true, name: '采购退回', uuid: 'e846e81a-4d02-4344-bebd-9c5b9cf97bb0'}
-
     };
 
     $scope.itemOperationMenuDisplayOption = {
@@ -169,6 +169,18 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 //            $scope.selectedDetail = [];
 //            $scope.resetDetailButtonDisabled();
             $scope.changeDetailButtonStatus();
+
+            $scope.showDtlOpt = false;
+            angular.forEach(data.content, function (val) {
+                // 若單身有已審核已採購未拋轉，則再把單頭拋轉按鈕啟用
+                if ($scope.throw_button_disabled == 1 && val.confirm == 2 && val.purchaseFlag == 2 && val.transferFlag == 2) {
+                    $scope.throw_button_disabled = 0;
+                }
+                // 若單身還有未審核，則顯示單身修改欄
+                if (!$scope.showDtlOpt && val.confirm == 1 && val.status == 1 && val.transferFlag == 2) {
+                    $scope.showDtlOpt = true;
+                }
+            });
         });
     };
 
@@ -495,6 +507,18 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 $scope.OrderDetailList = data;
                 $scope.updateOrderDetailListDate($scope.OrderDetailList);
                 // $scope.showInfo('修改数据成功。');
+
+                $scope.showDtlOpt = false;
+                angular.forEach(data.content, function (val) {
+                    // 若單身有已審核已採購未拋轉，則再把單頭拋轉按鈕啟用
+                    if ($scope.throw_button_disabled == 1 && val.confirm == 2 && val.purchaseFlag == 2 && val.transferFlag == 2) {
+                        $scope.throw_button_disabled = 0;
+                    }
+                    // 若單身還有未審核，則顯示單身修改欄
+                    if (!$scope.showDtlOpt && val.confirm == 1 && val.status == 1 && val.transferFlag == 2) {
+                        $scope.showDtlOpt = true;
+                    }
+                });
             });
 
         })
@@ -805,15 +829,13 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     });
                 });
 
-
                 // $scope.getOrderDetailCountByMasterUuid();
-            PmmOrderMaster.getOrderMasterCount(Constant.AUDIT[1].value, Constant.STATUS[1].value, Constant.TRANSFER_PSO_FLAG[2].value, RES_UUID_MAP.PO.PMM_ORDER.LIST_PAGE.RES_UUID).success(function (data) {
+                PmmOrderMaster.getOrderMasterCount(Constant.AUDIT[1].value, Constant.STATUS[1].value, Constant.TRANSFER_PSO_FLAG[2].value, RES_UUID_MAP.PO.PMM_ORDER.LIST_PAGE.RES_UUID).success(function (data) {
                     $scope.menuList[1].subList[2].suffix = data;
                 })
             }
         )
     };
-
 
     $scope.getOrderDetailCountByMasterUuid = function () {
         var orderMasterUuids = "";
@@ -1374,6 +1396,18 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                         $scope.refreshDetail(data.uuid);
                         $scope.selectedDetail = [];
                     });
+
+                    $scope.showDtlOpt = false;
+                    angular.forEach(data.content, function (val) {
+                        // 若單身有已審核已採購未拋轉，則再把單頭拋轉按鈕啟用
+                        if ($scope.throw_button_disabled == 1 && val.confirm == 2 && val.purchaseFlag == 2 && val.transferFlag == 2) {
+                            $scope.throw_button_disabled = 0;
+                        }
+                        // 若單身還有未審核，則顯示單身修改欄
+                        if (!$scope.showDtlOpt && val.confirm == 1 && val.status == 1 && val.transferFlag == 2) {
+                            $scope.showDtlOpt = true;
+                        }
+                    });
                     $scope.showInfo('发出采购成功。');
                 });
             });
@@ -1392,6 +1426,18 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     $scope.changeButtonStatus(data);
                     $scope.refreshDetail(data.uuid);
                     $scope.selectedDetail = [];
+                });
+
+                $scope.showDtlOpt = false;
+                angular.forEach(data.content, function (val) {
+                    // 若單身有已審核已採購未拋轉，則再把單頭拋轉按鈕啟用
+                    if ($scope.throw_button_disabled == 1 && val.confirm == 2 && val.purchaseFlag == 2 && val.transferFlag == 2) {
+                        $scope.throw_button_disabled = 0;
+                    }
+                    // 若單身還有可修改資料，則顯示單身修改欄
+                    if (!$scope.showDtlOpt && val.confirm == 1 && val.status == 1 && val.transferFlag == 2) {
+                        $scope.showDtlOpt = true;
+                    }
                 });
                 $scope.showInfo('退回采购成功。');
             });
