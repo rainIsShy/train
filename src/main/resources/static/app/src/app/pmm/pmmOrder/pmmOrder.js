@@ -1075,11 +1075,12 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             data.selectedOrderDetail.saleTypeUuid = data.selectedOrderDetail.saleType.uuid;
 
             PmmOrderDetail.modify(data.selectedOrderDetail.pmmOrderMst.uuid, data.selectedOrderDetail.uuid, data.selectedOrderDetail).success(function () {
+                PmmOrderMaster.get(data.selectedOrderDetail.pmmOrderMst.uuid).success(function (data) {
+                    $scope.selectedItem = data;
+                    $scope.resetButtonDisabled(0);
+                    $scope.changeButtonStatus(data);
+                });
                 $scope.refreshDetail(data.selectedOrderDetail.pmmOrderMst.uuid);
-                // PmmOrderDetail.get(data.selectedOrderDetail.pmmOrderMst.uuid).success(function (data) {
-                //     $scope.OrderDetailList = data;
-                //     $scope.updateOrderDetailListDate($scope.OrderDetailList);
-                // });
                 $scope.showInfo('修改成功。');
             })
         });
