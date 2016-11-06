@@ -223,23 +223,21 @@
                                                    ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                                         </md-input-container>
                                         <md-input-container layout="row" style=" height: 79px;">
-                                            <div class="md-input-has-value" style=" padding: 25px 0px 0px 0px;"><label>审核状态：</label>
-                                            </div>
+                                            <div class="md-input-has-value" style=" padding: 25px 0px 0px 0px;"><label>启用状态：</label></div>
+                                            <md-select placeholder="" aria-label="..." ng-model="selectedItem.status"
+                                                       class="select" ng-disabled="true">
+                                                <md-option value="1">有效</md-option>
+                                                <md-option value="2">无效</md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                        <md-input-container layout="row" style=" height: 79px;">
+                                            <div class="md-input-has-value" style=" padding: 25px 0px 0px 0px;"><label>审核状态：</label></div>
                                             <md-select placeholder="" aria-label="..." ng-model="selectedItem.confirm"
                                                        class="select" ng-disabled="true">
                                                 <md-option value="1">未审核</md-option>
                                                 <md-option value="2">已审核</md-option>
                                                 <md-option value="3">审核中</md-option>
                                                 <md-option value="4">退回</md-option>
-                                            </md-select>
-                                        </md-input-container>
-                                        <md-input-container layout="row" style=" height: 79px;">
-                                            <div class="md-input-has-value" style=" padding: 25px 0px 0px 0px;"><label>启用状态：</label>
-                                            </div>
-                                            <md-select placeholder="" aria-label="..." ng-model="selectedItem.status"
-                                                       class="select" ng-disabled="true">
-                                                <md-option value="1">有效</md-option>
-                                                <md-option value="2">无效</md-option>
                                             </md-select>
                                         </md-input-container>
                                         <md-input-container layout="row" style=" height: 79px;">
