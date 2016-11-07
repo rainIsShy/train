@@ -1471,10 +1471,12 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
     $scope.getDetailBgcolor = function (detail) {
         var retObj = {};
-        if (detail.purchaseFlag == '2') {
-            retObj = {'background-color': 'green'};
+        if (detail.transferFlag == 1) {
+            retObj = { 'background-color': 'green' };
+        } else if (detail.purchaseFlag == '2') {
+            retObj = { 'background-color': 'lightblue' };
         } else if (detail.purchaseFlag == '3') {
-            retObj = {'background-color': 'yellow'};
+            retObj = { 'background-color': 'yellow' };
         }
         return retObj;
     };
