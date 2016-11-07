@@ -405,7 +405,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     $scope.selectDetailAllAction = function (selectDetailAllFlag) {
         if (selectDetailAllFlag == true) {
             angular.forEach($scope.OrderDetailList.content, function (item) {
-                if (!$scope.exists(item, $scope.selectedDetail) && item.orderQty > 0) {
+                if (!$scope.exists(item, $scope.selectedDetail) && item.orderQty > 0 && item.transferFlag != 1) {
                     $scope.selectedDetail.push(item);
                 }
             });
@@ -1072,6 +1072,14 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             }
         }).then(function (data) {
             data.selectedOrderDetail.saleTypeUuid = data.selectedOrderDetail.saleType.uuid;
+            // 如果采購數量維護成0時，取消勾選
+            if (data.selectedOrderDetail.orderQty == 0) {
+                for (var i = 0; i < $scope.selectedDetail.length; i++) {
+                    if (data.selectedOrderDetail.uuid === $scope.selectedDetail[i].uuid) {
+                        $scope.selectedDetail.splice(i, 1);
+                    }
+                }
+            }
 
             PmmOrderDetail.modify(data.selectedOrderDetail.pmmOrderMst.uuid, data.selectedOrderDetail.uuid, data.selectedOrderDetail).success(function () {
                 PmmOrderMaster.get(data.selectedOrderDetail.pmmOrderMst.uuid).success(function (data) {
