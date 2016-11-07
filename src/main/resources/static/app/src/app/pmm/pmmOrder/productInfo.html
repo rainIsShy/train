@@ -63,8 +63,8 @@
         <div align="center" flex="10" class=" table-head">特价单价</div>
         <div align="center" flex="15" class=" table-head">来源抛转流水号</div>
         <div align="center" flex="10" class=" table-head">备注</div>
-        <div align="center" flex="10" class=" table-head">标准价</div>
-        <div align="center" flex="10" class=" table-head">标准金额</div>
+        <!-- <div align="center" flex="10" class=" table-head">标准价</div> -->
+        <!-- <div align="center" flex="10" class=" table-head">标准金额</div> -->
         <div align="center" flex="10" class=" table-head">成交价</div>
         <div align="center" flex="10" class=" table-head">定制备注</div>
         <div align="center" flex="10" class=" table-head">促销折扣率</div>
@@ -123,8 +123,8 @@
             <div align="center" flex="10" class="table-item">{{orderDetail.remark}}</div>
             <div align="center" flex="10" class="table-item">{{CONFIRM[orderDetail.confirm].name}}</div>
             <div align="center" flex="10" class="table-item">{{TRANSFER_PSO_FLAG[orderDetail.transferFlag].name}}</div><!-- 抛转否 -->
-            <div align="center" flex="10" class="table-item">{{orderDetail.standardPrice}}</div><!-- 标准价 -->
-            <div align="center" flex="10" class="table-item">{{orderDetail.oriStandardAmt}}</div><!-- 标准金额 -->
+            <!-- <div align="center" flex="10" class="table-item">{{orderDetail.standardPrice}}</div><!-- 标准价 -->
+            <!-- <div align="center" flex="10" class="table-item">{{orderDetail.oriStandardAmt}}</div><!-- 标准金额 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.oriTransactionPrice}}</div><!-- 成交价 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.customizeRemark}}</div><!-- 定制备注 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.promotionDiscountRate}}{{orderDetail.promotionDiscountRate || orderDetail.promotionDiscountRate === 0 ? '%' : ''}}</div><!-- 促销折扣率 -->
