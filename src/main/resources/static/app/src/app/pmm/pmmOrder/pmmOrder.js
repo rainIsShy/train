@@ -326,8 +326,8 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         if ($scope.return_button_disabled != 1 && (orderMaster.confirm == 2 || orderMaster.confirm == 4)) {
             $scope.return_button_disabled = 1;
         }
-        //只有已审核且尚未抛转的单子可以抛转
-        if ($scope.throw_button_disabled != 1 && !(orderMaster.confirm == 2 && orderMaster.transferFlag != 1)) {
+        //只有已审核已采購且尚未抛转的单子可以抛转
+        if ($scope.throw_button_disabled != 1 && !(orderMaster.confirm == 2 && orderMaster.purchaseFlag == 2 && orderMaster.transferFlag != 1)) {
             $scope.throw_button_disabled = 1;
         }
 
