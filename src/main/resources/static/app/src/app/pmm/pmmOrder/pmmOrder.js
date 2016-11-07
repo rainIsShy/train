@@ -1951,7 +1951,7 @@ angular.module('IOne-Production').controller('OrderPromotionSearchController', f
 });
 
 angular.module('IOne-Production').controller('OrderPurchaseReturnController', function ($scope, $mdDialog, PmmOrderDetail, localData) {
-    if (localData.dtls != null) {
+    if (localData.dtls) {
         $scope.dtls = localData.dtls;
     } else {
         $scope.dtls = [];
