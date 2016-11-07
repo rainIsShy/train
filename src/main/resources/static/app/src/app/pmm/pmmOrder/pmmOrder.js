@@ -173,7 +173,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             $scope.showDtlOpt = false;
             angular.forEach(data.content, function (val) {
                 // 若單身有已審核已採購未拋轉，則再把單頭拋轉按鈕啟用
-                if ($scope.throw_button_disabled == 1 && val.confirm == 2 && val.purchaseFlag == 2 && val.transferFlag == 2) {
+                if ($scope.throw_button_disabled == 1 && val.orderQty > 0 && val.confirm == 2 && val.purchaseFlag == 2 && val.transferFlag == 2) {
                     $scope.throw_button_disabled = 0;
                 }
                 // 若單身還有未審核，則顯示單身修改欄
@@ -511,7 +511,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 $scope.showDtlOpt = false;
                 angular.forEach(data.content, function (val) {
                     // 若單身有已審核已採購未拋轉，則再把單頭拋轉按鈕啟用
-                    if ($scope.throw_button_disabled == 1 && val.confirm == 2 && val.purchaseFlag == 2 && val.transferFlag == 2) {
+                    if ($scope.throw_button_disabled == 1 && val.orderQty > 0 && val.confirm == 2 && val.purchaseFlag == 2 && val.transferFlag == 2) {
                         $scope.throw_button_disabled = 0;
                     }
                     // 若單身還有未審核，則顯示單身修改欄
@@ -1401,7 +1401,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     $scope.showDtlOpt = false;
                     angular.forEach(data.content, function (val) {
                         // 若單身有已審核已採購未拋轉，則再把單頭拋轉按鈕啟用
-                        if ($scope.throw_button_disabled == 1 && val.confirm == 2 && val.purchaseFlag == 2 && val.transferFlag == 2) {
+                        if ($scope.throw_button_disabled == 1 && val.orderQty > 0 && val.confirm == 2 && val.purchaseFlag == 2 && val.transferFlag == 2) {
                             $scope.throw_button_disabled = 0;
                         }
                         // 若單身還有未審核，則顯示單身修改欄
@@ -1432,7 +1432,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 $scope.showDtlOpt = false;
                 angular.forEach(data.content, function (val) {
                     // 若單身有已審核已採購未拋轉，則再把單頭拋轉按鈕啟用
-                    if ($scope.throw_button_disabled == 1 && val.confirm == 2 && val.purchaseFlag == 2 && val.transferFlag == 2) {
+                    if ($scope.throw_button_disabled == 1 && val.orderQty > 0 && val.confirm == 2 && val.purchaseFlag == 2 && val.transferFlag == 2) {
                         $scope.throw_button_disabled = 0;
                     }
                     // 若單身還有可修改資料，則顯示單身修改欄
