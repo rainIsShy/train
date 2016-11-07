@@ -36,7 +36,8 @@
                     </form>
                     <div pagination option="pageOption" callback="refreshData()"></div>
                 </div>
-                <div layout="column" flex="30">
+                <div layout="column" flex="5"></div>
+                <div layout="column" flex="25">
                     <md-input-container>
                         <label class="label">品号：</label>
                         <input type="text" ng-model="addOrderDetail.item.no" disabled>
@@ -71,7 +72,8 @@
                                ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                     </md-input-container>
                 </div>
-                <div layout="column" flex="30">
+                <div layout="column" flex="5"></div>
+                <div layout="column" flex="25">
                     <md-input-container>
                         <label>销售类型：</label>
                         <md-select placeholder="" ng-model="addOrderDetail.saleTypeUuid" class="select" ng-change="refreshUI()"
