@@ -357,7 +357,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 $scope.purchase_back_button_disabled = 1;
             }
         }
-
     };
 
     $scope.changeDetailButtonStatus = function () {
