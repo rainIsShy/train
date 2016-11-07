@@ -129,6 +129,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
     $scope.editItem = function (orderMaster) {
         $scope.selectedDetail = [];
+        $scope.selectDetailAllFlag = false;
         $scope.orderListMenu.selectAll = false;
 
         $scope.selectedItem = orderMaster;
@@ -161,7 +162,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
     //更新产品信息
     $scope.refreshDetail = function (masterUuid) {
-        PmmOrderDetail.get(masterUuid).success(function (data) {
+        return PmmOrderDetail.get(masterUuid).success(function (data) {
             $scope.OrderDetailList = data;
             $scope.updateOrderDetailListDate($scope.OrderDetailList);
             $scope.OrderExtendDetailList = [];
@@ -207,6 +208,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         });
         //empty selected item in form
         $scope.selectedDetail = [];
+        $scope.selectDetailAllFlag = false;
         $scope.OrderDetailList = null;
     };
 
@@ -415,7 +417,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         $scope.changeDetailButtonStatus();
     };
 
-
     $scope.toggleDetail = function (item, selectedDetail) {
         var idx = -1;
         angular.forEach(selectedDetail, function(d, rIdx) {
@@ -431,6 +432,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
         $scope.orderListMenu.effectiveType = item.status;
         $scope.changeDetailButtonStatus();
+        $scope.chkSelectedAllDetail();
     };
 
     $scope.changeButtonStatuOnly = function () {
@@ -469,7 +471,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
             if ($scope.orderListMenu.selectAll == true) {
                 angular.forEach($scope.OrderMasterList.content, function (item) {
-                    if (!scope.exists(item, $scope.selected)) {
+                    if (!$scope.exists(item, $scope.selected)) {
                         $scope.selected.push(item);
                     }
                 });
@@ -657,6 +659,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                         });
                         $scope.refreshDetail($scope.selectedItem.uuid);
                         $scope.selectedDetail = [];
+                        $scope.selectDetailAllFlag = false;
 
                         $scope.showInfo('抛转成功。');
                     });
@@ -971,18 +974,18 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 }
             }).then(function (data) {
                 //existing order
-                if ($scope.selectedItem.uuid != undefined && $scope.selectedItem.uuid != null) {
+                if ($scope.selectedItem.uuid) {
                     PmmOrderDetail.add($scope.selectedItem.uuid, data.addOrderDetail).success(function (data) {
                         $scope.editItem(data.pmmOrderMst);
                         $scope.showInfo('新增产品成功。');
                     });
                 } else {
                     //new order
-                    if ($scope.OrderDetailList.content == undefined) {
+                    if (!$scope.OrderDetailList.content) {
                         $scope.OrderDetailList.content = [];
                     }
                     $scope.OrderDetailList.content.push(data.addOrderDetail);
-
+                    $scope.chkSelectedAllDetail();
                 }
             });
         }
@@ -1052,6 +1055,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     });
                     $scope.refreshDetail($scope.selectedItem.uuid);
                     $scope.selectedDetail = [];
+                    $scope.selectDetailAllFlag = false;
 
                     $scope.showInfo('取消审核成功。');
                 });
@@ -1087,7 +1091,9 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     $scope.resetButtonDisabled(0);
                     $scope.changeButtonStatus(data);
                 });
-                $scope.refreshDetail(data.selectedOrderDetail.pmmOrderMst.uuid);
+                $scope.refreshDetail(data.selectedOrderDetail.pmmOrderMst.uuid).then(function () {
+                    $scope.chkSelectedAllDetail();
+                });
                 $scope.showInfo('修改成功。');
             })
         });
@@ -1153,7 +1159,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         });
     };
 
-
     $scope.editItemCustom = function (orderExtendDetail) {
         $scope.selectedOrderExtendDetail = orderExtendDetail;
         $scope.changeSubTabIndexs(2);
@@ -1191,7 +1196,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             })
         })
     };
-
 
     $scope.openAddCustomDlg = function () {
         $mdDialog.show({
@@ -1371,6 +1375,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     $scope.changeButtonStatus(data);
                     $scope.refreshDetail(data.uuid);
                     $scope.selectedDetail = [];
+                    $scope.selectDetailAllFlag = false;
                     $scope.showInfo('发出采购成功。');
                 });
             });
@@ -1381,6 +1386,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 $scope.changeButtonStatus(data);
                 $scope.refreshDetail(data.uuid);
                 $scope.selectedDetail = [];
+                $scope.selectDetailAllFlag = false;
                 $scope.showInfo('退回采购成功。');
             });
         }
@@ -1403,6 +1409,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                         $scope.changeButtonStatus(data);
                         $scope.refreshDetail(data.uuid);
                         $scope.selectedDetail = [];
+                        $scope.selectDetailAllFlag = false;
                     });
 
                     $scope.showDtlOpt = false;
@@ -1434,6 +1441,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     $scope.changeButtonStatus(data);
                     $scope.refreshDetail(data.uuid);
                     $scope.selectedDetail = [];
+                    $scope.selectDetailAllFlag = false;
                 });
 
                 $scope.showDtlOpt = false;
@@ -1491,8 +1499,17 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     $scope.showError = function (info) {
         toastr["error"](info);
     };
-});
 
+    $scope.chkSelectedAllDetail = function () {
+        var cnt = 0;
+        angular.forEach($scope.OrderDetailList.content, function (dtl) {
+            if (dtl.orderQty > 0 && dtl.transferFlag != 1) {
+                cnt++;
+            }
+        });
+        return $scope.selectDetailAllFlag = $scope.selectedDetail.length == cnt;
+    }
+});
 
 angular.module('IOne-Production').controller('OrderChannelSearchController', function ($scope, $mdDialog, ChannelService) {
     $scope.pageOption = {
