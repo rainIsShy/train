@@ -6,12 +6,12 @@
         </md-button>
         <md-button
                 ng-if="itemOperationMenuDisplayOption['502-audit'].display && (menuAuthDataMap[itemOperationMenuDisplayOption['502-audit'].uuid] || isAdmin() || !itemOperationMenuDisplayOption['502-audit'].uuid)"
-                ng-disabled="audit_detail_disabled == 1" class="md-raised" ng-click="confirmOrderItem();">
+                ng-disabled="audit_detail_disabled == 1" class="md-raised" ng-click="confirmOrderItem(2);">
             {{itemOperationMenuDisplayOption['502-audit'].name}}
         </md-button>
         <md-button
                 ng-if="itemOperationMenuDisplayOption['503-revertAudit'].display && (menuAuthDataMap[itemOperationMenuDisplayOption['503-revertAudit'].uuid] || isAdmin() || !itemOperationMenuDisplayOption['503-revertAudit'].uuid)"
-                ng-disabled="revert_audit_detail_disabled == 1" class="md-raised" ng-click="unConfirmOrderItem();">
+                ng-disabled="revert_audit_detail_disabled == 1" class="md-raised" ng-click="confirmOrderItem(1);">
             {{itemOperationMenuDisplayOption['503-revertAudit'].name}}
         </md-button>
         <md-button

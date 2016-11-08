@@ -262,7 +262,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         angular.forEach(selected, function (d, rIdx) {
             if (d.uuid == item.uuid) {
                 idx = rIdx;
-
             }
         });
         if (idx > -1) {
@@ -542,7 +541,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                         $scope.showInfo('修改数据成功。');
                     });
                 } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
-                    //update $scope.selected
+                    //update $scope.selected // TODO ruka's bookmark
                     var promises = [];
                     angular.forEach($scope.selected, function (item) {
                         var OrderMasterUpdateInput = {
@@ -580,7 +579,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                         $scope.showInfo('修改数据成功。');
                     });
                 } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
-                    //update $scope.selected (multiple confirm)
+                    //update $scope.selected (multiple confirm) // TODO ruka's bookmark
                     var promises = [];
                     angular.forEach($scope.selected, function (item) {
                         var OrderMasterUpdateInput = {
@@ -625,7 +624,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     });
 
                 } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
-                    //update $scope.selected
+                    //update $scope.selected// TODO ruka's bookmark
                     var promises = [];
                     angular.forEach($scope.selected, function (item) {
                         var OrderMasterUpdateInput = {
@@ -659,13 +658,12 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                         });
                         $scope.refreshDetail($scope.selectedItem.uuid);
                         $scope.selectedDetail = [];
-                        $scope.selectDetailAllFlag = false;
 
                         $scope.showInfo('抛转成功。');
                     });
                 } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
                     // 多筆拋轉
-                    var orderMasterUuids = '';
+                    var orderMasterUuids  = '';
                     angular.forEach($scope.selected, function (item) {
                         orderMasterUuids += (orderMasterUuids ? ',' : '') + item.uuid;
                     });
@@ -697,7 +695,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                         $scope.showInfo('修改数据成功。');
                     });
                 } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
-                    //update $scope.selected
+                    //update $scope.selected// TODO ruka's bookmark
                     var promises = [];
                     angular.forEach($scope.selected, function (item) {
                         var OrderMasterUpdateInput = {
@@ -915,7 +913,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             PmmOrderMaster.add($scope.selectedItem).success(function (data) {
                 $scope.selectedItem = data;
                 var promises = [];
-                angular.forEach($scope.OrderDetailList.content, function (orderDetail, index) {
+                angular.forEach($scope.OrderDetailList.content, function (orderDetail) {
                     var response = PmmOrderDetail.add($scope.selectedItem.uuid, orderDetail).success(function (data) {
                     });
                     promises.push(response);
@@ -1004,60 +1002,37 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         });
     };
 
-    $scope.confirmOrderItem = function () {
+    $scope.confirmOrderItem = function (flag) {
+        var cfmMsg = flag == 1 ? '确认取消审核吗？' : '确认审核吗？';
+        var resMsg = flag == 1 ? '取消审核成功。' : '审核成功。';
         if ($scope.selectedDetail.length > 0) {
-            $scope.showConfirm('确认审核吗？', '', function () {
-                var promises = [];
+            $scope.showConfirm(cfmMsg, '', function () {
+                var dtlUuids = '';
                 angular.forEach($scope.selectedDetail, function (item) {
-                    var PmmOrderDetailUpdateInput = {
-                        uuid: item.uuid,
-                        confirm: '2'
-                    };
-
-                    var response = PmmOrderDetail.modify(item.pmmOrderMst.uuid, item.uuid, PmmOrderDetailUpdateInput).success(function () {
-                        item.confirm = '2';
-                    });
-                    promises.push(response);
+                    dtlUuids += (dtlUuids ? ',' : '') + item.uuid;
                 });
-                $q.all(promises).then(function (data) {
+                PmmOrderDetail.changeConfirmFlag($scope.selectedItem.uuid, dtlUuids, flag).success(function () {
                     PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
                         $scope.selectedItem = data;
                         $scope.resetButtonDisabled(0);
                         $scope.changeButtonStatus(data);
                     });
 
-                    $scope.refreshDetail($scope.selectedItem.uuid);
-
-                    $scope.showInfo('审核成功。');
-                });
-            });
-        }
-    };
-
-    $scope.unConfirmOrderItem = function () {
-        if ($scope.selectedDetail.length > 0) {
-            $scope.showConfirm('确认取消审核吗？', '', function () {
-                var promises = [];
-                angular.forEach($scope.selectedDetail, function (item) {
-                    var PmmOrderDetailUpdateInput = {
-                        uuid: item.uuid,
-                        confirm: '1'
-                    };
-                    var response = PmmOrderDetail.modify(item.pmmOrderMst.uuid, item.uuid, PmmOrderDetailUpdateInput).success(function () {
+                    $scope.refreshDetail($scope.selectedItem.uuid).then(function () {
+                        if (flag == 1) {
+                            $scope.selectedDetail = [];
+                        } else {
+                            var newSelectedDetail = [];
+                            angular.forEach($scope.OrderDetailList ? $scope.OrderDetailList.content : [], function (item) {
+                                if ($scope.exists(item, $scope.selectedDetail)) {
+                                    newSelectedDetail.push(item);
+                                }
+                            });
+                            $scope.selectedDetail = newSelectedDetail;
+                        }
+                        $scope.changeDetailButtonStatus();
                     });
-                    promises.push(response);
-                });
-                $q.all(promises).then(function (data) {
-                    PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
-                        $scope.selectedItem = data;
-                        $scope.resetButtonDisabled(0);
-                        $scope.changeButtonStatus(data);
-                    });
-                    $scope.refreshDetail($scope.selectedItem.uuid);
-                    $scope.selectedDetail = [];
-                    $scope.selectDetailAllFlag = false;
-
-                    $scope.showInfo('取消审核成功。');
+                    $scope.showInfo(resMsg);
                 });
             });
         }
@@ -1375,7 +1350,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     $scope.changeButtonStatus(data);
                     $scope.refreshDetail(data.uuid);
                     $scope.selectedDetail = [];
-                    $scope.selectDetailAllFlag = false;
                     $scope.showInfo('发出采购成功。');
                 });
             });
@@ -1386,7 +1360,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 $scope.changeButtonStatus(data);
                 $scope.refreshDetail(data.uuid);
                 $scope.selectedDetail = [];
-                $scope.selectDetailAllFlag = false;
                 $scope.showInfo('退回采购成功。');
             });
         }
@@ -1397,7 +1370,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             $scope.showConfirm('确认发出采购吗？', '', function () {
                 var dtlUuid = '';
                 angular.forEach($scope.selectedDetail, function (dtl) {
-                    dtlUuid += (dtlUuid == '' ? '' : ',') + dtl.uuid;
+                    dtlUuid += (dtlUuid ? ',' : '') + dtl.uuid;
                 });
                 if (!dtlUuid) {
                     return;
@@ -1409,7 +1382,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                         $scope.changeButtonStatus(data);
                         $scope.refreshDetail(data.uuid);
                         $scope.selectedDetail = [];
-                        $scope.selectDetailAllFlag = false;
                     });
 
                     $scope.showDtlOpt = false;
@@ -1441,7 +1413,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     $scope.changeButtonStatus(data);
                     $scope.refreshDetail(data.uuid);
                     $scope.selectedDetail = [];
-                    $scope.selectDetailAllFlag = false;
                 });
 
                 $scope.showDtlOpt = false;
@@ -1502,7 +1473,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
     $scope.getDtlCheckboxCnt = function () {
         var cnt = 0;
-        angular.forEach($scope.OrderDetailList.content, function (dtl) {
+        angular.forEach($scope.OrderDetailList ? $scope.OrderDetailList.content : [], function (dtl) {
             if (dtl.orderQty > 0 && dtl.transferFlag != 1) {
                 cnt++;
             }
@@ -1767,8 +1738,7 @@ angular.module('IOne-Production').controller('PmmOrderExtendDetail2Controller', 
     $scope.itemUuid = itemUuid;
 
     if ($scope.selectedCustom) {
-        console.log($scope.selectedCustom);
-        angular.forEach($scope.selectedCustom.informationUuids, function (value, index) {
+        angular.forEach($scope.selectedCustom.informationUuids, function (value) {
             angular.forEach($scope.allCustomsScopes[$scope.selectedCustom.itemCustom.uuid], function (item) {
                 if (item.uuid == value) {
                     item.checked = true;
@@ -1789,7 +1759,7 @@ angular.module('IOne-Production').controller('PmmOrderExtendDetail2Controller', 
     }
 
     $scope.customChangeHandler = function (customUuid) {
-        angular.forEach($scope.allCustoms, function (value, index) {
+        angular.forEach($scope.allCustoms, function (value) {
             if (value.itemCustom.uuid == customUuid) {
                 $scope.selectedCustom.itemCustom = value.itemCustom;
                 //$scope.selectedCustom.informationUuids = value.informationUuids;
