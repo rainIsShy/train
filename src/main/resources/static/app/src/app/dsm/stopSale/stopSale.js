@@ -110,9 +110,9 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
                     //BOM同步
                     var result = IoneAdapterService.transferIoneAdapter("/bmbTask", param, $scope, function (response) {
                         console.log(response);
-                        var totalBmbCount = addResponse(response.updateImaCount, response.insertImaCount);
-                        var totalBomCount = addResponse(response.updateItemCount, response.insertItemCount);
-                        $scope.showInfo(item.tiptopDb + '：ERP同步到TIPTOP_BMB_FILE，共 ' + totalImaCount + '笔数据同步成功!\n TIPTOP_BMB_FILE 同步到 bom，共 ' + totalBomCount + '笔数据同步成功!');
+                        var totalBmbCount = addResponse(0, response.insertBmbCount);
+                        var totalBomCount = addResponse(response.updateItemBomCount, response.insertItemBomCount);
+                        $scope.showInfo(item.tiptopDb + '：ERP同步到TIPTOP_BMB_FILE，共 ' + totalBmbCount + '笔数据同步成功!\n TIPTOP_BMB_FILE 同步到 bom，共 ' + totalBomCount + '笔数据同步成功!');
 
                     }).error(function (data) {
                         $scope.logining = false;
