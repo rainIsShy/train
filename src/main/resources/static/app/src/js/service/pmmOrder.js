@@ -102,7 +102,11 @@ angular.module('IOne-Production').service('PmmOrderDetail', function ($http, Con
 
     this.changeDtlPurchaseFlag = function (uuid, dtlUuids, flag, data) {
         return $http.patch(Constant.BACKEND_BASE + '/pmmOrders/' + uuid + '/details/' + dtlUuids + '/purchase/' + flag, data);
-    }
+    };
+
+    this.changeConfirmFlag = function (uuid, dtlUuids, flag) {
+        return $http.patch(Constant.BACKEND_BASE + '/pmmOrders/' + uuid + '/details/' + dtlUuids + '/confirm/' + flag);
+    };
 });
 
 
