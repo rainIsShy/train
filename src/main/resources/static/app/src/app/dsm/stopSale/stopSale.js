@@ -16,7 +16,8 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
 
     $scope.TIPTOP_SYNC_TYPE = {
         PLM_ITEM_CHAN_PRICE: {value: 'PLM_ITEM_CHAN_PRICE', name: '停售同步'},
-        PLM_ITEM_ITEM_FILE: {value: 'PLM_ITEM_ITEM_FILE', name: '商品同步'}
+        PLM_ITEM_ITEM_FILE: {value: 'PLM_ITEM_ITEM_FILE', name: '商品同步'},
+        PLM_ITEM_BOM_FILE: {value: 'PLM_ITEM_BOM_FILE', name: 'BOM信息同步'},
     };
 
 
@@ -96,6 +97,22 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
                         var totalImaCount = addResponse(response.updateImaCount, response.insertImaCount);
                         var totalItemCount = addResponse(response.updateItemCount, response.insertItemCount);
                         $scope.showInfo(item.tiptopDb + '：ERP同步到tiptop_tc_ima_file，共 ' + totalImaCount + '笔数据同步成功!\n tiptop_tc_ima_file 同步到 plm，共 ' + totalItemCount + '笔数据同步成功!');
+
+                    }).error(function (data) {
+                        $scope.logining = false;
+                        $scope.showError(data.message);
+                    });
+
+                    promises.push(result);
+                }
+
+                if (item.syncType == 'PLM_ITEM_BOM_FILE') {
+                    //BOM同步
+                    var result = IoneAdapterService.transferIoneAdapter("/bmbTask", param, $scope, function (response) {
+                        console.log(response);
+                        var totalBmbCount = addResponse(response.updateImaCount, response.insertImaCount);
+                        var totalBomCount = addResponse(response.updateItemCount, response.insertItemCount);
+                        $scope.showInfo(item.tiptopDb + '：ERP同步到TIPTOP_BMB_FILE，共 ' + totalImaCount + '笔数据同步成功!\n TIPTOP_BMB_FILE 同步到 bom，共 ' + totalBomCount + '笔数据同步成功!');
 
                     }).error(function (data) {
                         $scope.logining = false;
