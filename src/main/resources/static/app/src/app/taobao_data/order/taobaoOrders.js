@@ -6,6 +6,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
 }]);
 
 angular.module('IOne-Production').controller('TaobaoOrdersController', function ($location,$scope, $q, TaobaoOrders, TaobaoOrderDetail, TaobaoAmountMaster, TaobaoAmountDetail, TaoBaoAdapterService, $mdDialog, $timeout, Constant) {
+
     $scope.taobaoOrderListMenu = {
         selectAll: false,
         effectiveType: '2', //失效作废
@@ -314,24 +315,15 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
                         uuid: orderMasterUuids,
                         confirm: '2'
                     };
-//                    var response = TaobaoOrders.modify(OrderMasterUpdateInput).success(function (returnMsgs) {
-//                          $location.path('ecommerce-orders');
-//                        $scope.queryMenuActionWithPaging();//刷新查询
-//                        angular.forEach(returnMsgs, function (msg) {
-//                            $scope.showError(msg);
-//                        });
-//                        $scope.showInfo('审核成功，数据已刷新');
-//                    }).error(function (data) {
-//                        $scope.showError(data.message);
-//                    });
-
-                      var mainMenu = Constant.MENU_LIST[8];
-                      var menu = mainMenu.subList[4];
-                      $scope.path(menu.link);
-                      $scope.selectedMenuId = menu.id;
-                      $scope.selectedMainMenu = mainMenu;
-                      $scope.selectedMenu = menu;
-                      $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS, 0);
+                    var response = TaobaoOrders.modify(OrderMasterUpdateInput).success(function (returnMsgs) {
+                        $location.path('ecommerce-orders');
+//                        var mainMenu = Constant.MENU_LIST[8];
+//                        var menu = mainMenu.subList[4];
+//                        $scope.menuAction(mainMenu, menu);
+                        //$scope.showInfo('审核成功，数据已刷新');
+                    }).error(function (data) {
+                        $scope.showError(data.message);
+                    });
                 } else {
                     $scope.showError('请检查');
                 }

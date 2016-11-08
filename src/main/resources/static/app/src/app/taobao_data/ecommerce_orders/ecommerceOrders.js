@@ -6,6 +6,11 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
 }]);
 
 angular.module('IOne-Production').controller('EcommerceOrdersController', function ($scope, $q, $window, EcommerceOrdersMaster, EcommerceOrderDetail, EcommerceOrderDetailExtend, EdelivWayService, SaleTypes, $mdDialog, $timeout, Constant) {
+
+    var mainMenu = Constant.MENU_LIST[8];
+    var menu = mainMenu.subList[4];
+    $scope.menuAction(mainMenu, menu);
+
     $scope.ecommerceOrderListMenu = {
         selectAll: false,
         effectiveType: '2', //失效作废
