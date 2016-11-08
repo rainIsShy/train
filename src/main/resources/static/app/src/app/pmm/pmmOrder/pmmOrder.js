@@ -129,7 +129,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
     $scope.editItem = function (orderMaster) {
         $scope.selectedDetail = [];
-        $scope.selectDetailAllFlag = false;
+        // $scope.selectDetailAllFlag = false;
         $scope.orderListMenu.selectAll = false;
 
         $scope.selectedItem = orderMaster;
@@ -208,7 +208,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         });
         //empty selected item in form
         $scope.selectedDetail = [];
-        $scope.selectDetailAllFlag = false;
+        // $scope.selectDetailAllFlag = false;
         $scope.OrderDetailList = null;
     };
 
@@ -404,8 +404,8 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
     $scope.selectedDetail = [];
 
-    $scope.selectDetailAllAction = function (selectDetailAllFlag) {
-        if (selectDetailAllFlag == true) {
+    $scope.selectDetailAllAction = function () {
+        if (!$scope.isSelectedAllDetail()) {
             angular.forEach($scope.OrderDetailList.content, function (item) {
                 if (!$scope.exists(item, $scope.selectedDetail) && item.orderQty > 0 && item.transferFlag != 1) {
                     $scope.selectedDetail.push(item);
@@ -432,7 +432,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
         $scope.orderListMenu.effectiveType = item.status;
         $scope.changeDetailButtonStatus();
-        $scope.chkSelectedAllDetail();
+        $scope.isSelectedAllDetail();
     };
 
     $scope.changeButtonStatuOnly = function () {
@@ -985,7 +985,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                         $scope.OrderDetailList.content = [];
                     }
                     $scope.OrderDetailList.content.push(data.addOrderDetail);
-                    $scope.chkSelectedAllDetail();
+                    $scope.isSelectedAllDetail();
                 }
             });
         }
@@ -1092,7 +1092,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     $scope.changeButtonStatus(data);
                 });
                 $scope.refreshDetail(data.selectedOrderDetail.pmmOrderMst.uuid).then(function () {
-                    $scope.chkSelectedAllDetail();
+                    $scope.isSelectedAllDetail();
                 });
                 $scope.showInfo('修改成功。');
             })
@@ -1500,14 +1500,22 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         toastr["error"](info);
     };
 
-    $scope.chkSelectedAllDetail = function () {
+    $scope.getDtlCheckboxCnt = function () {
         var cnt = 0;
         angular.forEach($scope.OrderDetailList.content, function (dtl) {
             if (dtl.orderQty > 0 && dtl.transferFlag != 1) {
                 cnt++;
             }
         });
-        return $scope.selectDetailAllFlag = $scope.selectedDetail.length == cnt;
+        return cnt;
+    };
+
+    $scope.isIndeterminateDtl = function () {
+        return $scope.selectedDetail.length > 0 && $scope.selectedDetail.length != $scope.getDtlCheckboxCnt();
+    };
+
+    $scope.isSelectedAllDetail = function () {
+        return $scope.selectedDetail.length == $scope.getDtlCheckboxCnt();
     }
 });
 

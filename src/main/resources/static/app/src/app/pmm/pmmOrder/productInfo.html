@@ -30,8 +30,9 @@
     <div layout="row">
         <div flex="5" class="verticalLine table-head"
              ng-disabled="!(selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2)">
-            <md-checkbox ng-model="selectDetailAllFlag" aria-label="Checkbox" ng-true-value="true" ng-false-value="false"
-                         ng-change="selectDetailAllAction(selectDetailAllFlag)"></md-checkbox>
+            <md-checkbox ng-checked="isSelectedAllDetail()" aria-label="Checkbox"
+                         md-indeterminate="isIndeterminateDtl()"
+                         ng-click="selectDetailAllAction()"></md-checkbox>
         </div>
         <div align="center" flex="5"
              ng-show="showDtlOpt"
