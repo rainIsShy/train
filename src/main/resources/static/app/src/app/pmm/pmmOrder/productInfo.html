@@ -57,14 +57,13 @@
         <div align="center" flex="10" class=" table-head">采购税额</div>
         <div align="center" flex="10" class=" table-head">采购金额(未税)</div>
         <div align="center" flex="10" class=" table-head">采购金额(含税)</div>
-        <div align="center" flex="10" class=" table-head">定制否</div>
         <div align="center" flex="10" class=" table-head">特价单价</div>
         <div align="center" flex="10" class=" table-head">促销折扣率</div>
         <div align="center" flex="10" class=" table-head">促销单价</div>
-        <div align="center" flex="15" class=" table-head">来源抛转流水号</div>
+        <div align="center" flex="10" class=" table-head">成交价</div>
         <!-- <div align="center" flex="10" class=" table-head">标准价</div> -->
         <!-- <div align="center" flex="10" class=" table-head">标准金额</div> -->
-        <div align="center" flex="10" class=" table-head">成交价</div>
+        <div align="center" flex="10" class=" table-head">定制否</div>
         <div align="center" flex="10" class=" table-head">单套定制费</div>
         <div align="center" flex="10" class=" table-head">定制备注</div>
         <div align="center" flex="10" class=" table-head">备注</div>
@@ -73,6 +72,7 @@
         <div align="center" flex="10" class=" table-head">抛转否</div>
         <div align="center" flex="10" class=" table-head">退回备注</div>
         <div align="center" flex="10" class=" table-head">预计送货日</div>
+        <div align="center" flex="15" class=" table-head">来源抛转流水号</div>
     </div>
     <div ng-repeat="orderDetail in OrderDetailList.content  | orderBy:'no'">
         <div layout="row" ng-style="orderDetail.orderQty == 0 && { 'color': 'gray' }">
@@ -115,14 +115,13 @@
             <div align="center" flex="10" class="table-item">{{orderDetail.oriPurTax}}</div>
             <div align="center" flex="10" class="table-item">{{orderDetail.oriPurAmt}}</div>
             <div align="center" flex="10" class="table-item">{{orderDetail.oriPurAmtTax}}</div>
-            <div align="center" flex="10" class="table-item">{{CUSTOMIZE_FLAG[orderDetail.customizeFlag].name}}</div><!-- 定制否 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.specialPrice}}</div><!-- 特价单价 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.promotionDiscountRate}}{{orderDetail.promotionDiscountRate || orderDetail.promotionDiscountRate === 0 ? '%' : ''}}</div><!-- 促销折扣率 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.promotionPrice}}</div><!-- 促销单价 -->
-            <div align="center" flex="15" class="table-item">{{orderDetail.psoTransferNo}}</div>
+            <div align="center" flex="10" class="table-item">{{orderDetail.oriTransactionPrice}}</div><!-- 成交价 -->
             <!-- <div align="center" flex="10" class="table-item">{{orderDetail.standardPrice}}</div><!-- 标准价 -->
             <!-- <div align="center" flex="10" class="table-item">{{orderDetail.oriStandardAmt}}</div><!-- 标准金额 -->
-            <div align="center" flex="10" class="table-item">{{orderDetail.oriTransactionPrice}}</div><!-- 成交价 -->
+            <div align="center" flex="10" class="table-item">{{CUSTOMIZE_FLAG[orderDetail.customizeFlag].name}}</div><!-- 定制否 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.perCustomizePrice}}</div><!-- 单套定制费 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.customizeRemark}}</div><!-- 定制备注 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.remark}}</div><!-- 备注 -->
@@ -131,6 +130,7 @@
             <div align="center" flex="10" class="table-item">{{TRANSFER_PSO_FLAG[orderDetail.transferFlag].name}}</div><!-- 抛转否 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.returnRemark}}</div><!-- 退回备注 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.deliverDate | date: 'yyyy-MM-dd'}}</div><!-- 预计送货日 -->
+            <div align="center" flex="15" class="table-item">{{orderDetail.psoTransferNo}}</div><!-- 来源抛转流水号 -->
         </div>
     </div>
 </md-content>
