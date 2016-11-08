@@ -1053,11 +1053,14 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             data.selectedOrderDetail.saleTypeUuid = data.selectedOrderDetail.saleType.uuid;
             // 如果采購數量維護成0時，取消勾選
             if (data.selectedOrderDetail.orderQty == 0) {
-                for (var i = 0; i < $scope.selectedDetail.length; i++) {
-                    if (data.selectedOrderDetail.uuid === $scope.selectedDetail[i].uuid) {
-                        $scope.selectedDetail.splice(i, 1);
+                angular.forEach($scope.selectedDetail, function (dtl, idx) {
+                    if (data.selectedOrderDetail.uuid === dtl.uuid) {
+                        $scope.selectedDetail.splice(idx, 1);
                     }
-                }
+                });
+                // 当该笔订单采购数量变为0时，把采购状态改为采购未发出，退回备注清空
+                data.selectedOrderDetail.purchaseFlag = 1;
+                data.selectedOrderDetail.returnRemark = '';
             }
 
             PmmOrderDetail.modify(data.selectedOrderDetail.pmmOrderMst.uuid, data.selectedOrderDetail.uuid, data.selectedOrderDetail).success(function () {
