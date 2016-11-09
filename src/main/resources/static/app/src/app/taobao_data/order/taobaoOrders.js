@@ -292,6 +292,7 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
 
     //抛转（审核）
     $scope.throwMenuAction = function () {
+        var tid = '';
         if ($scope.selected.length == 1) {   //$scope.selected.length>0
             $scope.showConfirm('确认审核吗？', '', function () {
                 //清单页
@@ -304,6 +305,7 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
                             rtn = true;
                             return;
                         }
+                        tid = item.tid;
                         orderMasterUuids = orderMasterUuids + item.uuid + ",";    //选中多个逗号分隔
                     });
                     if(rtn == true){
@@ -315,8 +317,11 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
                         uuid: orderMasterUuids,
                         confirm: '2'
                     };
+
                     var response = TaobaoOrders.modify(OrderMasterUpdateInput).success(function (returnMsgs) {
-                        $scope.path('ecommerce-orders');
+                        alert(returnMsgs);
+                        alert(orderMasterUuids);
+                        $scope.path('ecommerce-orders?tid='+tid);
 //                        $scope.queryMenuActionWithPaging();//刷新查询
 //                        angular.forEach(returnMsgs, function (msg) {
 //                           $scope.showError(msg);

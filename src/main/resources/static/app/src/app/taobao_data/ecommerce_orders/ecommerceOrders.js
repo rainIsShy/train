@@ -6,6 +6,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
 }]);
 
 angular.module('IOne-Production').controller('EcommerceOrdersController', function ($scope, $q, $window, EcommerceOrdersMaster, EcommerceOrderDetail, EcommerceOrderDetailExtend, EdelivWayService, SaleTypes, $mdDialog, $timeout, Constant) {
+
     $scope.ecommerceOrderListMenu = {
         selectAll: false,
         effectiveType: '2', //失效作废
@@ -304,25 +305,50 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
 
 
     };
+
     //查看详情，跳转到表单 选中的是selectedItem
     $scope.editItem = function (orderMaster) {
-        $scope.selectedDetail = [];
-        $scope.ecommerceOrderListMenu.selectAll = false;
-        $scope.selectedItem = orderMaster;
-        $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
-        $scope.resetButtonDisabled();
-        $scope.changeButtonStatus(orderMaster);
-        EcommerceOrderDetail.getAll(orderMaster.uuid).success(function (data) {
-            $scope.OrderDetailList = data;
-            $scope.updateOrderDetailDeliverDate($scope.OrderDetailList);//YYYY-MM-DD
-            $scope.OrderExtendDetailList = [];
-            angular.forEach($scope.OrderDetailList.content, function (orderDetail, index) {
-                EcommerceOrderDetailExtend.getAll(orderMaster.uuid, orderDetail.uuid).success(function (data) {
-                    $scope.OrderExtendDetailList = $scope.OrderExtendDetailList.concat(data.content);
+            $scope.selectedDetail = [];
+            $scope.ecommerceOrderListMenu.selectAll = false;
+            $scope.selectedItem = orderMaster;
+            $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
+            $scope.resetButtonDisabled();
+            $scope.changeButtonStatus(orderMaster);
+            EcommerceOrderDetail.getAll(orderMaster.uuid).success(function (data) {
+                $scope.OrderDetailList = data;
+                $scope.updateOrderDetailDeliverDate($scope.OrderDetailList);//YYYY-MM-DD
+                $scope.OrderExtendDetailList = [];
+                angular.forEach($scope.OrderDetailList.content, function (orderDetail, index) {
+                    EcommerceOrderDetailExtend.getAll(orderMaster.uuid, orderDetail.uuid).success(function (data) {
+                        $scope.OrderExtendDetailList = $scope.OrderExtendDetailList.concat(data.content);
+                    });
                 });
             });
-        });
     };
+
+
+    $scope.GetQueryString = function (name){
+        var url = window.location.href;
+        var index = url.indexOf("?");
+        if(index>0){
+            uuid = url.substring(index+name.length+2,url.length);
+            return uuid;
+        }else{
+            return null;
+        }
+    }
+
+    $scope.getUrl = function(){
+        var orderMasterUuid = $scope.GetQueryString('uuid')
+        if(orderMasterUuid != null){
+            EcommerceOrdersMaster.getAll(orderMasterUuid).success(function(data){
+                $scope.editItem(data.content[0]);
+            }).error(function(){
+                alert('123');
+            });
+        }
+    }
+    $scope.getUrl();
 
     //日期格式
     //orderDate和predictDeliverDate：
