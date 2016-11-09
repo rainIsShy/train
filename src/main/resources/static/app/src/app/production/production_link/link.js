@@ -267,7 +267,7 @@ angular.module('IOne-Production').controller('ProductionLinkController', functio
     };
 
     $scope.addCatalogueDetail = function(production) {
-        if (production && $scope.selectedTemplateNogdeData) {
+        if (production && $scope.selectedTemplateNodeData) {
             ProductionCatalogueDetails.addLink($scope.selectedTemplateNodeData.uuid, production.uuid).success(function(data){
                 $scope.showInfo('新增商品关联成功。');
 
