@@ -569,7 +569,7 @@ angular.module('IOne-Production').service('ChannelRelationService', function ($h
 });
 
 angular.module('IOne-Production').service('ChannelPromotionService', function ($http, Constant) {
-    this.getAll = function (sizePerPage, page, confirm, status, no, name, keyword, promotionDateBegin, promotionDateEnd, resUuid) {
+    this.getAll = function (sizePerPage, page, confirm, status, no, name, keyword, promotionDateBegin, promotionDateEnd, resUuid, promotionDateInRange) {
         confirm = confirm == 0 ? '' : confirm;
         status = status == 0 ? '' : status;
 
@@ -592,6 +592,10 @@ angular.module('IOne-Production').service('ChannelPromotionService', function ($
 
         if (promotionDateEnd != undefined && promotionDateEnd != null && promotionDateEnd != '') {
             url = url + '&promotionDateEnd=' + promotionDateEnd;
+        }
+
+        if (promotionDateInRange) {
+            url += '&promotionDateInRange=' + promotionDateInRange;
         }
 
         if (keyword != undefined && keyword != null && keyword != '') {

@@ -1924,7 +1924,10 @@ angular.module('IOne-Production').controller('OrderPromotionSearchController', f
     };
 
     $scope.refresh = function () {
-        ChannelPromotionService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 2, 1, '', '', $scope.searchKeyword)
+        var curData = new Date();
+        var curDateStr = curData.getFullYear() + '-' + (curData.getMonth() + 1) + '-' + curData.getDate();
+        console.log(curDateStr);
+        ChannelPromotionService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 2, 1, '', '', $scope.searchKeyword, null, null, null, curDateStr)
         .success(function (data) {
             $scope.resp = data;
             $scope.pageOption.totalElements = data.totalElements;
