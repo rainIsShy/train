@@ -92,7 +92,7 @@ angular.module('IOne-directives').directive('orderListMenu', function(Constant) 
                 } else if (menuId == 410) {
                     $scope.auditTransfer();
                 }
-           }
+            }
         }
     }
 });

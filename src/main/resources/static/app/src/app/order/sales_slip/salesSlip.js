@@ -1306,7 +1306,7 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
         $q.all(mainPromises).then(function () {
             $scope.showConfirm('确认 审核抛转 吗？', errorInfo, function () {
                 var uuids = '';
-                angular.forEach($scope.selectedDetail, function (item) {
+                angular.forEach($scope.selected, function (item) {
                     uuids += (uuids ? ',' : '') + item.uuid;
                 });
                 OrderMaster.auditTransfer(uuids).success(function () {
