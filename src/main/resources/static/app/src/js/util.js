@@ -487,6 +487,10 @@ RES_UUID_MAP = {
         SYS_BASE_MENU: {
             RES_UUID: '2659f005-7b50-4027-b73a-de2dc4850b98',
             TITLE: '系统菜单管理'
+        },
+        APPLICATION_VERSION: {
+            RES_UUID: '31af0a4c-7479-449c-96f1-d32544b4dc3a',
+            TITLE: 'APP版本管理'
         }
     },
 
@@ -684,7 +688,8 @@ angular.module('IOne-Constant').constant('Constant', {
                     name: '系统菜单管理',
                     link: '/sys/sysMenus',
                     uuid: RES_UUID_MAP.SYS.SYS_BASE_MENU.RES_UUID
-                }
+                },
+                {id: '/sys/applicationVersion', name: 'APP版本管理', link: '/sys/applicationVersion', uuid: RES_UUID_MAP.SYS.APPLICATION_VERSION.RES_UUID},
             ]
         },
         {
@@ -722,7 +727,7 @@ angular.module('IOne-Constant').constant('Constant', {
                 {id: '/dsm/rule', name: '同步规则管理', link: '/dsm/rule', uuid: ''},
                 {id: '/dsm/schedule', name: '同步任务管理', link: '/dsm/schedule', uuid: ''},
                 {id: '/dsm/log', name: '日志管理', link: '/dsm/log', uuid: ''},
-                {id: '/dsm/stopSale', name: '商品停产同步管理', link: '/dsm/stopSale', uuid: ''}
+                {id: '/dsm/stopSale', name: '商品数据同步管理', link: '/dsm/stopSale', uuid: ''}
             ]
         },
         {
@@ -1071,10 +1076,10 @@ angular.module('IOne-Constant').constant('Constant', {
         0: {value: '0', name: '全部'},
         1: {value: '1', name: '网销种菜'},
         2: {value: '2', name: 'o2o种菜'},
-        3: {value: '3', name: 'o2o单'},
+        3: {value: '3', name: '线下O2O'},
         4: {value: '4', name: '网销订单'},
         5: {value: '5', name: '网销o2o'},
-        6: {value: '6', name: '线下O2O单'}
+        6: {value: '6', name: '手工O2O'}
     },
 
     'EPS_ORDER_TYPE': {

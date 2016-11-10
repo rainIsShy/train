@@ -34,12 +34,12 @@
                 <div flex="30" layout="column">
                     <div>开单日期：&nbsp;{{orderMaster.orderDate| date:'yyyy-MM-dd'}}</div>
                     <div>商品种类：&nbsp;{{orderMaster.orderDetailCount}}</div>
-                    <div>采购状态：&nbsp;{{PURCHASE_FLAG[orderMaster.purchaseFlag].name}}</div>
+                    <div>启用状态：&nbsp;{{STATUS[orderMaster.status].name}}</div>
                 </div>
 
                 <div flex layout="column" flex="30">
                     <div>审核状态：&nbsp;{{AUDIT[orderMaster.confirm].name}}</div>
-                    <div>启用状态：&nbsp;{{STATUS[orderMaster.status].name}}</div>
+                    <div>采购状态：&nbsp;{{PURCHASE_FLAG[orderMaster.purchaseFlag].name}}</div>
                     <div>抛转状态：&nbsp;{{TRANSFER_PSO_FLAG[orderMaster.transferFlag].name}}</div>
                 </div>
             </div>

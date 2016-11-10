@@ -5,35 +5,33 @@
         <div align="center" flex="5" class=" table-head"
              ng-show="selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2">操作
         </div>
-        <div align="center" flex="5" class=" table-head">项次</div>
-        <div align="center" flex="15" class=" table-head">套件商品</div>
-        <div align="center" flex="15" class=" table-head">商品</div>
-        <div align="center" flex="15" class=" table-head">定制</div>
-        <div align="center" flex="15" class=" table-head">商品属性</div>
-        <div align="center" flex="15" class=" table-head">单包定制费</div>
-        <div align="center" flex="15" class=" table-head">销售单位</div>
-        <div align="center" flex="15" class=" table-head">采购数量</div>
-        <div align="center" flex="15" class=" table-head">采购单价</div>
-        <!--<div align="center" flex="15" class=" table-head">采购单价(本币)</div>-->
-        <div align="center" flex="15" class=" table-head">采购税额</div>
-        <!--<div align="center" flex="10" class=" table-head">采购税额(本币)</div>-->
-        <div align="center" flex="10" class=" table-head">采购金额(未税)</div>
-        <div align="center" flex="10" class=" table-head">采购金额(含税)</div>
-        <!--<div align="center" flex="15" class=" table-head">采购金额(本币/未税)</div>-->
-        <!--<div align="center" flex="15" class=" table-head">采购金额(本币/含税)</div>-->
+        <div align="center" flex="5" class="table-head">项次</div>
+        <div align="center" flex="15" class="table-head">套件商品</div>
+        <div align="center" flex="15" class="table-head">商品</div>
+        <div align="center" flex="10" class="table-head">归属补件</div>
+        <div align="center" flex="15" class="table-head">定制</div>
+        <div align="center" flex="10" class="table-head">商品颜色</div>
+        <div align="center" flex="15" class="table-head">商品属性</div>
+        <div align="center" flex="15" class="table-head">销售单位</div>
+        <div align="center" flex="15" class="table-head">采购数量</div>
         <div align="center" flex="10" class="table-head">出货数量</div>
         <div align="center" flex="10" class="table-head">欠货数量</div>
-        <div align="center" flex="15" class="table-head">抛转流水号</div>
-        <div align="center" flex="15" class="table-head">备注</div>
-        <div align="center" flex="10" class="table-head">归属补件</div>
-        <div align="center" flex="10" class="table-head">标准价</div>
-        <div align="center" flex="10" class="table-head">标准金额(原币)</div>
-        <div align="center" flex="10" class="table-head">标准金额(本币)</div>
-        <div align="center" flex="10" class="table-head">成交价(原币)</div>
-        <div align="center" flex="10" class="table-head">成交价(本币)</div>
+        <div align="center" flex="15" class="table-head">采购单价</div>
+        <div align="center" flex="15" class="table-head">采购税额</div>
+        <div align="center" flex="10" class="table-head">采购金额(未税)</div>
+        <div align="center" flex="10" class="table-head">采购金额(含税)</div>
         <div align="center" flex="10" class="table-head">促销折扣率</div>
         <div align="center" flex="10" class="table-head">促销单价</div>
-        <div align="center" flex="10" class="table-head">商品颜色</div>
+        <div align="center" flex="10" class="table-head">成交价</div>
+        <div align="center" flex="15" class="table-head">备注</div>
+        <div align="center" flex="15" class="table-head">抛转流水号</div>
+        <!--<div align="center" flex="15" class="table-head">单包定制费</div>-->
+        <!--<div align="center" flex="15" class="table-head">采购单价(本币)</div>-->
+        <!--<div align="center" flex="10" class="table-head">采购税额(本币)</div>-->
+        <!--<div align="center" flex="15" class="table-head">采购金额(本币/未税)</div>-->
+        <!--<div align="center" flex="15" class="table-head">采购金额(本币/含税)</div>-->
+        <!-- <div align="center" flex="10" class="table-head">标准价</div> -->
+        <!-- <div align="center" flex="10" class="table-head">标准金额</div> -->
     </div>
     <div ng-repeat="orderExtendDetail in OrderExtendDetailList | orderBy:'no'">
         <div layout="row" layout-align="left center">
@@ -47,9 +45,10 @@
             </div>
 
 
-            <div align="center" flex="5" class=" table-item">{{orderExtendDetail.no}}</div>
-            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.parentItem.name}}</div>
-            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.item.name}}</div>
+            <div align="center" flex="5" class=" table-item">{{orderExtendDetail.no}}</div><!-- 项次 -->
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.parentItem.name}}</div><!-- 套件商品 -->
+            <div align="center" flex="15" class=" table-item">{{orderExtendDetail.item.name}}</div><!-- 商品 -->
+            <div align="center" flex="10" class="table-item">{{orderExtendDetail.baseItem.name}}</div><!-- 归属补件 -->
             <!--<div  align="center" flex="15" class="verticalLine table-item"> {{CUSTOMIZE_FLAG[orderExtendDetail.customizeFlag].name}} </div>-->
 
             <div align="center" flex="15" class=" table-item" layout="row" style="padding:0px 0px 0px 0px;">
@@ -61,34 +60,28 @@
                            ng-click="editItemCustom(orderExtendDetail)">详情
                 </md-button>
             </div>
-            <div align="center" flex="15" class="table-item">{{orderExtendDetail.itemAttribute}}</div>
-            <div align="center" flex="15" class="table-item">{{orderExtendDetail.perCustomizePrice}}</div>
-            <div align="center" flex="15" class="table-item">{{orderExtendDetail.item.unit}}</div>
-            <div align="center" flex="15" class="table-item">{{orderExtendDetail.orderQty}}</div>
-            <div align="center" flex="15" class="table-item">{{orderExtendDetail.oriPurPrice}}</div>
-            <!--<div align="center" flex="15" class="table-item">{{orderExtendDetail.natPurPrice}}</div>-->
-            <div align="center" flex="15" class="table-item">{{orderExtendDetail.oriPurTax}}</div>
-            <!--<div align="center" flex="10" class="table-item">{{orderExtendDetail.natPurTax}}</div>-->
-            <div align="center" flex="10" class="table-item">{{orderExtendDetail.oriPurAmt}}</div>
-            <div align="center" flex="10" class="table-item">{{orderExtendDetail.oriPurAmtTax}}</div>
-            <!--<div align="center" flex="15" class="table-item">{{orderExtendDetail.natPurAmt}}</div>-->
-            <!--<div align="center" flex="15" class="table-item">{{orderExtendDetail.natPurAmtTax}}</div>-->
-            <div align="center" flex="10" class="table-item">{{orderExtendDetail.transferOrderQty}}</div>
-            <div align="center" flex="10" class="table-item">{{orderExtendDetail.untransferOrderQty}}</div>
-            <div align="center" flex="15" class="table-item">{{orderExtendDetail.psoTransferNo}}</div>
-            <div align="center" flex="15" class="table-item">{{orderExtendDetail.remark}}</div>
-            <div align="center" flex="10" class="table-item">{{orderExtendDetail.baseItem.name}}</div><!-- 归属补件 -->
-            <div align="center" flex="10" class="table-item">{{orderExtendDetail.standardPrice}}</div><!-- 标准价 -->
-            <div align="center" flex="10" class="table-item">{{orderExtendDetail.oriStandardAmt}}</div><!-- 标准金额(原币) -->
-            <div align="center" flex="10" class="table-item">{{orderExtendDetail.natStandardAmt}}</div><!-- 标准金额(本币) -->
-            <div align="center" flex="10" class="table-item">{{orderExtendDetail.oriTransactionPrice}}</div>
-            <!-- 成交价(原币) -->
-            <div align="center" flex="10" class="table-item">{{orderExtendDetail.natTransactionPrice}}</div>
-            <!-- 成交价(本币) -->
-            <div align="center" flex="10" class="table-item">{{orderExtendDetail.promotionDiscountRate}}</div>
-            <!-- 促销折扣率 -->
-            <div align="center" flex="10" class="table-item">{{orderExtendDetail.promotionPrice}}</div><!-- 促销单价 -->
             <div align="center" flex="10" class="table-item">{{orderExtendDetail.itemColor}}</div><!-- 商品颜色 -->
+            <div align="center" flex="15" class="table-item">{{orderExtendDetail.itemAttribute}}</div>
+            <div align="center" flex="15" class="table-item">{{orderExtendDetail.item.unit}}</div>
+            <div align="center" flex="15" class="table-item">{{orderExtendDetail.orderQty}}</div><!-- 采购数量 -->
+            <div align="center" flex="10" class="table-item">{{orderExtendDetail.transferOrderQty}}</div><!-- 出货数量 -->
+            <div align="center" flex="10" class="table-item">{{orderExtendDetail.untransferOrderQty}}</div><!-- 欠货数量 -->
+            <div align="center" flex="15" class="table-item">{{orderExtendDetail.oriPurPrice}}</div>
+            <div align="center" flex="15" class="table-item">{{orderExtendDetail.oriPurTax}}</div>
+            <div align="center" flex="10" class="table-item">{{orderExtendDetail.oriPurAmt}}</div>
+            <div align="center" flex="10" class="table-item">{{orderExtendDetail.oriPurAmtTax}}</div><!-- 采购金额(含税) -->
+            <div align="center" flex="10" class="table-item">{{orderExtendDetail.promotionDiscountRate}}{{orderExtendDetail.promotionDiscountRate || orderExtendDetail.promotionDiscountRate === 0 ? '%' : ''}}</div><!-- 促销折扣率 -->
+            <div align="center" flex="10" class="table-item">{{orderExtendDetail.promotionPrice}}</div><!-- 促销单价 -->
+            <div align="center" flex="10" class="table-item">{{orderExtendDetail.oriTransactionPrice}}</div><!-- 成交价 -->
+            <div align="center" flex="15" class="table-item">{{orderExtendDetail.remark}}</div>
+            <div align="center" flex="15" class="table-item">{{orderExtendDetail.psoTransferNo}}</div>
+            <!--<div align="center" flex="15" class="table-item">{{orderExtendDetail.perCustomizePrice}}</div>-->
+            <!-- <div align="center" flex="15" class="table-item">{{orderExtendDetail.natPurPrice}}</div>-->
+            <!-- <div align="center" flex="10" class="table-item">{{orderExtendDetail.natPurTax}}</div>-->
+            <!-- <div align="center" flex="15" class="table-item">{{orderExtendDetail.natPurAmt}}</div>-->
+            <!-- <div align="center" flex="15" class="table-item">{{orderExtendDetail.natPurAmtTax}}</div>-->
+            <!-- <div align="center" flex="10" class="table-item">{{orderExtendDetail.standardPrice}}</div><!-- 标准价 -->
+            <!-- <div align="center" flex="10" class="table-item">{{orderExtendDetail.oriStandardAmt}}</div><!-- 标准金额 -->
         </div>
     </div>
 </md-content>

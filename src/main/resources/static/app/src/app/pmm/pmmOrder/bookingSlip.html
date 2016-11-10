@@ -65,10 +65,14 @@
                                                 <div ng-message="max">笔数不能大于200笔</div>
                                             </div>
                                         </md-input-container>
-                                        <md-button flex="10" class="md-raised" ng-disabled="listForm.$invalid"
+                                        <md-button class="md-raised" ng-disabled="listForm.$invalid"
                                                    ng-if="orderListMenuDisplayOption['405-query'].display && (menuAuthDataMap[orderListMenuDisplayOption['405-query'].uuid] || isAdmin() || !orderListMenuDisplayOption['405-query'].uuid)"
                                                    style="margin-top: 22px;height: 20px;"
                                                    ng-click="orderListMenuAction(405, $event)">&nbsp;{{orderListMenuDisplayOption['405-query'].name}}
+                                        </md-button>
+                                        <md-button class="md-raised" ng-click="orderListMenuAction(408, $event)"
+                                                   ng-if="orderListMenuDisplayOption['408-add'].display && (menuAuthDataMap[orderListMenuDisplayOption['408-add'].uuid] || isAdmin() || !orderListMenuDisplayOption['408-add'].uuid)"
+                                                   style="margin-top: 22px;height: 20px;" aria-label="新增"> &nbsp;{{orderListMenuDisplayOption['408-add'].name}}
                                         </md-button>
                                     </div>
                                 </div>
@@ -92,11 +96,6 @@
                                     </div>
 
                                     <div flex layout="row" layout-align="end center">
-                                        <div ng-if="orderListMenuDisplayOption['408-add'].display && (menuAuthDataMap[orderListMenuDisplayOption['408-add'].uuid] || isAdmin() || !orderListMenuDisplayOption['408-add'].uuid)">
-                                            <md-button class="md-raised" ng-click="orderListMenuAction(408, $event)"
-                                                       style="margin-top: 0px;height: 20px;" aria-label="新增"> &nbsp;{{orderListMenuDisplayOption['408-add'].name}}
-                                            </md-button>
-                                        </div>
                                         <div ng-if="orderListMenuDisplayOption['401-audit'].display && (menuAuthDataMap[orderListMenuDisplayOption['401-audit'].uuid] || isAdmin() || !orderListMenuDisplayOption['401-audit'].uuid)">
                                             <md-button class="md-raised" ng-click="orderListMenuAction(401, $event)"
                                                        style="margin-top: 0px;height: 20px;" aria-label="审核"
@@ -115,6 +114,18 @@
                                                        ng-disabled="revert_audit_button_disabled == '1'"> &nbsp;{{orderListMenuDisplayOption['406-revertAudit'].name}}
                                             </md-button>
                                         </div>
+                                        <div ng-if="orderListMenuDisplayOption['410-purchaseSubmit'].display && (menuAuthDataMap[orderListMenuDisplayOption['410-purchaseSubmit'].uuid] || isAdmin() || !orderListMenuDisplayOption['410-purchaseSubmit'].uuid)">
+                                            <md-button class="md-raised" ng-click="orderListMenuAction(410, $event)"
+                                                       style="margin-top: 0px;height: 20px;" aria-label="采购发出"
+                                                       ng-disabled="purchase_submit_button_disabled == 1"> &nbsp;{{orderListMenuDisplayOption['410-purchaseSubmit'].name}}
+                                            </md-button>
+                                        </div>
+                                        <div ng-if="orderListMenuDisplayOption['411-purchaseBack'].display && (menuAuthDataMap[orderListMenuDisplayOption['411-purchaseBack'].uuid] || isAdmin() || !orderListMenuDisplayOption['411-purchaseBack'].uuid)">
+                                            <md-button class="md-raised" ng-click="orderListMenuAction(411, $event)"
+                                                       style="margin-top: 0px;height: 20px;" aria-label="采购退回"
+                                                       ng-disabled="purchase_back_button_disabled == 1"> &nbsp;{{orderListMenuDisplayOption['411-purchaseBack'].name}}
+                                            </md-button>
+                                        </div>
                                         <div ng-if="orderListMenuDisplayOption['403-throw'].display && (menuAuthDataMap[orderListMenuDisplayOption['403-throw'].uuid] || isAdmin() || !orderListMenuDisplayOption['403-throw'].uuid)">
                                             <md-button class="md-raised" ng-click="orderListMenuAction(403, $event)"
                                                        style="margin-top: 0px;height: 20px;" aria-label="抛转预订单"
@@ -131,18 +142,6 @@
                                             <md-button class="md-raised" ng-click="orderListMenuAction(409, $event)"
                                                        style="margin-top: 0px;height: 20px;" aria-label="抛转还原"
                                                        ng-disabled="rollback_transfer_button_disabled == 1"> &nbsp;{{orderListMenuDisplayOption['409-rollbackTransfer'].name}}
-                                            </md-button>
-                                        </div>
-                                        <div ng-if="orderListMenuDisplayOption['410-purchaseSubmit'].display && (menuAuthDataMap[orderListMenuDisplayOption['410-purchaseSubmit'].uuid] || isAdmin() || !orderListMenuDisplayOption['410-purchaseSubmit'].uuid)">
-                                            <md-button class="md-raised" ng-click="orderListMenuAction(410, $event)"
-                                                       style="margin-top: 0px;height: 20px;" aria-label="采购发出"
-                                                       ng-disabled="purchase_submit_button_disabled == 1"> &nbsp;{{orderListMenuDisplayOption['410-purchaseSubmit'].name}}
-                                            </md-button>
-                                        </div>
-                                        <div ng-if="orderListMenuDisplayOption['411-purchaseBack'].display && (menuAuthDataMap[orderListMenuDisplayOption['411-purchaseBack'].uuid] || isAdmin() || !orderListMenuDisplayOption['411-purchaseBack'].uuid)">
-                                            <md-button class="md-raised" ng-click="orderListMenuAction(411, $event)"
-                                                       style="margin-top: 0px;height: 20px;" aria-label="采购退回"
-                                                       ng-disabled="purchase_back_button_disabled == 1"> &nbsp;{{orderListMenuDisplayOption['411-purchaseBack'].name}}
                                             </md-button>
                                         </div>
                                     </div>
@@ -191,8 +190,6 @@
                                             <input type="text" aria-label="..."
                                                    ng-model="selectedItem.employee.department.name" ng-disabled="true">
                                         </md-input-container>
-
-
                                         <md-input-container>
                                             <label class="label" style="color: blue;">备注：</label>
                                             <input type="text"  aria-label="..." ng-model="selectedItem.remark"   md-maxlength="20"
@@ -226,23 +223,21 @@
                                                    ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                                         </md-input-container>
                                         <md-input-container layout="row" style=" height: 79px;">
-                                            <div class="md-input-has-value" style=" padding: 25px 0px 0px 0px;"><label>审核状态：</label>
-                                            </div>
+                                            <div class="md-input-has-value" style=" padding: 25px 0px 0px 0px;"><label>启用状态：</label></div>
+                                            <md-select placeholder="" aria-label="..." ng-model="selectedItem.status"
+                                                       class="select" ng-disabled="true">
+                                                <md-option value="1">有效</md-option>
+                                                <md-option value="2">无效</md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                        <md-input-container layout="row" style=" height: 79px;">
+                                            <div class="md-input-has-value" style=" padding: 25px 0px 0px 0px;"><label>审核状态：</label></div>
                                             <md-select placeholder="" aria-label="..." ng-model="selectedItem.confirm"
                                                        class="select" ng-disabled="true">
                                                 <md-option value="1">未审核</md-option>
                                                 <md-option value="2">已审核</md-option>
                                                 <md-option value="3">审核中</md-option>
                                                 <md-option value="4">退回</md-option>
-                                            </md-select>
-                                        </md-input-container>
-                                        <md-input-container layout="row" style=" height: 79px;">
-                                            <div class="md-input-has-value" style=" padding: 25px 0px 0px 0px;"><label>启用状态：</label>
-                                            </div>
-                                            <md-select placeholder="" aria-label="..." ng-model="selectedItem.status"
-                                                       class="select" ng-disabled="true">
-                                                <md-option value="1">有效</md-option>
-                                                <md-option value="2">无效</md-option>
                                             </md-select>
                                         </md-input-container>
                                         <md-input-container layout="row" style=" height: 79px;">
@@ -261,7 +256,7 @@
                                     <div flex="33" layout="column" layout-padding>
                                         <md-input-container>
                                             <label class="label">来源单号：</label>
-                                            <input type="text" aria-label="..." ng-model="selectedItem.psoOrderMstNo"
+                                            <input type="text" aria-label="..." ng-model="selectedItem.salesOrderMaster.no"
                                                    ng-disabled="true">
                                         </md-input-container>
                                         <md-input-container >
@@ -269,8 +264,6 @@
                                             <input type="text" aria-label="..." ng-model="selectedItem.psoTransferNo"
                                                    ng-disabled = "true">
                                         </md-input-container>
-
-
                                         <md-input-container >
                                             <label class="label">来源单抛转日期：</label>
                                             <input type="text" aria-label="..."
