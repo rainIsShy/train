@@ -62,7 +62,7 @@
             <div ng-if="formMenuDisplayOption['422-auditTransfer'].display && (menuAuthDataMap[formMenuDisplayOption['422-auditTransfer'].uuid] || isAdmin() || !formMenuDisplayOption['422-auditTransfer'].uuid)">
                 <md-button class="md-raised" ng-click="orderListMenuAction(422, $event)"
                            style="margin-top: 0px;height: 20px;" aria-label="审核抛转"
-                           ng-disabled="rollback_transfer_button_disabled == 1"> &nbsp;{{formMenuDisplayOption['422-auditTransfer'].name}}
+                           ng-disabled="audit_transfer_button_disabled == 1"> &nbsp;{{formMenuDisplayOption['422-auditTransfer'].name}}
                 </md-button>
             </div>
         </div>

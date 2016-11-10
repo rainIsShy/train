@@ -436,7 +436,6 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
         })
     };
 
-
     $scope.effectiveMenuAction = function () {
         if ($scope.selected.length > 0 || $scope.selectedDetail.length > 0) {
             $scope.showConfirm('确认修改启用状态吗？', '', function () {
@@ -502,27 +501,24 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
             if (errorNos != '') {
                 errorNos = errorNos.substr(0, errorNos.length - 1);
                 $scope.showError('以下产品销售单合同号为空：' + '<br>' + errorNos);
-                return;
+                return false;
             }
         }
         if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
             if ($scope.selectedItem.contractNo == '' || $scope.selectedItem.contractNo == null || $scope.selectedItem.contractNo == undefined) {
                 $scope.showError('该产品销售单合同号为空，不允许审核。');
-                return;
+                return false;
             }
         }
         if ($scope.selected.length > 0 || $scope.selectedDetail.length > 0) {
             var mainPromises = [];
-            console.log($scope.selected);
             if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
                 var errorInfo = "";
                 angular.forEach($scope.selected, function (item) {
                     // if (item.paidRate < $scope.depositRate) {
                     //     errorInfo = errorInfo + '订单：' + item.no + '的收款比率<' + $scope.depositRate * 100 + '%<br>';
                     // }
-                    console.log("before paidrate:" + item.paidRate);
                     var response = Parameters.getAll(item.channel.uuid).success(function (data) {
-                        console.log(data);
                         if (data.content && data.content.length > 0) {
                             var itemDepositRate = data.content[0].depositRate;
                             if (item.paidRate < itemDepositRate) {
@@ -533,7 +529,6 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                     mainPromises.push(response);
                 });
             } else if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
-                var mainPromises = [];
                 var errorInfo = "";
                 var paidRate = $scope.selectedItem.paidRate.substring(0, $scope.selectedItem.paidRate.length - 1);
                 var response = Parameters.getAll($scope.selectedItem.channel.uuid).success(function (data) {
@@ -577,7 +572,6 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                                  $scope.showInfo('修改数据成功。');
                             });
                         });
-
                     } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
                         //update $scope.selected
                         var promises = [];
@@ -645,13 +639,10 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                         $scope.queryMenuActionWithPaging();
                         $scope.showInfo('修改数据成功。');
                     });
-
                 }
             });
         }
-
     };
-
 
     $scope.throwMenuAction = function () {
         if ($scope.selected.length > 0 || $scope.selectedItem.length > 0) {
@@ -742,7 +733,6 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
             });
         }
     };
-
 
     $scope.revertAuditMenuAction = function () {
         if ($scope.selected.length > 0 || $scope.selectedDetail.length > 0) {
@@ -1276,6 +1266,89 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                     $scope.showInfo('删除成功。');
                 });
             }
+        });
+    };
+
+    $scope.auditTransfer = function () {
+        var errorNos = '';
+        var transferedNos = '';
+        angular.forEach($scope.selected, function (item) {
+            if (!item.contractNo) {
+                errorNos += '<br />' + item.no;
+            }
+            if (item.transferPsoFlag == 1) {
+                transferedNos += '<br />' + item.no;
+            }
+        });
+        if (errorNos) {
+            $scope.showError('以下产品销售单合同号为空：' + errorNos);
+        }
+        if (transferedNos) {
+            $scope.showError('以下产品销售单已抛转：' + transferedNos);
+        }
+        if (errorNos || transferedNos) {
+            return false;
+        }
+
+        var mainPromises = [];
+        var errorInfo = '';
+        angular.forEach($scope.selected, function (item) {
+            mainPromises.push(Parameters.getAll(item.channel.uuid).success(function (data) {
+                if (data.content && data.content.length > 0) {
+                    var itemDepositRate = data.content[0].depositRate;
+                    if (item.paidRate < itemDepositRate) {
+                        errorInfo += '订单：' + item.no + '的收款比率<' + itemDepositRate * 100 + '%<br>';
+                    }
+                }
+            }));
+        });
+
+        $q.all(mainPromises).then(function () {
+            $scope.showConfirm('确认 审核抛转 吗？', errorInfo, function () {
+                var uuids = '';
+                angular.forEach($scope.selectedDetail, function (item) {
+                    uuids += (uuids ? ',' : '') + item.uuid;
+                });
+                OrderMaster.auditTransfer(uuids).success(function () {
+                    $scope.queryMenuActionWithPaging();
+                    $scope.showInfo('审核抛转 成功。');
+                }).error(function (err) {
+                    $scope.showError('审核抛转 失败。<br />' + err.message);
+                });
+            });
+        });
+    };
+
+    $scope.auditTransferForm = function () {
+        if (!$scope.selectedItem.contractNo) {
+            $scope.showError('该产品销售单合同号为空，不允许审核。');
+            return false;
+        }
+        if ($scope.selectedItem.transferPsoFlag == 1) {
+            $scope.showError('产品销售单已抛转');
+            return false;
+        }
+
+        var errorInfo = '';
+        var paidRate = $scope.selectedItem.paidRate.substring(0, $scope.selectedItem.paidRate.length - 1);
+        Parameters.getAll($scope.selectedItem.channel.uuid).success(function (data) {
+            var itemDepositRate = data.content[0].depositRate * 100;
+
+            if (paidRate < itemDepositRate) {
+                errorInfo += '订单：' + $scope.selectedItem.no + '的收款比率<' + itemDepositRate + '%<br>';
+            }
+
+            $scope.showConfirm('确认 审核抛转 吗？', errorInfo, function () {
+                OrderMaster.auditTransfer($scope.selectedItem.uuid).success(function () {
+                    $scope.refreshMasterAndDetail();
+                    OrderMaster.getOrderMasterCount(Constant.AUDIT[1].value, Constant.STATUS[1].value, Constant.TRANSFER_PSO_FLAG[2].value, RES_UUID_MAP.PSO.ORDER.LIST_PAGE.RES_UUID).success(function (data) {
+                        $scope.menuList[1].subList[1].suffix = data;
+                    });
+                    $scope.showInfo('审核抛转 成功。');
+                }).error(function (err) {
+                    $scope.showError('审核抛转 失败。<br />' + err.message);
+                });
+            });
         });
     };
 });
