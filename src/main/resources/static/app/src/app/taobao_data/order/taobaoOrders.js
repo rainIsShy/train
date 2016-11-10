@@ -319,9 +319,7 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
                     };
 
                     var response = TaobaoOrders.modify(OrderMasterUpdateInput).success(function (returnMsgs) {
-                        alert(returnMsgs);
-                        alert(orderMasterUuids);
-                        $scope.path('ecommerce-orders?tid='+tid);
+                        window.location.href = '#/ecommerce-orders?tid='+tid;
 //                        $scope.queryMenuActionWithPaging();//刷新查询
 //                        angular.forEach(returnMsgs, function (msg) {
 //                           $scope.showError(msg);
