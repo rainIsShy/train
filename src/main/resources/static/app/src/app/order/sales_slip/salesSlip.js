@@ -311,16 +311,21 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
             $scope.audit_button_disabled = 1;
         }
         //只有已审核且尚未抛转的单子可以抛转
-        if (!(orderMaster.confirm == 2 && orderMaster.transferPsoFlag != 1 )) {
+        if (!(orderMaster.confirm == 2 && orderMaster.transferPsoFlag != 1)) {
             $scope.throw_button_disabled = 1;
         }
         //只有已审核并且尚未抛转的单据可取消审核，若勾选单据中有其他审核状态的单据，则灰显按钮，若用户无权限取消审核，也灰显按钮；
-        if (!(orderMaster.confirm == 2 && orderMaster.transferPsoFlag != 1 )) {
+        if (!(orderMaster.confirm == 2 && orderMaster.transferPsoFlag != 1)) {
             $scope.revert_audit_button_disabled = 1;
         }
 
-        if (!(orderMaster.confirm == 2 && orderMaster.transferPsoFlag == 1 )) {
+        if (!(orderMaster.confirm == 2 && orderMaster.transferPsoFlag == 1)) {
             $scope.rollback_transfer_button_disabled = 1;
+        }
+
+        // 未審核、未拋轉 才可使用 审核抛转
+        if ($scope.audit_transfer_button_disabled != 1 && (orderMaster.confirm == 2 || orderMaster.transferPsoFlag == 1)) {
+            $scope.audit_transfer_button_disabled = 1;
         }
     };
     $scope.exists = function (item, list) {
@@ -798,6 +803,7 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
         $scope.throw_button_disabled = 0;
         $scope.revert_audit_button_disabled = 0;
         $scope.rollback_transfer_button_disabled = 0;
+        $scope.audit_transfer_button_disabled = 0;
     };
 
     $scope.queryMenuAction = function () {
