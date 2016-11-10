@@ -48,6 +48,12 @@
                            ng-disabled="throw_button_disabled == 1"> &nbsp;{{formMenuDisplayOption['418-oneOffSync'].name}}
                 </md-button>
             </div>
+            <div ng-if="formMenuDisplayOption['422-auditTransfer'].display && (menuAuthDataMap[formMenuDisplayOption['422-auditTransfer'].uuid] || isAdmin() || !formMenuDisplayOption['422-auditTransfer'].uuid)">
+                <md-button class="md-raised" ng-click="orderListMenuAction(422, $event)"
+                           style="margin-top: 0px;height: 20px;" aria-label="审核抛转"
+                           ng-disabled="audit_transfer_button_disabled == 1"> &nbsp;{{formMenuDisplayOption['422-auditTransfer'].name}}
+                </md-button>
+            </div>
             <div ng-if="formMenuDisplayOption['419-rollbackTransfer'].display && (menuAuthDataMap[formMenuDisplayOption['419-rollbackTransfer'].uuid] || isAdmin() || !formMenuDisplayOption['419-rollbackTransfer'].uuid)">
                 <md-button class="md-raised" ng-click="orderListMenuAction(419, $event)"
                            style="margin-top: 0px;height: 20px;" aria-label="抛转还原"
@@ -57,12 +63,6 @@
             <div ng-if="formMenuDisplayOption['417-print'].display && (menuAuthDataMap[formMenuDisplayOption['417-print'].uuid] || isAdmin() || !formMenuDisplayOption['417-print'].uuid)">
                 <md-button class="md-raised" ng-click="orderListMenuAction(417, $event)"
                            style="margin-top: 0px;height: 20px;" aria-label="打印"> &nbsp;{{formMenuDisplayOption['417-print'].name}}
-                </md-button>
-            </div>
-            <div ng-if="formMenuDisplayOption['422-auditTransfer'].display && (menuAuthDataMap[formMenuDisplayOption['422-auditTransfer'].uuid] || isAdmin() || !formMenuDisplayOption['422-auditTransfer'].uuid)">
-                <md-button class="md-raised" ng-click="orderListMenuAction(422, $event)"
-                           style="margin-top: 0px;height: 20px;" aria-label="审核抛转"
-                           ng-disabled="audit_transfer_button_disabled == 1"> &nbsp;{{formMenuDisplayOption['422-auditTransfer'].name}}
                 </md-button>
             </div>
         </div>

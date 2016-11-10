@@ -157,16 +157,16 @@
                            ng-disabled="throw_button_disabled == 1"> &nbsp;{{orderListMenuDisplayOption['407-oneOffSync'].name}}
                 </md-button>
             </div>
-            <div ng-if="orderListMenuDisplayOption['409-rollbackTransfer'].display && (menuAuthDataMap[orderListMenuDisplayOption['409-rollbackTransfer'].uuid] || isAdmin() || !orderListMenuDisplayOption['409-rollbackTransfer'].uuid)">
-                <md-button class="md-raised" ng-click="orderListMenuAction(409, $event)"
-                           style="margin-top: 0px;height: 20px;" aria-label="抛转还原"
-                           ng-disabled="rollback_transfer_button_disabled == 1"> &nbsp;{{orderListMenuDisplayOption['409-rollbackTransfer'].name}}
-                </md-button>
-            </div>
             <div ng-if="orderListMenuDisplayOption['410-auditTransfer'].display && (menuAuthDataMap[orderListMenuDisplayOption['410-auditTransfer'].uuid] || isAdmin() || !orderListMenuDisplayOption['410-auditTransfer'].uuid)">
                 <md-button class="md-raised" ng-click="orderListMenuAction(410, $event)"
                            style="margin-top: 0px;height: 20px;" aria-label="审核抛转"
                            ng-disabled="audit_transfer_button_disabled == 1"> &nbsp;{{orderListMenuDisplayOption['410-auditTransfer'].name}}
+                </md-button>
+            </div>
+            <div ng-if="orderListMenuDisplayOption['409-rollbackTransfer'].display && (menuAuthDataMap[orderListMenuDisplayOption['409-rollbackTransfer'].uuid] || isAdmin() || !orderListMenuDisplayOption['409-rollbackTransfer'].uuid)">
+                <md-button class="md-raised" ng-click="orderListMenuAction(409, $event)"
+                           style="margin-top: 0px;height: 20px;" aria-label="抛转还原"
+                           ng-disabled="rollback_transfer_button_disabled == 1"> &nbsp;{{orderListMenuDisplayOption['409-rollbackTransfer'].name}}
                 </md-button>
             </div>
         </div>
