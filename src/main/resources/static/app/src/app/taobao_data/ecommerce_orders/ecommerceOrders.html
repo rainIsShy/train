@@ -124,9 +124,11 @@
                                                    ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                                         </md-input-container>
                                         <md-input-container>
-                                            <label class="label">O2O门店/經銷商：</label>
+                                            <label class="label">O2O门店/经销商：</label>
                                             <input type="text" ng-model="selectedItem.o2oChannel.name"
                                                    ng-disabled="true">
+                                            <a href ng-click="openO2oChannelDlg()"
+                                               ng-show="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD">选择O2O门店/经销商</a>
                                         </md-input-container>
                                     </div>
                                 </div>
