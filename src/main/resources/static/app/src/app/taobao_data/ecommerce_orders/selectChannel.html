@@ -14,6 +14,11 @@
                         <i class="fa fa-times"></i>
                     </md-button>
                 </div>
+                <md-list-item class="md-2-line" ng-if="isO2o == true">
+                    <div class="md-list-item-text" ng-click="selectChannel(null)"><h3>无门店/经销商</h3></div>
+                    <md-divider></md-divider>
+                </md-list-item>
+
                 <md-list-item class="md-2-line" ng-repeat="channel in allChannel.content | orderBy:'name'"
                               ng-click="selectChannel(channel)">
                     <div class="md-list-item-text">
