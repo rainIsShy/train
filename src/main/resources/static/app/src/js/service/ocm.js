@@ -569,7 +569,7 @@ angular.module('IOne-Production').service('ChannelRelationService', function ($h
 });
 
 angular.module('IOne-Production').service('ChannelPromotionService', function ($http, Constant) {
-    this.getAll = function (sizePerPage, page, confirm, status, no, name, keyword, promotionDateBegin, promotionDateEnd, resUuid, promotionDateInRange) {
+    this.getAll = function (sizePerPage, page, confirm, status, no, name, keyword, promotionDateBegin, promotionDateEnd, resUuid) {
         confirm = confirm == 0 ? '' : confirm;
         status = status == 0 ? '' : status;
 
@@ -594,14 +594,9 @@ angular.module('IOne-Production').service('ChannelPromotionService', function ($
             url = url + '&promotionDateEnd=' + promotionDateEnd;
         }
 
-        if (promotionDateInRange) {
-            url += '&promotionDateInRange=' + promotionDateInRange;
-        }
-
         if (keyword != undefined && keyword != null && keyword != '') {
             url = url + '&keyword=' + keyword;
         }
-
 
         if (resUuid != undefined && resUuid != null) {
             url = url + '&resUuid=' + resUuid;
@@ -628,7 +623,24 @@ angular.module('IOne-Production').service('ChannelPromotionService', function ($
         return $http.delete(Constant.BACKEND_BASE + '/promotions/' + uuid);
     };
 
+    this.getAllForPmmOrder = function (sizePerPage, page, keyword, channelUuid, purchaseDateBetween) {
+        var url = '/promotions/pmmOrder?size=' + sizePerPage
+            + '&page=' + page;
 
+        if (keyword) {
+            url = url + '&keyword=' + keyword;
+        }
+
+        if (channelUuid) {
+            url += '&channelUuid=' + channelUuid;
+        }
+
+        if (purchaseDateBetween) {
+            url += '&purchaseDateBetween=' + purchaseDateBetween;
+        }
+
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
 });
 
 angular.module('IOne-Production').service('PromotionProductService', function ($http, Constant) {
