@@ -369,8 +369,9 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
                     $scope.showInfo('取消审核成功，数据已刷新');
                 } else {
                     if(Object.keys(data).length == 1) {
-                        $scope.showError('取消审核失败.');
+                        $scope.showError('电商销售单已审核，不能取消审核.');
                     } else {
+                        $scope.showError('电商销售单已审核，不能取消审核.');
                         $scope.showWarn('部分取消审核成功，数据已刷新.');
                     }
                 }

@@ -199,6 +199,29 @@ angular.module('IOne-Production').service('EchannelService', function ($http, Co
         }
         return $http.get(Constant.BACKEND_BASE + url);
     };
+
+    this.getO2oChannel = function (sizePerPage, page, confirm, status, channelName, channelFlag, resUuid) {
+        confirm = confirm == 0 ? '' : confirm;
+        status = status == 0 ? '' : status;
+
+        var url = '/channels?size=' + sizePerPage
+            + '&page=' + page
+            + '&confirm=' + confirm
+            + '&status=' + status
+            + '&isO2o=Y';
+        if (channelName !== undefined && channelName !== null) {
+            url = url + '&name=' + channelName;
+        }
+        if (channelFlag !== undefined && channelFlag !== null) {
+            url = url + '&channelFlag=' + channelFlag;
+        }
+
+        if (resUuid !== undefined && resUuid !== null) {
+            url = url + '&resUuid=' + resUuid;
+        }
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
 });
 
 angular.module('IOne-Production').service('EareaService', function ($http, Constant) {

@@ -49,6 +49,7 @@
                                         <md-input-container>
                                             <label>订单类型：</label>
                                             <md-select placeholder="" ng-model="selectedItem.orderFlag"
+                                                       ng-change="onOrderFlagChange(selectedItem.orderFlag)"
                                                        ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                                                 <md-option ng-repeat="(key, value) in ORDER_FLAG" ng-value="key">
                                                     {{value.name}}
@@ -122,6 +123,13 @@
                                             <input type="date" ng-model="selectedItem.predictDeliverDate"
                                                    ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                                         </md-input-container>
+                                        <md-input-container>
+                                            <label class="label">O2O门店/经销商：</label>
+                                            <input type="text" ng-model="selectedItem.o2oChannel.name"
+                                                   ng-disabled="true">
+                                            <a href ng-click="openO2oChannelDlg()"
+                                               ng-show="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD">选择O2O门店/经销商</a>
+                                        </md-input-container>
                                     </div>
                                 </div>
                                 <div flex layout="row">
@@ -134,6 +142,11 @@
                                         <label class="label">备注：</label>
                                         <input type="text" ng-model="selectedItem.remark"
                                                ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                    </md-input-container>
+                                    <md-input-container flex>
+                                        <label class="label">O2O配送狀態：</label>
+                                        <input type="text" ng-model="o2oFlags[selectedItem.o2oFlag].name"
+                                               ng-disabled="true">
                                     </md-input-container>
                                 </div>
 
