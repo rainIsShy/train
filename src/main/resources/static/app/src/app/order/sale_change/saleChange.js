@@ -838,20 +838,44 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
     };
 
     $scope.batchAuditTransfer = function (event) {
-        // $scope.stopEventPropagation(event);
-        //
-        // if ($scope.selectedItemSize == 0) {
-        //     $scope.showWarn('请先选择记录！');
-        //     return;
-        // }
+        $scope.stopEventPropagation(event);
 
-        console.log('批量-审核抛转');
-        console.log('單筆-审核抛转');
+        if ($scope.selectedItemSize == 0) {
+            $scope.showWarn('请先选择记录！');
+            return;
+        }
+        $scope.showConfirm('确认 审核抛转 吗？', '', function () {
+            var uuids = '';
+            angular.forEach($scope.itemList, function (item) {
+                if (item.selected) {
+                    uuids += (!uuids ? '' :',') + item.uuid;
+                }
+            });
+            PsoOrderChangeMaster.auditTransfer(uuids).success(function (data) {
+                $scope.disableBatchMenuButtons();
+                $scope.getOrderMasterCount();
 
+                $scope.showInfo('产品销售变更单 审核抛转 成功！');
+            }).error(function (resp) {
+                $scope.showError(resp.message);
+            });
+        });
     };
 
     $scope.auditTransfer = function (event, item) {
+        $scope.stopEventPropagation(event);
 
+        $scope.showConfirm('确认 审核抛转 吗？', '', function () {
+            PsoOrderChangeMaster.auditTransfer(item.uuid).success(function (data) {
+                $scope.updateOrderChangeDetailsConfirm(item);
+                $scope.disableBatchMenuButtons();
+                $scope.getOrderMasterCount();
+
+                $scope.showInfo('产品销售变更单 审核抛转 成功！');
+            }).error(function (resp) {
+                $scope.showError(resp.message);
+            });
+        });
     };
 });
 
