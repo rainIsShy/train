@@ -1307,7 +1307,8 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     };
 
     $scope.openOrderPromotionDlg = function () {
-        if (!$scope.selectedItem.channelUuid) {
+        var channelUuid = $scope.selectedItem.channel ? $scope.selectedItem.channel.uuid : $scope.selectedItem.channelUuid;
+        if (!channelUuid) {
             $scope.showError('请选择经销商。');
             return false;
         }
@@ -1316,7 +1317,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             templateUrl: 'app/src/app/pmm/pmmOrder/selectPromotion.html',
             parent: angular.element(document.body),
             targetEvent: event,
-            locals: { channelUuid: $scope.selectedItem.channelUuid }
+            locals: { channelUuid: channelUuid }
         }).then(function (data) {
             $scope.selectedItem.promotion = data;
             $scope.selectedItem.promotionUuid = data.uuid;
@@ -1931,7 +1932,6 @@ angular.module('IOne-Production').controller('OrderPromotionSearchController', f
     $scope.refresh = function () {
         var curData = new Date();
         var curDateStr = curData.getFullYear() + '-' + (curData.getMonth() + 1) + '-' + curData.getDate();
-        console.log(curDateStr);
         ChannelPromotionService.getAllForPmmOrder($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.searchKeyword, channelUuid, curDateStr)
         .success(function (data) {
             $scope.resp = data;
