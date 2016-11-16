@@ -1308,7 +1308,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
     $scope.openOrderPromotionDlg = function () {
         if (!$scope.selectedItem.channelUuid) {
-            $scope.showError('请选择经销商。;
+            $scope.showError('请选择经销商。');
             return false;
         }
         $mdDialog.show({
