@@ -1932,7 +1932,7 @@ angular.module('IOne-Production').controller('OrderPromotionSearchController', f
     $scope.refresh = function () {
         var curData = new Date();
         var curDateStr = curData.getFullYear() + '-' + (curData.getMonth() + 1) + '-' + curData.getDate();
-        ChannelPromotionService.getAllForPmmOrder($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.searchKeyword, channelUuid, curDateStr)
+        ChannelPromotionService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 2, 1, null, null, $scope.searchKeyword, null, null, null, channelUuid, curDateStr)
         .success(function (data) {
             $scope.resp = data;
             $scope.pageOption.totalElements = data.totalElements;
