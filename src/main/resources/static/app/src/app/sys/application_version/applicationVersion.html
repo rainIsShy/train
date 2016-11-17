@@ -160,8 +160,8 @@
                         </md-select>
                     </md-input-container>
                     <md-input-container flex="20" ng-show="selectedItem == null">
-                        <label>编号：</label>
-                        <input type="text" ng-model="listFilterOption.no" ng-keypress="queryEnter($event)">
+                        <label>版本：</label>
+                        <input type="text" ng-model="listFilterOption.version" ng-keypress="queryEnter($event)">
                     </md-input-container>
                     <md-input-container flex="20" ng-show="selectedItem == null">
                         <label>名称：</label>
@@ -199,9 +199,9 @@
                         </md-button>
                         <md-menu-content width="2">
                             <md-menu-item>
-                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('-no')">
-                                    <ng-md-icon ng-show="sortByField == '-no'" icon="play_arrow"></ng-md-icon>
-                                    按编号
+                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('-version')">
+                                    <ng-md-icon ng-show="sortByField == '-version'" icon="play_arrow"></ng-md-icon>
+                                    按版本
                                 </md-button>
                                 <md-button class="md-button" aria-label="More" ng-click="sortByAction('name')">
                                     <ng-md-icon ng-show="sortByField == 'name'" icon="play_arrow"></ng-md-icon>

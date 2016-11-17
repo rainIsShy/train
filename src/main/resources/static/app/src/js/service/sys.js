@@ -119,13 +119,13 @@ angular.module('IOne-Production').service('SYSMapsService', function ($http, Con
 });
 
 angular.module('IOne-Production').service('SYSApplicationVersionService', function ($http, Constant) {
-    this.getAll = function (sizePerPage, page, status, no, name, releaseDate, keyWord, resUuid) {
+    this.getAll = function (sizePerPage, page, status, version, name, releaseDate, keyWord, resUuid) {
         status = status == 0 ? '' : status;
 
         var url = '/applicationVersions?size=' + sizePerPage + '&page=' + page  + '&status=' + status;
 
-        if (no !== undefined && no !== null && no !== '') {
-            url = url + '&no=' + no;
+        if (version !== undefined && version !== null && version !== '') {
+            url = url + '&version=' + version;
         }
         if (name !== undefined && name !== null && name !== '') {
             url = url + '&name=' + name;
