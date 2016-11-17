@@ -312,7 +312,9 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
         $scope.ecommerceOrderListMenu.selectAll = false;
         $scope.selectedItem = orderMaster;
         if ($scope.selectedItem.orderDate) {
-            $scope.selectedItem.orderDate = new Date($scope.selectedItem.orderDate);
+            // $scope.selectedItem.orderDate = new Date($scope.selectedItem.orderDate);
+            // var dateTime = new Date($scope.selectedItem.orderDate);
+            // $scope.selectedItem.orderDate  = moment($scope.selectedItem.orderDate).format("YYYY-MM-DD hh:mm:ss");
         }
 
         if ($scope.selectedItem.predictDeliverDate) {
@@ -382,6 +384,7 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
     $scope.preAddMenuAction = function () {
         //选中的清空
         $scope.selectedItem = EcommerceOrdersMaster.createDefault();
+
         EdelivWayService.getAll(1, 0, null, 'DW02').success(function (data) {
             $scope.selectedItem.deliverWay = data.content[0];
             $scope.selectedItem.deliverWayUuid = $scope.selectedItem.deliverWay.uuid;
@@ -426,6 +429,13 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
             $scope.selectedItem.orderChangeFlag='2';
             //console.info("准备新增：");
             //console.info($scope.selectedItem);
+
+            if ($scope.selectedItem.orderDate) {
+                $scope.selectedItem.orderDate = new Date($scope.selectedItem.orderDate);
+                // var dateTime = new Date($scope.selectedItem.orderDate);
+                // $scope.selectedItem.orderDate  = moment($scope.selectedItem.orderDate).format("YYYY-MM-DD hh:mm:ss");
+            }
+
             EcommerceOrdersMaster.add($scope.selectedItem).success(function (data) {
                 $scope.selectedItem = data;
                 //console.info("新增后返回：");
@@ -461,10 +471,8 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                 return;
             }
 
-            console.log($scope.selectedItem);
 
             EcommerceOrdersMaster.modify($scope.selectedItem).success(function (data) {
-                console.info(data[0]);
                 $scope.selectedItem = data[0];
                 $scope.editItem($scope.selectedItem);
                 console.log($scope.selectedItem);
