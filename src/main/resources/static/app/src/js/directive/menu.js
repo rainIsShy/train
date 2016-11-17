@@ -171,6 +171,32 @@ angular.module('IOne-directives').directive('ocmListMenu', function(Constant) {
     }
 });
 
+
+angular.module('IOne-directives').directive('channelSeriesRelationList', function(Constant) {
+    return {
+        templateUrl: 'app/src/js/directive/channelSeriesRelationList.html',
+        link: function($scope) {
+          $scope.ocmListMenuAction = function(menuId, $event) {
+                //Main menu
+                if(menuId == 600) {
+                    $scope.queryMenuAction();
+                } else if(menuId == 601) {
+                    $scope.selectAllMenuAction();
+                } else if(menuId == 602) {
+                    $scope.auditMenuAction();
+                } else if(menuId == 603) {
+                    $scope.revertAuditMenuAction();
+                } else if(menuId == 604) {
+                    $scope.validStatusMenuAction();
+                } else if(menuId == 605) {
+                    $scope.invalidStatusMenuAction();
+                }
+
+           }
+        }
+    }
+});
+
 angular.module('IOne-directives').directive('ocmFormMenu', function(Constant) {
     return {
         templateUrl: 'app/src/js/directive/ocmFormMenu.html',
@@ -192,6 +218,83 @@ angular.module('IOne-directives').directive('ocmFormMenu', function(Constant) {
         }
     }
 });
+
+angular.module('IOne-directives').directive('channelSeriesRelationTable1', function(Constant) {
+    return {
+        templateUrl: 'app/src/js/directive/channelSeriesRelationTable1.html',
+        link: function($scope) {
+            $scope.menuAction = function(menuId, $event) {
+                //Main menu
+                if(menuId == 100) {
+                    $scope.preAddMenuAction();
+                } else if(menuId == 101) {
+                    $scope.deleteMenuAction();
+                } else if(menuId == 102) {
+                    $scope.changeViewStatus($scope.UI_STATUS.EDIT_UI_STATUS_MODIFY, 1);
+                } else if(menuId == 103) {
+                    $scope.copyMenuAction();
+                } else if(menuId == 104) {
+                    $scope.statusMenuAction();
+                } else if(menuId == 105) {
+                    $scope.confirmMenuAction();
+                } else if(menuId == 106) {
+                    $scope.releaseMenuAction();
+                } else if(menuId == 107) {
+                    $scope.changeMenuAction();
+                } else if(menuId == 108) {
+                    $scope.changeHistoryMenuAction();
+                 } else if(menuId == 109) {
+                     $scope.copyChannelPrice();
+                 }
+                //Add menu
+                if(menuId == 200) {
+                    $scope.cancelAddMenuAction();
+                } else if(menuId == 201) {
+                    $scope.addMenuAction();
+                } else if(menuId == 202) {
+                    $scope.continueAddMenuAction();
+                }
+                //Modify menu
+                if(menuId == 300) {
+                    $scope.addNodeMenuAction($event);
+                } else if(menuId == 301) {
+                    $scope.deleteNodeMenuAction($event);
+                } else if(menuId == 302) {
+                    $scope.modifyMenuAction();
+                } else if(menuId == 303) {
+                    $scope.cancelModifyMenuAction();
+                } else if(menuId == 304) {
+                    $scope.exitModifyMenuAction();
+                }
+
+            }
+        }
+    }
+});
+
+angular.module('IOne-directives').directive('channelSeriesRelationTable2', function(Constant) {
+    return {
+        templateUrl: 'app/src/js/directive/channelSeriesRelationTable2.html',
+        link: function($scope) {
+          $scope.ocmListMenuAction = function(menuId, $event) {
+                if(menuId == 611) {
+                    $scope.selectAllMenuAction();
+                 } else if(menuId == 612) {
+                    $scope.auditMenuAction();
+                } else if(menuId == 613) {
+                    $scope.revertAuditMenuAction();
+                } else if(menuId == 614) {
+                    $scope.validStatusMenuAction();
+                } else if(menuId == 615) {
+                    $scope.invalidStatusMenuAction();
+                }
+
+           }
+        }
+    }
+});
+
+
 
 angular.module('IOne-directives').directive('taobaoOrderListMenu', function(Constant) {
     return {

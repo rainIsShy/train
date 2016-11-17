@@ -568,6 +568,56 @@ angular.module('IOne-Production').service('ChannelRelationService', function ($h
 
 });
 
+angular.module('IOne-Production').service('ChannelSeriesRelationService', function ($http, Constant) {
+    this.getAll = function (channelUuid, resUuid) {
+        var url = '/channelSeriesRelations?channelUuid=' + channelUuid + '&resUuid=' + resUuid;
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
+    this.getAllWithPaging = function (sizePerPage, page, channelUuid) {
+        var url = '/channelSeriesRelations?size=' + sizePerPage
+            + '&page=' + page
+            + '&channelUuid=' + channelUuid;
+
+
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
+    this.getAllCountByChannelUuid = function (channelUuid) {
+        var ChannelPriceQuery = {
+            channelUuid: channelUuid
+        };
+        var url = '/channelRelations/count?channelUuids=' + channelUuid;
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
+    this.get = function (channelRelationUuid) {
+        return $http.get(Constant.BACKEND_BASE + '/channelRelations/' + channelRelationUuid);
+    };
+
+    this.add = function (channelRelationInput) {
+        return $http.post(Constant.BACKEND_BASE + '/channelRelations/', channelRelationInput);
+    };
+
+    this.modify = function (channelRelationUuid, channelRelationUpdateInput) {
+        return $http.patch(Constant.BACKEND_BASE + '/channelSeriesRelations/' + channelRelationUuid, channelRelationUpdateInput);
+    };
+
+    this.modifyAll = function (ChannelRelationUpdateInput) {
+        return $http.patch(Constant.BACKEND_BASE + '/channelRelations/', ChannelRelationUpdateInput);
+    };
+
+    this.delete = function (channelRelationUuid) {
+        return $http.delete(Constant.BACKEND_BASE + '/channelRelations/' + channelRelationUuid);
+    };
+
+});
+
+
+
+
+
+
 angular.module('IOne-Production').service('ChannelPromotionService', function ($http, Constant) {
     this.getAll = function (sizePerPage, page, confirm, status, no, name, keyword, promotionDateBegin, promotionDateEnd, resUuid) {
         confirm = confirm == 0 ? '' : confirm;

@@ -1,0 +1,44 @@
+<md-dialog style="min-width: 500px;max-height: 500px;">
+    <md-content layout="column">
+        <div layout="row">
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancelDlg()">
+                <ng-md-icon icon="close"></ng-md-icon>
+            </md-button>
+        </div>
+        <div>
+            <form name="search" novalidate="">
+                <div style="margin: 0px 30px;">
+                    <div layout="row" style="margin-top: 35px;">
+                        <md-input-container flex="50" style="padding-bottom: 26px">
+                            <label>品牌编号</label>
+                            <input type="text" ng-model="searchQuery.no" ng-keypress="queryEnter($event)">
+                        </md-input-container>
+                        <md-input-container flex="50" style="padding-bottom: 26px">
+                            <label>品牌名称</label>
+                            <input type="text" ng-model="searchQuery.name" ng-keypress="queryEnter($event)">
+                        </md-input-container>
+                        <md-button ng-click="refreshAllTemplate()" ng-disabled="searchKeyword.$invalid"
+                                   style="padding-top: 20px;">
+                            <i class="fa fa-search"></i>
+                        </md-button>
+                    </div>
+                    <md-list-item class="md-3-line" ng-repeat="data in allProductionsData | filter:searchQuery:false"
+                                  ng-click="select(data)">
+                        <div class="md-list-item-text">
+
+                            <div class="name"><b>品牌编号:</b><span
+                                    style="font-size: small;"> {{data.no}}</span><b>｜品牌名称:</b><span
+                                    style="font-size: small;"> {{data.name}}</span></div>
+
+
+                        </div>
+                        <md-divider></md-divider>
+                    </md-list-item>
+                    <div pagination option="pageOption" callback="refreshAllTemplate()"></div>
+                </div>
+            </form>
+        </div>
+    </md-content>
+</md-dialog>
+
