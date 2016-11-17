@@ -162,7 +162,6 @@ angular.module('IOne-Production').controller('SYSApplicationVersionController', 
         $scope.desc = desc;
         $scope.source = source;
         $scope.domain = domain;
-        $scope.source.status = '1';
     };
 
     /**
