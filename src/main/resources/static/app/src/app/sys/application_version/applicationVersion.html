@@ -116,13 +116,21 @@
             <div flex="70" hide-sm hide-md layout="column" class="left-body" ng-show="selectedItem">
                 <div flex="100" layout-padding>
                     <div layout="row" layout-padding style="font-size: 20px;padding-top: 2px; font-weight: bold;">
-                        <span flex>编号: {{selectedItem.no}}</span>
+                        <span flex>版本: {{selectedItem.version}}</span>
                     </div>
                     <md-divider></md-divider>
                     <div layout="row" layout-wrap layout-margin>
                         <span flex="50" flex-sm="100" layout-padding>
-                            <span class="item-name">APP版本</span>
+                            <span class="item-name">名称</span>
                             <span class="item-content">{{selectedItem.name}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">版本</span>
+                            <span class="item-content">{{selectedItem.version}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">建置版号</span>
+                            <span class="item-content">{{selectedItem.build}}</span>
                         </span>
                         <span flex="50" flex-sm="100" layout-padding>
                             <span class="item-name">发布时间</span>
@@ -211,11 +219,13 @@
                             </span>
 
                             <div flex="100" layout="row" style="padding-left: 50px;padding-top: 10px; font-weight: bold;">
-                                <span flex ng-click="showDetailPanelAction(item)" class="summary-item__title">{{item.no}}</span>
+                                <span flex ng-click="showDetailPanelAction(item)" class="summary-item__title">{{item.version}}</span>
                             </div>
                             <div flex="100" layout="row" style="padding-left: 50px;padding-top: 10px;font-size: 14px;" layout-align="space-between center" ng-hide="selectedItem">
                                 <div flex layout="row" style="color:#7f8fa4">
-                                    <span>APP版本: <span style="font-style: italic">{{item.name}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                    <span>名称: <span style="font-style: italic">{{item.name}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                    <span>版本: <span style="font-style: italic">{{item.version}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                    <span>版号: <span style="font-style: italic">{{item.build}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
                                     <span>发布时间: <span style="font-style: italic">{{item.releaseDate| date:'yyyy-MM-dd'}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
                                     <span>版本说明: <span style="font-style: italic">{{item.remark}}</span></span>
                                 </div>
