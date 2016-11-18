@@ -569,7 +569,7 @@ angular.module('IOne-Production').service('ChannelRelationService', function ($h
 });
 
 angular.module('IOne-Production').service('ChannelPromotionService', function ($http, Constant) {
-    this.getAll = function (sizePerPage, page, confirm, status, no, name, keyword, promotionDateBegin, promotionDateEnd, resUuid) {
+    this.getAll = function (sizePerPage, page, confirm, status, no, name, keyword, promotionDateBegin, promotionDateEnd, resUuid, channelUuid, purchaseDateBetween) {
         confirm = confirm == 0 ? '' : confirm;
         status = status == 0 ? '' : status;
 
@@ -598,9 +598,16 @@ angular.module('IOne-Production').service('ChannelPromotionService', function ($
             url = url + '&keyword=' + keyword;
         }
 
-
         if (resUuid != undefined && resUuid != null) {
             url = url + '&resUuid=' + resUuid;
+        }
+
+        if (channelUuid) {
+            url += '&channelUuid=' + channelUuid;
+        }
+
+        if (purchaseDateBetween) {
+            url += '&purchaseDateBetween=' + purchaseDateBetween;
         }
 
         return $http.get(Constant.BACKEND_BASE + url);
@@ -623,7 +630,6 @@ angular.module('IOne-Production').service('ChannelPromotionService', function ($
     this.delete = function (uuid) {
         return $http.delete(Constant.BACKEND_BASE + '/promotions/' + uuid);
     };
-
 
 });
 

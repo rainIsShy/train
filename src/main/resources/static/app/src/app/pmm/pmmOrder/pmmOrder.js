@@ -1307,11 +1307,17 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     };
 
     $scope.openOrderPromotionDlg = function () {
+        var channelUuid = $scope.selectedItem.channel ? $scope.selectedItem.channel.uuid : $scope.selectedItem.channelUuid;
+        if (!channelUuid) {
+            $scope.showError('请选择经销商。');
+            return false;
+        }
         $mdDialog.show({
             controller: 'OrderPromotionSearchController',
             templateUrl: 'app/src/app/pmm/pmmOrder/selectPromotion.html',
             parent: angular.element(document.body),
-            targetEvent: event
+            targetEvent: event,
+            locals: { channelUuid: channelUuid }
         }).then(function (data) {
             $scope.selectedItem.promotion = data;
             $scope.selectedItem.promotionUuid = data.uuid;
@@ -1914,7 +1920,7 @@ angular.module('IOne-Production').controller('PmmOrderDetailController', functio
     };
 });
 
-angular.module('IOne-Production').controller('OrderPromotionSearchController', function ($scope, $mdDialog, ChannelPromotionService) {
+angular.module('IOne-Production').controller('OrderPromotionSearchController', function ($scope, $mdDialog, channelUuid, ChannelPromotionService) {
     $scope.pageOption = {
         sizePerPage: 6,
         currentPage: 0,
@@ -1924,7 +1930,9 @@ angular.module('IOne-Production').controller('OrderPromotionSearchController', f
     };
 
     $scope.refresh = function () {
-        ChannelPromotionService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 2, 1, '', '', $scope.searchKeyword)
+        var curData = new Date();
+        var curDateStr = curData.getFullYear() + '-' + (curData.getMonth() + 1) + '-' + curData.getDate();
+        ChannelPromotionService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 2, 1, null, null, $scope.searchKeyword, null, null, null, channelUuid, curDateStr)
         .success(function (data) {
             $scope.resp = data;
             $scope.pageOption.totalElements = data.totalElements;
