@@ -311,6 +311,18 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
         $scope.selectedDetail = [];
         $scope.ecommerceOrderListMenu.selectAll = false;
         $scope.selectedItem = orderMaster;
+        if ($scope.selectedItem.orderDate) {
+            $scope.selectedItem.orderDate = new Date($scope.selectedItem.orderDate);
+        }
+
+        if ($scope.selectedItem.predictDeliverDate) {
+            $scope.selectedItem.predictDeliverDate = new Date($scope.selectedItem.predictDeliverDate);
+        }
+
+        if (orderMaster.o2oChannel != null) {
+            $scope.selectedItem.o2oChannelUuid = orderMaster.o2oChannel.uuid;
+        }
+
         $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
         $scope.resetButtonDisabled();
         $scope.changeButtonStatus(orderMaster);
@@ -448,10 +460,14 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                 $scope.showError('已审核和正在审核中的销售单不能修改。');
                 return;
             }
+
+            console.log($scope.selectedItem);
+
             EcommerceOrdersMaster.modify($scope.selectedItem).success(function (data) {
                 console.info(data[0]);
                 $scope.selectedItem = data[0];
-
+                $scope.editItem($scope.selectedItem);
+                console.log($scope.selectedItem);
                 //重取单身
                 EcommerceOrderDetail.getAll($scope.selectedItem.uuid).success(function (data) {
                     $scope.selectedItem.detailList = data.content;
