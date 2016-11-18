@@ -18,7 +18,6 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
         PLM_ITEM_CHAN_PRICE: {value: 'PLM_ITEM_CHAN_PRICE', name: '停售同步'},
         PLM_ITEM_ITEM_FILE: {value: 'PLM_ITEM_ITEM_FILE', name: '商品同步'},
         PLM_ITEM_BOM_FILE: {value: 'PLM_ITEM_BOM_FILE', name: 'BOM信息同步'},
-        PLM_ITEM_ITEM_FILE: {value: 'PLM_ITEM_ITEM_FILE', name: '商品同步'},
         PLM_ITEM_CHAN_PRICE2: {value: 'PLM_ITEM_CHAN_PRICE', name: '商品渠道信息同步'},
         PLM_ITEM_BOM: {value: 'PLM_ITEM_ITEM_FILE', name: '品牌信息同步'}
     };
@@ -111,7 +110,7 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
                     promises.push(result);
                 }
 
-                if (item.syncType == 'PLM_ITEM_BOM_FILE') {
+                if (item.syncType == $scope.TIPTOP_SYNC_TYPE.PLM_ITEM_BOM_FILE.name) {
                     //BOM同步
                     var result = IoneAdapterService.transferIoneAdapter("/bmbTask", param, $scope, function (response) {
                         console.log(response);
