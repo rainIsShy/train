@@ -13,7 +13,7 @@
                         <label>同步类型：</label>
                         <md-select placeholder="请选择同步类型" ng-model="listFilterOption.syncType"
                                    ng-change="getTiptopDbByType(listFilterOption.syncType)">
-                            <md-option ng-repeat="(key, value) in TIPTOP_SYNC_TYPE" ng-value="key">
+                            <md-option ng-repeat="(key, value) in TIPTOP_SYNC_TYPE" ng-value="value">
                                 {{value.name}}
                             </md-option>
                         </md-select>
