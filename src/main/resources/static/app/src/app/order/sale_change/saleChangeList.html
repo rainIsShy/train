@@ -144,7 +144,7 @@
                             </md-button>
                         </md-menu-item>
                         <md-menu-item
-                                ng-if="menuDisplayOption['batchAuditTransfer'].display && (menuAuthDataMap[menuDisplayOption['auditTransfer'].uuid] || isAdmin() || !menuDisplayOption['auditTransfer'].uuid)">
+                                ng-if="menuDisplayOption['batchAuditTransfer'].display && (menuAuthDataMap[menuDisplayOption['batchAuditTransfer'].uuid] || isAdmin() || !menuDisplayOption['batchAuditTransfer'].uuid)">
                             <md-button ng-disabled="disabledBatchConfirm" class="md-button" aria-label="More"
                                        ng-click="batchAuditTransfer($event)">
                                 <ng-md-icon icon="send"></ng-md-icon>
