@@ -32,11 +32,11 @@
                                 </md-input-container>
                                 <md-input-container >
                                     <label>品牌编号：</label>
-                                    <input  aria-label="..."  ng-model="areaCode"/>
+                                    <input  aria-label="..."  ng-model="selectedItem.seriesNo"/>
                                 </md-input-container>
                                 <md-input-container >
                                     <label>品牌名称：</label>
-                                    <input aria-label="..."  ng-model="areaName"/>
+                                    <input aria-label="..."  ng-model="selectedItem.seriesName"/>
                                 </md-input-container>
 
                                 <md-button class="md-raised" aria-label="..."  ng-if="ocmListMenuDisplayOption['600-query'].display"
@@ -56,17 +56,17 @@
                                 </div>
 
                                 <div ng-repeat="channelRelation in channelRelationList.content "  >
-                                    <div  layout="row"   >
+                                    <div  layout="row">
                                         <div flex="5" class=" table-item"  ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                                             <md-checkbox aria-label="..." ng-checked="exists(channelRelation, selected)" ng-click="toggle(channelRelation, selected)">
                                             </md-checkbox>
 
                                         </div>
                                         <div  align="center" flex="10" class=" table-item">
-                                            <div style=" padding: 10px 0px 0px 0px;">{{channelRelation.area.no}}</div>
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelRelation.series.no}}</div>
                                         </div>
                                         <div  align="center" flex="10" class=" table-item">
-                                            <div style=" padding: 10px 0px 0px 0px;">{{channelRelation.area.name }}</div>
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelRelation.series.name }}</div>
                                         </div>
                                         <!--<div  align="center" flex="5" class=" table-item" layout="row" >-->
                                             <!--<md-checkbox style=" padding: 0px 0px 0px 20px;" aria-label="..." ng-model="channelRelation.confirm"   ng-disabled="true"-->

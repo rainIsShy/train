@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('ChannelSeriesRelationController', function ($scope, $q, ChannelService, ChannelRelationService, ChannelSeriesRelationService,$mdDialog, $timeout, Constant){
+angular.module('IOne-Production').controller('ChannelSeriesRelationController', function ($scope, $q, ChannelService, ChannelSeriesRelationService,$mdDialog, $timeout, Constant){
     //initial model value
 
     $scope.listFilterItem = {
@@ -57,24 +57,22 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
        totalElements: 100
      };
 
-//     $scope.editItem = function (channelRelation) {
-//         $scope.selectedItem = channelRelation;
-//         $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
-//         $scope.pageOption.currentPage = 0;
-//         $scope.pageOption.totalPage = 0;
-//         $scope.pageOption.totalElements = 0;
-//         $scope.listFilterItem.itemUuids.length = 0;
-//         $scope.queryChannelRelationWithPaging();
-//
-//
-//     };
+     $scope.editItem = function (channelRelation) {
+         $scope.selectedItem = channelRelation;
+         $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
+         $scope.pageOption.currentPage = 0;
+         $scope.pageOption.totalPage = 0;
+         $scope.pageOption.totalElements = 0;
+         $scope.listFilterItem.itemUuids.length = 0;
+         $scope.queryChannelRelationWithPaging();
+     };
 
      $scope.queryChannelRelationWithPaging = function () {
          $scope.ocmListMenu.selectAll = false;
          $scope.selected = [];
          $scope.resetInitialValue();
 
-         ChannelRelationService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.selectedItem.uuid)
+         ChannelSeriesRelationService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.selectedItem.uuid)
              .success(function (data) {
                  $scope.channelRelationList = data;
                  $scope.pageOption.totalPage = data.totalPages;
@@ -90,42 +88,36 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
     };
 
 
+
+
     $scope.queryMenuAction = function () {
         $scope.resetInitialValue();
         $scope.selected = [];
         $scope.ocmListMenu.selectAll = false;
+        if($scope.ocmListMenu.channelNo !== undefined){
+            channelNo = $scope.ocmListMenu.channelNo;
+        }else{
+            channelNo =null;
+        }
         if ($scope.ocmListMenu.channelName !== undefined) {
             channelName = $scope.ocmListMenu.channelName;
-        } else {
+        }else {
             channelName = null;
         }
-
         confirm = $scope.ocmListMenu.confirm;
         status = $scope.ocmListMenu.status;
-
         ChannelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, confirm,
-            status, channelName, RES_UUID_MAP.OCM.CHANNEL_SERIES_RELATION.RES_UUID)
+            status, channelName, channelNo, RES_UUID_MAP.OCM.CHANNEL_SERIES_RELATION.LIST_PAGE.RES_UUID)
             .success(function (data) {
                 $scope.ChannelList = data;
                 $scope.pageOption.totalPage = data.totalPages;
                 $scope.pageOption.totalElements = data.totalElements;
                 var channelUuid = "";
                 angular.forEach($scope.ChannelList.content, function (channel) {
-                    channelUuid = channelUuid + channel.uuid + ","
-                });
-                ChannelRelationService.getAllCountByChannelUuid(channelUuid).success(function (data) {
-                    var map = [];
-                    angular.forEach(data, function (channelRelationCount) {
-                        map[channelRelationCount.uuid] = channelRelationCount.count;
+                     ChannelSeriesRelationService.getAll(channel.uuid).success(function (data) {
+                            channel.count=data.content.length;
+                      });
                     });
-                    angular.forEach($scope.ChannelList.content, function (channel) {
-                        if (undefined != map[channel.uuid]) {
-                            channel.channelRelationCount = map[channel.uuid];
-                        } else {
-                            channel.channelRelationCount = 0;
-                        }
-                    });
-                });
             });
     };
 
@@ -139,10 +131,12 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
         $scope.areaCode = null;
         $scope.areaName = null;
 
-        $scope.getMenuAuthData($scope.RES_UUID_MAP.OCM.CHANNEL_RELATION.LIST_PAGE.RES_UUID).success(function (data) {
+        $scope.getMenuAuthData($scope.RES_UUID_MAP.OCM.CHANNEL_SERIES_RELATION.FORM_PAGE.RES_UUID).success(function (data) {
             $scope.menuAuthDataMap = $scope.menuDataMap(data);
         });
     };
+
+
 
     $scope.formTabSelected = function () {
         $scope.ocmListMenu.showQueryBar = false;
@@ -267,7 +261,7 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
                         var ChannelRelationUpdateInput = {
                             status: Constant.STATUS[1].value
                         };
-                        var response = ChannelIRelationService.modify(channelRelation.uuid, ChannelRelationUpdateInput).success(function () {
+                        var response = ChannelSeriesRelationService.modify(channelRelation.uuid, ChannelRelationUpdateInput).success(function () {
 
                         });
                         promises.push(response);
@@ -284,7 +278,7 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
                             channelUuid: channel.uuid,
                             status: Constant.STATUS[1].value
                         };
-                        var response = ChannelRelationService.modifyAll(ChannelRelationUpdateInput).success(function (data) {
+                        var response = ChannelService.modifyAll(ChannelRelationUpdateInput).success(function (data) {
                         });
                         promises.push(response);
 
@@ -308,7 +302,7 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
                         var channelRelationUpdateInput = {
                             status: Constant.STATUS[2].value
                         };
-                        var response = ChannelRelationService.modify(channelRelation.uuid, channelRelationUpdateInput).success(function () {
+                        var response = ChannelSeriesRelationService.modify(channelRelation.uuid, channelRelationUpdateInput).success(function () {
 
                         });
                         promises.push(response);
@@ -324,7 +318,7 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
                             channelUuid: channel.uuid,
                             status: Constant.STATUS[2].value
                         };
-                        var response = ChannelRelationService.modifyAll(channelRelationUpdateInput).success(function (data) {
+                        var response = ChannelService.modifyAll(channelRelationUpdateInput).success(function (data) {
                         });
                         promises.push(response);
                     });
@@ -390,8 +384,8 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
 
             angular.forEach($scope.channelRelationList.content, function (channelRelation) {
                 channelRelation.channelUuid = $scope.selectedItem.uuid;
-                channelRelation.areaUuid = channelRelation.area.uuid;
-                var channelRelationResponse = ChannelRelationService.add(channelRelation).error(function (data) {
+                channelRelation.seriesUuid = channelRelation.series.uuid;
+                var channelRelationResponse = ChannelSeriesRelationService.add(channelRelation).error(function (data) {
                     $scope.showError(data.message);
                 });
                 promises.push(channelRelationResponse);
@@ -420,7 +414,7 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
                 if ($scope.selected) {
                     var promises = [];
                     angular.forEach($scope.selected, function (channelItemInfo) {
-                        var response = ChannelRelationService.delete(channelItemInfo.uuid).success(function (data) {
+                        var response = ChannelSeriesRelationService.delete(channelItemInfo.uuid).success(function (data) {
                         });
                         promises.push(response);
                     });
@@ -434,15 +428,26 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
     };
 
     $scope.populateChannelRelation = function (data) {
-        var content = [];
-        var channelRelation = {
-            channel: $scope.selectedItem,
-            area: data
+//        var content = [];
+//        var channelRelation = {
+//            channel: $scope.selectedItem
+//           series: data
+//        };
 
-        };
-        content.push(channelRelation);
-        $scope.channelRelationList.content = $scope.channelRelationList.content.concat(content);
+//        content.push(channelRelation);
 
+        angular.forEach(data, function (item) {
+                item.channel= $scope.selectedItem;
+                item.series = {
+                    'no' : item.no,
+                    'name':item.name,
+                    'uuid':item.uuid
+                };
+        });
+
+
+        $scope.channelRelationList.content = data;
+//        $scope.channelRelationList.content = $scope.channelRelationList.content.concat(content);
         if (!data) {
             $scope.showInfo('当前目录没有商品或者商品已经导入！');
         }
@@ -451,11 +456,12 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
 
     $scope.openProductionSelectDlg = function () {
         $mdDialog.show({
-            controller: 'AreaController',
+            controller: 'AddSeriesController',
             templateUrl: 'app/src/app/ocm/channelSeriesRelation/addChannelSeriesRelation.html',
             parent: angular.element(document.body),
             //targetEvent: event,
             locals: {
+                Series: $scope.selectedItem,
                 channel: $scope.selectedItem,
                 listFilterItem: $scope.listFilterItem.itemUuids,
                 op: 'add'
@@ -463,14 +469,13 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
         }).then(function (data) {
             $scope.logining = true;
             $scope.populateChannelRelation(data);
-
         });
     };
 
 });
 
 
-angular.module('IOne-Production').controller('AreaController', function ($scope, $mdDialog, Area, Constant, channel, listFilterItem) {
+angular.module('IOne-Production').controller('AddSeriesController', function ($scope, $mdDialog, SeriesService, Constant, channel, listFilterItem) {
     $scope.listFilterItem = listFilterItem;
     $scope.channel = channel;
     $scope.pageOptionForProd = {
@@ -501,7 +506,7 @@ angular.module('IOne-Production').controller('AreaController', function ($scope,
 
 
     $scope.refreshAllTemplate = function () {
-        Area.getForChannelRelation().success(function (data) {
+        SeriesService.getAll(100,0).success(function (data) {
             var dataResult = [];
             angular.forEach(data.content, function (item) {
                 if ($scope.listFilterItem.indexOf(item.uuid) == -1)
@@ -527,4 +532,26 @@ angular.module('IOne-Production').controller('AreaController', function ($scope,
     $scope.cancelDlg = function () {
         $mdDialog.cancel();
     };
+
+    $scope.selected = [];
+
+    $scope.addSeriesToggle = function (item, selected) {
+            var idx = selected.indexOf(item);
+            if (idx > -1) {
+                selected.splice(idx, 1);
+            }
+            else {
+                selected.push(item);
+            }
+            //$scope.ocmListMenu.effectiveType = item.status;
+
+            if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
+                $scope.changeButtonStatus();
+            }
+
+        };
+    $scope.exists = function (item, list) {
+            return list.indexOf(item) > -1;
+        };
+
 });

@@ -574,6 +574,7 @@ angular.module('IOne-Production').service('ChannelSeriesRelationService', functi
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
+
     this.getAllWithPaging = function (sizePerPage, page, channelUuid) {
         var url = '/channelSeriesRelations?size=' + sizePerPage
             + '&page=' + page
@@ -583,20 +584,28 @@ angular.module('IOne-Production').service('ChannelSeriesRelationService', functi
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
-    this.getAllCountByChannelUuid = function (channelUuid) {
-        var ChannelPriceQuery = {
-            channelUuid: channelUuid
-        };
-        var url = '/channelRelations/count?channelUuids=' + channelUuid;
-        return $http.get(Constant.BACKEND_BASE + url);
-    };
+//    this.getAllCountByChannelUuid = function (channelUuid) {
+//            var ChannelPriceQuery = {
+//                channelUuid: channelUuid
+//            };
+//            var url = '/channels/' + channelUuid + '/count/';
+//            return $http.get(Constant.BACKEND_BASE + url);
+//        };
+//
+//    this.getAllCountByChannelUuid = function (channelUuid) {
+//        var ChannelPriceQuery = {
+//            channelUuid: channelUuid
+//        };
+//        var url = '/channelSeriesRelations/count?channelUuids=' + channelUuid;
+//        return $http.get(Constant.BACKEND_BASE + url);
+//    };
 
     this.get = function (channelRelationUuid) {
-        return $http.get(Constant.BACKEND_BASE + '/channelRelations/' + channelRelationUuid);
+        return $http.get(Constant.BACKEND_BASE + '/channelSeriesRelations/' + channelRelationUuid);
     };
 
     this.add = function (channelRelationInput) {
-        return $http.post(Constant.BACKEND_BASE + '/channelRelations/', channelRelationInput);
+        return $http.post(Constant.BACKEND_BASE + '/channelSeriesRelations/', channelRelationInput);
     };
 
     this.modify = function (channelRelationUuid, channelRelationUpdateInput) {
@@ -604,11 +613,11 @@ angular.module('IOne-Production').service('ChannelSeriesRelationService', functi
     };
 
     this.modifyAll = function (ChannelRelationUpdateInput) {
-        return $http.patch(Constant.BACKEND_BASE + '/channelRelations/', ChannelRelationUpdateInput);
+        return $http.patch(Constant.BACKEND_BASE + '/channelSeriesRelations/', ChannelRelationUpdateInput);
     };
 
     this.delete = function (channelRelationUuid) {
-        return $http.delete(Constant.BACKEND_BASE + '/channelRelations/' + channelRelationUuid);
+        return $http.delete(Constant.BACKEND_BASE + '/channelSeriesRelations/' + channelRelationUuid);
     };
 
 });

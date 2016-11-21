@@ -5,6 +5,9 @@
             <md-button class="md-icon-button" ng-click="cancelDlg()">
                 <ng-md-icon icon="close"></ng-md-icon>
             </md-button>
+            <md-button class="md-button" aria-label="More" ng-click="select(selected)">
+                保存
+            </md-button>
         </div>
         <div>
             <form name="search" novalidate="">
@@ -22,17 +25,23 @@
                                    style="padding-top: 20px;">
                             <i class="fa fa-search"></i>
                         </md-button>
+
+
                     </div>
-                    <md-list-item class="md-3-line" ng-repeat="data in allProductionsData | filter:searchQuery:false"
-                                  ng-click="select(data)">
+                    <md-list-item class="md-3-line" ng-repeat="data in allProductionsData | filter:searchQuery:false">
                         <div class="md-list-item-text">
 
-                            <div class="name"><b>品牌编号:</b><span
-                                    style="font-size: small;"> {{data.no}}</span><b>｜品牌名称:</b><span
-                                    style="font-size: small;"> {{data.name}}</span></div>
+                                <b>
+                                <md-checkbox  ng-checked="exists(data, selected)" ng-click="addSeriesToggle(data, selected)">
+                                </md-checkbox>
+                                </b>
+                                <b>品牌编号:</b>
+                                <span style="font-size: small;"> {{data.no}}</span>
+                                <b>｜品牌名称:</b>
+                                <span style="font-size: small;"> {{data.name}}</span>
+                            </div>
 
 
-                        </div>
                         <md-divider></md-divider>
                     </md-list-item>
                     <div pagination option="pageOption" callback="refreshAllTemplate()"></div>
