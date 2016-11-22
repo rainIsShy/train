@@ -457,7 +457,7 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
     $scope.openProductionSelectDlg = function () {
         $mdDialog.show({
             controller: 'AddSeriesController',
-            templateUrl: 'app/src/app/ocm/channelSeriesRelation/addChannelSeriesRelation.html',
+            templateUrl: 'app/src/app/ocm/channelSeriesRelation/addchannelSeriesRelation.html',
             parent: angular.element(document.body),
             //targetEvent: event,
             locals: {

@@ -6,7 +6,7 @@
                 <ng-md-icon icon="close"></ng-md-icon>
             </md-button>
             <md-button class="md-button" aria-label="More" ng-click="select(selected)">
-                保存
+                确定
             </md-button>
         </div>
         <div>
@@ -26,11 +26,9 @@
                             <i class="fa fa-search"></i>
                         </md-button>
 
-
                     </div>
                     <md-list-item class="md-3-line" ng-repeat="data in allProductionsData | filter:searchQuery:false">
                         <div class="md-list-item-text">
-
                                 <b>
                                 <md-checkbox  ng-checked="exists(data, selected)" ng-click="addSeriesToggle(data, selected)">
                                 </md-checkbox>
