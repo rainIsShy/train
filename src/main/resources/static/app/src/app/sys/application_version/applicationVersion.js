@@ -163,6 +163,7 @@ angular.module('IOne-Production').controller('SYSApplicationVersionController', 
         $scope.source = source;
         $scope.domain = domain;
         $scope.source.status = '1';
+        $scope.source.releaseDate = new Date();
     };
 
     /**
