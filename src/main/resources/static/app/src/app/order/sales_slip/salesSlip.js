@@ -1295,9 +1295,9 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
         if (errorNos || transferedNos) {
             return false;
         }
-        var uuids = '';
+        var uuids = [];
         angular.forEach($scope.selected, function (item) {
-            uuids += (uuids ? ',' : '') + item.uuid;
+            uuids.push(item.uuid);
         });
         OrderMaster.validatePossibility(uuids).success(function () {
             var mainPromises = [];
@@ -1337,7 +1337,7 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
             $scope.showError('产品销售单已抛转');
             return false;
         }
-        OrderMaster.validatePossibility($scope.selectedItem.uuid).success(function () {
+        OrderMaster.validatePossibility([ $scope.selectedItem.uuid ]).success(function () {
             var errorInfo = '';
             var paidRate = $scope.selectedItem.paidRate.substring(0, $scope.selectedItem.paidRate.length - 1);
             Parameters.getAll($scope.selectedItem.channel.uuid).success(function (data) {
@@ -1348,7 +1348,7 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                 }
 
                 $scope.showConfirm('确认 审核抛转 吗？', errorInfo, function () {
-                    OrderMaster.auditTransfer($scope.selectedItem.uuid).success(function () {
+                    OrderMaster.auditTransfer([ $scope.selectedItem.uuid ]).success(function () {
                         $scope.refreshMasterAndDetail();
                         OrderMaster.getOrderMasterCount(Constant.AUDIT[1].value, Constant.STATUS[1].value, Constant.TRANSFER_PSO_FLAG[2].value, RES_UUID_MAP.PSO.ORDER.LIST_PAGE.RES_UUID).success(function (data) {
                             $scope.menuList[1].subList[1].suffix = data;

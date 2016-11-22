@@ -105,11 +105,11 @@ angular.module('IOne-Production').service('OrderMaster', function ($http, Consta
     };
 
     this.auditTransfer = function (uuids) {
-        return $http.patch(Constant.BACKEND_BASE + '/orders/' + uuids + '/auditTransfer', null);
+        return $http.patch(Constant.BACKEND_BASE + '/orders?action=auditTransfer', uuids);
     };
 
     this.validatePossibility = function (uuids) {
-        return $http.get(Constant.BACKEND_BASE + '/orders/' + uuids + '/validatePossibility', null);
+        return $http.patch(Constant.BACKEND_BASE + '/orders?action=validatePossibility', uuids);
     };
 });
 
