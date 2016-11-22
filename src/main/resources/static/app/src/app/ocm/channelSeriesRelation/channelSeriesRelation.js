@@ -204,18 +204,18 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
 //        1: {value: '1', name: '未审核'},
 //        2: {value: '2', name: '已审核'}
 //    },
-        if (channelRelation.confirm == Constant.CONFIRM[1].value) {
-            $scope.revert_audit_button_disabled = 1;
-        } else {
-            $scope.audit_button_disabled = 1;
-        }
+//        if (channelRelation.confirm == Constant.CONFIRM[1].value) {
+//            $scope.revert_audit_button_disabled = 1;
+//        } else {
+//            $scope.audit_button_disabled = 1;
+//        }
 
 //已审核：可取消审核，不可有效、无效
 //未审核：可审核，可有效，可无效
-        if (channelRelation.confirm == Constant.CONFIRM[2].value) {
-            $scope.valid_status_button_disabled = 1;
-            $scope.invalid_status_button_disabled = 1;
-        }
+//        if (channelRelation.confirm == Constant.CONFIRM[2].value) {
+//            $scope.valid_status_button_disabled = 1;
+//            $scope.invalid_status_button_disabled = 1;
+//        }
     };
 
     $scope.changeButtonStatusByStatus = function (channelRelation) {
@@ -275,10 +275,10 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
                     angular.forEach($scope.selected, function (channel) {
 
                         var ChannelRelationUpdateInput = {
-                            channelUuid: channel.uuid,
+//                            channelUuid: channel.uuid,
                             status: Constant.STATUS[1].value
                         };
-                        var response = ChannelService.modifyAll(ChannelRelationUpdateInput).success(function (data) {
+                        var response = ChannelService.modify(channel.uuid, ChannelRelationUpdateInput).success(function (data) {
                         });
                         promises.push(response);
 
@@ -315,10 +315,10 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
                     var promises = [];
                     angular.forEach($scope.selected, function (channel) {
                         var channelRelationUpdateInput = {
-                            channelUuid: channel.uuid,
+//                            channelUuid: channel.uuid,
                             status: Constant.STATUS[2].value
                         };
-                        var response = ChannelService.modifyAll(channelRelationUpdateInput).success(function (data) {
+                        var response = ChannelService.modify(channel.uuid, channelRelationUpdateInput).success(function (data) {
                         });
                         promises.push(response);
                     });

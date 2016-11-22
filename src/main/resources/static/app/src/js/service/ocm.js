@@ -65,6 +65,10 @@ angular.module('IOne-Production').service('ChannelService', function ($http, Con
         return $http.patch(Constant.BACKEND_BASE + '/channels/' + uuid + '?action=syncChannelPrice');
     };
 
+    this.modify = function (channelUuid, channelUpdateInput) {
+            return $http.patch(Constant.BACKEND_BASE + '/channels/' + channelUuid, channelUpdateInput);
+        };
+
 });
 
 angular.module('IOne-Production').service('ChannelPriceService', function ($http, Constant) {
