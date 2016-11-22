@@ -851,7 +851,14 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
                     uuids += (!uuids ? '' :',') + item.uuid;
                 }
             });
-            PsoOrderChangeMaster.auditTransfer(uuids).success(function (data) {
+            PsoOrderChangeMaster.auditTransfer(uuids).success(function () {
+                angular.forEach($scope.itemList, function (item) {
+                    if (item.selected) {
+                        item.confirm = 2; // 已審核
+                        item.transferPsoFlag = 1; // 已拋轉
+                    }
+                });
+
                 $scope.disableBatchMenuButtons();
                 $scope.getOrderMasterCount();
 
@@ -866,7 +873,10 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
         $scope.stopEventPropagation(event);
 
         $scope.showConfirm('确认 审核抛转 吗？', '', function () {
-            PsoOrderChangeMaster.auditTransfer(item.uuid).success(function (data) {
+            PsoOrderChangeMaster.auditTransfer(item.uuid).success(function () {
+                item.confirm = 2; // 已審核
+                item.transferPsoFlag = 1; // 已拋轉
+
                 $scope.updateOrderChangeDetailsConfirm(item);
                 $scope.disableBatchMenuButtons();
                 $scope.getOrderMasterCount();
