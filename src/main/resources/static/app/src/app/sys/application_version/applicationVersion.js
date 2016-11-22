@@ -184,6 +184,7 @@ angular.module('IOne-Production').controller('SYSApplicationVersionController', 
             if ($scope.domain == 'SYS_BASE_APP_VERSION') {
                 SYSApplicationVersionService.add($scope.source).success(function (data) {
                     $scope.showInfo('新增数据成功。');
+                    $scope.listItemAction();
                 }).error(function (data) {
                     $scope.showError('新增失败:' + '<br>' + data.message);
                 });
@@ -196,6 +197,7 @@ angular.module('IOne-Production').controller('SYSApplicationVersionController', 
                     $scope.source = data;
                     $scope.selectedItem = data;
                     $scope.selectedItemBackUp = angular.copy($scope.selectedItem);
+                    $scope.listItemAction();
                 }).error(function (data) {
                     $scope.showError('修改失败:' + '<br>' + data.message);
                     $scope.source = angular.copy($scope.selectedItemBackUp);
