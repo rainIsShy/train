@@ -84,7 +84,7 @@ angular.module('IOne-Production').service('PsoOrderChangeMaster', function ($htt
     };
 
     this.auditTransfer = function (uuids) {
-        return $http.patch(Constant.BACKEND_BASE + '/orderChanges/' + uuids + '/auditTransfer', {});
+        return $http.patch(Constant.BACKEND_BASE + '/orderChanges?action=auditTransfer', uuids);
     };
 });
 

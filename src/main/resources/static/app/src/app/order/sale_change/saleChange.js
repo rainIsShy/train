@@ -845,10 +845,10 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
             return;
         }
         $scope.showConfirm('确认 审核抛转 吗？', '', function () {
-            var uuids = '';
+            var uuids = [];
             angular.forEach($scope.itemList, function (item) {
                 if (item.selected) {
-                    uuids += (!uuids ? '' :',') + item.uuid;
+                    uuids.push(item.uuid);
                 }
             });
             PsoOrderChangeMaster.auditTransfer(uuids).success(function () {
@@ -873,7 +873,7 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
         $scope.stopEventPropagation(event);
 
         $scope.showConfirm('确认 审核抛转 吗？', '', function () {
-            PsoOrderChangeMaster.auditTransfer(item.uuid).success(function () {
+            PsoOrderChangeMaster.auditTransfer([ item.uuid ]).success(function () {
                 item.confirm = 2; // 已審核
                 item.transferPsoFlag = 1; // 已拋轉
 
