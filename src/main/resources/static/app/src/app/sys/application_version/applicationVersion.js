@@ -18,7 +18,7 @@ angular.module('IOne-Production').controller('SYSApplicationVersionController', 
             status: Constant.STATUS[1].value,
             releaseDate: ''
         },
-        no: '',
+        version: '',
         name: '',
         keyWord: ''
     };
@@ -43,7 +43,7 @@ angular.module('IOne-Production').controller('SYSApplicationVersionController', 
     $scope.disabledBatchStatus = true;
     $scope.disabledBatchCancelStatus = true;
     $scope.disabledBatchDelete = true;
-    $scope.sortByField = '-no';
+    $scope.sortByField = '-version';
 
     $scope.sortByAction = function (field) {
         $scope.sortByField = field;
@@ -58,7 +58,7 @@ angular.module('IOne-Production').controller('SYSApplicationVersionController', 
             releaseDate = '';
         }
         SYSApplicationVersionService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption.select.status,
-            $scope.listFilterOption.no, $scope.listFilterOption.name, releaseDate, $scope.listFilterOption.keyWord, $scope.RES_UUID_MAP.SYS.APPLICATION_VERSION.RES_UUID)
+            $scope.listFilterOption.version, $scope.listFilterOption.name, releaseDate, $scope.listFilterOption.keyWord, $scope.RES_UUID_MAP.SYS.APPLICATION_VERSION.RES_UUID)
             .success(function (data) {
                 $scope.itemList = data.content;
                 $scope.pageOption.totalPage = data.totalPages;
@@ -162,6 +162,8 @@ angular.module('IOne-Production').controller('SYSApplicationVersionController', 
         $scope.desc = desc;
         $scope.source = source;
         $scope.domain = domain;
+        $scope.source.status = '1';
+        $scope.source.releaseDate = new Date();
     };
 
     /**
@@ -183,6 +185,7 @@ angular.module('IOne-Production').controller('SYSApplicationVersionController', 
             if ($scope.domain == 'SYS_BASE_APP_VERSION') {
                 SYSApplicationVersionService.add($scope.source).success(function (data) {
                     $scope.showInfo('新增数据成功。');
+                    $scope.listItemAction();
                 }).error(function (data) {
                     $scope.showError('新增失败:' + '<br>' + data.message);
                 });
@@ -195,6 +198,7 @@ angular.module('IOne-Production').controller('SYSApplicationVersionController', 
                     $scope.source = data;
                     $scope.selectedItem = data;
                     $scope.selectedItemBackUp = angular.copy($scope.selectedItem);
+                    $scope.listItemAction();
                 }).error(function (data) {
                     $scope.showError('修改失败:' + '<br>' + data.message);
                     $scope.source = angular.copy($scope.selectedItemBackUp);
@@ -429,7 +433,7 @@ angular.module('IOne-Production').controller('SYSApplicationVersionController', 
                     promises.push(response);
                     count++;
                 } else {
-                    confirmedNos = confirmedNos + item.no + '<br>';
+                    confirmedNos = confirmedNos + item.version + '<br>';
                 }
             }
         });
@@ -468,7 +472,7 @@ angular.module('IOne-Production').controller('SYSApplicationVersionController', 
                     promises.push(response);
                     count++;
                 } else {
-                    unConfirmedNos = unConfirmedNos + item.no + '<br>';
+                    unConfirmedNos = unConfirmedNos + item.version + '<br>';
                 }
             }
         });
@@ -508,7 +512,7 @@ angular.module('IOne-Production').controller('SYSApplicationVersionController', 
                     promises.push(response);
                     count++;
                 } else {
-                    effectiveNos = effectiveNos + item.no + '<br>';
+                    effectiveNos = effectiveNos + item.version + '<br>';
                 }
             }
         });
@@ -547,7 +551,7 @@ angular.module('IOne-Production').controller('SYSApplicationVersionController', 
                     promises.push(response);
                     count++;
                 } else {
-                    uneffectiveNos = uneffectiveNos + item.no + '<br>';
+                    uneffectiveNos = uneffectiveNos + item.version + '<br>';
                 }
             }
         });
