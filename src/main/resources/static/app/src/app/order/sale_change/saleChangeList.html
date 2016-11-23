@@ -363,7 +363,7 @@
                         </md-menu-content>
                     </md-menu>-->
                 </div>
-                <div ng-repeat="item in itemList | orderBy:sortByField"
+                <div ng-repeat="item in itemList | orderBy: ['-no', '-changeVersion']"
                      ng-class="selectedItem.no == item.no ? 'selected-item':''">
                     <div class="summary-item">
                         <div layout="row" layout-wrap>
