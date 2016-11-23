@@ -68,6 +68,15 @@
                                 一键
                             </md-button>
                         </md-menu-item>
+                        <md-menu-item
+                                ng-if="menuDisplayOption['auditTransfer'].display && (menuAuthDataMap[menuDisplayOption['auditTransfer'].uuid] || isAdmin() || !menuDisplayOption['auditTransfer'].uuid)">
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="auditTransfer($event, selectedItem)"
+                                       ng-disabled="selectedItem.transferPsoFlag != 2 || selectedItem.confirm != 1">
+                                <ng-md-icon icon="send"></ng-md-icon>
+                                审核抛转
+                            </md-button>
+                        </md-menu-item>
                     </md-menu-content>
                 </md-menu>
                 <span>产品销售单变更详细信息</span>
@@ -132,6 +141,14 @@
                                        ng-click="transferAllneOffSyncAction($event)">
                                 <ng-md-icon icon="send"></ng-md-icon>
                                 批量一键抛转
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item
+                                ng-if="menuDisplayOption['batchAuditTransfer'].display && (menuAuthDataMap[menuDisplayOption['batchAuditTransfer'].uuid] || isAdmin() || !menuDisplayOption['batchAuditTransfer'].uuid)">
+                            <md-button ng-disabled="disabledBatchConfirm" class="md-button" aria-label="More"
+                                       ng-click="batchAuditTransfer($event)">
+                                <ng-md-icon icon="send"></ng-md-icon>
+                                批量审核抛转
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>
@@ -428,6 +445,12 @@
                                         <md-button class="md-fab md-mini" ng-click="oneOffSync($event, item)"
                                                    ng-disabled="item.confirm == '1'">
                                             <span>一键</span>
+                                        </md-button>
+                                    </div>
+                                    <div ng-if="menuDisplayOption['auditTransfer'].display && (menuAuthDataMap[menuDisplayOption['auditTransfer'].uuid] || isAdmin() || !menuDisplayOption['auditTransfer'].uuid) && item.confirm == 1 && item.transferPsoFlag == 2">
+                                        <md-button class="md-fab md-mini" ng-click="auditTransfer($event, item)"
+                                                   ng-disabled="item.confirm != 1 || item.transferPsoFlag != 2">
+                                            <span>审抛</span>
                                         </md-button>
                                     </div>
                                     <div ng-if="item.transferPsoFlag == '1'">

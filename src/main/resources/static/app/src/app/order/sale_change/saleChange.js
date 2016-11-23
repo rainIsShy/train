@@ -34,7 +34,9 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
         'detailRevertConfirm': {display: true, name: '取审', uuid: 'a357dff4-683f-4f87-9965-a878c2f5be00'},
         'detailTransfer': {display: true, name: '抛转', uuid: 'ce35a122-4a6c-4a12-875c-3e47d5149925'},
         'add': {display: true, name: '新增', uuid: '8e4ca13d-37b3-45d2-962c-b9910e89adb7'},
-        'oneOffSync': {display: true, name: '一键抛转', uuid: '6C954DAC-F520-4F5B-8517-2DE425B4C661'}
+        'oneOffSync': {display: true, name: '一键抛转', uuid: '6C954DAC-F520-4F5B-8517-2DE425B4C661'},
+        'batchAuditTransfer': {display: true, name: '批量审核抛转', uuid: 'f338793f-a8ce-47f9-8855-fdeb230f9418'},
+        'auditTransfer': {display: true, name: '审核抛转', uuid: '6cc85ee4-680c-4770-ba0f-9dbedc158fc4'}
     };
 
     $scope.sortByAction = function (field) {
@@ -833,7 +835,58 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
         PsoOrderChangeMaster.getOrderMasterCount(Constant.CONFIRM[1].value, Constant.STATUS[1].value, Constant.TRANSFER_PSO_FLAG[2].value, RES_UUID_MAP.PSO.ORDER_CHANGE.RES_UUID).success(function (data) {
             $scope.menuList[1].subList[4].suffix = data;
         });
-    }
+    };
+
+    $scope.batchAuditTransfer = function (event) {
+        $scope.stopEventPropagation(event);
+
+        if ($scope.selectedItemSize == 0) {
+            $scope.showWarn('请先选择记录！');
+            return;
+        }
+        $scope.showConfirm('确认 审核抛转 吗？', '', function () {
+            var uuids = [];
+            angular.forEach($scope.itemList, function (item) {
+                if (item.selected) {
+                    uuids.push(item.uuid);
+                }
+            });
+            PsoOrderChangeMaster.auditTransfer(uuids).success(function () {
+                angular.forEach($scope.itemList, function (item) {
+                    if (item.selected) {
+                        item.confirm = 2; // 已審核
+                        item.transferPsoFlag = 1; // 已拋轉
+                    }
+                });
+
+                $scope.disableBatchMenuButtons();
+                $scope.getOrderMasterCount();
+
+                $scope.showInfo('产品销售变更单 审核抛转 成功！');
+            }).error(function (resp) {
+                $scope.showError(resp.message);
+            });
+        });
+    };
+
+    $scope.auditTransfer = function (event, item) {
+        $scope.stopEventPropagation(event);
+
+        $scope.showConfirm('确认 审核抛转 吗？', '', function () {
+            PsoOrderChangeMaster.auditTransfer([ item.uuid ]).success(function () {
+                item.confirm = 2; // 已審核
+                item.transferPsoFlag = 1; // 已拋轉
+
+                $scope.updateOrderChangeDetailsConfirm(item);
+                $scope.disableBatchMenuButtons();
+                $scope.getOrderMasterCount();
+
+                $scope.showInfo('产品销售变更单 审核抛转 成功！');
+            }).error(function (resp) {
+                $scope.showError(resp.message);
+            });
+        });
+    };
 });
 
 angular.module('IOne-Production').controller('EditOrderChangeController', function ($scope, $mdDialog, parentSelectedItem) {

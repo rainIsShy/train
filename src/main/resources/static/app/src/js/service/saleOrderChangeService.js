@@ -76,11 +76,15 @@ angular.module('IOne-Production').service('PsoOrderChangeMaster', function ($htt
         var url = '/orderChanges/count?confirm=' + confirm
             + '&status=' + status
             + '&transferPsoFlag=' + transferPsoFlag
-            + '&onlyLatest=2'
+            + '&onlyLatest=2';
         if (resUuid !== undefined && resUuid !== null) {
             url = url + '&resUuid=' + resUuid;
         }
         return $http.get(Constant.BACKEND_BASE + url);
+    };
+
+    this.auditTransfer = function (uuids) {
+        return $http.patch(Constant.BACKEND_BASE + '/orderChanges?action=auditTransfer', uuids);
     };
 });
 
