@@ -80,6 +80,36 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
              });
      };
 
+     $scope.searchChannelRelationWithPaging=function(no,name){
+         ChannelSeriesRelationService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.selectedItem.uuid)
+              .success(function (data) {
+                  var dataResult = [];
+                  angular.forEach(data.content,function(item){
+                     if(no == item.series.no || name == item.series.name){
+                         dataResult.push(item);
+                     }
+                     if(no == undefined && name == undefined){
+                         dataResult.push(item);
+                     }
+                     if(no == "" && name == undefined){
+                         dataResult.push(item);
+                     }
+                     if(no == undefined && name == ""){
+                          dataResult.push(item);
+                     }
+                     if(no == "" && name == ""){
+                           dataResult.push(item);
+                     }
+
+                 });
+                 $scope.channelRelationList.content = dataResult;
+                 $scope.pageOption.totalPage = data.totalPages;
+                 $scope.pageOption.totalElements = data.totalElements;
+              });
+     }
+
+
+
     $scope.resetInitialValue = function () {
         $scope.revert_audit_button_disabled = 0;
         $scope.audit_button_disabled = 0;
@@ -121,6 +151,9 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
             });
     };
 
+
+
+
     $scope.listTabSelected = function () {
         $scope.ocmListMenu.showQueryBar = true;
         $scope.queryMenuAction();
@@ -159,6 +192,8 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
         $scope.ocmListMenu.effectiveType = item.status;
 
         if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
+            $scope.changeButtonStatus();
+        }else{
             $scope.changeButtonStatus();
         }
 
@@ -457,7 +492,7 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
     $scope.openProductionSelectDlg = function () {
         $mdDialog.show({
             controller: 'AddSeriesController',
-            templateUrl: 'app/src/app/ocm/channelSeriesRelation/addchannelSeriesRelation.html',
+            templateUrl: 'app/src/app/ocm/channelSeriesRelation/addChannelSeriesRelation.html',
             parent: angular.element(document.body),
             //targetEvent: event,
             locals: {
@@ -475,7 +510,7 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
 });
 
 
-angular.module('IOne-Production').controller('AddSeriesController', function ($scope, $mdDialog, SeriesService, Constant, channel, listFilterItem) {
+angular.module('IOne-Production').controller('AddSeriesController', function ($scope, $mdDialog, SeriesService, ChannelSeriesRelationService, Constant, channel, listFilterItem) {
     $scope.listFilterItem = listFilterItem;
     $scope.channel = channel;
     $scope.pageOptionForProd = {
@@ -484,6 +519,13 @@ angular.module('IOne-Production').controller('AddSeriesController', function ($s
         totalPage: 0,
         totalElements: 0
     };
+
+    $scope.ocmListMenu = {
+            selectAll : true,
+            status: Constant.STATUS[0].value,
+            confirm: Constant.CONFIRM[0].value,
+            showQueryBar : true
+        };
 
     $scope.pageOption = {
         sizePerPage: 10,
@@ -506,15 +548,32 @@ angular.module('IOne-Production').controller('AddSeriesController', function ($s
 
 
     $scope.refreshAllTemplate = function () {
-        SeriesService.getAll(100,0).success(function (data) {
-            var dataResult = [];
-            angular.forEach(data.content, function (item) {
-                if ($scope.listFilterItem.indexOf(item.uuid) == -1)
-                    dataResult.push(item);
-            });
-            $scope.allProductionsData = dataResult;
+//        $scope.queryChannelRelationWithPaging();
+
+         ChannelSeriesRelationService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.channel.uuid)
+            .success(function (data) {
+            $scope.channelRelationList = data;
             $scope.pageOption.totalPage = data.totalPages;
             $scope.pageOption.totalElements = data.totalElements;
+
+            SeriesService.getAll(100,0).success(function (data) {
+                        var dataResult = [];
+                        angular.forEach(data.content, function (item) {
+                            if ($scope.listFilterItem.indexOf(item.uuid) == -1){
+                                    dataResult.push(item);
+                            }
+                        });
+                    angular.forEach($scope.channelRelationList.content, function (item2) {
+                           for(var i=0;i<dataResult.length-1;i++){
+                                if(item2.series.uuid == dataResult[i].uuid){
+                                    dataResult.splice(i,1);
+                           }
+                    }
+                         $scope.allProductionsData = dataResult;
+                                $scope.pageOption.totalPage = data.totalPages;
+                                $scope.pageOption.totalElements = data.totalElements;
+            });
+            });
         });
 
         $scope.selectedItem = null;
@@ -524,10 +583,13 @@ angular.module('IOne-Production').controller('AddSeriesController', function ($s
     };
 
     $scope.select = function (selectedObject) {
-        $scope.selectedTemplateNode = selectedObject;
-        $mdDialog.hide($scope.selectedTemplateNode);
+        if(selectedObject.length == 0){
+            alert("请选择");
+        }else{
+            $scope.selectedTemplateNode = selectedObject;
+            $mdDialog.hide($scope.selectedTemplateNode);
+        }
     };
-
 
     $scope.cancelDlg = function () {
         $mdDialog.cancel();
@@ -545,13 +607,25 @@ angular.module('IOne-Production').controller('AddSeriesController', function ($s
             }
             //$scope.ocmListMenu.effectiveType = item.status;
 
-            if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
-                $scope.changeButtonStatus();
-            }
-
+//            if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
+//                $scope.changeButtonStatus();
+//            }
         };
     $scope.exists = function (item, list) {
             return list.indexOf(item) > -1;
-        };
+    };
 
+   $scope.selectAllMenuAction = function (selected) {
+//              $scope.changeButtonStatus();
+             if ($scope.ocmListMenu.selectAll == true) {
+                    $scope.selected = [];
+                    angular.forEach($scope.allProductionsData, function (item) {
+                    $scope.selected.push(item);
+                    $scope.ocmListMenu.selectAll = false;
+                    });
+             }else if ($scope.ocmListMenu.selectAll == false) {
+                 $scope.selected = [];
+                 $scope.ocmListMenu.selectAll = true;
+             }
+        };
 });
