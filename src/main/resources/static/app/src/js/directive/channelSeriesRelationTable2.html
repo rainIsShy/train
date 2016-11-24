@@ -7,16 +7,6 @@
                          aria-label="全选"  ng-true-value="true" ng-false-value="false"> &nbsp;{{formMenuDisplayOption['611-selectAll'].name}}</md-checkbox>
         </div>
 
-        <!--<div flex="15" layout="row" layout-md="column" layout-sm="column"-->
-             <!--ng-if="formMenuDisplayOption['612-audit'].display && (menuAuthDataMap[formMenuDisplayOption['612-audit'].uuid] || isAdmin() || !formMenuDisplayOption['612-audit'].uuid)">-->
-            <!--<md-button class="md-raised" ng-click="ocmListMenuAction(612, $event)"-->
-                       <!--aria-label="审核" ng-disabled="audit_button_disabled == 1" > &nbsp;{{formMenuDisplayOption['612-audit'].name}}</md-button>-->
-        <!--</div>-->
-        <!--<div flex="15" layout="row" layout-md="column" layout-sm="column"-->
-             <!--ng-if="formMenuDisplayOption['613-revertAudit'].display && (menuAuthDataMap[formMenuDisplayOption['613-revertAudit'].uuid] || isAdmin() || !formMenuDisplayOption['613-revertAudit'].uuid)">-->
-            <!--<md-button class="md-raised" ng-click="ocmListMenuAction(613, $event)"-->
-                       <!--aria-label="取消审核"  ng-disabled="revert_audit_button_disabled == 1"> &nbsp;{{formMenuDisplayOption['613-revertAudit'].name}}</md-button>-->
-        <!--</div>-->
         <div flex="15" layout="row" layout-md="column" layout-sm="column"
              ng-if="formMenuDisplayOption['614-valid'].display && (menuAuthDataMap[formMenuDisplayOption['614-valid'].uuid] || isAdmin() || !formMenuDisplayOption['614-valid'].uuid)">
             <md-button class="md-raised"ng-click="ocmListMenuAction(614, $event)"

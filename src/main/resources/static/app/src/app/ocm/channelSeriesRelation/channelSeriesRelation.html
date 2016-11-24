@@ -51,7 +51,6 @@
                                     <div align="center" flex="5"  class=" table-head" ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"></div>
                                     <div align="center" flex="10"  class=" table-head">系列编号</div>
                                     <div align="center" flex="10"  class=" table-head">系列名称</div>
-                                    <!--<div align="center" flex="5"  class=" table-head">审核否</div>-->
                                     <div align="center" flex="5"  class=" table-head">有效否</div>
                                 </div>
 
@@ -68,11 +67,6 @@
                                         <div  align="center" flex="10" class=" table-item">
                                             <div style=" padding: 10px 0px 0px 0px;">{{channelRelation.series.name }}</div>
                                         </div>
-                                        <!--<div  align="center" flex="5" class=" table-item" layout="row" >-->
-                                            <!--<md-checkbox style=" padding: 0px 0px 0px 20px;" aria-label="..." ng-model="channelRelation.confirm"   ng-disabled="true"-->
-                                                         <!--ng-true-value="'2'" ng-false-value="'1'" ></md-checkbox>-->
-                                            <!--</md-input-container>-->
-                                        <!--</div>-->
                                         <div  align="center" flex="5" class=" table-item" layout="row" >
                                             <md-checkbox style=" padding: 0px 0px 0px 20px;" aria-label="..." ng-model="channelRelation.status"   ng-disabled="true"
                                                          ng-true-value="'1'" ng-false-value="'2'" ></md-checkbox>
