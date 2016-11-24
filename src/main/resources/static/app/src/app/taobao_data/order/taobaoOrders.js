@@ -320,11 +320,6 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
 
                     var response = TaobaoOrders.modify(OrderMasterUpdateInput).success(function (returnMsgs) {
                         window.location.href = '#/ecommerce-orders?tid='+tid;
-//                        $scope.queryMenuActionWithPaging();//刷新查询
-//                        angular.forEach(returnMsgs, function (msg) {
-//                           $scope.showError(msg);
-//                        });
-//                        $scope.showInfo('审核成功，数据已刷新');
                     }).error(function (data) {
                         $scope.showError(data.message);
                     });
