@@ -16,7 +16,10 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
 
     $scope.TIPTOP_SYNC_TYPE = {
         PLM_ITEM_CHAN_PRICE: {value: 'PLM_ITEM_CHAN_PRICE', name: '停售同步'},
-        PLM_ITEM_ITEM_FILE: {value: 'PLM_ITEM_ITEM_FILE', name: '商品同步'}
+        PLM_ITEM_ITEM_FILE: {value: 'PLM_ITEM_ITEM_FILE', name: '商品同步'},
+        PLM_ITEM_BOM_FILE: {value: 'PLM_ITEM_BOM_FILE', name: 'BOM信息同步'},
+        PLM_ITEM_CHAN_PRICE2: {value: 'PLM_ITEM_CHAN_PRICE', name: '商品渠道信息同步'},
+        PLM_ITEM_BOM: {value: 'PLM_ITEM_ITEM_FILE', name: '品牌信息同步'}
     };
 
 
@@ -54,9 +57,11 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
 
     $scope.getTiptopDbByType = function (syncType) {
         $scope.clearSelection();
-        SynchronizationService.getAll(syncType).success(function (data) {
-            $scope.tiptopDbList = data.content;
-        });
+        if (angular.isDefined(syncType)) {
+            SynchronizationService.getAll(syncType.value).success(function (data) {
+                $scope.tiptopDbList = data.content;
+            });
+        }
     };
 
     $scope.getTiptopDbByType();
@@ -75,7 +80,7 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
 
                 $scope.syncingDb = item.tiptopDb;
 
-                if (item.syncType == 'PLM_ITEM_CHAN_PRICE') {
+                if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.PLM_ITEM_CHAN_PRICE.name) {
                     //同步停售
                     var result = IoneAdapterService.transferIoneAdapter("/tcDsbTask", param, $scope, function (response) {
                         var totalDsbCount = addResponse(response.updateDsbCount, response.insertDsbCount);
@@ -89,7 +94,7 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
                     promises.push(result);
 
                 }
-                if (item.syncType == 'PLM_ITEM_ITEM_FILE') {
+                if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.PLM_ITEM_ITEM_FILE.name) {
                     //同步商品
                     var result = IoneAdapterService.transferIoneAdapter("/tcImaTask", param, $scope, function (response) {
                         console.log(response);
@@ -103,6 +108,54 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
                     });
 
                     promises.push(result);
+                }
+
+                if (item.syncType == $scope.TIPTOP_SYNC_TYPE.PLM_ITEM_BOM_FILE.name) {
+                    //BOM同步
+                    var result = IoneAdapterService.transferIoneAdapter("/bmbTask", param, $scope, function (response) {
+                        console.log(response);
+                        var totalBmbCount = addResponse(0, response.insertBmbCount);
+                        var totalBomCount = addResponse(response.updateItemBomCount, response.insertItemBomCount);
+                        $scope.showInfo(item.tiptopDb + '：ERP同步到TIPTOP_BMB_FILE，共 ' + totalBmbCount + '笔数据同步成功!\n TIPTOP_BMB_FILE 同步到 bom，共 ' + totalBomCount + '笔数据同步成功!');
+
+                    }).error(function (data) {
+                        $scope.logining = false;
+                        $scope.showError(data.message);
+                    });
+
+                    promises.push(result);
+                }
+                if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.PLM_ITEM_CHAN_PRICE2.name) {
+                    //渠道销售价格、仓库、库位、销售单位同步
+                    var result = IoneAdapterService.transferIoneAdapter("/chanImaTask", param, $scope, function (response) {
+                        var totalChanImaCount = addResponse(response.updateChanImaCount, response.insertChanImaCount);
+                        var totalPlmCount = addResponse(response.updatePlmCount, response.insertPlmCount);
+                        $scope.showInfo(item.tiptopDb + '：ERP同步到tiptop_chan_ima_file，共 ' + totalChanImaCount + '笔数据同步成功!\n tiptop_chan_ima_file 同步到 plm，共 ' + totalPlmCount + '笔数据同步成功!');
+                    }).error(function (data) {
+                        $scope.logining = false;
+                        $scope.showError(data.message);
+                    });
+
+                    promises.push(result);
+
+                }
+
+                if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.PLM_ITEM_BOM.name) {
+                    //渠道销售价格、仓库、库位、销售单位同步
+                    var result = IoneAdapterService.transferIoneAdapter("/imaBrandTask", param, $scope, function (response) {
+                        var totalTtBrandCount = addResponse(response.updateTtBrandCount, response.insertTtBrandCount);
+                        var totalItemScopeCount = addResponse(response.updateItemScopeCount, response.insertItemScopeCount);
+                        var totalImaBrandCount = addResponse(0, response.insertImaBrandCount);
+                        var totalItemCustomDetailCount = addResponse(response.updateItemCustomDetailCount, response.insertItemCustomDetailCount);
+                        $scope.showInfo(item.tiptopDb + '：ERP同步到 TIPTOP_BRAND_FILE，共 ' + totalTtBrandCount + '笔数据同步成功!\n TIPTOP_BRAND_FILE 同步到 PLM_BASE_CUSTOM_SCOPE，共 ' + totalItemScopeCount + '笔数据同步成功!');
+                        $scope.showInfo(item.tiptopDb + '：ERP同步到 TIPTOP_IMA_BRAND_FILE，共 ' + totalImaBrandCount + '笔数据同步成功!\n TIPTOP_IMA_BRAND_FILE 同步到 PLM_BASE_CUSTOM_DTL_FILE，共 ' + totalItemCustomDetailCount + '笔数据同步成功!');
+                    }).error(function (data) {
+                        $scope.logining = false;
+                        $scope.showError(data.message);
+                    });
+
+                    promises.push(result);
+
                 }
 
             });

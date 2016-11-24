@@ -103,6 +103,14 @@ angular.module('IOne-Production').service('OrderMaster', function ($http, Consta
     this.oneOffSync = function (uuid, OrderMasterUpdateInput) {
         return $http.patch(Constant.BACKEND_BASE + '/orders/' + uuid + '/sync', OrderMasterUpdateInput);
     };
+
+    this.auditTransfer = function (uuids) {
+        return $http.patch(Constant.BACKEND_BASE + '/orders?action=auditTransfer', uuids);
+    };
+
+    this.validatePossibility = function (uuids) {
+        return $http.patch(Constant.BACKEND_BASE + '/orders?action=validatePossibility', uuids);
+    };
 });
 
 angular.module('IOne-Production').service('OrderDetail', function ($http, Constant) {

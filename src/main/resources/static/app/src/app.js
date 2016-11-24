@@ -102,7 +102,6 @@ angular.module('IOne').controller('MainController', function($rootScope, $scope,
     };
     $scope.menuList = Constant.MENU_LIST;
     $scope.selectedMenuId = $location.path();
-
     $scope.initMenu = function() {
         var menu = {};
         //get current menu and sub menu
