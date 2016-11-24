@@ -31,11 +31,11 @@
                                     <input  aria-label="..." ng-model="selectedItem.name" ng-disabled="true"/>
                                 </md-input-container>
                                 <md-input-container >
-                                    <label>品牌编号：</label>
+                                    <label>系列编号：</label>
                                     <input  aria-label="..."  ng-model="selectedItem.seriesNo"/>
                                 </md-input-container>
                                 <md-input-container >
-                                    <label>品牌名称：</label>
+                                    <label>系列名称：</label>
                                     <input aria-label="..."  ng-model="selectedItem.seriesName"/>
                                 </md-input-container>
 
@@ -49,8 +49,8 @@
                             <div  ng-if="selectedItem != null">
                                 <div   layout="row"    ng-if="selectedItem != null">
                                     <div align="center" flex="5"  class=" table-head" ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"></div>
-                                    <div align="center" flex="10"  class=" table-head">品牌编号</div>
-                                    <div align="center" flex="10"  class=" table-head">品牌名称</div>
+                                    <div align="center" flex="10"  class=" table-head">系列编号</div>
+                                    <div align="center" flex="10"  class=" table-head">系列名称</div>
                                     <!--<div align="center" flex="5"  class=" table-head">审核否</div>-->
                                     <div align="center" flex="5"  class=" table-head">有效否</div>
                                 </div>

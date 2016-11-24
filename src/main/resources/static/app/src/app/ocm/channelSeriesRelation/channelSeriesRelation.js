@@ -421,7 +421,7 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
                 channelRelation.channelUuid = $scope.selectedItem.uuid;
                 channelRelation.seriesUuid = channelRelation.series.uuid;
                 var channelRelationResponse = ChannelSeriesRelationService.add(channelRelation).error(function (data) {
-                    $scope.showError(data.message);
+                    $scope.showError("重复添加");
                 });
                 promises.push(channelRelationResponse);
             });
@@ -510,7 +510,7 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
 });
 
 
-angular.module('IOne-Production').controller('AddSeriesController', function ($scope, $mdDialog, SeriesService, ChannelSeriesRelationService, Constant, channel, listFilterItem) {
+angular.module('IOne-Production').controller('AddSeriesController', function ($scope, $mdToast, $mdDialog, SeriesService, ChannelSeriesRelationService, Constant, channel, listFilterItem) {
     $scope.listFilterItem = listFilterItem;
     $scope.channel = channel;
     $scope.pageOptionForProd = {
@@ -570,8 +570,8 @@ angular.module('IOne-Production').controller('AddSeriesController', function ($s
                            }
                     }
                          $scope.allProductionsData = dataResult;
-                                $scope.pageOption.totalPage = data.totalPages;
-                                $scope.pageOption.totalElements = data.totalElements;
+                         $scope.pageOption.totalPage = data.totalPages;
+                         $scope.pageOption.totalElements = data.totalElements;
             });
             });
         });
@@ -584,7 +584,8 @@ angular.module('IOne-Production').controller('AddSeriesController', function ($s
 
     $scope.select = function (selectedObject) {
         if(selectedObject.length == 0){
-            alert("请选择");
+           toastr["warning"]("请选择需要关联的系列");
+//          $scope.showWarn("请选择需要关联的系列");
         }else{
             $scope.selectedTemplateNode = selectedObject;
             $mdDialog.hide($scope.selectedTemplateNode);
@@ -615,14 +616,24 @@ angular.module('IOne-Production').controller('AddSeriesController', function ($s
             return list.indexOf(item) > -1;
     };
 
-   $scope.selectAllMenuAction = function (selected) {
+   $scope.selectAllMenuAction = function (no,name) {
 //              $scope.changeButtonStatus();
              if ($scope.ocmListMenu.selectAll == true) {
                     $scope.selected = [];
+                    if(no == undefined && name == undefined){
                     angular.forEach($scope.allProductionsData, function (item) {
-                    $scope.selected.push(item);
+                          $scope.selected.push(item);
+                          $scope.ocmListMenu.selectAll = false;
+                         });
+                    }
+
+                    angular.forEach($scope.allProductionsData, function (item) {
+                    if(item.no.indexOf(no)>-1 || item.name.indexOf(name)>-1){
+                         $scope.selected.push(item);
+                    }
                     $scope.ocmListMenu.selectAll = false;
                     });
+
              }else if ($scope.ocmListMenu.selectAll == false) {
                  $scope.selected = [];
                  $scope.ocmListMenu.selectAll = true;
