@@ -602,7 +602,7 @@ angular.module('IOne-Production').service('ChannelSeriesRelationService', functi
     };
 
     this.modifyAll = function (channelRelationUpdateInput) {
-        return $http.patch(Constant.BACKEND_BASE + '/channelSeriesRelations/', ChannelRelationUpdateInput);
+        return $http.patch(Constant.BACKEND_BASE + '/channelSeriesRelations/', channelRelationUpdateInput);
     };
 
     this.delete = function (channelRelationUuid) {
