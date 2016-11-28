@@ -588,21 +588,6 @@ angular.module('IOne-Production').service('ChannelSeriesRelationService', functi
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
-//    this.getAllCountByChannelUuid = function (channelUuid) {
-//            var ChannelPriceQuery = {
-//                channelUuid: channelUuid
-//            };
-//            var url = '/channels/' + channelUuid + '/count/';
-//            return $http.get(Constant.BACKEND_BASE + url);
-//        };
-//
-//    this.getAllCountByChannelUuid = function (channelUuid) {
-//        var ChannelPriceQuery = {
-//            channelUuid: channelUuid
-//        };
-//        var url = '/channelSeriesRelations/count?channelUuids=' + channelUuid;
-//        return $http.get(Constant.BACKEND_BASE + url);
-//    };
 
     this.get = function (channelRelationUuid) {
         return $http.get(Constant.BACKEND_BASE + '/channelSeriesRelations/' + channelRelationUuid);
@@ -616,7 +601,7 @@ angular.module('IOne-Production').service('ChannelSeriesRelationService', functi
         return $http.patch(Constant.BACKEND_BASE + '/channelSeriesRelations/' + channelRelationUuid, channelRelationUpdateInput);
     };
 
-    this.modifyAll = function (ChannelRelationUpdateInput) {
+    this.modifyAll = function (channelRelationUpdateInput) {
         return $http.patch(Constant.BACKEND_BASE + '/channelSeriesRelations/', ChannelRelationUpdateInput);
     };
 
