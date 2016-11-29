@@ -54,7 +54,7 @@
                                     <div align="center" flex="5"  class=" table-head">有效否</div>
                                 </div>
 
-                                <div ng-repeat="channelRelation in channelRelationList.content "  >
+                                <div ng-repeat="channelRelation in channelRelationList.content | orderBy: 'series.no'"  >
                                     <div  layout="row">
                                         <div flex="5" class=" table-item"  ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                                             <md-checkbox aria-label="..." ng-checked="exists(channelRelation, selected)" ng-click="toggle(channelRelation, selected)">
