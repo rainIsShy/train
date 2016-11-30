@@ -935,6 +935,16 @@ angular.module('IOne-Constant').constant('Constant', {
                 },
                 {id: '/fam/tags', name: '标签管理', link: '/fam/tags', uuid: RES_UUID_MAP.CBI.TAG.RES_UUID}
             ]
+        },
+        {
+           id: 9,
+           uuid: '',
+           name: '库存管理',
+           isOpen: false,
+           icon: '',
+           subList:[
+               {id: '/fam/tags', name: '库存明细查询', link: '/fam/tags', uuid: RES_UUID_MAP.CBI.TAG.RES_UUID}
+           ]
         }
     ],
 
