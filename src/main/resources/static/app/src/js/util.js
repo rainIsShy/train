@@ -508,6 +508,7 @@ RES_UUID_MAP = {
             TITLE: '待处理售后单清单'
         }
     },
+
     PO: {
         RES_UUID: 'E3432ED2-99A9-4DD4-B882-CE7BD7910D54',
         PMM_ORDER: {
@@ -521,6 +522,15 @@ RES_UUID_MAP = {
                 RES_UUID: '861acdf6-04ed-46c4-90d9-0583784adf6c',
                 TITLE: '采购单-表单'
             }
+        }
+    },
+
+    INV:{
+        RES_UUID: 'EBED28B2-AD33-48D4-8023-3F6EF166EB6B',
+        TITLE: '库存管理',
+        INVENTORY_DETAIL: {
+            RES_UUID: 'BB0B018F-5295-4F24-9A1B-D81C0E552DB2',
+            TITLE: '库存明细查询'
         }
     }
 };
@@ -938,12 +948,12 @@ angular.module('IOne-Constant').constant('Constant', {
         },
         {
            id: 9,
-           uuid: '',
+           uuid: RES_UUID_MAP.INV.RES_UUID,
            name: '库存管理',
            isOpen: false,
            icon: '',
            subList:[
-               {id: '/fam/tags', name: '库存明细查询', link: '/fam/tags', uuid: RES_UUID_MAP.CBI.TAG.RES_UUID}
+               {id: '/inv/inventoryDetail', name: '库存明细查询', link: '/inv/inventoryDetail', uuid:RES_UUID_MAP.INV.INVENTORY_DETAIL.RES_UUID}
            ]
         }
     ],

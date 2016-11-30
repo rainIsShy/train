@@ -1,0 +1,67 @@
+<div class="main-panel">
+    <div layout="row" class="top-title">
+        <div flex class="right-title">
+            <span>库存明细查询</span>
+        </div>
+    </div>
+    <div layout="row" layout-md="column" layout-sm="column" class="menu" style="margin: 0px 18px; width: 1050px;">
+        <md-input-container flex="15">
+            <label>仓库编号</label>
+            <input type="text" ng-model="warehouseNO">
+        </md-input-container>
+        <md-input-container flex="15">
+            <label>仓库名称</label>
+            <input type="text" ng-model="warehouseName">
+        </md-input-container>
+        <md-input-container flex="15">
+            <label>商品编号</label>
+            <input type="text" ng-model="itemFileNo">
+        </md-input-container>
+        <md-input-container flex="15">
+            <label>商品名称</label>
+            <input type="text" ng-model="itemFileName">
+        </md-input-container>
+        <md-input-container flex="15">
+            <label>商品规格</label>
+            <input type="text" ng-model="itemFileStandard">
+        </md-input-container>
+        <md-button style="margin-top: 22px;height: 20px;" class="md-raised" ng-click="queryReport()">搜索</md-button>
+    </div>
+
+    <md-content>
+        <md-divider style="margin-bottom:5px;"></md-divider>
+
+        <md-data-table-container>
+            <table md-data-table md-row-select="selected" md-progress="deferred">
+                <thead>
+                <tr>
+                    <th><span class="md-subhead">仓库编号</span></th>
+                    <th><span class="md-subhead">仓库名称</span></th>
+                    <th><span class="md-subhead">库位</span></th>
+                    <th><span class="md-subhead">批号</span></th>
+                    <th><span class="md-subhead">批号说明</span></th>
+                    <th><span class="md-subhead">库存单位</span></th>
+                    <th><span class="md-subhead">库存数量</span></th>
+                    <th><span class="md-subhead">呆滞日期</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="r in allInventoryDetailData.content" ng-class="">
+                    <td><span class="md-body-1">{{r.warehouse.no}}</span></td>
+                    <td><span class="md-body-1">{{r.warehouse.name}}</span></td>
+                    <td><span class="md-body-1">{{r.storeId}}</span></td>
+                    <td><span class="md-body-1">{{r.batchNumber }}</span></td>
+                    <td><span class="md-body-1">批号说明{{r.orderQuantity}}</span></td>
+                    <td><span class="md-body-1">{{r.unit}}</span></td>
+                    <td><span class="md-body-1">{{r.inventoryQty}}</span></td>
+                    <td><span class="md-body-1">{{r.idleDate | date:'yyyy-MM-dd'}}</span></td>
+                </tr>
+                </tbody>
+            </table>
+        </md-data-table-container>
+
+        <div pagination option="pageOption" callback="queryReport()"></div>
+       <!-- <div ng-show="pageOption.totalElements > 0">总量: {{totalOrderQty}}</div>-->
+    </md-content>
+
+</div>
