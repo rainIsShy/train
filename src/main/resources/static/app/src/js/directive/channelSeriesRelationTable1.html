@@ -1,0 +1,72 @@
+<div class="menu">
+    <md-content>
+        <div class="menu-bar" layout="row" layout-sm="column" layout-align="center left" ng-if="ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+            <md-button ng-click="menuAction(100)" ng-if="formMenuDisplayOption['100-add'].display && (menuAuthDataMap[formMenuDisplayOption['100-add'].uuid] || isAdmin() || !formMenuDisplayOption['100-add'].uuid)">
+                <i class="fa fa-plus"></i>&nbsp;{{formMenuDisplayOption['100-add'].name}}
+            </md-button>
+            <!--Go back to view status after deleting current object-->
+            <!--<md-button ng-click="menuAction(102)"-->
+                       <!--ng-if="formMenuDisplayOption['102-edit'].display && (menuAuthDataMap[formMenuDisplayOption['102-edit'].uuid] || isAdmin() || !formMenuDisplayOption['102-edit'].uuid)"-->
+                       <!--ng-disabled="form_edit_button_disabled == 1">-->
+                <!--<i class="fa fa-pencil-square-o"></i>&nbsp;{{formMenuDisplayOption['102-edit'].name}}-->
+            <!--</md-button>-->
+            <md-button ng-click="menuAction(101)"
+                       ng-if="formMenuDisplayOption['101-delete'].display && (menuAuthDataMap[formMenuDisplayOption['101-delete'].uuid] || isAdmin() || !formMenuDisplayOption['101-delete'].uuid)"
+                       ng-disabled="form_delete_button_disabled == 1">
+                <i class="fa fa-times"></i>&nbsp;{{formMenuDisplayOption['101-delete'].name}}
+            </md-button>
+            <md-button ng-click="menuAction(103)" ng-if="formMenuDisplayOption['103-copy'].display && (menuAuthDataMap[formMenuDisplayOption['103-copy'].uuid] || isAdmin() || !formMenuDisplayOption['103-copy'].uuid)">
+                <i class="fa fa-files-o"></i>&nbsp;{{formMenuDisplayOption['103-copy'].name}}
+            </md-button>
+            <md-button ng-click="menuAction(104)" ng-if="formMenuDisplayOption['104-status'].display && (menuAuthDataMap[formMenuDisplayOption['104-status'].uuid] || isAdmin() || !formMenuDisplayOption['104-status'].uuid)">
+                <i class="fa fa-dot-circle-o"></i>&nbsp;{{formMenuDisplayOption['104-status'].name}}
+            </md-button>
+            <md-button ng-click="menuAction(105)" ng-if="formMenuDisplayOption['105-confirm'].display && (menuAuthDataMap[formMenuDisplayOption['105-confirm'].uuid] || isAdmin() || !formMenuDisplayOption['105-confirm'].uuid)">
+                <i class="fa fa-calendar-o"></i>&nbsp;{{formMenuDisplayOption['105-confirm'].name}}
+            </md-button>
+            <md-button ng-click="menuAction(106)" ng-if="formMenuDisplayOption['106-release'].display && (menuAuthDataMap[formMenuDisplayOption['106-release'].uuid] || isAdmin() || !formMenuDisplayOption['106-release'].uuid)">
+                <i class="fa fa-paper-plane-o"></i>&nbsp;{{formMenuDisplayOption['106-release'].name}}
+            </md-button>
+            <md-button ng-click="menuAction(107)" ng-if="formMenuDisplayOption['107-change'].display && (menuAuthDataMap[formMenuDisplayOption['107-change'].uuid] || isAdmin() || !formMenuDisplayOption['107-change'].uuid)">
+                <i class="fa fa-pencil-square-o"></i>&nbsp;{{formMenuDisplayOption['107-change'].name}}
+            </md-button>
+            <md-button ng-click="menuAction(108)" ng-if="formMenuDisplayOption['108-changehistory'].display && (menuAuthDataMap[formMenuDisplayOption['108-changehistory'].uuid] || isAdmin() || !formMenuDisplayOption['108-changehistory'].uuid)">
+                <i class="fa fa-history"></i>&nbsp;{{formMenuDisplayOption['108-changehistory'].name}}
+            </md-button>
+            <md-button ng-click="menuAction(109)"
+                       ng-if="formMenuDisplayOption['109-copy'].display && (menuAuthDataMap[formMenuDisplayOption['109-copy'].uuid] || isAdmin() || !formMenuDisplayOption['109-copy'].uuid)">
+                <i class="fa fa-files-o"></i>&nbsp;{{formMenuDisplayOption['109-copy'].name}}
+            </md-button>
+        </div>
+
+        <div class="menu-bar" layout="row" layout-sm="column" layout-align="center left" ng-if="ui_status == UI_STATUS.EDIT_UI_STATUS_ADD">
+            <md-button ng-click="menuAction(200)" ng-if="formMenuDisplayOption['200-cancel'].display && (menuAuthDataMap[formMenuDisplayOption['200-cancel'].uuid] || isAdmin() || !formMenuDisplayOption['200-cancel'].uuid)">
+                <i class="fa fa-plus"></i>&nbsp;{{formMenuDisplayOption['200-cancel'].name}}
+            </md-button>
+            <md-button ng-click="menuAction(201)" ng-if="formMenuDisplayOption['201-save'].display && (menuAuthDataMap[formMenuDisplayOption['201-save'].uuid] || isAdmin() || !formMenuDisplayOption['201-save'].uuid)" ng-disabled="mainForm.$invalid">
+                <i class="fa fa-times"></i>&nbsp;{{formMenuDisplayOption['201-save'].name}}
+            </md-button>
+            <md-button ng-click="menuAction(202)" ng-if="formMenuDisplayOption['202-continueAdd'].display && (menuAuthDataMap[formMenuDisplayOption['202-continueAdd'].uuid] || isAdmin() || !formMenuDisplayOption['202-continueAdd'].uuid)" ng-disabled="mainForm.$invalid">
+                <i class="fa fa-plus"></i>&nbsp;{{formMenuDisplayOption['202-continueAdd'].name}}
+            </md-button>
+        </div>
+
+        <div class="menu-bar" layout="row" layout-sm="column" layout-align="center left" ng-if="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY">
+            <md-button ng-click="menuAction(300, $event)" ng-if="formMenuDisplayOption['300-add'].display && (menuAuthDataMap[formMenuDisplayOption['300-add'].uuid] || isAdmin() || !formMenuDisplayOption['300-add'].uuid)" ng-disabled="addNodeDisabled">
+                <i class="fa fa-plus"></i>&nbsp;{{formMenuDisplayOption['300-add'].name}}
+            </md-button>
+            <md-button ng-click="menuAction(301)" ng-if="formMenuDisplayOption['301-delete'].display && (menuAuthDataMap[formMenuDisplayOption['301-delete'].uuid] || isAdmin() || !formMenuDisplayOption['301-delete'].uuid)" ng-disabled="deleteNodeDisabled">
+                <i class="fa fa-times"></i>&nbsp;{{formMenuDisplayOption['301-delete'].name}}
+            </md-button>
+            <md-button ng-click="menuAction(302)" ng-if="formMenuDisplayOption['302-save'].display && (menuAuthDataMap[formMenuDisplayOption['302-save'].uuid] || isAdmin() || !formMenuDisplayOption['302-save'].uuid)" ng-disabled="mainForm.$invalid">
+                <i class="fa fa-floppy-o"></i>&nbsp;{{formMenuDisplayOption['302-save'].name}}
+            </md-button>
+            <md-button ng-click="menuAction(303)" ng-if="formMenuDisplayOption['303-cancel'].display && (menuAuthDataMap[formMenuDisplayOption['303-cancel'].uuid] || isAdmin() || !formMenuDisplayOption['303-cancel'].uuid)" ng-disabled="cancelModifyDisabled">
+                <i class="fa fa-reply"></i>&nbsp;{{formMenuDisplayOption['303-cancel'].name}}
+            </md-button>
+            <md-button ng-click="menuAction(304)" ng-if="formMenuDisplayOption['304-quit'].display && (menuAuthDataMap[formMenuDisplayOption['304-quit'].uuid] || isAdmin() || !formMenuDisplayOption['304-quit'].uuid)">
+                <i class="fa fa-times"></i>&nbsp;{{formMenuDisplayOption['304-quit'].name}}
+            </md-button>
+        </div>
+    </md-content>
+</div>
