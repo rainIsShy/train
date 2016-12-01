@@ -951,7 +951,7 @@ angular.module('IOne-Constant').constant('Constant', {
            uuid: RES_UUID_MAP.INV.RES_UUID,
            name: '库存管理',
            isOpen: false,
-           icon: '',
+           icon: 'fa fa-bank',
            subList:[
                {id: '/inv/inventoryDetail', name: '库存明细查询', link: '/inv/inventoryDetail', uuid:RES_UUID_MAP.INV.INVENTORY_DETAIL.RES_UUID}
            ]

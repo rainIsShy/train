@@ -1,46 +1,26 @@
 angular.module('IOne-Production').service('InventoryDetailService', function ($http, $filter, Constant) {
-    this.getAll = function (page, size, proName, cityName, channelName, itemNo, orderDateStart, orderDateEnd, deliverDateStart, deliverDateEnd, uuid) {
+    this.getAll = function (page, size, warehouseNO, warehouseName, itemFileNo, itemFileName, itemFileStandard) {
         var url = Constant.BACKEND_BASE + '/inventoryDetails'
             + '?page=' + page + '&size=' + size;
-        if (orderDateStart != null && orderDateStart != '') {
-            url += '&orderDateStart=' + $filter('date')(orderDateStart, 'yyyy-MM-dd');
+        if (warehouseNO != null && warehouseNO != '') {
+            url += '&warehouseNO=' + warehouseNO;
         }
-        if (orderDateEnd != null && orderDateEnd != '') {
-            url += '&orderDateEnd=' + $filter('date')(orderDateEnd, 'yyyy-MM-dd');
+        if (warehouseName != null && warehouseName != '') {
+            url += '&warehouseName=' + warehouseName;
         }
-        if (deliverDateStart != null && deliverDateStart != '') {
-            url += '&deliverDateStart=' + $filter('date')(deliverDateStart, 'yyyy-MM-dd');
+        if (itemFileNo != null && itemFileNo != '') {
+            url += '&itemFileNo=' + itemFileNo;
         }
-        if (deliverDateEnd != null && deliverDateEnd != '') {
-            url += '&deliverDateEnd=' + $filter('date')(deliverDateEnd, 'yyyy-MM-dd');
+        if (itemFileName != null && itemFileName != '') {
+            url += '&itemFileName=' + itemFileName;
         }
-        if (null != uuid && typeof(uuid) != "undefined" && '' != uuid) {
-            url += '&resUuid=' + uuid;
+        if (itemFileStandard != null && itemFileStandard != '') {
+            url += '&itemFileStandard=' + itemFileStandard;
         }
         return $http.get(url);
     };
 
-    this.search = function (page, size, keyword, type, scopeData) {
-        var url = Constant.BACKEND_BASE + '/orderDetailReport';
-        switch (type) {
-            case '1':
-                url += '/searchPro?page=' + page + '&size=' + size
-                    + '&name=' + keyword;
-                break;
-            case '2':
-                url += '/searchCity?page=' + page + '&size=' + size
-                    + '&name=' + keyword + '&proName=' + scopeData.proName;
-                break;
-            case '3':
-                url += '/searchChannel?page=' + page + '&size=' + size
-                    + '&proName=' + scopeData.proName + '&cityName=' + scopeData.cityName
-                    + '&name=' + keyword;
-                break;
-            case '4':
-                url += '/searchItemNo?page=' + page + '&size=' + size
-                    + '&no=' + keyword;
-                break;
-        }
-        return $http.get(url);
+    this.getItemRelations = function(itemUuid,reference){
+        return $http.get(Constant.BACKEND_BASE + '/itemRelations?itemUuid='+itemUuid+'&reference='+reference);
     }
 });
