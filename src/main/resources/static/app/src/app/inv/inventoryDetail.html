@@ -7,23 +7,23 @@
     <div layout="row" layout-md="column" layout-sm="column" class="menu" style="margin: 0px 18px; width: 1050px;">
         <md-input-container flex="15">
             <label>仓库编号</label>
-            <input type="text" ng-model="warehouseNO" ng-keypress="enterKeyDown($event);">
+            <input type="text" ng-model="inventoryDetailQuery.warehouseNO" ng-keypress="enterKeyDown($event);">
         </md-input-container>
         <md-input-container flex="15">
             <label>仓库名称</label>
-            <input type="text" ng-model="warehouseName" ng-keypress="enterKeyDown($event);">
+            <input type="text" ng-model="inventoryDetailQuery.warehouseName" ng-keypress="enterKeyDown($event);">
         </md-input-container>
         <md-input-container flex="15">
             <label>商品编号</label>
-            <input type="text" ng-model="itemFileNo" ng-keypress="enterKeyDown($event);">
+            <input type="text" ng-model="inventoryDetailQuery.itemFileNo" ng-keypress="enterKeyDown($event);">
         </md-input-container>
         <md-input-container flex="15">
             <label>商品名称</label>
-            <input type="text" ng-model="itemFileName" ng-keypress="enterKeyDown($event);">
+            <input type="text" ng-model="inventoryDetailQuery.itemFileName" ng-keypress="enterKeyDown($event);">
         </md-input-container>
         <md-input-container flex="15">
             <label>商品规格</label>
-            <input type="text" ng-model="itemFileStandard" ng-keypress="enterKeyDown($event);">
+            <input type="text" ng-model="inventoryDetailQuery.itemFileStandard" ng-keypress="enterKeyDown($event);">
         </md-input-container>
         <md-button style="margin-top: 22px;height: 20px;" class="md-raised" ng-click="queryReport()">查询</md-button>
     </div>

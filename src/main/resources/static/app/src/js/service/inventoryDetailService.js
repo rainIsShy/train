@@ -1,23 +1,13 @@
 angular.module('IOne-Production').service('InventoryDetailService', function ($http, $filter, Constant) {
-    this.getAll = function (page, size, warehouseNO, warehouseName, itemFileNo, itemFileName, itemFileStandard) {
-        var url = Constant.BACKEND_BASE + '/inventoryDetails'
-            + '?page=' + page + '&size=' + size;
-        if (warehouseNO != null && warehouseNO != '') {
-            url += '&warehouseNO=' + warehouseNO;
-        }
-        if (warehouseName != null && warehouseName != '') {
-            url += '&warehouseName=' + warehouseName;
-        }
-        if (itemFileNo != null && itemFileNo != '') {
-            url += '&itemFileNo=' + itemFileNo;
-        }
-        if (itemFileName != null && itemFileName != '') {
-            url += '&itemFileName=' + itemFileName;
-        }
-        if (itemFileStandard != null && itemFileStandard != '') {
-            url += '&itemFileStandard=' + itemFileStandard;
-        }
-        return $http.get(url);
+    this.getAll = function (currentPage,sizePerPage, inventoryDetailQuery) {
+        var query = {
+            params : angular.merge({},{
+                size : sizePerPage,
+                page : currentPage,
+                resUuid : RES_UUID_MAP.INV.INVENTORY_DETAIL.RES_UUID
+            },inventoryDetailQuery)
+        };
+        return $http.get(Constant.BACKEND_BASE + '/inventoryDetails',query);
     };
 
     this.getItemRelations = function(itemUuid,reference){
