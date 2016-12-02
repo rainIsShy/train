@@ -1127,7 +1127,8 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                 allCustomsScopes: $scope.allCustomsScopes,
                 custom: null,
                 allCustoms: $scope.selectedItemCustoms,
-                op: 'add'
+                op: 'add',
+                itemUuid: $scope.selectedOrderExtendDetail.parentItem.uuid
             }
         }).then(function (data) {
 
@@ -1136,7 +1137,8 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                 no: Math.random().toString(36).substring(10),
                 itemUuid: $scope.selectedOrderExtendDetail.item.uuid,
                 itemCustomUuid: data.selectedCustom.itemCustom.uuid,
-                information: data.selectedCustom.information
+                // information: data.selectedCustom.information
+                information: data.selectedCustom.informationScope
             };
             // masterUuid, detailUuid, orderExtendDetailUuid, OrderExtendDetail2Input
             var masterUuid = $scope.selectedOrderExtendDetail.orderDetail.orderMaster.uuid;
@@ -1153,6 +1155,7 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                         $scope.OrderExtendDetailList = $scope.OrderExtendDetailList.concat(data.content);
                     });
                 });
+                $scope.editItemCustom($scope.selectedOrderExtendDetail);
                 $scope.showInfo('新增自定义信息成功。');
             })
         });
@@ -1168,7 +1171,8 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                 allCustoms: $scope.selectedItemCustoms,
                 allCustomsScopes: $scope.allCustomsScopes,
                 custom: custom,
-                op: 'modify'
+                op: 'modify',
+                itemUuid: $scope.selectedOrderExtendDetail.parentItem.uuid
             }
         }).then(function (data) {
             var masterUuid = $scope.selectedOrderExtendDetail.orderDetail.orderMaster.uuid;
@@ -1177,7 +1181,8 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
 
             var OrderExtendDetail2UpdateInput = {
                 itemCustomUuid: data.selectedCustom.itemCustom.uuid,
-                information: data.selectedCustom.information
+                // information: data.selectedCustom.information
+                information: data.selectedCustom.informationScope
             };
 
             OrderExtendDetail2.modify(masterUuid, detailUuid, orderExtendDetailUuid, custom.uuid, OrderExtendDetail2UpdateInput).success(function () {
@@ -1188,6 +1193,7 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                     });
                 });
 
+                $scope.editItemCustom($scope.selectedOrderExtendDetail);
                 $scope.showInfo('修改自定义信息成功。');
             })
         });
@@ -1310,12 +1316,13 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
 });
 
 
-angular.module('IOne-Production').controller('OrderExtendDetail2Controller', function ($scope, $mdDialog, allCustoms, allCustomsScopes, custom, op) {
+angular.module('IOne-Production').controller('OrderExtendDetail2Controller', function ($scope, $mdDialog, allCustoms, allCustomsScopes, custom, op, ItemRelationService, itemUuid) {
 
     $scope.allCustoms = allCustoms.content;
     $scope.allCustomsScopes = allCustomsScopes;
     $scope.selectedCustom = custom;
     $scope.op = op;
+    $scope.itemUuid = itemUuid;
 
     if ($scope.selectedCustom) {
         angular.forEach($scope.selectedCustom.informationUuids, function (value) {
@@ -1325,12 +1332,28 @@ angular.module('IOne-Production').controller('OrderExtendDetail2Controller', fun
                 }
             })
         });
+        ItemRelationService.getAll($scope.itemUuid, $scope.selectedCustom.itemCustom.uuid, $scope.selectedCustom.informationUuids).success(function (itemRelationData) {
+            $scope.itemRelationList = itemRelationData.content;
+            $scope.selectedCustom.informationScope = $scope.selectedCustom.information;
+            console.log($scope.selectedCustom.information);
+
+        });
+
+
     } else {
         $scope.selectedCustom = {
             informationUuids: [],
             //astrict: 2
             itemCustom: {astrict: 2}
         };
+        if ($scope.selectedCustom.informationUuids.length > 0) {
+            ItemRelationService.getAll($scope.itemUuid, $scope.selectedCustom.itemCustom.uuid, $scope.selectedCustom.informationUuids).success(function (itemRelationData) {
+                $scope.itemRelationList = itemRelationData.content;
+            });
+        } else {
+            $scope.itemRelationList = null;
+            $scope.selectedCustom.informationScope = null;
+        }
     }
 
     $scope.backUpCustomScopes = function (custom) {
@@ -1377,6 +1400,15 @@ angular.module('IOne-Production').controller('OrderExtendDetail2Controller', fun
                     $scope.selectedCustom.informationUuids.splice(index, 1);
                 }
             });
+        }
+
+        if ($scope.selectedCustom.informationUuids.length > 0) {
+            ItemRelationService.getAll($scope.itemUuid, $scope.selectedCustom.itemCustom.uuid, $scope.selectedCustom.informationUuids).success(function (itemRelationData) {
+                $scope.itemRelationList = itemRelationData.content;
+            });
+        } else {
+            $scope.itemRelationList = null;
+            $scope.selectedCustom.informationScope = null;
         }
     };
 

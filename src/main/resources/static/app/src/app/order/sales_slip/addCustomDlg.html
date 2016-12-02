@@ -7,36 +7,36 @@
                     <md-select placeholder="" ng-model="selectedCustomUuid" class="select" ng-change="customChangeHandler(selectedCustomUuid)" ng-disabled="op == 'modify'">
                         <md-option ng-selected="custom.itemCustom.uuid == selectedCustom.itemCustom.uuid" ng-repeat="custom in allCustoms" ng-value="custom.itemCustom.uuid">{{custom.itemCustom.name}}</md-option>
                     </md-select>
-
-                    <div ng-if="selectedCustom.itemCustom.appChoose == '1'">
-                        <span ng-click="clearCustomScope()" ng-show="selectedCustom.informationUuids.length > 0"
-                              style="width: 20px;float: left;padding: 0px 5px 0px 5px;color:grey;">
-                            <i class="fa fa-times"></i>
-                        </span>
-                        <span ng-repeat="scopeUuid in selectedCustom.informationUuids track by $index">{{allCustomsScopes[selectedCustom.itemCustom.uuid][scopeUuid].name}}&nbsp;&nbsp;</span>
-                    </div>
+                    <!--<div ng-if="selectedCustom.itemCustom.appChoose == '1'">-->
+                    <!--<span ng-click="clearCustomScope()" ng-show="selectedCustom.informationUuids.length > 0"-->
+                    <!--style="width: 20px;float: left;padding: 0px 5px 0px 5px;color:grey;">-->
+                    <!--<i class="fa fa-times"></i>-->
+                    <!--</span>-->
+                    <!--<span ng-repeat="scopeUuid in selectedCustom.informationUuids track by $index">{{allCustomsScopes[selectedCustom.itemCustom.uuid][scopeUuid].name}}&nbsp;&nbsp;</span>-->
+                    <!--</div>-->
                 </div>
 
-                <div flex="50" layout="column" ng-if="selectedCustom.itemCustom.appChoose == '1'">
-                    <label>属性值:</label>
+                <!--<div flex="50" layout="column" ng-if="selectedCustom.itemCustom.appChoose == '1'">-->
+                <!--<label>属性值:</label>-->
 
-                    <div layout="row" layout-wrap class="height: 100%;">
-                        <div flex="25" ng-repeat="value in allCustomsScopes[selectedCustom.itemCustom.uuid]">
-                            <md-button ng-click="selectCustomScopeHandler(value, value.checked)"
-                                       style="text-align: left;padding: 0;">{{value.name}}
-                            </md-button>
-                        </div>
-                    </div>
-                </div>
+                <!--<div layout="row" layout-wrap class="height: 100%;">-->
+                <!--<div flex="25" ng-repeat="value in allCustomsScopes[selectedCustom.itemCustom.uuid]">-->
+                <!--<md-button ng-click="selectCustomScopeHandler(value, value.checked)"-->
+                <!--style="text-align: left;padding: 0;">{{value.name}}-->
+                <!--</md-button>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
 
-                <div flex="50" layout="column" ng-if="selectedCustom.itemCustom.appChoose == '2'">
+                <div flex="50" layout="column"
+                     ng-if="selectedCustom.itemCustom.astrict == '1' || selectedCustom.itemCustom.astrict == '3'">
                     <label>属性值:</label>
                     <md-radio-group ng-model="selectedCustom.itemCustom.scopeUuid"  ng-change="radioChangeHandler()">
                         <md-radio-button ng-repeat="value in allCustomsScopes[selectedCustom.itemCustom.uuid]" ng-value="value.uuid" class="md-primary" >{{value.name}}</md-radio-button>
                     </md-radio-group>
                 </div>
 
-                <div flex="50" layout="column" ng-if="selectedCustom.itemCustom.appChoose == '3'">
+                <div flex="50" layout="column" ng-if="selectedCustom.itemCustom.astrict == '2'">
                     <label>属性值:</label>
                     <md-checkbox ng-model="value.checked"
                                  ng-repeat="value in allCustomsScopes[selectedCustom.itemCustom.uuid]"
@@ -45,6 +45,16 @@
                     </md-checkbox>
                 </div>
             </div>
+
+            <div layout="column">
+                <md-radio-group ng-model="selectedCustom.informationScope">
+                    <md-radio-button ng-repeat="item in itemRelationList" ng-value="item.informationScope"
+                                     aria-label="{{item.reference}} {{item.referenceName}} {{item.explain}}">
+                        {{item.reference}} {{item.referenceName}} {{item.explain}}
+                    </md-radio-button>
+                </md-radio-group>
+            </div>
+
 
             <div layout="row">
                 <md-button ng-click="hideDlg()" ng-disabled="addCustomForm.$invalid">
