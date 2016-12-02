@@ -9,8 +9,4 @@ angular.module('IOne-Production').service('InventoryDetailService', function ($h
         };
         return $http.get(Constant.BACKEND_BASE + '/inventoryDetails',query);
     };
-
-    this.getItemRelations = function(itemUuid,reference){
-        return $http.get(Constant.BACKEND_BASE + '/itemRelations?itemUuid='+itemUuid+'&reference='+reference);
-    }
 });

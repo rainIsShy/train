@@ -38,19 +38,9 @@ angular.module('IOne-Production').controller('InventoryDetailController', functi
             $scope.pageOption.sizePerPage,
             $scope.inventoryDetailQuery
         ).success(function (data) {
-            $scope.getItemRelationsByItemUuidAndReference(data.content);
             $scope.allInventoryDetailData = data;
             $scope.pageOption.totalPage = data.totalPages;
             $scope.pageOption.totalElements = data.totalElements;
         });
     };
-
-    $scope.getItemRelationsByItemUuidAndReference = function(InventoryDetails){
-        angular.forEach(InventoryDetails, function(inventoryDetail){
-             InventoryDetailService.getItemRelations(inventoryDetail.item.uuid,inventoryDetail.batchNumber).success(function(data){
-                  var itemRelation = data.content[0];
-                  inventoryDetail.referenceName = itemRelation == null?'':itemRelation.referenceName;
-             });
-        });
-    }
 });
