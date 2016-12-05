@@ -56,20 +56,20 @@ angular.module('IOne-Production').service('PsoOrderChangeMaster', function ($htt
     //    return $http.patch(Constant.BACKEND_BASE + '/orderChanges?action=sync', arrayUuids.join(','));
     //};
 
-    this.transfer = function (uuid) {
-        return $http.patch(Constant.BACKEND_BASE + '/orderChanges/' + uuid, {'modifyOnly': '1', 'transferPsoFlag': '1'});
+    this.transfer = function (uuids) {
+        return $http.patch(Constant.BACKEND_BASE + '/orderChanges/' + uuids, {'modifyOnly': '1', 'transferPsoFlag': '1'});
     };
 
-    this.modify = function (uuid,  orderChangeUpdateInput) {
-        return $http.patch(Constant.BACKEND_BASE + '/orderChanges/' + uuid, orderChangeUpdateInput);
+    this.modify = function (uuids,  orderChangeUpdateInput) {
+        return $http.patch(Constant.BACKEND_BASE + '/orderChanges/' + uuids, orderChangeUpdateInput);
     };
 
     this.add = function (orderUuid, OrderChangeInput) {
         return $http.post(Constant.BACKEND_BASE + '/orderChanges?orderUuid=' + orderUuid, OrderChangeInput);
     };
 
-    this.oneOffSync = function(uuid) {
-        return $http.patch(Constant.BACKEND_BASE + '/orderChanges/' + uuid + '/sync');
+    this.oneOffSync = function(uuids) {
+        return $http.patch(Constant.BACKEND_BASE + '/orderChanges/' + uuids + '/sync', {});
     };
 
     this.getOrderMasterCount = function (confirm, status, transferPsoFlag, resUuid) {
@@ -90,7 +90,6 @@ angular.module('IOne-Production').service('PsoOrderChangeMaster', function ($htt
         return $http.patch(Constant.BACKEND_BASE + '/orderChanges?action=auditTransfer', uuids);
     };
 });
-
 
 angular.module('IOne-Production').service('PsoOrderChangeDetail', function ($http, Constant) {
     this.get = function (masterUuid) {
