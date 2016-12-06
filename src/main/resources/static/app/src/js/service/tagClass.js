@@ -1,12 +1,10 @@
 angular.module('IOne-Production').service('TagClassificationService', function ($http, Constant) {
-    this.getAll = function (sizePerPage, page, confirm, status, no, name, keyWord, sortField, resUuid) {
+    this.getAllWithCondition = function (sizePerPage, page, no, name, keyword, sortField, resUuid) {
         confirm = confirm == 0 ? '' : confirm;
         status = status == 0 ? '' : status;
 
         var url = '/tagClassifications?size=' + sizePerPage
-            + '&page=' + page
-            + '&confirm=' + confirm
-            + '&status=' + status;
+            + '&page=' + page;
 
         if (no !== undefined && no !== null) {
             url = url + '&no=' + no;
@@ -16,8 +14,8 @@ angular.module('IOne-Production').service('TagClassificationService', function (
             url = url + '&name=' + name;
         }
 
-        if (keyWord !== undefined && keyWord !== null && keyWord !== '') {
-            url = url + '&keyWord=' + keyWord;
+        if (keyword !== undefined && keyword !== null && keyword !== '') {
+            url = url + '&keyword=' + keyword;
         }
 
         if (resUuid !== undefined && resUuid !== null) {
@@ -32,7 +30,7 @@ angular.module('IOne-Production').service('TagClassificationService', function (
 
     this.getAll = function () {
         return $http.get(Constant.BACKEND_BASE + "/tagClassifications");
-    };;;;;
+    };
 
     this.get = function (uuid) {
         return $http.get(Constant.BACKEND_BASE + '/tagClassifications/' + uuid);

@@ -47,8 +47,9 @@ angular.module('IOne-Production').controller('tagClassificationsController', fun
     };
 
     $scope.refreshList = function () {
-        TagClassificationService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption.select.confirm, $scope.listFilterOption.select.status,
-            $scope.listFilterOption.no, $scope.listFilterOption.name, $scope.listFilterOption.keyWord, $scope.RES_UUID_MAP.CBI.TAG.RES_UUID)
+        console.log($scope.listFilterOption.no);
+        TagClassificationService.getAllWithCondition($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,
+            $scope.listFilterOption.no, $scope.listFilterOption.name, $scope.listFilterOption.keyWord, $scope.sortByField, $scope.RES_UUID_MAP.CBI.TAG.RES_UUID)
             .success(function (data) {
                 $scope.itemList = data.content;
                 $scope.pageOption.totalPage = data.totalPages;
@@ -63,7 +64,7 @@ angular.module('IOne-Production').controller('tagClassificationsController', fun
             $scope.allTagClassList = data.content;
             console.log($scope.allTagClassList);
         });
-    };;;;;;;;;
+    };
 
     $scope.getMenuAuthData($scope.RES_UUID_MAP.CBI.TAG_CLASS.RES_UUID).success(function (data) {
         $scope.menuAuthDataMap = $scope.menuDataMap(data);
