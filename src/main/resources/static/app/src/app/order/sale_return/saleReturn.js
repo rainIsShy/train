@@ -187,7 +187,6 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
         }
 
         var action = confirmVal == 1 ? "取消审核" : "审核";
-        console.log('new ' + action);
         $scope.showConfirm('确认' + action + '吗', '', function () {
             var detailUuids = '';
             var hasSelectedItems = false;
@@ -310,7 +309,6 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
             return;
         }
 
-        console.log('确认抛转吗');
         $scope.showConfirm('确认抛转吗?', '', function () {
             var detailUuids = '';
             var hasSelectedItems = false, hasDetail = false;
