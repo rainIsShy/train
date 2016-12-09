@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('TaobaoOrdersController', function ($scope, $q, TaobaoOrders, TaobaoOrderDetail, TaobaoAmountMaster, TaobaoAmountDetail, TaoBaoAdapterService, $mdDialog, $timeout, Constant) {
+angular.module('IOne-Production').controller('TaobaoOrdersController', function ($scope, $window, $q, TaobaoOrders, TaobaoOrderDetail, TaobaoAmountMaster, TaobaoAmountDetail, TaoBaoAdapterService, $mdDialog, $timeout, Constant) {
 
     $scope.taobaoOrderListMenu = {
         selectAll: false,
@@ -276,12 +276,6 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
             });
             TaobaoOrders.merge(uuids).success(function (returnMsgs) {
                   $scope.path('ecommerce-orders');
-//                $scope.queryMenuActionWithPaging();
-//
-//                angular.forEach(returnMsgs, function (msg) {
-//                    $scope.showError(msg);
-//                });
-//                $scope.showInfo('合并订单成功。');
             }).error(function() {
                 $scope.showError('合并订单失败。');
             })
@@ -319,7 +313,7 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
                     };
 
                     var response = TaobaoOrders.modify(OrderMasterUpdateInput).success(function (returnMsgs) {
-                        window.location.href = '#/ecommerce-orders?tid='+tid;
+                        $window.location.href = '/#/ecommerce-orders?tid='+tid;
                     }).error(function (data) {
                         $scope.showError(data.message);
                     });

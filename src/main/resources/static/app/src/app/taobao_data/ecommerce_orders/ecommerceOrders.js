@@ -341,6 +341,7 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
     $scope.getUrl = function(){
         var orderMasterNo = $scope.GetQueryString('uuid')
         if(orderMasterNo != null){
+            $scope.initMenu();
             EcommerceOrdersMaster.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, null, '', status, 0, null, orderMasterNo, null, null, null, null).success(function(data){
                 $scope.editItem(data.content[0]);
             }).error(function(){
