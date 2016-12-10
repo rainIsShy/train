@@ -271,11 +271,13 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
     $scope.mergeMenuAuction = function() {
         if ($scope.selected.length > 0) {
             var uuids = [];
+            var tid = '';
             angular.forEach($scope.selected, function(item) {
+                tid = item.tid;
                 uuids.push(item.uuid);
             });
             TaobaoOrders.merge(uuids).success(function (returnMsgs) {
-                  $scope.path('ecommerce-orders');
+                  $window.location.href = '/#/ecommerce-orders?tid='+tid;
             }).error(function() {
                 $scope.showError('合并订单失败。');
             })
