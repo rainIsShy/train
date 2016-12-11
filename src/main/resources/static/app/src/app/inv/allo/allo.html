@@ -1,0 +1,302 @@
+<div class="main-panel">
+    <div ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS">
+        <div layout="row" class="top-title">
+            <div flex="70" hide-sm hide-md class="left-title" ng-show="selectedItem" style="position: relative;">
+                <md-menu>
+                    <md-button class="md-icon-button close-btn" aria-label="More"
+                               style="float: left; margin-left: 36px;" ng-click="$mdOpenMenu($event)">
+                        <ng-md-icon icon="menu"></ng-md-icon>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="confirmClickAction($event, selectedItem)">
+                                <ng-md-icon icon="lock"></ng-md-icon>
+                                审核
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="statusClickAction($event, selectedItem)">
+                                <ng-md-icon icon="lock_open"></ng-md-icon>
+                                启用
+                            </md-button>
+                        </md-menu-item>
+
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="releaseClickAction($event, selectedItem)">
+                                <ng-md-icon icon="send"></ng-md-icon>
+                                抛转
+                            </md-button>
+                        </md-menu-item>
+
+                    </md-menu-content>
+                </md-menu>
+                <span>调拨单详细信息</span>
+                <md-button class="md-icon-button close-btn float-right" aria-label="More"
+                           ng-click="selectedItem = null">
+                    <ng-md-icon icon="chevron_left"></ng-md-icon>
+                </md-button>
+            </div>
+            <div flex class="right-title">
+                <span>调拨单列表</span>
+                <md-menu>
+                    <md-button class="md-icon-button close-btn float-right" aria-label="More"
+                               ng-click="$mdOpenMenu($event)">
+                        <ng-md-icon icon="menu"></ng-md-icon>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More" ng-click="confirmAllClickAction($event)">
+                                <ng-md-icon icon="lock"></ng-md-icon>
+                                批量审核
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More" ng-click="statusAllClickAction($event)">
+                                <ng-md-icon icon="lock_open"></ng-md-icon>
+                                批量启用
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More" ng-click="releaseAllClickAction($event)">
+                                <ng-md-icon icon="send"></ng-md-icon>
+                                批量发布
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+        </div>
+
+        <div layout="row" class="main-body border">
+            <div flex="70" hide-sm hide-md layout="column" class="left-body" ng-show="selectedItem">
+                <div flex="100" layout-padding>
+                    <div layout="row" layout-padding style="font-size: 20px;padding-top: 2px; font-weight: bold;">
+                        <span flex>调拨单号: {{selectedItem.no}}</span>
+                    </div>
+                    <md-divider></md-divider>
+                    <div layout="row" layout-wrap layout-margin>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">申请日期</span>
+                            <span class="item-content">{{selectedItem.applyDate | date:'yyyy-MM-dd'}}</span>
+                        </span>
+                        <span flex=50" flex-sm="100" layout-padding>
+                            <span class="item-name">调拨类型</span>
+                            <span class="item-content">{{selectedItem.allotType.name}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">申请门店</span>
+                            <span class="item-content">{{selectedItem.outChannel.name}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">拨入门店</span>
+                            <span class="item-content">{{selectedItem.inChannel.name}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">配送区域</span>
+                            <span class="item-content">{{selectedItem.area.name}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">门店地址</span>
+                            <span class="item-content">{{selectedItem.storeAddress}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">销售订单单号</span>
+                            <span class="item-content">{{selectedItem.psoOrderMstNo}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">人员</span>
+                            <span class="item-content">{{selectedItem.employee.name}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">部门</span>
+                            <span class="item-content">{{selectedItem.department.name}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">备注</span>
+                            <span class="item-content">{{selectedItem.remark}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">启用状态</span>
+                            <span class="item-content">{{STATUS[selectedItem.status].name}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">审核状态</span>
+                            <span class="item-content">{{CONFIRM[selectedItem.confirm].name}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">抛转否</span>
+                            <span class="item-content">{{TRANSFER_PSO_FLAG[selectedItem.transferFlag].name}}</span>
+                        </span>
+
+                    </div>
+
+                    <md-tabs md-selected="selectedSubTab.index" md-dynamic-height md-border-bottom
+                             style="padding-top: 30px;">
+                        <md-tab label="单身">
+                            <div ng-include=" 'app/src/app/inv/allo/productInfo.html' "></div>
+                        </md-tab>
+                        <md-tab label="子单身">
+                            <div ng-include=" 'app/src/app/inv/allo/deliveryInfo.html' "></div>
+                        </md-tab>
+                        <md-tab label="商品自定义">
+                            <div ng-include=" 'app/src/app/inv/allo/custom_tab.html' "></div>
+                        </md-tab>
+                    </md-tabs>
+                </div>
+            </div>
+            <div flex class="right-body">
+                <!-- basic search-->
+                <div class="search-bar" layout="row" style="position: relative">
+                    <span style="position: absolute; top: 15px; left: 10px;">
+                        <md-checkbox ng-model="selectAllFlag" aria-label="Checkbox"
+                                     ng-change="selectAllAction()"></md-checkbox>
+                    </span>
+                    <md-input-container flex="15" style="margin-left: 50px;" ng-show="selectedItem == null">
+                        <label>启用状态</label>
+                        <md-select ng-model="listFilterOption.status">
+                            <md-option ng-repeat="(key, value) in STATUS" ng-value="key">{{value.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex="15" ng-show="selectedItem == null">
+                        <label>审核状态</label>
+                        <md-select ng-model="listFilterOption.confirm">
+                            <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex="15" ng-show="selectedItem == null">
+                        <label>申请起始日期</label>
+                        <input type="date" ng-model="listFilterOption.applyDateStart"/>
+                    </md-input-container>
+                    <md-input-container flex="15" ng-show="selectedItem == null">
+                        <label>申请截止日期</label>
+                        <input type="date" ng-model="listFilterOption.applyDateEnd"/>
+                    </md-input-container>
+                </div>
+                <!-- advanced search-->
+                <div layout="row" ng-show="displayAdvancedSearPanel">
+                    <!-- fill more searching here.-->
+                    <div flex>
+                        Have you stuff here...
+                    </div>
+                </div>
+                <!-- status panel-->
+                <div layout="row" layout-warp layout-padding layout-margin ng-show="!selectedItem"
+                     style="margin: 20px 0px 20px 0px; padding-left: 60px;background-color: whitesmoke;position: relative;height: 50px;padding-top: 15px;">
+                    <span flex="20">总记录数: {{pageOption.totalElements}}</span>
+                    <span flex="20">已选记录数:{{selectItemCount}} </span>
+
+                    <md-menu>
+                        <md-button class="md-button close-btn" aria-label="More" ng-click="$mdOpenMenu($event)"
+                                   style="position: absolute;right: 0px;top: 0px;">
+                            <ng-md-icon icon="sort"></ng-md-icon>
+                            排序
+                        </md-button>
+                        <md-menu-content width="2">
+                            <md-menu-item>
+                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('name')">
+                                    <ng-md-icon ng-show="sortByField == 'name'" icon="play_arrow"></ng-md-icon>
+                                    按名称
+                                </md-button>
+                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('no')">
+                                    <ng-md-icon ng-show="sortByField == 'no'" icon="play_arrow"></ng-md-icon>
+                                    按编号
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </div>
+                <div ng-repeat="item in itemList | orderBy:sortByField"
+                     ng-class="selectedItem.no == item.no ? 'selected-item':''">
+                    <div class="summary-item">
+                        <div layout="row" layout-wrap>
+                            <span style="position: absolute">
+                                <md-checkbox ng-model="item.selected" aria-label="Checkbox"
+                                             ng-click="selectItemAction($event, item)"></md-checkbox>
+                            </span>
+                            <div flex="100" layout="row"
+                                 style="padding-left: 50px;padding-top: 10px; font-weight: bold;">
+                                <span flex ng-click="showDetailPanelAction(item)" class="summary-item__title">{{item.no}}</span>
+                            </div>
+                            <div flex="100" layout="row" style="padding-left: 50px;padding-top: 10px;font-size: 14px;"
+                                 layout-align="space-between center" ng-hide="selectedItem">
+                                <div flex layout="row" style="color:#7f8fa4">
+                                    <span>申请日期: <span style="font-style: italic">{{item.applyDate | date:'yyyy-MM-dd'}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                    <span>调拨类型: <span style="font-style: italic">{{item.allotType.name}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                    <span>拨出门店: <span style="font-style: italic">{{item.outChannel.name}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                    <span>拨入门店: <span style="font-style: italic">{{item.inChannel.name}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                    <span>配送区域: <span style="font-style: italic">{{item.area.name}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                    <span>销售订单单号: <span style="font-style: italic">{{item.psoOrderMstNo}}</span></span>
+                                </div>
+                                <div layout="row" layout-align="end center">
+                                    <md-switch ng-model="item.confirm" aria-label="Switch 1" class="md-block"
+                                               ng-true-value="'2'" ng-false-value="'1'"
+                                               ng-click="confirmClickAction($event, item)">
+                                        审核
+                                    </md-switch>
+                                    <md-switch ng-model="item.status" aria-label="Switch 1" class="md-block"
+                                               ng-true-value="'1'" ng-false-value="'2'"
+                                               ng-click="statusClickAction($event, item)">
+                                        启用
+                                    </md-switch>
+                                    <md-switch ng-model="item.transferFlag" aria-label="Switch 1" class="md-block"
+                                               ng-true-value="'1'" ng-false-value="'2'"
+                                               ng-click="transferClickAction($event, item)">
+                                        抛转
+                                    </md-switch>
+                                    <md-button class="md-button close-btn" aria-label="More"
+                                               ng-click="toggleMorePanelAction(item)"
+                                               style="position: relative;left: 15px;">
+                                        查看更多...
+                                    </md-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div layout="row" layout-wrap ng-show="item.showMorePanel" style="font-size: 14px;">
+                        <div flex="100" ng-repeat="detail in item.detailList" style="padding: 10px 20px 0px 20px;">
+                            <md-divider></md-divider>
+                            <div layout="row" style="height: 100%;">
+
+                                <div flex="40">
+                                    <div layout-padding>项次 : <span>{{detail.no}}</span></div>
+                                    <div layout-padding>品号 : <span>{{detail.item.no}}</span></div>
+                                    <div layout-padding>品名 : <span>{{detail.item.brand.name}}</span></div>
+                                </div>
+                                <div flex="40">
+                                    <div layout-padding>规格 : <span>{{detail.item.standard}}</span></div>
+                                    <div layout-padding>商品属性 : <span>{{detail.itemAttribute}}</span></div>
+                                    <div layout-padding>调拨数量 : <span>{{detail.allotQty}}</span></div>
+                                    <div layout-padding>配送日期 : <span>{{detail.deliverDate  | date:'yyyy-MM-dd'}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <md-divider style="margin-top: 5px"></md-divider>
+                        </div>
+                    </div>
+                    <md-divider></md-divider>
+                </div>
+                <div pagination option="pageOption" callback="refreshList()"></div>
+            </div>
+        </div>
+    </div>
+
+    <!--<div ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS">-->
+    <!--<div layout="row" class="top-title">-->
+    <!--<div flex="100" class="left-title">-->
+    <!--<md-button class="md-icon-button close-btn" aria-label="More" ng-click="listItemAction()" style="float: left; margin-left: 36px;"  >-->
+    <!--<ng-md-icon icon="chevron_left"></ng-md-icon>-->
+    <!--</md-button>-->
+    <!--<span>{{desc}}</span>-->
+    <!--<md-button class="md-icon-button close-btn" aria-label="More" ng-click="saveItemAction()">-->
+    <!--<ng-md-icon icon="save"></ng-md-icon>-->
+    <!--</md-button>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <!--<object-editor class="object-editor" status="status" source="source" domain="domain"></object-editor>-->
+    <!--</div>-->
+
+</div>
