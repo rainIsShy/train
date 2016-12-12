@@ -69,9 +69,12 @@ angular.module('IOne-Production').service('TaoBaoAdapterService', function ($htt
 
     //电商接口平台CURD
     this.insertConfig = function (insertObj, controllerScope, successCallBack) {
-        var url = ecAdapterUrl + '/config/insert';
+        var url = ecAdapterUrl + '/taobao/config/insert';
+        angular.forEach(insertObj, function (item) {
+            item.createUserUuid = $rootScope.globals.currentUser.userUuid;
+        });
         return $http.post(url, insertObj).success(function (response, status) {
-            if (status == 201) {
+            if (status == 200) {
                 successCallBack(response);
             } else {
                 controllerScope.showError('新增失败');
@@ -86,7 +89,12 @@ angular.module('IOne-Production').service('TaoBaoAdapterService', function ($htt
     };
 
     this.updateConfig = function (updateObj, controllerScope, successCallBack) {
-        var url = ecAdapterUrl + '/config/update';
+        var url = ecAdapterUrl + '/taobao/config/update';
+        angular.forEach(updateObj, function (item) {
+            delete(item.createDate);
+            delete(item.modifiedDate);
+            item.modifierUuid = $rootScope.globals.currentUser.userUuid;
+        });
         return $http.patch(url, updateObj).success(function (response, status) {
             if (status == 200) {
                 successCallBack(response);
@@ -103,8 +111,17 @@ angular.module('IOne-Production').service('TaoBaoAdapterService', function ($htt
     };
 
     this.deleteConfig = function (deleteObj, controllerScope, successCallBack) {
-        var url = ecAdapterUrl + '/config/delete';
-        return $http.delete(url, deleteObj).success(function (response, status) {
+        var url = ecAdapterUrl + '/taobao/config/delete';
+        angular.forEach(deleteObj, function (item) {
+            delete(item.createDate);
+            delete(item.modifiedDate);
+        });
+        return $http({
+            method: 'DELETE',
+            url: url,
+            data: deleteObj,
+            headers: {'Content-Type': 'application/json;charset=utf-8'}
+        }).success(function (response, status) {
             if (status == 200) {
                 successCallBack(response);
             } else {
@@ -122,7 +139,7 @@ angular.module('IOne-Production').service('TaoBaoAdapterService', function ($htt
     this.queryConfig = function (sizePerPage, page, confirm, status, no, name, keyWord, resUuid) {
         confirm = confirm == 0 ? '' : confirm;
         status = status == 0 ? '' : status;
-        var url = ecAdapterUrl + '/config/list?size=' + sizePerPage
+        var url = ecAdapterUrl + '/taobao/config/list?size=' + sizePerPage
             + '&page=' + page
             + '&confirm=' + confirm
             + '&status=' + status;
