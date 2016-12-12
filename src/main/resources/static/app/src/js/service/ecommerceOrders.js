@@ -62,15 +62,14 @@ angular.module('IOne-Production').service('EcommerceOrdersMaster', function ($ht
         return $http.get(Constant.BACKEND_BASE + '/reports?action=exportPdf', {
             params: {type: type, params: uuid},
             responseType: 'arraybuffer'
-
         });
     };
 
     //新增时初始化所有栏位
     this.createDefault = function () {
-        orderDate = new Date();
-        predictDeliverDate = new Date(orderDate.valueOf() + 2 * 24 * 60 * 60 * 1000);
-        order = {
+        var orderDate = new Date();
+        var predictDeliverDate = new Date(orderDate.valueOf() + 2 * 24 * 60 * 60 * 1000);
+        return {
             "no": "",
             "userId": "",
             "buyerNick": "",
@@ -88,11 +87,11 @@ angular.module('IOne-Production').service('EcommerceOrdersMaster', function ($ht
             "details": "",
             "deliverWay": ""
         };
-        return order;
+        // return order;
     };
 
     this.rollback = function (uuids) {
-        return $http.patch(Constant.BACKEND_BASE + '/epsOrders/' + uuids + "?action=rollback");
+        return $http.patch(Constant.BACKEND_BASE + '/epsOrders?action=rollback', uuids);
     };
 
 });
