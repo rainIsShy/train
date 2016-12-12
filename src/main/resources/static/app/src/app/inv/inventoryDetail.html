@@ -6,24 +6,18 @@
     </div>
     <div layout="row" layout-md="column" layout-sm="column" class="menu" style="margin: 0px 18px; width: 1050px;">
         <md-input-container flex="15">
-            <label>仓库编号</label>
+            <label>仓库</label>
             <input type="text" ng-model="inventoryDetailQuery.warehouseNO" ng-keypress="enterKeyDown($event);">
+            <md-button ng-click="openChannelDlg()" class="md-icon-button float-right md-button" style="margin-top: 10px;">
+                <ng-md-icon icon="search"></ng-md-icon>
+            </md-button>
         </md-input-container>
         <md-input-container flex="15">
-            <label>仓库名称</label>
-            <input type="text" ng-model="inventoryDetailQuery.warehouseName" ng-keypress="enterKeyDown($event);">
-        </md-input-container>
-        <md-input-container flex="15">
-            <label>商品编号</label>
+            <label>商品</label>
             <input type="text" ng-model="inventoryDetailQuery.itemFileNo" ng-keypress="enterKeyDown($event);">
-        </md-input-container>
-        <md-input-container flex="15">
-            <label>商品名称</label>
-            <input type="text" ng-model="inventoryDetailQuery.itemFileName" ng-keypress="enterKeyDown($event);">
-        </md-input-container>
-        <md-input-container flex="15">
-            <label>商品规格</label>
-            <input type="text" ng-model="inventoryDetailQuery.itemFileStandard" ng-keypress="enterKeyDown($event);">
+            <md-button ng-click="openGoodsDlg()" class="md-icon-button float-right md-button" style="margin-top: 10px;">
+                <ng-md-icon icon="search"></ng-md-icon>
+            </md-button>
         </md-input-container>
         <md-button style="margin-top: 22px;height: 20px;" class="md-raised" ng-click="queryReport()">查询</md-button>
     </div>
@@ -46,7 +40,7 @@
                     <div align="center" class=" table-head" flex="5">库存数量</div>
                     <div align="center" class=" table-head" flex>呆滞日期</div>
                 </div>
-                <div ng-repeat="r in allInventoryDetailData.content" ng-class="">
+                <div ng-repeat="r in allInventoryDetailData.content | orderBy:[r.item.no, r.storeId]" ng-class="">
                     <div layout="row">
                         <div class=" table-item" flex="10">{{r.item.no}}</div>
                         <div class=" table-item" flex="10">{{r.item.name}}</div>

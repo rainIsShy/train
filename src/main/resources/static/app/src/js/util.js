@@ -700,6 +700,16 @@ angular.module('IOne-Constant').constant('Constant', {
             ]
         },
         {
+            id: 9,
+            uuid: RES_UUID_MAP.INV.RES_UUID,
+            name: '库存管理',
+            isOpen: false,
+            icon: 'fa fa-suitcase',
+            subList:[
+                {id: '/inv/inventoryDetail', name: '库存明细查询', link: '/inv/inventoryDetail', uuid:RES_UUID_MAP.INV.INVENTORY_DETAIL.RES_UUID}
+            ]
+        },
+        {
             id: 3,
             uuid: RES_UUID_MAP.SYS.RES_UUID,
             name: '系统设置',
@@ -959,16 +969,6 @@ angular.module('IOne-Constant').constant('Constant', {
                 },
                 {id: '/fam/tags', name: '标签管理', link: '/fam/tags', uuid: RES_UUID_MAP.CBI.TAG.RES_UUID}
             ]
-        },
-        {
-           id: 9,
-           uuid: RES_UUID_MAP.INV.RES_UUID,
-           name: '库存管理',
-           isOpen: false,
-           icon: 'fa fa-bank',
-           subList:[
-               {id: '/inv/inventoryDetail', name: '库存明细查询', link: '/inv/inventoryDetail', uuid:RES_UUID_MAP.INV.INVENTORY_DETAIL.RES_UUID}
-           ]
         }
     ],
 
