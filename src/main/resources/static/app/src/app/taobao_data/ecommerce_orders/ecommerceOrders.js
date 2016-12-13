@@ -439,6 +439,13 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
             $scope.selectedItem.orderChangeFlag='2';
             //console.info("准备新增：");
             //console.info($scope.selectedItem);
+
+            if ($scope.selectedItem.orderDate) {
+                $scope.selectedItem.orderDate = new Date($scope.selectedItem.orderDate);
+                // var dateTime = new Date($scope.selectedItem.orderDate);
+                // $scope.selectedItem.orderDate  = moment($scope.selectedItem.orderDate).format("YYYY-MM-DD hh:mm:ss");
+            }
+
             EcommerceOrdersMaster.add($scope.selectedItem).success(function (data) {
                 $scope.selectedItem = data;
                 //console.info("新增后返回：");
@@ -473,10 +480,12 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                 $scope.showError('已审核和正在审核中的销售单不能修改。');
                 return;
             }
-            EcommerceOrdersMaster.modify($scope.selectedItem).success(function (data) {
-                console.info(data[0]);
-                $scope.selectedItem = data[0];
 
+
+            EcommerceOrdersMaster.modify($scope.selectedItem).success(function (data) {
+                $scope.selectedItem = data[0];
+                $scope.editItem($scope.selectedItem);
+                console.log($scope.selectedItem);
                 //重取单身
                 EcommerceOrderDetail.getAll($scope.selectedItem.uuid).success(function (data) {
                     $scope.selectedItem.detailList = data.content;
