@@ -374,6 +374,10 @@ RES_UUID_MAP = {
         TAG: {
             RES_UUID: 'c7ed1ab0-f83b-4ea8-a2c2-b3fd25651931',
             TITLE: '标签管理'
+        },
+        TAG_CLASS: {
+            RES_UUID: '682ab4ea-7cc8-4be4-af4d-22acc4f3b489',
+            TITLE: '标签分类维护'
         }
     },
 
@@ -948,7 +952,8 @@ angular.module('IOne-Constant').constant('Constant', {
                     link: '/logistics_installations',
                     uuid: RES_UUID_MAP.CBI.LOGISTICS_INSTALLATIONS.RES_UUID
                 },
-                {id: '/fam/tags', name: '标签管理', link: '/fam/tags', uuid: RES_UUID_MAP.CBI.TAG.RES_UUID}
+                {id: '/fam/tags', name: '标签管理', link: '/fam/tags', uuid: RES_UUID_MAP.CBI.TAG.RES_UUID},
+                {id: '/fam/tagClass', name: '标签分类', link: '/fam/tagClass', uuid: RES_UUID_MAP.CBI.TAG_CLASS.RES_UUID}
             ]
         }
     ],
