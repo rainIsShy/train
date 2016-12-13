@@ -12,8 +12,9 @@
                 <div layout-padding layout="row">定制否 :
                     <span>{{CUSTOMIZE_FLAG[detail.customizeFlag].name}}</span>
                     <md-button class="md-raised" style="min-width:10px;max-width:50px;margin-top:-8px;"
+                               ng-if="detail.allotMaster.confirm==1"
                                ng-disabled="detail.allotMaster.confirm !=1 || detail.customizeFlag ==2"
-                               ng-click="clickCustom(detail)">详情
+                               ng-click="editItemCustomFromDetail(detail)">详情
                     </md-button>
 
                 </div>

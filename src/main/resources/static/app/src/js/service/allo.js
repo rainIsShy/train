@@ -38,8 +38,8 @@ angular.module('IOne-Production').service('AlloMasterService', function ($http, 
         return $http.get(Constant.BACKEND_BASE + '/allotMasters/' + uuid);
     };
 
-    this.modify = function (alloMasterUpdateInput) {
-        return $http.patch(Constant.BACKEND_BASE + '/allotMasters/' + alloMasterUpdateInput.uuid, alloMasterUpdateInput);
+    this.modify = function (uuid, alloMasterUpdateInput) {
+        return $http.patch(Constant.BACKEND_BASE + '/allotMasters/' + uuid, alloMasterUpdateInput);
     };
 
     this.add = function (alloMasterInput) {
@@ -50,6 +50,10 @@ angular.module('IOne-Production').service('AlloMasterService', function ($http, 
         return $http.delete(Constant.BACKEND_BASE + '/allotMasters/' + uuid);
     };
 
+    this.batchUpdate = function (uuids, alloMasterUpdateInput) {
+        console.log('/allotMasters?action=batchUpdate&uuids=' + uuids);
+        return $http.patch(Constant.BACKEND_BASE + '/allotMasters?action=batchUpdate&uuids=' + uuids, alloMasterUpdateInput);
+    };
 
 });
 
@@ -90,19 +94,19 @@ angular.module('IOne-Production').service('AllotExtendDetailService', function (
 
 angular.module('IOne-Production').service('AllotExtendDetail2Service', function ($http, Constant) {
     this.get = function (extendUuid) {
-        return $http.get(Constant.BACKEND_BASE + '/allotDetails/' + extendUuid + '/extend2s/');
+        return $http.get(Constant.BACKEND_BASE + '/allotExtendDetails/' + extendUuid + '/extend2s/');
     };
 
     this.modify = function (extendUuid, uuid, extend2UpdateInput) {
-        return $http.patch(Constant.BACKEND_BASE + '/allotDetails/' + extendUuid + '/extend2s/' + uuid, extend2UpdateInput);
+        return $http.patch(Constant.BACKEND_BASE + '/allotExtendDetails/' + extendUuid + '/extend2s/' + uuid, extend2UpdateInput);
     };
 
     this.add = function (extendUuid, OrderExtendDetail2Input) {
-        return $http.post(Constant.BACKEND_BASE + '/allotDetails/' + extendUuid + '/extend2s/', OrderExtendDetail2Input);
+        return $http.post(Constant.BACKEND_BASE + '/allotExtendDetails/' + extendUuid + '/extend2s/', OrderExtendDetail2Input);
     };
 
     this.delete = function (extendUuid, uuid) {
-        return $http.delete(Constant.BACKEND_BASE + '/allotDetails/' + extendUuid + '/extend2s/' + uuid);
+        return $http.delete(Constant.BACKEND_BASE + '/allotExtendDetails/' + extendUuid + '/extend2s/' + uuid);
     }
 });
 

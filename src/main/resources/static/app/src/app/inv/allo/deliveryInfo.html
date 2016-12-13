@@ -17,8 +17,8 @@
                 <div layout-padding layout="row">定制否 :
                     <span>{{CUSTOMIZE_FLAG[subDetail.customizeFlag].name}}</span>
                     <md-button class="md-raised" style="min-width:10px;max-width:50px;margin-top:-8px;"
-                               ng-disabled="subDetail.allotDetail.allotMaster.confirm !=1 || subDetail.allotDetail.allotMaster.customizeFlag ==2"
-                               ng-click="clickCustom(subDetail)">详情
+                               ng-disabled="subDetail.allotDetail.allotMaster.confirm !=1 ||subDetail.customizeFlag ==2"
+                               ng-click="editItemCustom(subDetail)">详情
                     </md-button>
 
                 </div>

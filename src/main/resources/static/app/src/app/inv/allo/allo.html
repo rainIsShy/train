@@ -8,14 +8,21 @@
                         <ng-md-icon icon="menu"></ng-md-icon>
                     </md-button>
                     <md-menu-content width="2">
-                        <md-menu-item>
+                        <md-menu-item ng-if="showConfirmMenuItem(selectedItem)">
                             <md-button class="md-button" aria-label="More"
                                        ng-click="confirmClickAction($event, selectedItem)">
                                 <ng-md-icon icon="lock"></ng-md-icon>
                                 审核
                             </md-button>
                         </md-menu-item>
-                        <md-menu-item>
+                        <md-menu-item ng-if="showCancelConfirmMenuItem(selectedItem)">
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="confirmClickAction($event, selectedItem)">
+                                <ng-md-icon icon="lock"></ng-md-icon>
+                                取消审核
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item ng-if="showEnableStatusMenuItem(selectedItem)">
                             <md-button class="md-button" aria-label="More"
                                        ng-click="statusClickAction($event, selectedItem)">
                                 <ng-md-icon icon="lock_open"></ng-md-icon>
@@ -23,9 +30,16 @@
                             </md-button>
                         </md-menu-item>
 
-                        <md-menu-item>
+                        <md-menu-item ng-if="showDisableStatusMenuItem(selectedItem)">
                             <md-button class="md-button" aria-label="More"
-                                       ng-click="releaseClickAction($event, selectedItem)">
+                                       ng-click="statusClickAction($event, selectedItem)">
+                                <ng-md-icon icon="lock_open"></ng-md-icon>
+                                作废
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item ng-show="selectedItem.transferFlag==2">
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="transferClickAction($event, selectedItem)">
                                 <ng-md-icon icon="send"></ng-md-icon>
                                 抛转
                             </md-button>
@@ -48,21 +62,31 @@
                     </md-button>
                     <md-menu-content width="2">
                         <md-menu-item>
-                            <md-button class="md-button" aria-label="More" ng-click="confirmAllClickAction($event)">
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="confirmAllClickAction($event, true)">
                                 <ng-md-icon icon="lock"></ng-md-icon>
                                 批量审核
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button class="md-button" aria-label="More" ng-click="statusAllClickAction($event)">
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="confirmAllClickAction($event, false)">
+                                <ng-md-icon icon="lock"></ng-md-icon>
+                                批量取消审核
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="statusAllClickAction($event, true)">
                                 <ng-md-icon icon="lock_open"></ng-md-icon>
                                 批量启用
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button class="md-button" aria-label="More" ng-click="releaseAllClickAction($event)">
-                                <ng-md-icon icon="send"></ng-md-icon>
-                                批量发布
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="statusAllClickAction($event, false)">
+                                <ng-md-icon icon="lock_open"></ng-md-icon>
+                                批量作废
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>
@@ -232,11 +256,15 @@
                                 </div>
                                 <div layout="row" layout-align="end center">
                                     <md-switch ng-model="item.confirm" aria-label="Switch 1" class="md-block"
+                                               ng-if="isAuthorized('101-confirm') || isAuthorized('102-cancelConfirm')"
                                                ng-true-value="'2'" ng-false-value="'1'"
                                                ng-click="confirmClickAction($event, item)">
                                         审核
                                     </md-switch>
+
+
                                     <md-switch ng-model="item.status" aria-label="Switch 1" class="md-block"
+                                               ng-if="isAuthorized('103-enableStatus') || isAuthorized('104-disableStatus')"
                                                ng-true-value="'1'" ng-false-value="'2'"
                                                ng-click="statusClickAction($event, item)">
                                         启用
@@ -247,6 +275,7 @@
                                         抛转
                                     </md-switch>
                                     <md-button class="md-button close-btn" aria-label="More"
+                                               ng-if="isAuthorized('107-transfer') || isAuthorized('108-unTransfer')"
                                                ng-click="toggleMorePanelAction(item)"
                                                style="position: relative;left: 15px;">
                                         查看更多...
