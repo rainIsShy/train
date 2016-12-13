@@ -116,6 +116,19 @@ RES_UUID_MAP = {
     OCM: {
         RES_UUID: 'DF48D392-1122-4FC3-A519-0ADE0AA2A841',
         TITLE: '渠道管理',
+
+        CHANNEL_SERIES_RELATION: {
+                    RES_UUID: 'C31D75DD-529A-4386-9544-FB70BC043601',
+                    TITLE: '渠道系列维护',
+                    LIST_PAGE: {
+                        RES_UUID: '6AA5405A-1720-49C4-A1EB-3627F114BE61',
+                        TITLE: '渠道系列维护-清单'
+                    },
+                    FORM_PAGE: {
+                        RES_UUID: 'A17ED25C-73CF-4989-ACE2-A6318B067ECE',
+                        TITLE: '渠道系列维护-表单'
+                    }
+                },
         CHANNEL_PRICE: {
             RES_UUID: '4C671C85-28C6-453A-BADA-9528F241EE22',
             TITLE: '渠道商品定价',
@@ -361,6 +374,10 @@ RES_UUID_MAP = {
         TAG: {
             RES_UUID: 'c7ed1ab0-f83b-4ea8-a2c2-b3fd25651931',
             TITLE: '标签管理'
+        },
+        TAG_CLASS: {
+            RES_UUID: '682ab4ea-7cc8-4be4-af4d-22acc4f3b489',
+            TITLE: '标签分类维护'
         }
     },
 
@@ -556,7 +573,7 @@ angular.module('IOne-Constant').constant('Constant', {
             id: 1,
             uuid: RES_UUID_MAP.PRODUCTION.RES_UUID,
             name: '商品管理',
-            isOpen: true,
+            isOpen: false,
             icon: 'fa fa-cube',
             subList: [
                 {id: '/catalogue', name: '目录模板管理', link: '/catalogue', uuid: RES_UUID_MAP.PRODUCTION.TEMPLATE.RES_UUID},
@@ -649,6 +666,7 @@ angular.module('IOne-Constant').constant('Constant', {
             icon: 'fa fa-fax',
             subList: [
                 {id: 'promotion', name: '促销活动', link: '/promotion', uuid: RES_UUID_MAP.OCM.PROMOTION.RES_UUID},
+                {id: '/channelSeriesRelation', name: '渠道系列维护', link: '/channelSeriesRelation', uuid: RES_UUID_MAP.OCM.CHANNEL_SERIES_RELATION.RES_UUID},
                 {
                     id: '/channelPrice',
                     name: '渠道商品定价',
@@ -715,6 +733,7 @@ angular.module('IOne-Constant').constant('Constant', {
             icon: 'fa fa-history',
             subList: [
                 {id: '/reports', name: '报表查询', link: '/reports', uuid: ''},
+                {id: '/eps/report/plmBaseItemFile', name: '电商订单料件明细(包件)', link: '/eps/report/plmBaseItemFile', uuid: ''}
             ]
         },
         {
@@ -933,7 +952,8 @@ angular.module('IOne-Constant').constant('Constant', {
                     link: '/logistics_installations',
                     uuid: RES_UUID_MAP.CBI.LOGISTICS_INSTALLATIONS.RES_UUID
                 },
-                {id: '/fam/tags', name: '标签管理', link: '/fam/tags', uuid: RES_UUID_MAP.CBI.TAG.RES_UUID}
+                {id: '/fam/tags', name: '标签管理', link: '/fam/tags', uuid: RES_UUID_MAP.CBI.TAG.RES_UUID},
+                {id: '/fam/tagClass', name: '标签分类', link: '/fam/tagClass', uuid: RES_UUID_MAP.CBI.TAG_CLASS.RES_UUID}
             ]
         }
     ],

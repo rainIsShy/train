@@ -6,6 +6,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
 }]);
 
 angular.module('IOne-Production').controller('EcommerceOrdersController', function ($scope, $q, $window, EcommerceOrdersMaster, EcommerceOrderDetail, EcommerceOrderDetailExtend, EdelivWayService, SaleTypes, $mdDialog, $timeout, Constant) {
+
     $scope.ecommerceOrderListMenu = {
         selectAll: false,
         effectiveType: '2', //失效作废
@@ -57,8 +58,6 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
         totalPage: 100,
         totalElements: 100
     };
-
-    $scope.o2oFlags = Constant.EPS_ORDER_O2O_FLAG;
 
     $scope.printAction = function () {
         EcommerceOrdersMaster.print('e_sale_order_reports', $scope.selectedItem.uuid).success(function (data) {
@@ -306,39 +305,51 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
 
 
     };
+
     //查看详情，跳转到表单 选中的是selectedItem
     $scope.editItem = function (orderMaster) {
-        $scope.selectedDetail = [];
-        $scope.ecommerceOrderListMenu.selectAll = false;
-        $scope.selectedItem = orderMaster;
-        if ($scope.selectedItem.orderDate) {
-            // $scope.selectedItem.orderDate = new Date($scope.selectedItem.orderDate);
-            // var dateTime = new Date($scope.selectedItem.orderDate);
-            // $scope.selectedItem.orderDate  = moment($scope.selectedItem.orderDate).format("YYYY-MM-DD hh:mm:ss");
-        }
-
-        if ($scope.selectedItem.predictDeliverDate) {
-            $scope.selectedItem.predictDeliverDate = new Date($scope.selectedItem.predictDeliverDate);
-        }
-
-        if (orderMaster.o2oChannel != null) {
-            $scope.selectedItem.o2oChannelUuid = orderMaster.o2oChannel.uuid;
-        }
-
-        $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
-        $scope.resetButtonDisabled();
-        $scope.changeButtonStatus(orderMaster);
-        EcommerceOrderDetail.getAll(orderMaster.uuid).success(function (data) {
-            $scope.OrderDetailList = data;
-            $scope.updateOrderDetailDeliverDate($scope.OrderDetailList);//YYYY-MM-DD
-            $scope.OrderExtendDetailList = [];
-            angular.forEach($scope.OrderDetailList.content, function (orderDetail, index) {
-                EcommerceOrderDetailExtend.getAll(orderMaster.uuid, orderDetail.uuid).success(function (data) {
-                    $scope.OrderExtendDetailList = $scope.OrderExtendDetailList.concat(data.content);
+            $scope.selectedDetail = [];
+            $scope.ecommerceOrderListMenu.selectAll = false;
+            $scope.selectedItem = orderMaster;
+            $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
+            $scope.resetButtonDisabled();
+            $scope.changeButtonStatus(orderMaster);
+            EcommerceOrderDetail.getAll(orderMaster.uuid).success(function (data) {
+                $scope.OrderDetailList = data;
+                $scope.updateOrderDetailDeliverDate($scope.OrderDetailList);//YYYY-MM-DD
+                $scope.OrderExtendDetailList = [];
+                angular.forEach($scope.OrderDetailList.content, function (orderDetail, index) {
+                    EcommerceOrderDetailExtend.getAll(orderMaster.uuid, orderDetail.uuid).success(function (data) {
+                        $scope.OrderExtendDetailList = $scope.OrderExtendDetailList.concat(data.content);
+                    });
                 });
             });
-        });
     };
+
+
+    $scope.GetQueryString = function (name){
+        var url = window.location.href;
+        var index = url.indexOf("?");
+        if(index>0){
+            uuid = url.substring(index+name.length+2,url.length);
+            return uuid;
+        }else{
+            return null;
+        }
+    }
+
+    $scope.getUrl = function(){
+        var orderMasterNo = $scope.GetQueryString('uuid');
+        $scope.initMenu();
+        if(orderMasterNo != null){
+            EcommerceOrdersMaster.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, null, '', status, 0, null, orderMasterNo, null, null, null, null).success(function(data){
+                $scope.editItem(data.content[0]);
+            }).error(function(){
+                //TODO 未找到该笔单据
+            });
+        }
+    }
+    $scope.getUrl();
 
     //日期格式
     //orderDate和predictDeliverDate：
@@ -384,7 +395,6 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
     $scope.preAddMenuAction = function () {
         //选中的清空
         $scope.selectedItem = EcommerceOrdersMaster.createDefault();
-
         EdelivWayService.getAll(1, 0, null, 'DW02').success(function (data) {
             $scope.selectedItem.deliverWay = data.content[0];
             $scope.selectedItem.deliverWayUuid = $scope.selectedItem.deliverWay.uuid;
@@ -580,8 +590,6 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
             var receivePhone = '';         //联系电话
             var orderNo = '';              //交易订单号
             var predictDeliverDate = '';   //预计送货日期
-            var needSelectO2oChannel = ''; //需选择o2o
-            var unNeedSelectO2oChannel = ''; //不需选择o2o
 
             angular.forEach($scope.selected, function (head) {
                 if (angular.isUndefined(head.groupUser) || head.groupUser == null) {
@@ -613,15 +621,6 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                 if (angular.isUndefined(head.predictDeliverDate) || head.predictDeliverDate == null) {
                     predictDeliverDate = predictDeliverDate + head.no + "\n\r";
                 }
-
-                if (head.o2oChannel == null || (head.orderFlag == null == Constant.ORDER_FLAG[3].value || head.orderFlag == Constant.ORDER_FLAG[5].value || head.orderFlag == Constant.ORDER_FLAG[6].value)) {
-                    needSelectO2oChannel = needSelectO2oChannel + head.uuid + "\n\r";
-                }
-
-                if (head.o2oChannel != null || head.orderFlag == null == Constant.ORDER_FLAG[4].value) {
-                    unNeedSelectO2oChannel = unNeedSelectO2oChannel + head.uuid + "\n\r";
-                }
-
             });
             if (groupUserNos != '') {
                 groupUserNos = groupUserNos.substr(0, groupUserNos.length - 1);
@@ -668,19 +667,6 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                 $scope.showError('存在预计送货日期为空的销售单，不允许审核：' + predictDeliverDate);
                 return;
             }
-
-            if (needSelectO2oChannel != '') {
-                needSelectO2oChannel = needSelectO2oChannel.substr(0, needSelectO2oChannel.length - 1);
-                $scope.showError('存在需选择O2O门店/经销商的销售单!');
-                return;
-            }
-
-            if (unNeedSelectO2oChannel != '') {
-                unNeedSelectO2oChannel = unNeedSelectO2oChannel.substr(0, unNeedSelectO2oChannel.length - 1);
-                $scope.showError('存在当销售类型为网销订单时不需选择O2O门店/经销商的销售单!');
-                return;
-            }
-
         }
 
         if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
@@ -692,19 +678,6 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                 $scope.showError('该单已经审核完成。');
                 return;
             }
-
-            //order_flag in ('3','5','6') 管控 ocm_base_chan_o2o_uuid 必须有数据
-            if ($scope.selectedItem.o2oChannel == null && ($scope.selectedItem.orderFlag == Constant.ORDER_FLAG[3].value || $scope.selectedItem.orderFlag == Constant.ORDER_FLAG[5].value || $scope.selectedItem.orderFlag == Constant.ORDER_FLAG[6].value)) {
-                $scope.showError('請选择O2O门店/经销商。');
-                return;
-            }
-
-            //order_flag in ('4') 管控 ocm_base_chan_o2o_uuid 必须为空
-            if ($scope.selectedItem.o2oChannel != null && $scope.selectedItem.orderFlag == Constant.ORDER_FLAG[4].value) {
-                $scope.showError('O2O门店/经销商须为无门店/经销商。');
-                return;
-            }
-
             if ($scope.selectedItem.orderAmount == '0' && $scope.selectedItem.orderFlag != Constant.ORDER_FLAG[6].value) {
                 $scope.showError('该单单头金额为0不能审核。');
                 return;
@@ -1174,20 +1147,6 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
         });
     };
 
-    $scope.openO2oChannelDlg = function () {
-        $mdDialog.show({
-            controller: 'Eo2oChannelSearchController',
-            templateUrl: 'app/src/app/taobao_data/ecommerce_orders/selectChannel.html',
-            parent: angular.element(document.body),
-            targetEvent: event
-        }).then(function (data) {
-            $scope.selectedItem.o2oChannel = data;
-            $scope.selectedItem.o2oChannel.name = data.name;
-            $scope.selectedItem.o2oChannel.uuid = data.uuid;
-            $scope.selectedItem.o2oChannelUuid = data.uuid;
-        });
-    };
-
     $scope.openTaobaoClientDlg = function () {
         $mdDialog.show({
             controller: 'ETaobaoClientController',
@@ -1476,15 +1435,6 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
         });
     };
 
-    $scope.onOrderFlagChange = function (orderFlag) {
-        if (orderFlag == Constant.ORDER_FLAG[1].value || orderFlag == Constant.ORDER_FLAG[2].value || orderFlag == Constant.ORDER_FLAG[4].value) {
-            $scope.selectedItem.o2oFlag = Constant.EPS_ORDER_O2O_FLAG[1].value;
-        }
-        if (orderFlag == Constant.ORDER_FLAG[3].value || orderFlag == Constant.ORDER_FLAG[5].value || orderFlag == Constant.ORDER_FLAG[6].value) {
-            $scope.selectedItem.o2oFlag = Constant.EPS_ORDER_O2O_FLAG[3].value;
-        }
-    }
-
 });
 
 angular.module('IOne-Production').controller('EOrderDetailController', function ($scope, $mdDialog, selectedOrderDetail, saleTypes) {
@@ -1583,47 +1533,6 @@ angular.module('IOne-Production').controller('EChannelSearchController', functio
         $mdDialog.cancel();
     };
 });
-
-angular.module('IOne-Production').controller('Eo2oChannelSearchController', function ($scope, $mdDialog, EchannelService) {
-    $scope.isO2o = true;
-    $scope.pageOption = {
-        sizePerPage: 5,
-        currentPage: 0,
-        totalPage: 0,
-        totalElements: 0,
-        displayModel: 0  //0 : image + text //1 : image
-    };
-    //查询按钮重查时，翻页到第一页
-    $scope.queryAction = function () {
-        $scope.pageOption.currentPage = 0;
-        $scope.refreshChannel();
-    };
-
-    $scope.refreshChannel = function () {
-        EchannelService.getO2oChannel($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, $scope.searchKeyword, "").success(function (data) {
-            $scope.allChannel = data;
-            $scope.pageOption.totalElements = data.totalElements;
-            $scope.pageOption.totalPage = data.totalPages;
-            console.log(data);
-        });
-    };
-
-    $scope.refreshChannel();
-
-    $scope.selectChannel = function (channel) {
-        $scope.channel = channel;
-        $mdDialog.hide($scope.channel);
-    };
-
-    $scope.hideDlg = function () {
-        $mdDialog.hide($scope.channel);
-    };
-
-    $scope.cancelDlg = function () {
-        $mdDialog.cancel();
-    };
-});
-
 
 angular.module('IOne-Production').controller('ETaobaoClientController', function ($scope, $mdDialog, EtaobaoCustomers) {
     $scope.pageOption = {

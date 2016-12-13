@@ -42,7 +42,7 @@ angular.module('IOne-Production').controller('SalesOrderChangeController', funct
     };
 
     $scope.refreshList = function () {
-        SalesOrderChangeMaster.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption).success(function (data) {
+        SalesOrderChangeMaster.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption, '-no,-changeVersion').success(function (data) {
             $scope.itemList = data.content;
             $scope.pageOption.totalPage = data.totalPages;
             $scope.pageOption.totalElements = data.totalElements;

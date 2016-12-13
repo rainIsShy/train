@@ -1,5 +1,5 @@
 angular.module('IOne-Production').service('SalesOrderChangeMaster', function ($http, Constant) {
-    this.getAll = function (sizePerPage, page, filter) {
+    this.getAll = function (sizePerPage, page, filter, sort) {
         var confirm = filter.select.confirm == 0 ? '' : filter.select.confirm;
         var status = filter.select.status == 0 ? '' : filter.select.status;
         var transferPsoFlag = filter.select.transferPsoFlag == 0 ? '' : filter.select.transferPsoFlag;
@@ -36,6 +36,9 @@ angular.module('IOne-Production').service('SalesOrderChangeMaster', function ($h
             var endOrderDate = new Date(filter.select.endOrderDate);
             endOrderDate = moment(endOrderDate).format('YYYY-MM-DD 23:59:59');
             url = url + '&orderDateEnd=' + endOrderDate;
+        }
+        if (sort) {
+            url += '&sort=' + sort;
         }
 
         return $http.get(Constant.BACKEND_BASE + url);
@@ -74,7 +77,7 @@ angular.module('IOne-Production').service('SalesOrderChangeMaster', function ($h
         var url = '/salesOrderChanges/count?confirm=' + confirm
             + '&status=' + status
             + '&transferFlag=' + transferFlag
-            + '&onlyLatest=2'
+            + '&onlyLatest=2';
         if (resUuid !== undefined && resUuid !== null) {
             url = url + '&resUuid=' + resUuid;
         }

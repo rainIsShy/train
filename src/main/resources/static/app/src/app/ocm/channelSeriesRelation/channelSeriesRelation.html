@@ -1,0 +1,86 @@
+<div layout-fill class="right-container">
+    <md-contend>
+        <md-tabs md-selected="$parent.selectedTabIndex" md-boarder-bottom md-dynamic-height md-center-tabs="false">
+
+            <md-tab md-on-select="listTabSelected()">
+                <md-tab-label>{{listTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <div channel-series-relation-list></div>
+                        <div ng-include=" 'app/src/app/ocm/channelSeriesRelation/channelSeriesRelationList.html'"></div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+
+            <md-tab md-on-select="formTabSelected()">
+                <md-tab-label>{{formTabName}}</md-tab-label>
+                <!--表单预览模式-->
+                <md-tab-body>
+                    <md-content class="formList">
+                        <form name="mainForm" novalidate>
+                            <div ng-if="selectedItem != null" channel-series-relation-table1></div>
+                            <div ng-if="selectedItem != null" channel-series-relation-table2></div>
+                            <div layout-margin layout-padding class="md-whiteframe-z1"
+                                 ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                                <p style="color: red;">请从清单列表中选择一个商品。</p>
+                            </div>
+                            <div layout="row" layout-margin layout-padding  layout-md="column" layout-sm="column" layout-align="space-around left"
+                                 ng-show="ui_status != UI_STATUS.EDIT_UI_STATUS_MODIFY && ui_status != UI_STATUS.EDIT_UI_STATUS_ADD">
+                                <md-input-container >
+                                    <label>渠道店/直营店：</label>
+                                    <input  aria-label="..." ng-model="selectedItem.name" ng-disabled="true"/>
+                                </md-input-container>
+                                <md-input-container >
+                                    <label>系列编号：</label>
+                                    <input  aria-label="..."  ng-model="selectedItem.seriesNo"/>
+                                </md-input-container>
+                                <md-input-container >
+                                    <label>系列名称：</label>
+                                    <input aria-label="..."  ng-model="selectedItem.seriesName"/>
+                                </md-input-container>
+
+                                <md-button class="md-raised" aria-label="..."  ng-if="ocmListMenuDisplayOption['600-query'].display"
+                                           ng-click="searchChannelRelationWithPaging(selectedItem.seriesNo,selectedItem.seriesName)" style="margin-top: 22px;height: 20px;"> 查找
+                                </md-button>
+                            </div>
+
+                            <div align="center"><span ng-if="logining"><img style="width: 20px;padding-top: 13px;" src="app/img/spinner.gif"/></span></div>
+
+                            <div  ng-if="selectedItem != null">
+                                <div   layout="row"    ng-if="selectedItem != null">
+                                    <div align="center" flex="5"  class=" table-head" ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"></div>
+                                    <div align="center" flex="10"  class=" table-head">系列编号</div>
+                                    <div align="center" flex="10"  class=" table-head">系列名称</div>
+                                    <div align="center" flex="5"  class=" table-head">有效否</div>
+                                </div>
+
+                                <div ng-repeat="channelRelation in channelRelationList.content | orderBy: 'series.no'"  >
+                                    <div  layout="row">
+                                        <div flex="5" class=" table-item"  ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                            <md-checkbox aria-label="..." ng-checked="exists(channelRelation, selected)" ng-click="toggle(channelRelation, selected)">
+                                            </md-checkbox>
+
+                                        </div>
+                                        <div  align="center" flex="10" class=" table-item">
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelRelation.series.no}}</div>
+                                        </div>
+                                        <div  align="center" flex="10" class=" table-item">
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelRelation.series.name }}</div>
+                                        </div>
+                                        <div  align="center" flex="5" class=" table-item" layout="row" >
+                                            <md-checkbox style=" padding: 0px 0px 0px 20px;" aria-label="..." ng-model="channelRelation.status"   ng-disabled="true"
+                                                         ng-true-value="'1'" ng-false-value="'2'" ></md-checkbox>
+                                            </md-input-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+
+        </md-tabs>
+
+    </md-contend>
+</div>

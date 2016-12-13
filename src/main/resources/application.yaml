@@ -79,13 +79,6 @@ spring:
   profiles: ethan
 
 
-
---- # Carzy's Dev
-
-spring:
-
-  profiles: carzy
-
 --- # Xavier's Dev
 
 spring:
@@ -113,7 +106,8 @@ spring:
 
 i1:
   i1-server:
-    url: http://project.benchmarkchina.com:10811
+    url: http://10.10.80.22:8081
+#    url: http://project.benchmarkchina.com:10811
   i1-adapter:
     url: http://project.benchmarkchina.com:10812
   tiptop-adapter:
@@ -160,6 +154,50 @@ i1:
   tiptop-adapter:
     #url: http://project.benchmarkchina.com:10813
     url: http://localhost:8083
+  ec-adapter:
+    url: http://project.benchmarkchina.com:10814
+    #url: http://localhost:8084
+  tmall-adapter:
+    url: http://project.benchmarkchina.com:10815
+
+
+--- # Carzy Dev
+
+spring:
+
+profiles: carzy
+
+i1:
+  i1-server:
+    #url: http://project.benchmarkchina.com:10811
+    url: http://localhost:8081
+  i1-adapter:
+    url: http://project.benchmarkchina.com:10812
+    #url: http://localhost:8082
+  tiptop-adapter:
+    url: http://project.benchmarkchina.com:10813
+    #url: http://localhost:8083
+  ec-adapter:
+    url: http://project.benchmarkchina.com:10814
+    #url: http://localhost:8084
+  tmall-adapter:
+    url: http://project.benchmarkchina.com:10815
+
+
+--- # rain's Dev
+
+spring:
+
+  profiles: rain
+
+i1:
+  i1-server:
+    #url: http://project.benchmarkchina.com:10811
+    url: http://localhost:8081
+  i1-adapter:
+    url: http://project.benchmarkchina.com:10812
+  tiptop-adapter:
+    url: http://project.benchmarkchina.com:10813
   ec-adapter:
     url: http://project.benchmarkchina.com:10814
     #url: http://localhost:8084

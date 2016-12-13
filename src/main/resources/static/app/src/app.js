@@ -102,6 +102,23 @@ angular.module('IOne').controller('MainController', function($rootScope, $scope,
     };
     $scope.menuList = Constant.MENU_LIST;
     $scope.selectedMenuId = $location.path();
+    $scope.initMenu = function() {
+        var menu = {};
+        //get current menu and sub menu
+        angular.forEach(Constant.MENU_LIST, function(mainMenu) {
+            angular.forEach(mainMenu.subList, function(menu) {
+                if(menu.link == $location.path()) {
+                    if(menu.link != ''){
+                        mainMenu.isOpen = true;
+                        $scope.selectedMenuId = menu.id;
+                        $scope.selectedMainMenu = mainMenu;
+                        $scope.selectedMenu = menu;
+                    }
+                }
+            });
+        })
+    };
+    $scope.initMenu();
     ///////////////////////////////////////////////////////////////////////////////
 
     if($(window).innerWidth() <= 960) {

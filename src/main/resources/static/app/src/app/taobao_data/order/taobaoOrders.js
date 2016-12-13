@@ -5,7 +5,8 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('TaobaoOrdersController', function ($scope, $q, TaobaoOrders, TaobaoOrderDetail, TaobaoAmountMaster, TaobaoAmountDetail, TaoBaoAdapterService, $mdDialog, $timeout, Constant) {
+angular.module('IOne-Production').controller('TaobaoOrdersController', function ($scope, $window, $q, TaobaoOrders, TaobaoOrderDetail, TaobaoAmountMaster, TaobaoAmountDetail, TaoBaoAdapterService, $mdDialog, $timeout, Constant) {
+
     $scope.taobaoOrderListMenu = {
         selectAll: false,
         effectiveType: '2', //失效作废
@@ -270,17 +271,13 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
     $scope.mergeMenuAuction = function() {
         if ($scope.selected.length > 0) {
             var uuids = [];
+            var tid = '';
             angular.forEach($scope.selected, function(item) {
+                tid = item.tid;
                 uuids.push(item.uuid);
             });
             TaobaoOrders.merge(uuids).success(function (returnMsgs) {
-                $scope.queryMenuActionWithPaging();
-
-                angular.forEach(returnMsgs, function (msg) {
-                    $scope.showError(msg);
-                });
-
-                $scope.showInfo('合并订单成功。');
+                  $window.location.href = '/#/ecommerce-orders?tid='+tid;
             }).error(function() {
                 $scope.showError('合并订单失败。');
             })
@@ -291,6 +288,7 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
 
     //抛转（审核）
     $scope.throwMenuAction = function () {
+        var tid = '';
         if ($scope.selected.length == 1) {   //$scope.selected.length>0
             $scope.showConfirm('确认审核吗？', '', function () {
                 //清单页
@@ -303,6 +301,7 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
                             rtn = true;
                             return;
                         }
+                        tid = item.tid;
                         orderMasterUuids = orderMasterUuids + item.uuid + ",";    //选中多个逗号分隔
                     });
                     if(rtn == true){
@@ -314,12 +313,9 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
                         uuid: orderMasterUuids,
                         confirm: '2'
                     };
+
                     var response = TaobaoOrders.modify(OrderMasterUpdateInput).success(function (returnMsgs) {
-                        $scope.queryMenuActionWithPaging();//刷新查询
-                        angular.forEach(returnMsgs, function (msg) {
-                            $scope.showError(msg);
-                        });
-                        $scope.showInfo('审核成功，数据已刷新');
+                        $window.location.href = '/#/ecommerce-orders?tid='+tid;
                     }).error(function (data) {
                         $scope.showError(data.message);
                     });
