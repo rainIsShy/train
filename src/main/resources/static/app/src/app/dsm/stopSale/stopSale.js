@@ -104,7 +104,7 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
                     $scope.logining = false;
                     $scope.showError(errResp.message);
                 });
-            } else if (item.syncType == $scope.TIPTOP_SYNC_TYPE.PLM_ITEM_BOM_FILE.name) {
+            } else if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.PLM_ITEM_BOM_FILE.name) {
                 //BOM同步
                 IoneAdapterService.transferIoneAdapter("/bmbTask", param, $scope, function (response) {
                     var totalBmbCount = addResponse(0, response.insertBmbCount);
