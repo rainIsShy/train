@@ -5,13 +5,13 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('InventoryDetailController', function ($mdDialog, $scope, InventoryDetailService) {
+angular.module('IOne-Production').controller('InventoryDetailController', function ($mdDialog, $scope, $rootScope, InventoryDetailService) {
 
     $scope.inventoryDetailQuery = {
         warehouseNO : '',
-        warehouseName : '',
+        warehouseName : $rootScope.selectProductionName ? $rootScope.selectProductionName : '',
         itemFileNo : '',
-        itemFileName : '',
+        itemFileName : $rootScope.selectWarehouseName ? $rootScope.selectWarehouseName : '',
         itemFileStandard : ''
     };
 
@@ -57,7 +57,7 @@ angular.module('IOne-Production').controller('InventoryDetailController', functi
                 fieldValue: $scope
             }
         }).then(function (data) {
-            $scope.proName = data;
+            $scope.inventoryDetailQuery.warehouseName = data.selectWarehouseName;
         });
     };
 
@@ -69,17 +69,17 @@ angular.module('IOne-Production').controller('InventoryDetailController', functi
             targetEvent: event,
             locals: {
                 fieldType: '2',
-                fieldName: '仓库',
+                fieldName: '商品',
                 fieldValue: $scope
             }
         }).then(function (data) {
-            $scope.proName = data;
+            $scope.inventoryDetailQuery.itemFileName = data.selectProductionName;
         });
     };
 
 });
 
-angular.module('IOne-Production').controller('SelectController', function ($scope, $mdDialog, fieldType, fieldName, fieldValue, OCMChannelService) {
+angular.module('IOne-Production').controller('SelectController', function ($rootScope, $scope, $mdDialog, fieldType, fieldName, Warehouse, Production, fieldValue, OCMChannelService, Constant) {
         $scope.fieldType = fieldType;
         $scope.fieldName = fieldName;
         switch (fieldType) {
@@ -91,23 +91,42 @@ angular.module('IOne-Production').controller('SelectController', function ($scop
                 break;
         }
 
+        $scope.listFilterOption = {
+            select: {
+                status: Constant.STATUS[0].value,
+                confirm: Constant.CONFIRM[0].value
+            },
+            no: '',
+            name: '',
+            keyWord: ''
+        };
+
         $scope.pageOption = {
             sizePerPage: 5,
             currentPage: 0,
             totalPage: 0,
             totalElements: 0
         };
+
         $scope.queryAction = function () {
             $scope.pageOption.currentPage = 0;
             $scope.refreshList();
         };
+
         $scope.refreshList = function () {
-            OCMChannelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0,0)
-                .success(function (data) {
-                    $scope.searchResult = data;
+            if(fieldType == '2'){
+                Production.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,0, 0, 0, 0, 0, $scope.listFilterOption.no, $scope.listFilterOption.name).success(function(data){
+                    $scope.searchResultList = data.content;
                     $scope.pageOption.totalElements = data.totalElements;
                     $scope.pageOption.totalPage = data.totalPages;
                 });
+            }else{
+                Warehouse.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption).success(function (data) {
+                    $scope.searchResultList = data.content;
+                    $scope.pageOption.totalElements = data.totalElements;
+                    $scope.pageOption.totalPage = data.totalPages;
+                });
+            }
         };
         $scope.refreshList();
 
@@ -117,4 +136,14 @@ angular.module('IOne-Production').controller('SelectController', function ($scop
         $scope.cancelDlg = function () {
             $mdDialog.cancel();
         };
+
+        $scope.select = function(item){
+            if(fieldType == '2'){
+                fieldValue.selectProductionName = item.name;
+                $mdDialog.hide(fieldValue);
+            }else{
+                fieldValue.selectWarehouseName = item.name;
+                $mdDialog.hide(fieldValue);
+            }
+        }
     });
