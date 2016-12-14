@@ -16,14 +16,9 @@
             <div flex="30" style="margin-bottom: 45px;">
                 <div layout-padding layout="row">定制否 :
                     <span>{{CUSTOMIZE_FLAG[subDetail.customizeFlag].name}}</span>
-                    <md-button class="md-raised" style="min-width:10px;max-width:50px;margin-top:-8px;"
-                               ng-disabled="subDetail.allotDetail.allotMaster.confirm !=1 ||subDetail.customizeFlag ==2"
-                               ng-click="editItemCustom(subDetail)">详情
-                    </md-button>
-
                 </div>
                 <div layout-padding>商品颜色 : <span>{{subDetail.itemColor}}</span></div>
-                <div layout-padding>商品属性 : <span>{{subDetail.itemAttribute}}</span></div>
+                <div layout-padding>商品属性 : 206<span>{{subDetail.itemAttribute}}</span></div>
                 <div layout-padding>品牌 : <span>{{subDetail.item.brand.no}}</span></div>
                 <div layout-padding>品牌名称 : <span>{{subDetail.item.brand.name}}</span></div>
 
@@ -35,7 +30,12 @@
                 <div layout-padding>抛转否 : <span>{{TRANSFER_PSO_FLAG[subDetail.transferFlag].name}}</span></div>
             </div>
 
-
+            <div style="position: absolute; right: 10px; bottom: 10px;">
+                <md-button style="min-width:30px;max-width:70px;margin-top:-8px;"
+                           ng-disabled="subDetail.allotDetail.allotMaster.confirm !=1 ||subDetail.customizeFlag ==2"
+                           ng-click="editItemCustom(subDetail)">详情
+                </md-button>
+            </div>
         </div>
         <md-divider style="margin-top: 5px"></md-divider>
     </div>

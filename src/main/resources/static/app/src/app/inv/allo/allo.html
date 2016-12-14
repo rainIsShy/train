@@ -115,6 +115,15 @@
                             <span class="item-content">{{selectedItem.outChannel.name}}</span>
                         </span>
                         <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">销售订单单号</span>
+                            <span class="item-content">{{selectedItem.psoOrderMstNo}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">拨出门店</span>
+                            <span class="item-content">{{selectedItem.outChannel.name}}</span>
+                        </span>
+
+                        <span flex="50" flex-sm="100" layout-padding>
                             <span class="item-name">拨入门店</span>
                             <span class="item-content">{{selectedItem.inChannel.name}}</span>
                         </span>
@@ -126,10 +135,7 @@
                             <span class="item-name">门店地址</span>
                             <span class="item-content">{{selectedItem.storeAddress}}</span>
                         </span>
-                        <span flex="50" flex-sm="100" layout-padding>
-                            <span class="item-name">销售订单单号</span>
-                            <span class="item-content">{{selectedItem.psoOrderMstNo}}</span>
-                        </span>
+
                         <span flex="50" flex-sm="100" layout-padding>
                             <span class="item-name">人员</span>
                             <span class="item-content">{{selectedItem.employee.name}}</span>
@@ -260,6 +266,14 @@
                                     <span>销售订单单号: <span style="font-style: italic">{{item.psoOrderMstNo}}</span></span>
                                 </div>
                                 <div layout="row" layout-align="end center">
+                                    <md-switch ng-model="item.status" aria-label="Switch 1" class="md-block"
+                                               ng-if="isAuthorized('103-enableStatus') || isAuthorized('104-disableStatus')"
+                                               ng-true-value="'1'" ng-false-value="'2'"
+                                               ng-disabled="disableStatusMenuItem(item)"
+                                               ng-click="statusClickAction($event, item)">
+                                        启用
+                                    </md-switch>
+
                                     <md-switch ng-model="item.confirm" aria-label="Switch 1" class="md-block"
                                                ng-if="isAuthorized('101-confirm') || isAuthorized('102-cancelConfirm')"
                                                ng-true-value="'2'" ng-false-value="'1'"
@@ -268,14 +282,6 @@
                                         审核
                                     </md-switch>
 
-
-                                    <md-switch ng-model="item.status" aria-label="Switch 1" class="md-block"
-                                               ng-if="isAuthorized('103-enableStatus') || isAuthorized('104-disableStatus')"
-                                               ng-true-value="'1'" ng-false-value="'2'"
-                                               ng-disabled="disableStatusMenuItem(item)"
-                                               ng-click="statusClickAction($event, item)">
-                                        启用
-                                    </md-switch>
                                     <md-switch ng-model="item.transferFlag" aria-label="Switch 1" class="md-block"
                                                ng-true-value="'1'" ng-false-value="'2'"
                                                ng-disabled="disableTransferMenuItem(item)"
@@ -300,10 +306,10 @@
                                 <div flex="40">
                                     <div layout-padding>项次 : <span>{{detail.no}}</span></div>
                                     <div layout-padding>品号 : <span>{{detail.item.no}}</span></div>
-                                    <div layout-padding>品名 : <span>{{detail.item.brand.name}}</span></div>
+                                    <div layout-padding>品名 : <span>{{detail.item.name}}</span></div>
+                                    <div layout-padding>规格 : <span>{{detail.item.standard}}</span></div>
                                 </div>
                                 <div flex="40">
-                                    <div layout-padding>规格 : <span>{{detail.item.standard}}</span></div>
                                     <div layout-padding>商品属性 : <span>{{detail.itemAttribute}}</span></div>
                                     <div layout-padding>调拨数量 : <span>{{detail.allotQty}}</span></div>
                                     <div layout-padding>配送日期 : <span>{{detail.deliverDate  | date:'yyyy-MM-dd'}}</span>

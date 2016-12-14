@@ -33,9 +33,7 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         '201-batchConfirm': {display: true, name: '批量审核', uuid: '30227911-a5e7-4381-b852-13ab981a556f'},
         '202-batchCancelConfirm': {display: true, name: '批量取消审核', uuid: 'dde1cd28-8882-4b80-83b6-fa79bdcd5bbb'},
         '203-batchEnableStatus': {display: true, name: '批量启用', uuid: '4a17aa8d-9bfb-49a9-aea4-c3d61ddd73ab'},
-        '204-batchDisableStatus': {display: true, name: '批量取消启用', uuid: '0f79bcb1-69b6-4247-9a9a-22c1736268d8'},
-
-        '206-itemAttribute': {display: true, name: '自定義屬性', uuid: '75b63b4d-174a-48ad-93f8-e5ee23055057'},
+        '204-batchDisableStatus': {display: true, name: '批量取消启用', uuid: '0f79bcb1-69b6-4247-9a9a-22c1736268d8'}
     };
 
     $scope.getMenuAuthData($scope.RES_UUID_MAP.INV.ALLO.RES_UUID).success(function (data) {
