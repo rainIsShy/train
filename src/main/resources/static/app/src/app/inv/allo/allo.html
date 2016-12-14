@@ -62,28 +62,28 @@
                     </md-button>
                     <md-menu-content width="2">
                         <md-menu-item>
-                            <md-button class="md-button" aria-label="More"
+                            <md-button class="md-button" aria-label="More" ng-disabled="!canBatchConfirm()"
                                        ng-click="confirmAllClickAction($event, true)">
                                 <ng-md-icon icon="lock"></ng-md-icon>
                                 批量审核
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button class="md-button" aria-label="More"
+                            <md-button class="md-button" aria-label="More" ng-disabled="!canBatchCancelConfirm()"
                                        ng-click="confirmAllClickAction($event, false)">
                                 <ng-md-icon icon="lock"></ng-md-icon>
                                 批量取消审核
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button class="md-button" aria-label="More"
+                            <md-button class="md-button" aria-label="More" ng-disabled="!canBatchEnableStatus()"
                                        ng-click="statusAllClickAction($event, true)">
                                 <ng-md-icon icon="lock_open"></ng-md-icon>
                                 批量启用
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button class="md-button" aria-label="More"
+                            <md-button class="md-button" aria-label="More" ng-disabled="!canBatchDisableStatus()"
                                        ng-click="statusAllClickAction($event, false)">
                                 <ng-md-icon icon="lock_open"></ng-md-icon>
                                 批量作废
@@ -198,6 +198,11 @@
                         <label>申请截止日期</label>
                         <input type="date" ng-model="listFilterOption.applyDateEnd"/>
                     </md-input-container>
+                    <md-button flex="10" class="md-raised" ng-disabled="listForm.$invalid"
+                               ng-if="isAuthorized('106-query')"
+                               style="margin-top: 22px;height: 20px;"
+                               ng-click="queryAction($event)">查询
+                    </md-button>
                 </div>
                 <!-- advanced search-->
                 <div layout="row" ng-show="displayAdvancedSearPanel">
@@ -220,9 +225,9 @@
                         </md-button>
                         <md-menu-content width="2">
                             <md-menu-item>
-                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('name')">
-                                    <ng-md-icon ng-show="sortByField == 'name'" icon="play_arrow"></ng-md-icon>
-                                    按名称
+                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('applyDate')">
+                                    <ng-md-icon ng-show="sortByField == 'applyDate'" icon="play_arrow"></ng-md-icon>
+                                    按申请日期
                                 </md-button>
                                 <md-button class="md-button" aria-label="More" ng-click="sortByAction('no')">
                                     <ng-md-icon ng-show="sortByField == 'no'" icon="play_arrow"></ng-md-icon>
@@ -258,6 +263,7 @@
                                     <md-switch ng-model="item.confirm" aria-label="Switch 1" class="md-block"
                                                ng-if="isAuthorized('101-confirm') || isAuthorized('102-cancelConfirm')"
                                                ng-true-value="'2'" ng-false-value="'1'"
+                                               ng-disabled="disableConfirmMenuItem(item)"
                                                ng-click="confirmClickAction($event, item)">
                                         审核
                                     </md-switch>
@@ -266,11 +272,13 @@
                                     <md-switch ng-model="item.status" aria-label="Switch 1" class="md-block"
                                                ng-if="isAuthorized('103-enableStatus') || isAuthorized('104-disableStatus')"
                                                ng-true-value="'1'" ng-false-value="'2'"
+                                               ng-disabled="disableStatusMenuItem(item)"
                                                ng-click="statusClickAction($event, item)">
                                         启用
                                     </md-switch>
                                     <md-switch ng-model="item.transferFlag" aria-label="Switch 1" class="md-block"
                                                ng-true-value="'1'" ng-false-value="'2'"
+                                               ng-disabled="disableTransferMenuItem(item)"
                                                ng-click="transferClickAction($event, item)">
                                         抛转
                                     </md-switch>

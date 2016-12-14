@@ -54,6 +54,28 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         return false;
     };
 
+
+    $scope.disableConfirmMenuItem = function (item) {
+        if (item !== null && item !== undefined) {
+            return (item.transferFlag != 2 || item.status == 2)
+        }
+        return false;
+    };;;
+
+    $scope.disableStatusMenuItem = function (item) {
+        if (item !== null && item !== undefined) {
+            return item.confirm != 1;
+        }
+        return false;
+    };;;
+
+    $scope.disableTransferMenuItem = function (item) {
+        if (item !== null && item !== undefined) {
+            return item.confirm == '1';
+        }
+        return false;
+    };;;
+
     $scope.showConfirmMenuItem = function (item) {
         if (item !== null && item !== undefined) {
             return item.confirm == 1 && item.status == 1 && $scope.isAuthorized('101-confirm');
@@ -61,12 +83,14 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         return false;
     };
 
+
     $scope.showCancelConfirmMenuItem = function (item) {
         if (item !== null && item !== undefined) {
             return item.confirm == 2 && $scope.isAuthorized('102-cancelConfirm');
         }
         return false;
     };
+
 
     $scope.showEnableStatusMenuItem = function (item) {
         if (item !== null && item !== undefined) {
@@ -78,6 +102,56 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
     $scope.showDisableStatusMenuItem = function (item) {
         if (item !== null && item !== undefined) {
             return item.status == 1 && $scope.isAuthorized('104-disableStatus');
+        }
+        return false;
+    };
+
+
+    // Batch operations
+    $scope.canBatchConfirm = function () {
+        if ($scope.selected.length > 0) {
+            for (var i = 0; i < $scope.selected.length; i++) {
+                if ($scope.selected[i].confirm == Constant.CONFIRM[2].value || $scope.selected[i].status == Constant.STATUS[2].value) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    };
+
+    $scope.canBatchCancelConfirm = function () {
+        if ($scope.selected.length > 0) {
+            for (var i = 0; i < $scope.selected.length; i++) {
+                if ($scope.selected[i].confirm == Constant.CONFIRM[1].value) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    };
+
+    $scope.canBatchEnableStatus = function () {
+        if ($scope.selected.length > 0) {
+            for (var i = 0; i < $scope.selected.length; i++) {
+                if ($scope.selected[i].status == Constant.STATUS[1].value) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    };
+
+    $scope.canBatchDisableStatus = function () {
+        if ($scope.selected.length > 0) {
+            for (var i = 0; i < $scope.selected.length; i++) {
+                if ($scope.selected[i].status == Constant.STATUS[2].value) {
+                    return false;
+                }
+            }
+            return true;
         }
         return false;
     };
@@ -155,7 +229,6 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
     $scope.refreshDetailList = function (item, showExtend) {
         AlloDetailService.get(item.uuid).success(function (data) {
             item.detailList = data.content;
-            console.log(item.detailList);;;;;;;;;;;;;;;;;;;;;;
             if (showExtend) {
                 $scope.refreshSubDetail(item.detailList)
             }
@@ -216,6 +289,9 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
     $scope.confirmClickAction = function (event, item) {
         $scope.stopEventPropagation(event);
         if (item.confirm == '1') {
+            if (item.status == 2) {
+                return;
+            }
             $scope.showConfirm('确认审核吗？', '', function () {
                 alloMasterUpdateInput = {
                     uuid: item.uuid,
@@ -231,7 +307,11 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
                 item.confirm = '1';
             });
         } else {
+            if (item.transferFlag == 1) {
+                return;
+            }
             $scope.showConfirm('确认取消审核吗？', '', function () {
+
                 alloMasterUpdateInput = {
                     uuid: item.uuid,
                     confirm: '1'
@@ -251,6 +331,9 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
     $scope.statusClickAction = function (event, item) {
         $scope.stopEventPropagation(event);
         if (item.status == '1') {
+            if (item.confirm == 2) {
+                return;
+            }
             $scope.showConfirm('确认作废吗？', '', function () {
                 alloMasterUpdateInput = {
                     uuid: item.uuid,
@@ -282,8 +365,13 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
     };
 
     $scope.transferClickAction = function (event, item) {
+
         $scope.stopEventPropagation(event);
         if (item.transferFlag == '2') {
+            //未经審核不允許拋轉
+            if (item.confirm != 2) {
+                return;
+            }
             $scope.showConfirm('确认抛转吗？', '', function () {
                 alloMasterUpdateInput = {
                     uuid: item.uuid,
@@ -329,10 +417,11 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
                 AlloMasterService.batchUpdate(uuids, BATCH_DATA.INPUT).success(function (data) {
                     $scope.refreshList();
                     $scope.showInfo(BATCH_DATA.SUCCESS_MSG);
+                    $scope.selected = [];
                 });
             });
         }
-    };;;;;;;;;;;;;;;;;;;;;;
+    };
 
     $scope.confirmAllClickAction = function (event, confirm) {
         if (confirm) {
@@ -372,7 +461,7 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
                 QUESTION_MSG: '确认作发吗？',
                 SUCCESS_MSG: '作发成功!',
                 INPUT: {
-                    status: '1'
+                    status: '2'
                 }
             }
         }
