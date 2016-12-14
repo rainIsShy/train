@@ -79,13 +79,6 @@ spring:
   profiles: ethan
 
 
-
---- # Carzy's Dev
-
-spring:
-
-  profiles: carzy
-
 --- # Xavier's Dev
 
 spring:

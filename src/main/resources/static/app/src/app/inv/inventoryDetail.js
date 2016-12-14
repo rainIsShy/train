@@ -79,7 +79,7 @@ angular.module('IOne-Production').controller('InventoryDetailController', functi
 
 });
 
-angular.module('IOne-Production').controller('SelectController', function ($scope, $mdDialog, fieldType, fieldName, fieldValue, OrderDetailReportService) {
+angular.module('IOne-Production').controller('SelectController', function ($scope, $mdDialog, fieldType, fieldName, fieldValue, OCMChannelService) {
         $scope.fieldType = fieldType;
         $scope.fieldName = fieldName;
         switch (fieldType) {
@@ -102,7 +102,7 @@ angular.module('IOne-Production').controller('SelectController', function ($scop
             $scope.refreshList();
         };
         $scope.refreshList = function () {
-            OrderDetailReportService.search($scope.pageOption.currentPage, $scope.pageOption.sizePerPage)
+            OCMChannelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0,0)
                 .success(function (data) {
                     $scope.searchResult = data;
                     $scope.pageOption.totalElements = data.totalElements;
