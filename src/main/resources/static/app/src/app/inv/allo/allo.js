@@ -60,22 +60,19 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
             return (item.transferFlag != 2 || item.status == 2)
         }
         return false;
-    };;;
-
+    };
     $scope.disableStatusMenuItem = function (item) {
         if (item !== null && item !== undefined) {
             return item.confirm != 1;
         }
         return false;
-    };;;
-
+    };
     $scope.disableTransferMenuItem = function (item) {
         if (item !== null && item !== undefined) {
             return item.confirm == '1';
         }
         return false;
-    };;;
-
+    };
     $scope.showConfirmMenuItem = function (item) {
         if (item !== null && item !== undefined) {
             return item.confirm == 1 && item.status == 1 && $scope.isAuthorized('101-confirm');
@@ -301,7 +298,9 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
                 AlloMasterService.modify(item.uuid, alloMasterUpdateInput).success(function (data) {
                     item.confirm = '2';
                     $scope.refreshList();
+                    $scope.refreshDetailList(item, true);
                     $scope.showInfo("审核成功!");
+
                 });
             }, function () {
                 item.confirm = '1';
@@ -319,7 +318,9 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
                 AlloMasterService.modify(item.uuid, alloMasterUpdateInput).success(function (data) {
                     item.confirm = '1';
                     $scope.refreshList();
+                    $scope.refreshDetailList(item, true);
                     $scope.showInfo("取消审核成功!");
+
                 });
             }, function () {
                 item.confirm = '2';
@@ -342,6 +343,7 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
                 AlloMasterService.modify(item.uuid, alloMasterUpdateInput).success(function (data) {
                     item.status = '2';
                     $scope.refreshList();
+                    $scope.refreshDetailList(item, true);
                     $scope.showInfo("作废成功!");
                 });
             }, function () {
@@ -356,6 +358,7 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
                 AlloMasterService.modify(item.uuid, alloMasterUpdateInput).success(function (data) {
                     item.status = '1';
                     $scope.refreshList();
+                    $scope.refreshDetailList(item, true);
                     $scope.showInfo("启用成功!");
                 });
             }, function () {
@@ -380,6 +383,7 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
                 AlloMasterService.modify(item.uuid, alloMasterUpdateInput).success(function (data) {
                     item.transferFlag = '1';
                     $scope.refreshList();
+                    $scope.refreshDetailList(item, true);
                     $scope.showInfo("抛转成功!");
                 });
             }, function () {
@@ -394,6 +398,7 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
                 AlloMasterService.modify(item.uuid, alloMasterUpdateInput).success(function (data) {
                     item.transferFlag = '2';
                     $scope.refreshList();
+                    $scope.refreshDetailList(item, true);
                     $scope.showInfo("抛转还原成功!");
                 });
             }, function () {
