@@ -494,6 +494,10 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                 return;
             }
 
+            if ($scope.selectedItem.o2oChannel != null) {
+                $scope.selectedItem.o2oChannelUuid = $scope.selectedItem.o2oChannel.uuid;
+            }
+
 
             EcommerceOrdersMaster.modify($scope.selectedItem).success(function (data) {
                 $scope.selectedItem = data[0];
