@@ -1148,7 +1148,7 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
     };
 
     $scope.openO2oChannelDlg = function () {
-        alert('asdf');
+        alert('asdfadsfadsf');
         $mdDialog.show({
             controller: 'Eo2oChannelSearchController',
             templateUrl: 'app/src/app/taobao_data/ecommerce_orders/selectChannel.html',
