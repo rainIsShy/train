@@ -1548,6 +1548,46 @@ angular.module('IOne-Production').controller('EChannelSearchController', functio
     };
 });
 
+angular.module('IOne-Production').controller('Eo2oChannelSearchController', function ($scope, $mdDialog, EchannelService) {
+    $scope.isO2o = true;
+    $scope.pageOption = {
+        sizePerPage: 5,
+        currentPage: 0,
+        totalPage: 0,
+        totalElements: 0,
+        displayModel: 0  //0 : image + text //1 : image
+    };
+    //查询按钮重查时，翻页到第一页
+    $scope.queryAction = function () {
+        $scope.pageOption.currentPage = 0;
+        $scope.refreshChannel();
+    };
+
+    $scope.refreshChannel = function () {
+        EchannelService.getO2oChannel($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, $scope.searchKeyword, "").success(function (data) {
+            $scope.allChannel = data;
+            $scope.pageOption.totalElements = data.totalElements;
+            $scope.pageOption.totalPage = data.totalPages;
+            console.log(data);
+        });
+    };
+
+    $scope.refreshChannel();
+
+    $scope.selectChannel = function (channel) {
+        $scope.channel = channel;
+        $mdDialog.hide($scope.channel);
+    };
+
+    $scope.hideDlg = function () {
+        $mdDialog.hide($scope.channel);
+    };
+
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+});
+
 angular.module('IOne-Production').controller('ETaobaoClientController', function ($scope, $mdDialog, EtaobaoCustomers) {
     $scope.pageOption = {
         sizePerPage: 5,
