@@ -27,16 +27,17 @@
 
             </div>
             <div flex="30" style="margin-bottom: 45px;">
-                <div layout-padding>调拨金额 : <span>{{detail.oriAllotAmt}}</span></div>
                 <div layout-padding>调拨数量 : <span>{{detail.allotQty}}</span></div>
                 <div layout-padding>调拨单价 : <span>{{detail.allotPrice}}</span></div>
+                <div layout-padding>调拨金额 : <span>{{detail.oriAllotAmt}}</span></div>
+
                 <div layout-padding>抛转否 : <span>{{TRANSFER_PSO_FLAG[detail.transferFlag].name}}</span></div>
             </div>
             <div style="position: absolute; right: 10px; bottom: 10px;">
                 <md-button style="min-width:30px;max-width:70px;margin-top:-8px;"
                            ng-if="detail.allotMaster.confirm==1"
                            ng-disabled="detail.allotMaster.confirm !=1 || detail.customizeFlag ==2"
-                           ng-click="editItemCustomFromDetail(detail)">详情
+                           ng-click="editItemCustomFromDetail(detail)">定制属性维护
                 </md-button>
             </div>
         </div>
