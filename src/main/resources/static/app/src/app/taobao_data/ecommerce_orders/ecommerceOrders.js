@@ -311,7 +311,7 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
             $scope.selectedDetail = [];
             $scope.ecommerceOrderListMenu.selectAll = false;
             $scope.selectedItem = orderMaster;
-        
+
         if ($scope.selectedItem.orderDate) {
             $scope.selectedItem.orderDate = new Date($scope.selectedItem.orderDate);
         }
@@ -320,7 +320,9 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
             $scope.selectedItem.predictDeliverDate = new Date($scope.selectedItem.predictDeliverDate);
         }
 
-        $scope.selectedItem.o2oChannelUuid = orderMaster.o2oChannel.uuid;
+        if (orderMaster.o2oChannel != null) {
+            $scope.selectedItem.o2oChannelUuid = orderMaster.o2oChannel.uuid;
+        }
 
             $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
             $scope.resetButtonDisabled();
