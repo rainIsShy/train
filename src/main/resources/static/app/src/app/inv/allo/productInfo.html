@@ -34,7 +34,7 @@
                 <div layout-padding>抛转否 : <span>{{TRANSFER_PSO_FLAG[detail.transferFlag].name}}</span></div>
             </div>
             <div style="position: absolute; right: 10px; bottom: 10px;">
-                <md-button style="min-width:30px;max-width:70px;margin-top:-8px;"
+                <md-button
                            ng-if="detail.allotMaster.confirm==1"
                            ng-disabled="detail.allotMaster.confirm !=1 || detail.customizeFlag ==2"
                            ng-click="editItemCustomFromDetail(detail)">定制属性维护
