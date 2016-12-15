@@ -9,4 +9,17 @@ angular.module('IOne-Production').service('InventoryDetailService', function ($h
         };
         return $http.get(Constant.BACKEND_BASE + '/inventoryDetails',query);
     };
+
+    this.getAllProduction = function (sizePerPage, page, globalQuery) {
+        return $http.get(Constant.BACKEND_BASE + '/items?size=' + sizePerPage + '&page=' + page + '&globalQuery=' + globalQuery);
+    };
+
+    this.getAllWarehouse = function (sizePerPage, page, filter) {
+            var url = '/warehouses?size=' + sizePerPage
+                + '&page=' + page;
+            if (filter.keyWord) {
+                url = url + '&keyWord=' + filter.keyWord;
+            }
+            return $http.get(Constant.BACKEND_BASE + url);
+        };
 });

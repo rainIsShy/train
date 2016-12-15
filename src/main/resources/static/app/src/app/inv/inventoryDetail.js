@@ -5,14 +5,11 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('InventoryDetailController', function ($mdDialog, $scope, $rootScope, InventoryDetailService) {
+angular.module('IOne-Production').controller('InventoryDetailController', function ($mdDialog, $scope, InventoryDetailService) {
 
     $scope.inventoryDetailQuery = {
-        warehouseNO : '',
-        warehouseName : $rootScope.selectProductionName ? $rootScope.selectProductionName : '',
-        itemFileNo : '',
-        itemFileName : $rootScope.selectWarehouseName ? $rootScope.selectWarehouseName : '',
-        itemFileStandard : ''
+        warehouseKeyWord: '',
+        itemKeyWord: ''
     };
 
     // 搜索清單數值
@@ -57,7 +54,7 @@ angular.module('IOne-Production').controller('InventoryDetailController', functi
                 fieldValue: $scope
             }
         }).then(function (data) {
-            $scope.inventoryDetailQuery.warehouseName = data.selectWarehouseName;
+            $scope.inventoryDetailQuery.warehouseKeyWord = data.selectWarehouseName;
         });
     };
 
@@ -73,32 +70,29 @@ angular.module('IOne-Production').controller('InventoryDetailController', functi
                 fieldValue: $scope
             }
         }).then(function (data) {
-            $scope.inventoryDetailQuery.itemFileName = data.selectProductionName;
+            $scope.inventoryDetailQuery.itemKeyWord = data.selectProductionName;
         });
     };
 
 });
 
-angular.module('IOne-Production').controller('SelectController', function ($rootScope, $scope, $mdDialog, fieldType, fieldName, Warehouse, Production, fieldValue, OCMChannelService, Constant) {
+angular.module('IOne-Production').controller('SelectController', function ($rootScope, $scope, $mdDialog, fieldType, fieldName, InventoryDetailService, fieldValue, Constant) {
         $scope.fieldType = fieldType;
         $scope.fieldName = fieldName;
-        switch (fieldType) {
-            case '1':
-                $scope.searchKeyword = fieldValue.proName;
-                break;
-            case '2':
-                $scope.searchKeyword = fieldValue.cityName;
-                break;
-        }
 
         $scope.listFilterOption = {
-            select: {
-                status: Constant.STATUS[0].value,
-                confirm: Constant.CONFIRM[0].value
-            },
             no: '',
             name: '',
             keyWord: ''
+        };
+
+        switch (fieldType) {
+            case '1':
+                $scope.listFilterOption.keyWord = fieldValue.inventoryDetailQuery.warehouseKeyWord;
+                break;
+            case '2':
+                $scope.listFilterOption.keyWord = fieldValue.inventoryDetailQuery.itemKeyWord;
+                break;
         };
 
         $scope.pageOption = {
@@ -115,13 +109,13 @@ angular.module('IOne-Production').controller('SelectController', function ($root
 
         $scope.refreshList = function () {
             if(fieldType == '2'){
-                Production.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,0, 0, 0, 0, 0, $scope.listFilterOption.no, $scope.listFilterOption.name).success(function(data){
+                InventoryDetailService.getAllProduction($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption.keyWord).success(function(data){
                     $scope.searchResultList = data.content;
                     $scope.pageOption.totalElements = data.totalElements;
                     $scope.pageOption.totalPage = data.totalPages;
                 });
             }else{
-                Warehouse.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption).success(function (data) {
+                InventoryDetailService.getAllWarehouse($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption).success(function (data) {
                     $scope.searchResultList = data.content;
                     $scope.pageOption.totalElements = data.totalElements;
                     $scope.pageOption.totalPage = data.totalPages;

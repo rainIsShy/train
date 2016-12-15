@@ -7,14 +7,14 @@
     <div layout="row" layout-md="column" layout-sm="column" class="menu" style="margin: 0px 18px; width: 1050px;">
         <md-input-container flex="15">
             <label>仓库</label>
-            <input type="text" ng-model="inventoryDetailQuery.warehouseName" ng-keypress="enterKeyDown($event);">
+            <input type="text" ng-model="inventoryDetailQuery.warehouseKeyWord" ng-keypress="enterKeyDown($event);">
             <md-button ng-click="openChannelDlg()" class="md-icon-button float-right md-button" style="margin-top: 10px;">
                 <ng-md-icon icon="search"></ng-md-icon>
             </md-button>
         </md-input-container>
         <md-input-container flex="15">
             <label>商品</label>
-            <input type="text" ng-model="inventoryDetailQuery.itemFileName" ng-keypress="enterKeyDown($event);">
+            <input type="text" ng-model="inventoryDetailQuery.itemKeyWord" ng-keypress="enterKeyDown($event);">
             <md-button ng-click="openGoodsDlg()" class="md-icon-button float-right md-button" style="margin-top: 10px;">
                 <ng-md-icon icon="search"></ng-md-icon>
             </md-button>
