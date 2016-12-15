@@ -1557,7 +1557,7 @@ angular.module('IOne-Production').controller('Eo2oChannelSearchController', func
         totalElements: 0,
         displayModel: 0  //0 : image + text //1 : image
     };
-    //查询按钮重查时，翻页到第一页
+    //查询按钮重查时，翻页到第一页 //
     $scope.queryAction = function () {
         $scope.pageOption.currentPage = 0;
         $scope.refreshChannel();
