@@ -40,7 +40,7 @@ angular.module('IOne-Production').service('Receipts', function ($http, Constant)
         var orderReceiptDetailStatus = orderReceiptDetailStatus == 0 ? '' : orderReceiptDetailStatus;
         var url = '/orders/count?'
             + '&paidType=0'
-            + '&orderReceiptDetailStatus=' + orderReceiptDetailStatus
+            + '&orderReceiptDetailStatus=' + orderReceiptDetailStatus;;;;;;
 
         if (resUuid !== undefined && resUuid !== null) {
             url = url + '&resUuid=' + resUuid;
@@ -63,6 +63,10 @@ angular.module('IOne-Production').service('Receipts', function ($http, Constant)
 
     this.oneOffSync = function (uuid, detailUpdateInput) {
         return $http.patch(Constant.BACKEND_BASE + '/orders/' + uuid + '/receipts/' + detailUpdateInput.uuid + '/sync', detailUpdateInput);
+    };
+
+    this.auditTransfer = function (orderUuid, uuids) {
+        return $http.patch(Constant.BACKEND_BASE + '/orders/' + orderUuid + '/receipts?action=auditTransfer', uuids);
     };
 
 });
