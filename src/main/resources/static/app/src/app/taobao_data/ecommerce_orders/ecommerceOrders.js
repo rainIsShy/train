@@ -1147,6 +1147,20 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
         });
     };
 
+    $scope.openO2oChannelDlg = function () {
+        $mdDialog.show({
+            controller: 'Eo2oChannelSearchController',
+            templateUrl: 'app/src/app/taobao_data/ecommerce_orders/selectChannel.html',
+            parent: angular.element(document.body),
+            targetEvent: event
+        }).then(function (data) {
+            $scope.selectedItem.o2oChannel = data;
+            $scope.selectedItem.o2oChannel.name = data.name;
+            $scope.selectedItem.o2oChannel.uuid = data.uuid;
+            $scope.selectedItem.o2oChannelUuid = data.uuid;
+        });
+    };
+
     $scope.openTaobaoClientDlg = function () {
         $mdDialog.show({
             controller: 'ETaobaoClientController',
