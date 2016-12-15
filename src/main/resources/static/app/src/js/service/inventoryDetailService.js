@@ -10,8 +10,14 @@ angular.module('IOne-Production').service('InventoryDetailService', function ($h
         return $http.get(Constant.BACKEND_BASE + '/inventoryDetails',query);
     };
 
-    this.getAllProduction = function (sizePerPage, page, globalQuery) {
-        return $http.get(Constant.BACKEND_BASE + '/items?size=' + sizePerPage + '&page=' + page + '&globalQuery=' + globalQuery);
+    this.getAllProduction = function (sizePerPage, currentPage, itemQuery) {
+        var query = {
+            params : angular.merge({},{
+                size : sizePerPage,
+                page : currentPage,
+            },itemQuery)
+        };
+        return $http.get(Constant.BACKEND_BASE + '/items' , query);
     };
 
     this.getAllWarehouse = function (sizePerPage, page, filter) {

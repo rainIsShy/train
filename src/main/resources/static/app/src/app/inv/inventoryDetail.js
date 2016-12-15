@@ -109,7 +109,14 @@ angular.module('IOne-Production').controller('SelectController', function ($root
 
         $scope.refreshList = function () {
             if(fieldType == '2'){
-                InventoryDetailService.getAllProduction($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption.keyWord).success(function(data){
+                var itemQuery = {
+                    globalQuery : $scope.listFilterOption.keyWord,
+                    release : '',
+                    status : '',
+                    confirm : '',
+                    showAllItems : ''
+                };
+                InventoryDetailService.getAllProduction($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, itemQuery).success(function(data){
                     $scope.searchResultList = data.content;
                     $scope.pageOption.totalElements = data.totalElements;
                     $scope.pageOption.totalPage = data.totalPages;
