@@ -67,9 +67,10 @@ angular.module('IOne-Production').service('EcommerceOrdersMaster', function ($ht
 
     //新增时初始化所有栏位
     this.createDefault = function () {
-        var orderDate = new Date();
+        var dateTime = moment().format("YYYY-MM-DD HH:mm:ss");;
+        var orderDate = new Date(dateTime);
         var predictDeliverDate = new Date(orderDate.valueOf() + 2 * 24 * 60 * 60 * 1000);
-        return {
+        return order = {
             "no": "",
             "userId": "",
             "buyerNick": "",
@@ -86,6 +87,7 @@ angular.module('IOne-Production').service('EcommerceOrdersMaster', function ($ht
             "channel": "",
             "details": "",
             "deliverWay": ""
+
         };
         // return order;
     };
