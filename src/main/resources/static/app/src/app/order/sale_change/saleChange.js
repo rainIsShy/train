@@ -422,7 +422,6 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
         });
     };
 
-
     $scope.confirmAllClickAction = function (event) {
         $scope.stopEventPropagation(event);
 
@@ -431,26 +430,26 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
             return;
         }
         $scope.showConfirm('确认审核吗', '', function () {
-            var promises = [];
-            var bError = false;
+            var uuids = '', nos = '';
             angular.forEach($scope.itemList, function (item) {
                 if (item.selected) {
-                    var response = PsoOrderChangeMaster.confirm(item.uuid, Constant.CONFIRM[2].value).success(function () {
-                        item.confirm = Constant.CONFIRM[2].value;
-                        $scope.updateOrderChangeDetailsConfirm(item);
-                    }).error(function (response) {
-                        bError = true;
-                        $scope.showError(item.no + ' 审核失败：' + response.message);
-                    });
-                    promises.push(response);
+                    uuids += (uuids ? ',' : '') + item.uuid;
+                    nos += (nos ? ',' : '') + item.no;
                 }
             });
-            $q.all(promises).then(function (data) {
-                if (!bError) {
-                    $scope.showInfo('审核成功！');
-                    $scope.getOrderMasterCount();
-                }
+            PsoOrderChangeMaster.confirm(uuids, Constant.CONFIRM[2].value).success(function () {
+                angular.forEach($scope.itemList, function (item) {
+                    if (item.selected) {
+                        item.confirm = Constant.CONFIRM[2].value;
+                        $scope.updateOrderChangeDetailsConfirm(item);
+                    }
+                });
+
+                $scope.getOrderMasterCount();
                 $scope.disableBatchMenuButtons();
+                $scope.showInfo('审核成功！');
+            }).error(function (response) {
+                $scope.showError(nos + ' 审核失败：' + response.message);
             });
         });
     };
@@ -463,26 +462,25 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
             return;
         }
         $scope.showConfirm('确认取消审核吗', '', function () {
-            var promises = [];
-            var bError = false;
+            var uuids = '', nos = '';
             angular.forEach($scope.itemList, function (item) {
                 if (item.selected) {
-                    var response = PsoOrderChangeMaster.confirm(item.uuid, Constant.CONFIRM[1].value).success(function () {
-                        item.confirm = Constant.CONFIRM[1].value;
-                        $scope.updateOrderChangeDetailsConfirm(item);
-                    }).error(function (response) {
-                        bError = true;
-                        $scope.showError(item.no + ' 取消审核失败：' + response.message);
-                    });
-                    promises.push(response);
+                    uuids += (uuids ? ',' : '') + item.uuid;
+                    nos += (nos ? ',' : '') + item.no;
                 }
             });
-            $q.all(promises).then(function (data) {
-                if (!bError) {
-                    $scope.showInfo('取消审核成功！');
-                    $scope.getOrderMasterCount();
-                }
+            PsoOrderChangeMaster.confirm(uuids, Constant.CONFIRM[1].value).success(function () {
+                angular.forEach($scope.itemList, function (item) {
+                    if (item.selected) {
+                        item.confirm = Constant.CONFIRM[1].value;
+                        $scope.updateOrderChangeDetailsConfirm(item);
+                    }
+                });
+                $scope.getOrderMasterCount();
                 $scope.disableBatchMenuButtons();
+                $scope.showInfo('取消审核成功！');
+            }).error(function (response) {
+                $scope.showError(nos + ' 取消审核失败：' + response.message);
             });
         });
     };
@@ -495,25 +493,25 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
             return;
         }
         $scope.showConfirm('确认启用吗', '', function () {
-            var promises = [];
-            var bError = false;
+            var uuids = '', nos = '';
             angular.forEach($scope.itemList, function (item) {
                 if (item.selected) {
-                    var response = PsoOrderChangeMaster.modify(item.uuid, {'status': '1'}).success(function () {
-                        item.status = Constant.STATUS[1].value;
-                    }).error(function (response) {
-                        bError = true;
-                        $scope.showError(item.no + ' 启用失败：' + response.message);
-                    });
-                    promises.push(response);
+                    uuids += (uuids ? ',' : '') + item.uuid;
+                    nos += (nos ? ',' : '') + item.no;
                 }
             });
-            $q.all(promises).then(function (data) {
-                if (!bError) {
-                    $scope.showInfo('启用成功！');
-                    $scope.getOrderMasterCount();
-                }
+            PsoOrderChangeMaster.modify(uuids, { 'modifyOnly': '1', 'status': Constant.STATUS[1].value }).success(function () {
+                angular.forEach($scope.itemList, function (item) {
+                    if (item.selected) {
+                        item.status = Constant.STATUS[1].value;
+                    }
+                });
+
+                $scope.getOrderMasterCount();
                 $scope.disableBatchMenuButtons();
+                $scope.showInfo('启用成功！');
+            }).error(function (response) {
+                $scope.showError(nos + ' 启用失败：' + response.message);
             });
         });
     };
@@ -526,29 +524,27 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
             return;
         }
         $scope.showConfirm('确认禁用吗', '', function () {
-            var promises = [];
-            var bError = false;
+            var uuids = '', nos = '';
             angular.forEach($scope.itemList, function (item) {
                 if (item.selected) {
-                    var response = PsoOrderChangeMaster.modify(item.uuid, {'status': '2'}).success(function () {
-                        item.status = Constant.STATUS[2].value;
-                    }).error(function (response) {
-                        bError = true;
-                        $scope.showError(item.no + ' 禁用失败：' + response.message);
-                    });
-                    promises.push(response);
+                    uuids += (uuids ? ',' : '') + item.uuid;
+                    nos += (nos ? ',' : '') + item.no;
                 }
             });
-            $q.all(promises).then(function (data) {
-                if (!bError) {
-                    $scope.showInfo('禁用成功！');
-                    $scope.getOrderMasterCount();
-                }
+            PsoOrderChangeMaster.modify(uuids, { 'modifyOnly': '1', 'status': Constant.STATUS[2].value }).success(function () {
+                angular.forEach($scope.itemList, function (item) {
+                    if (item.selected) {
+                        item.status = Constant.STATUS[2].value;
+                    }
+                });
+                $scope.getOrderMasterCount();
                 $scope.disableBatchMenuButtons();
+                $scope.showInfo('禁用成功！');
+            }).error(function (response) {
+                $scope.showError(nos + ' 禁用失败：' + response.message);
             });
         });
     };
-
 
     //$scope.transferAllClickAction = function (event) {
     //    $scope.stopEventPropagation(event);
@@ -581,39 +577,37 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
             return;
         }
         $scope.showConfirm('确认抛转吗', '', function () {
-            var promises = [];
-            var bError = false;
-            var ignoredNos = '';
+            var uuids = '', nos = '', ignoredNos = '';
             var count = 0;
             angular.forEach($scope.itemList, function (item) {
                 if (item.selected) {
                     if (item.orderMaster.transferPsoFlag != '2') {
-                        var response = PsoOrderChangeMaster.transfer(item.uuid).success(function () {
-                            item.transferPsoFlag = '1';
-                        }).error(function (response) {
-                            bError = true;
-                            $scope.showError(item.no + ' 抛转失败：' + response.message);
-                        });
-                        promises.push(response);
+                        uuids += (uuids ? ',' : '') + item.uuid;
+                        nos += (nos ? ',' : '') + item.no;
                         count++;
                     } else {
-                        ignoredNos = ignoredNos + item.no + '(版本:' + item.changeVersion + ')' + '<br>'
+                        ignoredNos += item.no + '(版本:' + item.changeVersion + ')' + '<br>';
                     }
                 }
             });
-            if (ignoredNos !== '') {
+
+            if (ignoredNos) {
                 $scope.showWarn('如下变更单对应的产品销售单尚未抛转,将不执行抛转：' + '<br>' + ignoredNos + '请先抛转对应的产品销售单');
             }
-            $q.all(promises).then(function (data) {
-                if (!bError) {
-                    $scope.showInfo('共' + count + '笔抛转成功！');
-                    $scope.getOrderMasterCount();
-                }
+            PsoOrderChangeMaster.transfer(uuids).success(function () {
+                angular.forEach($scope.itemList, function (item) {
+                    if (item.selected && item.orderMaster.transferPsoFlag != '2') {
+                        item.transferPsoFlag = '1';
+                    }
+                });
+                $scope.getOrderMasterCount();
                 $scope.disableBatchMenuButtons();
+                $scope.showInfo('共' + count + '笔抛转成功！');
+            }).error(function (response) {
+                $scope.showError(nos + ' 抛转失败：' + response.message);
             });
         });
     };
-
 
     $scope.transferAllneOffSyncAction = function (event) {
         $scope.stopEventPropagation(event);
@@ -622,40 +616,38 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
             $scope.showWarn('请先选择记录！');
             return;
         }
+
         $scope.showConfirm('确认一键抛转吗', '', function () {
-            var promises = [];
-            var bError = false;
-            var ignoredNos = '';
+            var uuids = '', nos = '', ignoredNos = '';
             var count = 0;
             angular.forEach($scope.itemList, function (item) {
                 if (item.selected) {
                     if (item.orderMaster.transferPsoFlag != '2') {
-                        var response = PsoOrderChangeMaster.oneOffSync(item.uuid).success(function () {
-                            item.transferPsoFlag = '1';
-                        }).error(function (response) {
-                            bError = true;
-                            $scope.showError(item.no + ' 抛转失败：' + response.message);
-                        });
-                        promises.push(response);
+                        uuids += (uuids ? ',' : '') + item.uuid;
+                        nos += (nos ? ',' : '') + item.no;
                         count++;
                     } else {
-                        ignoredNos = ignoredNos + item.no + '(版本:' + item.changeVersion + ')' + '<br>'
+                        ignoredNos += item.no + '(版本:' + item.changeVersion + ')' + '<br>';
                     }
                 }
             });
-            if (ignoredNos !== '') {
+            if (ignoredNos) {
                 $scope.showWarn('如下变更单对应的产品销售单尚未抛转,将不执行抛转：' + '<br>' + ignoredNos + '请先抛转对应的产品销售单');
             }
-            $q.all(promises).then(function (data) {
-                if (!bError) {
-                    $scope.showInfo('共' + count + '笔抛转成功！');
-                    $scope.getOrderMasterCount();
-                }
+            PsoOrderChangeMaster.oneOffSync(uuids).success(function () {
+                angular.forEach($scope.itemList, function (item) {
+                    if (item.selected && item.orderMaster.transferPsoFlag != '2') {
+                        item.transferPsoFlag = '1';
+                    }
+                });
+                $scope.getOrderMasterCount();
                 $scope.disableBatchMenuButtons();
+                $scope.showInfo('共' + count + '笔抛转成功！');
+            }).error(function (response) {
+                $scope.showError(nos + ' 抛转失败：' + response.message);
             });
         });
     };
-
 
     $scope.updateOrderChangeDetailsConfirm = function (item) {
         if (item.detailList != null) {
