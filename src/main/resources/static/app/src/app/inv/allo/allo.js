@@ -36,6 +36,11 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         '204-batchDisableStatus': {display: true, name: '批量取消启用', uuid: '0f79bcb1-69b6-4247-9a9a-22c1736268d8'}
     };
 
+    $scope.getMenuAuthData($scope.RES_UUID_MAP.INV.ALLO.RES_UUID).success(function (data) {
+        $scope.menuAuthDataMap = $scope.menuDataMap(data);
+        console.log($scope.menuAuthDataMap);
+    });
+
 
     // Check authorization
     $scope.isAuthorized = function (option) {
@@ -94,6 +99,20 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
     $scope.showDisableStatusMenuItem = function (item) {
         if (item !== null && item !== undefined) {
             return item.status == 1 && $scope.isAuthorized('104-disableStatus');
+        }
+        return false;
+    };
+
+    $scope.showEnableTransferMenuItem = function (item) {
+        if (item !== null && item !== undefined) {
+            return item.transferFlag == 2 && $scope.isAuthorized('107-transfer');
+        }
+        return false;
+    };
+
+    $scope.showDisableTransferMenuItem = function (item) {
+        if (item !== null && item !== undefined) {
+            return item.transferFlag == 1 && $scope.isAuthorized('104-disableStatus');
         }
         return false;
     };

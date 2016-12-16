@@ -37,7 +37,7 @@
                                 作废
                             </md-button>
                         </md-menu-item>
-                        <md-menu-item ng-show="selectedItem.transferFlag==2">
+                        <md-menu-item ng-if="showEnableTransferMenuItem(selectedItem)">
                             <md-button class="md-button" aria-label="More"
                                        ng-click="transferClickAction($event, selectedItem)">
                                 <ng-md-icon icon="send"></ng-md-icon>
@@ -284,13 +284,12 @@
                                     </md-switch>
 
                                     <md-switch ng-model="item.transferFlag" aria-label="Switch 1" class="md-block"
-                                               ng-true-value="'1'" ng-false-value="'2'"
+                                               ng-if="isAuthorized('107-transfer') || isAuthorized('108-unTransfer')"
                                                ng-disabled="disableTransferMenuItem(item)"
                                                ng-click="transferClickAction($event, item)">
                                         抛转
                                     </md-switch>
                                     <md-button class="md-button close-btn" aria-label="More"
-                                               ng-if="isAuthorized('107-transfer') || isAuthorized('108-unTransfer')"
                                                ng-click="toggleMorePanelAction(item)"
                                                style="position: relative;left: 15px;">
                                         查看更多...
