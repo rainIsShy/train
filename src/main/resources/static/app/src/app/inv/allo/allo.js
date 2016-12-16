@@ -36,13 +36,10 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         '204-batchDisableStatus': {display: true, name: '批量取消启用', uuid: '0f79bcb1-69b6-4247-9a9a-22c1736268d8'}
     };
 
-    $scope.getMenuAuthData($scope.RES_UUID_MAP.INV.ALLO.RES_UUID).success(function (data) {
-        $scope.menuAuthDataMap = $scope.menuDataMap(data);
-    });
-
 
     // Check authorization
     $scope.isAuthorized = function (option) {
+
         if ($scope.menuDisplayOption[option].display &&
             ($scope.menuAuthDataMap[$scope.menuDisplayOption[option].uuid] ||
             $scope.isAdmin() || !$scope.menuDisplayOption[option].uuid)) {

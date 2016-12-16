@@ -55,34 +55,35 @@
             </div>
             <div flex class="right-title">
                 <span>调拨单列表</span>
-                <md-menu>
+                <md-menu
+                        ng-if="isAuthorized('201-batchConfirm') || isAuthorized('202-batchCancelConfirm') || isAuthorized('203-batchEnableStatus') || isAuthorized('204-batchDisableStatus')">
                     <md-button class="md-icon-button close-btn float-right" aria-label="More"
                                ng-click="$mdOpenMenu($event)">
                         <ng-md-icon icon="menu"></ng-md-icon>
                     </md-button>
                     <md-menu-content width="2">
-                        <md-menu-item>
+                        <md-menu-item ng-if="isAuthorized('201-batchConfirm')">
                             <md-button class="md-button" aria-label="More" ng-disabled="!canBatchConfirm()"
                                        ng-click="confirmAllClickAction($event, true)">
                                 <ng-md-icon icon="lock"></ng-md-icon>
                                 批量审核
                             </md-button>
                         </md-menu-item>
-                        <md-menu-item>
+                        <md-menu-item ng-if="isAuthorized('202-batchCancelConfirm')">
                             <md-button class="md-button" aria-label="More" ng-disabled="!canBatchCancelConfirm()"
                                        ng-click="confirmAllClickAction($event, false)">
                                 <ng-md-icon icon="lock"></ng-md-icon>
                                 批量取消审核
                             </md-button>
                         </md-menu-item>
-                        <md-menu-item>
+                        <md-menu-item ng-if="isAuthorized('203-batchEnableStatus')">
                             <md-button class="md-button" aria-label="More" ng-disabled="!canBatchEnableStatus()"
                                        ng-click="statusAllClickAction($event, true)">
                                 <ng-md-icon icon="lock_open"></ng-md-icon>
                                 批量启用
                             </md-button>
                         </md-menu-item>
-                        <md-menu-item>
+                        <md-menu-item ng-if="isAuthorized('204-batchDisableStatus')">
                             <md-button class="md-button" aria-label="More" ng-disabled="!canBatchDisableStatus()"
                                        ng-click="statusAllClickAction($event, false)">
                                 <ng-md-icon icon="lock_open"></ng-md-icon>
