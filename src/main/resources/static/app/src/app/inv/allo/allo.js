@@ -98,7 +98,7 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
 
     $scope.showDisableStatusMenuItem = function (item) {
         if (item !== null && item !== undefined) {
-            return item.status == 1 && $scope.isAuthorized('104-disableStatus');
+            return item.confirm != 2 && item.status == 1 && $scope.isAuthorized('104-disableStatus');
         }
         return false;
     };
