@@ -539,6 +539,19 @@ RES_UUID_MAP = {
                 TITLE: '采购单-表单'
             }
         }
+    },
+
+    INV: {
+        RES_UUID: 'EBED28B2-AD33-48D4-8023-3F6EF166EB6B',
+        TITLE: '库存管理',
+        INVENTORY_DETAIL: {
+            RES_UUID: 'BB0B018F-5295-4F24-9A1B-D81C0E552DB2',
+            TITLE: '库存明细查询'
+        },
+        ALLO: {
+            RES_UUID: '7c82a12b-7cf4-4fca-8fa5-20c98e5ec1aa',
+            TITLE: '调拨单维护'
+        }
     }
 };
 
@@ -954,6 +967,22 @@ angular.module('IOne-Constant').constant('Constant', {
                 },
                 {id: '/fam/tags', name: '标签管理', link: '/fam/tags', uuid: RES_UUID_MAP.CBI.TAG.RES_UUID},
                 {id: '/fam/tagClass', name: '标签分类', link: '/fam/tagClass', uuid: RES_UUID_MAP.CBI.TAG_CLASS.RES_UUID}
+            ]
+        },
+        {
+            id: 9,
+            uuid: RES_UUID_MAP.INV.RES_UUID,
+            name: '库存管理',
+            isOpen: false,
+            icon: 'fa fa-bank',
+            subList: [
+                {
+                    id: '/inv/inventoryDetail',
+                    name: '库存明细查询',
+                    link: '/inv/inventoryDetail',
+                    uuid: RES_UUID_MAP.INV.INVENTORY_DETAIL.RES_UUID
+                },
+                {id: '/inv/allo', name: '调拨单维护', link: '/inv/allo', uuid: RES_UUID_MAP.INV.ALLO.RES_UUID}
             ]
         }
     ],

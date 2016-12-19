@@ -1,0 +1,46 @@
+<div layout="row" layout-wrap style="margin-top: 20px;">
+    <div flex="100" ng-repeat="detail in selectedItem.detailList" ng-click="" class="prod-item"
+         style="position: relative;padding-bottom: 0px; min-height: 200px;">
+        <div layout="row" class="height: 100%;">
+            <div flex="10" layout-align="center center" style="text-align: center;background-color:lightgray">
+                <h3 flex> {{detail.no}}</h3>
+            </div>
+            <div flex="30" style="margin-bottom: 45px;">
+                <div layout-padding>品号 : <span>{{detail.item.no}}</span></div>
+                <div layout-padding>品名 : <span>{{detail.item.name}}</span></div>
+                <div layout-padding>规格 : <span>{{detail.item.standard}}</span></div>
+                <div layout-padding layout="row">定制否 :
+                    <span>{{CUSTOMIZE_FLAG[detail.customizeFlag].name}}</span>
+
+
+                </div>
+                <div layout-padding>商品属性 : <span>{{detail.itemAttribute}}</span></div>
+
+            </div>
+            <div flex="30" style="margin-bottom: 45px;">
+
+
+                <div layout-padding>商品品牌 : <span>{{detail.item.brand.no}}</span></div>
+                <div layout-padding>品牌名称 : <span>{{detail.item.brand.name}}</span></div>
+                <div layout-padding>配送日期 : <span>{{detail.deliverDate  | date:'yyyy-MM-dd'}}</span></div>
+                <div layout-padding>原始配送日期 : <span>{{detail.oriDeliverDate  | date:'yyyy-MM-dd'}}</span></div>
+
+            </div>
+            <div flex="30" style="margin-bottom: 45px;">
+                <div layout-padding>调拨数量 : <span>{{detail.allotQty}}</span></div>
+                <div layout-padding>调拨单价 : <span>{{detail.allotPrice}}</span></div>
+                <div layout-padding>调拨金额 : <span>{{detail.oriAllotAmt}}</span></div>
+
+                <div layout-padding>抛转否 : <span>{{TRANSFER_PSO_FLAG[detail.transferFlag].name}}</span></div>
+            </div>
+            <div style="position: absolute; right: 10px; bottom: 10px;">
+                <md-button
+                           ng-if="detail.allotMaster.confirm==1"
+                           ng-disabled="detail.allotMaster.confirm !=1 || detail.customizeFlag ==2"
+                           ng-click="editItemCustomFromDetail(detail)">定制属性维护
+                </md-button>
+            </div>
+        </div>
+        <md-divider style="margin-top: 5px"></md-divider>
+        </div>
+    </div>
