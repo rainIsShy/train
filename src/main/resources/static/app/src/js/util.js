@@ -712,8 +712,14 @@ angular.module('IOne-Constant').constant('Constant', {
             name: '库存管理',
             isOpen: false,
             icon: 'inv_icon',
-            subList:[
-                {id: '/inv/inventoryDetail', name: '库存明细查询', link: '/inv/inventoryDetail', uuid:RES_UUID_MAP.INV.INVENTORY_DETAIL.RES_UUID}
+            subList: [
+                {
+                    id: '/inv/inventoryDetail',
+                    name: '库存明细查询',
+                    link: '/inv/inventoryDetail',
+                    uuid: RES_UUID_MAP.INV.INVENTORY_DETAIL.RES_UUID
+                },
+                {id: '/inv/allo', name: '调拨单维护', link: '/inv/allo', uuid: RES_UUID_MAP.INV.ALLO.RES_UUID}
             ]
         },
         {
@@ -977,22 +983,6 @@ angular.module('IOne-Constant').constant('Constant', {
                 },
                 {id: '/fam/tags', name: '标签管理', link: '/fam/tags', uuid: RES_UUID_MAP.CBI.TAG.RES_UUID},
                 {id: '/fam/tagClass', name: '标签分类', link: '/fam/tagClass', uuid: RES_UUID_MAP.CBI.TAG_CLASS.RES_UUID}
-            ]
-        },
-        {
-            id: 9,
-            uuid: RES_UUID_MAP.INV.RES_UUID,
-            name: '库存管理',
-            isOpen: false,
-            icon: 'fa fa-bank',
-            subList: [
-                {
-                    id: '/inv/inventoryDetail',
-                    name: '库存明细查询',
-                    link: '/inv/inventoryDetail',
-                    uuid: RES_UUID_MAP.INV.INVENTORY_DETAIL.RES_UUID
-                },
-                {id: '/inv/allo', name: '调拨单维护', link: '/inv/allo', uuid: RES_UUID_MAP.INV.ALLO.RES_UUID}
             ]
         }
     ],
