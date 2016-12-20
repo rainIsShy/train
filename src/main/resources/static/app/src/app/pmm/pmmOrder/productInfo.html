@@ -41,6 +41,7 @@
         <div align="center" flex="5"  class=" table-head">项次</div>
         <div align="center" flex="10" class=" table-head">品名</div>
         <div align="center" flex="10" class=" table-head">规格</div>
+        <div align="center" flex="10" class=" table-head">定制否</div>
         <div align="center" flex="10" class=" table-head">品牌</div>
         <div align="center" flex="10" class=" table-head">品牌名称</div>
         <!--//modify-->
@@ -63,7 +64,7 @@
         <div align="center" flex="10" class=" table-head">成交价</div>
         <!-- <div align="center" flex="10" class=" table-head">标准价</div> -->
         <!-- <div align="center" flex="10" class=" table-head">标准金额</div> -->
-        <div align="center" flex="10" class=" table-head">定制否</div>
+
         <div align="center" flex="10" class=" table-head">单套定制费</div>
         <div align="center" flex="10" class=" table-head">定制备注</div>
         <div align="center" flex="10" class=" table-head">备注</div>
@@ -103,6 +104,18 @@
             </div>
             <div align="center" flex="10" class="table-item">{{orderDetail.item.name}}</div>
             <div align="center" flex="10" class="table-item">{{orderDetail.item.standard}}</div>
+            <div align="center" flex="10" class=" table-item" layout="row" style="padding:0px 0px 0px 0px;">
+                <!--{{CUSTOMIZE_FLAG[orderDetail.customizeFlag].name}}-->
+
+                <md-checkbox style=" padding: 0px 0px 0px 0px;" ng-model="orderDetail.customizeFlag" ng-disabled="true"
+                             aria-label="定制" ng-true-value="'1'" ng-false-value="'2'"></md-checkbox>
+
+                <md-button style="min-width:10px;max-width:60px"
+                           ng-disabled="orderDetail.confirm !=1 || orderDetail.customizeFlag ==2"
+                           ng-click="editItemCustomAtDetail(orderDetail)">详情
+                </md-button>
+
+            </div><!-- 定制否 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.itemCustomScope.no}}</div>
             <div align="center" flex="10" class="table-item">{{orderDetail.itemCustomScope.name}}</div>
             <div align="center" flex="10" class="table-item">{{orderDetail.itemAttribute}}</div>
@@ -121,7 +134,7 @@
             <div align="center" flex="10" class="table-item">{{orderDetail.oriTransactionPrice}}</div><!-- 成交价 -->
             <!-- <div align="center" flex="10" class="table-item">{{orderDetail.standardPrice}}</div><!-- 标准价 -->
             <!-- <div align="center" flex="10" class="table-item">{{orderDetail.oriStandardAmt}}</div><!-- 标准金额 -->
-            <div align="center" flex="10" class="table-item">{{CUSTOMIZE_FLAG[orderDetail.customizeFlag].name}}</div><!-- 定制否 -->
+
             <div align="center" flex="10" class="table-item">{{orderDetail.perCustomizePrice}}</div><!-- 单套定制费 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.customizeRemark}}</div><!-- 定制备注 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.remark}}</div><!-- 备注 -->

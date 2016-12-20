@@ -1,0 +1,43 @@
+<div layout="row" layout-wrap style="margin-top: 20px;">
+    <div flex="100" ng-repeat="subDetail in subDataList" ng-click="" class="prod-item"
+         style="position: relative;padding-bottom: 0px; min-height: 200px;">
+        <div layout="row" class="height: 100%;">
+            <div flex="10" layout-align="center center" style="text-align: center;background-color:lightgray">
+                <h3 flex> {{subDetail.no}}</h3>
+            </div>
+            <div flex="30" style="margin-bottom: 45px;">
+                <div layout-padding>套件品号 : <span>{{subDetail.packageItem.no}}</span></div>
+                <div layout-padding>套件品名 : <span>{{subDetail.packageItem.name}}</span></div>
+                <div layout-padding>品号 : <span>{{subDetail.item.no}}</span></div>
+                <div layout-padding>品名 : <span>{{subDetail.item.name}}</span></div>
+                <div layout-padding>规格 : <span>{{subDetail.item.standard}}</span></div>
+
+            </div>
+            <div flex="30" style="margin-bottom: 45px;">
+                <div layout-padding layout="row">定制否 :
+                    <span>{{CUSTOMIZE_FLAG[subDetail.customizeFlag].name}}</span>
+                </div>
+                <div layout-padding>商品颜色 : <span>{{subDetail.itemColor}}</span></div>
+                <div layout-padding>商品属性 : 206<span>{{subDetail.itemAttribute}}</span></div>
+                <div layout-padding>品牌 : <span>{{subDetail.item.brand.no}}</span></div>
+                <div layout-padding>品牌名称 : <span>{{subDetail.item.brand.name}}</span></div>
+
+            </div>
+            <div flex="30" style="margin-bottom: 45px;">
+                <div layout-padding>调拨数量 : <span>{{subDetail.allotQty}}</span></div>
+                <div layout-padding>调拨单价 : <span>{{subDetail.allotPrice}}</span></div>
+                <div layout-padding>调拨金额 : <span>{{subDetail.oriAllotAmt}}</span></div>
+                <div layout-padding>抛转否 : <span>{{TRANSFER_PSO_FLAG[subDetail.transferFlag].name}}</span></div>
+            </div>
+
+            <div style="position: absolute; right: 10px; bottom: 10px;">
+                <md-button
+                           ng-disabled="subDetail.allotDetail.allotMaster.confirm !=1 ||subDetail.customizeFlag ==2"
+                           ng-click="editItemCustom(subDetail)">定制属性维护
+                </md-button>
+            </div>
+        </div>
+        <md-divider style="margin-top: 5px"></md-divider>
+    </div>
+
+</div>

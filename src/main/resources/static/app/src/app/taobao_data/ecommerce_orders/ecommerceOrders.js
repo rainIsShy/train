@@ -6,6 +6,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
 }]);
 
 angular.module('IOne-Production').controller('EcommerceOrdersController', function ($scope, $q, $window, EcommerceOrdersMaster, EcommerceOrderDetail, EcommerceOrderDetailExtend, EdelivWayService, SaleTypes, $mdDialog, $timeout, Constant) {
+
     $scope.ecommerceOrderListMenu = {
         selectAll: false,
         effectiveType: '2', //失效作废
@@ -57,8 +58,6 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
         totalPage: 100,
         totalElements: 100
     };
-
-    $scope.o2oFlags = Constant.EPS_ORDER_O2O_FLAG;
 
     $scope.printAction = function () {
         EcommerceOrdersMaster.print('e_sale_order_reports', $scope.selectedItem.uuid).success(function (data) {
@@ -218,7 +217,6 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
             selectedDetail.push(item);
         }
         $scope.resetButtonDisabled();
-        //$scope.changeButtonStatuOnly();
     };
 
     $scope.changeButtonStatus = function (orderMaster) {
@@ -272,7 +270,6 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
     //全选
     $scope.selectAllMenuAction = function () {
         if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) { //清单全选
-            //console.info($scope.ecommerceOrderListMenu.selectAll);
             if ($scope.ecommerceOrderListMenu.selectAll == true) {
                 angular.forEach($scope.OrderMasterList.content, function (item) {
                     var idx = $scope.selected.indexOf(item);
@@ -297,7 +294,6 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                     }
                 });
                 $scope.resetButtonDisabled();
-                //$scope.changeButtonStatuOnly();
             } else if ($scope.ecommerceOrderListMenu.selectAll == false) {
                 $scope.selectedDetail = [];
                 $scope.resetButtonDisabled();
@@ -306,11 +302,13 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
 
 
     };
+
     //查看详情，跳转到表单 选中的是selectedItem
     $scope.editItem = function (orderMaster) {
         $scope.selectedDetail = [];
         $scope.ecommerceOrderListMenu.selectAll = false;
         $scope.selectedItem = orderMaster;
+
         if ($scope.selectedItem.orderDate) {
             $scope.selectedItem.orderDate = new Date($scope.selectedItem.orderDate);
         }
@@ -330,13 +328,38 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
             $scope.OrderDetailList = data;
             $scope.updateOrderDetailDeliverDate($scope.OrderDetailList);//YYYY-MM-DD
             $scope.OrderExtendDetailList = [];
-            angular.forEach($scope.OrderDetailList.content, function (orderDetail, index) {
+            angular.forEach($scope.OrderDetailList.content, function (orderDetail) {
                 EcommerceOrderDetailExtend.getAll(orderMaster.uuid, orderDetail.uuid).success(function (data) {
                     $scope.OrderExtendDetailList = $scope.OrderExtendDetailList.concat(data.content);
                 });
             });
         });
     };
+
+
+    $scope.GetQueryString = function (name){
+        var url = window.location.href;
+        var index = url.indexOf("?");
+        if(index>0){
+            uuid = url.substring(index+name.length+2,url.length);
+            return uuid;
+        }else{
+            return null;
+        }
+    }
+
+    $scope.getUrl = function(){
+        var orderMasterNo = $scope.GetQueryString('uuid');
+        $scope.initMenu();
+        if(orderMasterNo != null){
+            EcommerceOrdersMaster.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, null, '', status, 0, null, orderMasterNo, null, null, null, null).success(function(data){
+                $scope.editItem(data.content[0]);
+            }).error(function(){
+                //TODO 未找到该笔单据
+            });
+        }
+    }
+    $scope.getUrl();
 
     //日期格式
     //orderDate和predictDeliverDate：
@@ -426,6 +449,13 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
             $scope.selectedItem.orderChangeFlag='2';
             //console.info("准备新增：");
             //console.info($scope.selectedItem);
+
+            if ($scope.selectedItem.orderDate) {
+                $scope.selectedItem.orderDate = new Date($scope.selectedItem.orderDate);
+                // var dateTime = new Date($scope.selectedItem.orderDate);
+                // $scope.selectedItem.orderDate  = moment($scope.selectedItem.orderDate).format("YYYY-MM-DD hh:mm:ss");
+            }
+
             EcommerceOrdersMaster.add($scope.selectedItem).success(function (data) {
                 $scope.selectedItem = data;
                 //console.info("新增后返回：");
@@ -461,10 +491,12 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                 return;
             }
 
-            console.log($scope.selectedItem);
+            if ($scope.selectedItem.o2oChannel != null) {
+                $scope.selectedItem.o2oChannelUuid = $scope.selectedItem.o2oChannel.uuid;
+            }
+
 
             EcommerceOrdersMaster.modify($scope.selectedItem).success(function (data) {
-                console.info(data[0]);
                 $scope.selectedItem = data[0];
                 $scope.editItem($scope.selectedItem);
                 console.log($scope.selectedItem);
@@ -527,13 +559,12 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
 
     //审核
     $scope.auditMenuAction = function () {
-
-        if ((!$scope.selected || $scope.selected.length == 0) && $scope.selectedTabIndex == 0) {
+        if ((!$scope.selected || $scope.selected.length == 0) && $scope.selectedTabIndex == 0) { // list
             $scope.showError('请选择待审核销售单。');
             return;
         }
 
-        if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
+        if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) { // list
             var emptyDetails = '';
             angular.forEach($scope.selected, function (item) {
 
@@ -548,7 +579,7 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
             }
         }
 
-        if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
+        if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) { // list
             var zeroNos = '';
             angular.forEach($scope.selected, function (item) {
                 if (item.orderAmount == '0') {
@@ -561,7 +592,7 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                 return;
             }
         }
-        if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
+        if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) { // list
             var groupUserNos = '';
             //add by xavier on 20160606
             var buyerNick = '';            //客户昵称为
@@ -572,8 +603,6 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
             var receivePhone = '';         //联系电话
             var orderNo = '';              //交易订单号
             var predictDeliverDate = '';   //预计送货日期
-            var needSelectO2oChannel = ''; //需选择o2o
-            var unNeedSelectO2oChannel = ''; //不需选择o2o
 
             angular.forEach($scope.selected, function (head) {
                 if (angular.isUndefined(head.groupUser) || head.groupUser == null) {
@@ -605,15 +634,6 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                 if (angular.isUndefined(head.predictDeliverDate) || head.predictDeliverDate == null) {
                     predictDeliverDate = predictDeliverDate + head.no + "\n\r";
                 }
-
-                if (head.o2oChannel == null || (head.orderFlag == null == Constant.ORDER_FLAG[3].value || head.orderFlag == Constant.ORDER_FLAG[5].value || head.orderFlag == Constant.ORDER_FLAG[6].value)) {
-                    needSelectO2oChannel = needSelectO2oChannel + head.uuid + "\n\r";
-                }
-
-                if (head.o2oChannel != null || head.orderFlag == null == Constant.ORDER_FLAG[4].value) {
-                    unNeedSelectO2oChannel = unNeedSelectO2oChannel + head.uuid + "\n\r";
-                }
-
             });
             if (groupUserNos != '') {
                 groupUserNos = groupUserNos.substr(0, groupUserNos.length - 1);
@@ -672,10 +692,9 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                 $scope.showError('存在当销售类型为网销订单时不需选择O2O门店/经销商的销售单!');
                 return;
             }
-
         }
 
-        if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
+        if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) { // form
             if (angular.isUndefined($scope.selectedItem.detailList) || $scope.selectedItem.detailList == null || $scope.selectedItem.detailList.length == '0') {
                $scope.showError('该单无单身明细不能审核。');
                return;
@@ -684,19 +703,6 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                 $scope.showError('该单已经审核完成。');
                 return;
             }
-
-            //order_flag in ('3','5','6') 管控 ocm_base_chan_o2o_uuid 必须有数据
-            if ($scope.selectedItem.o2oChannel == null && ($scope.selectedItem.orderFlag == Constant.ORDER_FLAG[3].value || $scope.selectedItem.orderFlag == Constant.ORDER_FLAG[5].value || $scope.selectedItem.orderFlag == Constant.ORDER_FLAG[6].value)) {
-                $scope.showError('請选择O2O门店/经销商。');
-                return;
-            }
-
-            //order_flag in ('4') 管控 ocm_base_chan_o2o_uuid 必须为空
-            if ($scope.selectedItem.o2oChannel != null && $scope.selectedItem.orderFlag == Constant.ORDER_FLAG[4].value) {
-                $scope.showError('O2O门店/经销商须为无门店/经销商。');
-                return;
-            }
-
             if ($scope.selectedItem.orderAmount == '0' && $scope.selectedItem.orderFlag != Constant.ORDER_FLAG[6].value) {
                 $scope.showError('该单单头金额为0不能审核。');
                 return;
@@ -707,17 +713,15 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
             }
         }
         $scope.showConfirm('确认审核吗？', '', function () {
-            if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
-                var OrderMasterUpdateInput = {
-                    modifyOnly: '1',
-                    uuid: $scope.selectedItem.uuid,
-                    confirm: '2',
-                    userId: $scope.selectedItem.userId,
-                    buyerNick: $scope.selectedItem.buyerNick,
-                    receiveName: $scope.selectedItem.receiveName,
-                    receivePhone: $scope.selectedItem.receivePhone
-                };
-                EcommerceOrdersMaster.modify(OrderMasterUpdateInput).success(function (data) {
+            var orderMasterUpdateInput = {
+                uuid: '',
+                modifyOnly: '1',
+                confirm: '2'
+            };
+            if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) { // form
+                orderMasterUpdateInput.uuid = $scope.selectedItem.uuid;
+
+                EcommerceOrdersMaster.modify(orderMasterUpdateInput).success(function (data) {
                     $scope.selectedItem.confirm = '2';
                     $scope.selectedItem.userId = data[0].userId;
                     $scope.selectedItem.buyerNick = data[0].buyerNick;
@@ -726,36 +730,24 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                     $scope.resetButtonDisabled();
                     $scope.changeButtonStatus($scope.selectedItem);
                     $scope.showInfo('审核成功。');
-                }).error(function (data) {
-                    $scope.showError(data.message);
+                }).error(function (resp) {
+                    $scope.showError(resp.message);
                 });
-            } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
+            } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) { // list
                 //update $scope.selected
-                var promises = [];
                 angular.forEach($scope.selected, function (item) {
-                    var OrderMasterUpdateInput = {
-                        modifyOnly: '1',
-                        uuid: item.uuid,
-                        confirm: '2',
-                        userId: item.userId,
-                        buyerNick: item.buyerNick,
-                        receiveName: item.receiveName,
-                        receivePhone: item.receivePhone
-                    };
-                    var response = EcommerceOrdersMaster.modify(OrderMasterUpdateInput).success(function () {
-                    });
-                    promises.push(response);
+                    orderMasterUpdateInput.uuid += (orderMasterUpdateInput.uuid ? ',' : '') + item.uuid;
                 });
-                $q.all(promises).then(function (data) {
+                EcommerceOrdersMaster.modify(orderMasterUpdateInput).success(function () {
                     $scope.queryMenuActionWithPaging();
                     $scope.showInfo('审核成功。');
-                }, function (data) {
-                    $scope.showError(data.data.message);
+                }).error(function (resp) {
+                    $scope.showError(resp.message);
                 });
             }
-
         });
     };
+
     //未审核
     $scope.revertAuditMenuAction = function () {
         if ((!$scope.selected || $scope.selected.length == 0) && $scope.selectedTabIndex == 0) {
@@ -788,38 +780,31 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
         }
 
         $scope.showConfirm('确认取消审核吗？', '', function () {
-            if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
-                var OrderMasterUpdateInput = {
-                    modifyOnly: '1',
-                    uuid: $scope.selectedItem.uuid,
-                    confirm: '1'
-                };
-                EcommerceOrdersMaster.modify(OrderMasterUpdateInput).success(function () {
+            var orderMasterUpdateInput = {
+                uuid: '',
+                modifyOnly: '1',
+                confirm: '1'
+            };
+            if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) { // form
+                orderMasterUpdateInput.uuid = $scope.selectedItem.uuid;
+                EcommerceOrdersMaster.modify(orderMasterUpdateInput).success(function () {
                     $scope.selectedItem.confirm = '1';
                     $scope.resetButtonDisabled();
                     $scope.changeButtonStatus($scope.selectedItem);
                     $scope.showInfo('取消审核成功。');
-                }).error(function (data) {
-                    $scope.showError(data.message);
+                }).error(function (resp) {
+                    $scope.showError(resp.message);
                 });
-            } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
+            } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) { // list
                 //update $scope.selected
-                var promises = [];
                 angular.forEach($scope.selected, function (item) {
-                    var OrderMasterUpdateInput = {
-                        modifyOnly: '1',
-                        uuid: item.uuid,
-                        confirm: '1'
-                    };
-                    var response = EcommerceOrdersMaster.modify(OrderMasterUpdateInput).success(function () {
-                    });
-                    promises.push(response);
+                    orderMasterUpdateInput.uuid += (orderMasterUpdateInput.uuid ? ',' : '') + item.uuid;
                 });
-                $q.all(promises).then(function (data) {
+                EcommerceOrdersMaster.modify(orderMasterUpdateInput).success(function () {
                     $scope.queryMenuActionWithPaging();
                     $scope.showInfo('取消审核成功。');
-                }, function (data) {
-                    $scope.showError(data.data.message);
+                }).error(function (resp) {
+                    $scope.showError(resp.message);
                 });
             }
         });
@@ -873,42 +858,34 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
             }
         }
         $scope.showConfirm('确认抛转吗？', '', function () {
-            if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
-                var orderMasterUuids = "";
+            var orderMasterUpdateInput = {
+                modifyOnly: '1',
+                uuid: '',
+                transferPsoFlag: '1'
+            };
+            if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) { // list
                 angular.forEach($scope.selected, function (item) {
-                    orderMasterUuids = orderMasterUuids + item.uuid + ",";    //选中多个逗号分隔
+                    orderMasterUpdateInput.uuid += (orderMasterUpdateInput.uuid ? ',' : '') + item.uuid;
                 });
-                orderMasterUuids = orderMasterUuids.substr(0, orderMasterUuids.length - 1);//去掉最后的逗号
-                var OrderMasterUpdateInput = {
-                    modifyOnly: '1',
-                    uuid: orderMasterUuids,
-                    transferPsoFlag: '1'
-                };
-                EcommerceOrdersMaster.modify(OrderMasterUpdateInput).success(function () {
+                EcommerceOrdersMaster.modify(orderMasterUpdateInput).success(function () {
                     $scope.queryMenuActionWithPaging();//刷新查询
                     $scope.showInfo('抛转成功。');
-                }).error(function (data) {
-                    $scope.showError(data.message);
+                }).error(function (resp) {
+                    $scope.showError(resp.message);
                 });
-            } else if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
-                var OrderMasterUpdateInput = {
-                    modifyOnly: '1',
-                    uuid: $scope.selectedItem.uuid,
-                    transferPsoFlag: '1'
-                };
-                EcommerceOrdersMaster.modify(OrderMasterUpdateInput).success(function () {
+            } else if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) { // form
+                orderMasterUpdateInput.uuid = $scope.selectedItem.uuid;
+                EcommerceOrdersMaster.modify(orderMasterUpdateInput).success(function () {
                     $scope.selectedItem.transferPsoFlag = '1';
                     $scope.resetButtonDisabled();
                     $scope.changeButtonStatus($scope.selectedItem);
                     $scope.showInfo('抛转成功。');
-                }).error(function (data) {
-                    $scope.showError(data.message);
+                }).error(function (resp) {
+                    $scope.showError(resp.message);
                 });
             }
         });
-
     };
-
 
     //取消抛转
     $scope.cancelThrowMenuAction = function () {
@@ -958,43 +935,36 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
 //            }
 //        }
         $scope.showConfirm('确认取消抛转吗？', '', function () {
-            if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
-                var orderMasterUuids = "";
+            var orderMasterUpdateInput = {
+                modifyOnly: '1',
+                uuid: '',
+                transferPsoFlag: '2'
+            };
+            if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) { // list
                 angular.forEach($scope.selected, function (item) {
-                    orderMasterUuids = orderMasterUuids + item.uuid + ",";    //选中多个逗号分隔
+                    orderMasterUpdateInput.uuid += (orderMasterUpdateInput.uuid ? ',' : '') + item.uuid;
                 });
-                orderMasterUuids = orderMasterUuids.substr(0, orderMasterUuids.length - 1);//去掉最后的逗号
-                var OrderMasterUpdateInput = {
-                    modifyOnly: '1',
-                    uuid: orderMasterUuids,
-                    transferPsoFlag: '2'
-                };
-                EcommerceOrdersMaster.modify(OrderMasterUpdateInput).success(function () {
+                EcommerceOrdersMaster.modify(orderMasterUpdateInput).success(function () {
                     $scope.queryMenuActionWithPaging();//刷新查询
                     $scope.showInfo('取消抛转成功。');
-                }).error(function (data) {
-                    $scope.showError(data.message);
+                }).error(function (resp) {
+                    $scope.showError(resp.message);
                 });
-            } else if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
-                var OrderMasterUpdateInput = {
-                    modifyOnly: '1',
-                    uuid: $scope.selectedItem.uuid,
-                    transferPsoFlag: '2'
-                };
-                EcommerceOrdersMaster.modify(OrderMasterUpdateInput).success(function () {
+            } else if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) { // form
+                orderMasterUpdateInput.uuid = $scope.selectedItem.uuid;
+                EcommerceOrdersMaster.modify(orderMasterUpdateInput).success(function () {
                     $scope.selectedItem.transferPsoFlag = '2';
                     $scope.resetButtonDisabled();
                     $scope.changeButtonStatus($scope.selectedItem);
                     $scope.showInfo('取消抛转成功。');
-                }).error(function (data) {
-                    $scope.showError(data.message);
+                }).error(function (resp) {
+                    $scope.showError(resp.message);
                 });
             }
         });
-
     };
 
-    //未审核
+    // 逾期拒绝配送
     $scope.o2oOverdueMenuAction = function () {
         if ((!$scope.selected || $scope.selected.length == 0) && $scope.selectedTabIndex == 0) {
             $scope.showError('请选择待逾期拒绝配送操作销售单。');
@@ -1030,36 +1000,30 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
         }
 
         $scope.showConfirm('确认逾期拒绝配送操作吗？', '', function () {
-            if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
-                var OrderMasterUpdateInput = {
-                    uuid: $scope.selectedItem.uuid,
-                    o2oFlag: '5'
-                };
-                EcommerceOrdersMaster.modify(OrderMasterUpdateInput).success(function () {
+            var orderMasterUpdateInput = {
+                uuid: '',
+                o2oFlag: '5'
+            };
+            if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) { // form
+                orderMasterUpdateInput.uuid = $scope.selectedItem.uuid;
+                EcommerceOrdersMaster.modify(orderMasterUpdateInput).success(function () {
                     $scope.selectedItem.confirm = '1';
                     $scope.resetButtonDisabled();
                     $scope.changeButtonStatus($scope.selectedItem);
                     $scope.showInfo('逾期拒绝配送成功。');
-                }).error(function (data) {
-                    $scope.showError(data.content);
+                }).error(function (resp) {
+                    $scope.showError(resp.message);
                 });
-            } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
+            } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) { // list
                 //update $scope.selected
-                var promises = [];
                 angular.forEach($scope.selected, function (item) {
-                    var OrderMasterUpdateInput = {
-                        uuid: item.uuid,
-                        o2oFlag: '5'
-                    };
-                    var response = EcommerceOrdersMaster.modify(OrderMasterUpdateInput).success(function () {
-                    });
-                    promises.push(response);
+                    orderMasterUpdateInput.uuid += (orderMasterUpdateInput.uuid ? ',' : '') + item.uuid;
                 });
-                $q.all(promises).then(function (data) {
+                EcommerceOrdersMaster.modify(orderMasterUpdateInput).success(function () {
                     $scope.queryMenuActionWithPaging();
                     $scope.showInfo('逾期拒绝配送成功。');
-                }, function (data) {
-                    $scope.showError(data.data.content);
+                }).error(function (resp) {
+                    $scope.showError(resp.message);
                 });
             }
         });
@@ -1086,11 +1050,11 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
             }
         }).then(function (data) {
             EcommerceOrderDetail.modify($scope.selectedItem.uuid, data.selectedOrderDetail).success(function () {
-                var OrderMasterUpdateInput = {
+                var orderMasterUpdateInput = {
                     uuid: $scope.selectedItem.uuid,
                     orderChangeFlag: '2'
                 };
-                EcommerceOrdersMaster.modify(OrderMasterUpdateInput).success(function () {
+                EcommerceOrdersMaster.modify(orderMasterUpdateInput).success(function () {
                     $scope.selectedItem.orderChangeFlag = '2';
                     $scope.resetButtonDisabled();
                     $scope.changeButtonStatus($scope.selectedItem);
@@ -1098,7 +1062,7 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                         $scope.OrderDetailList = data;
                         $scope.updateOrderDetailDeliverDate($scope.OrderDetailList);//YYYY-MM-DD
                         $scope.OrderExtendDetailList = [];
-                        angular.forEach($scope.OrderDetailList.content, function (orderDetail, index) {
+                        angular.forEach($scope.OrderDetailList.content, function (orderDetail) {
                             EcommerceOrderDetailExtend.getAll($scope.selectedItem.uuid, orderDetail.uuid).success(function (data) {
                                 $scope.OrderExtendDetailList = $scope.OrderExtendDetailList.concat(data.content);
                             });
@@ -1209,15 +1173,15 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
             controller: 'EMallSearchController',
             templateUrl: 'app/src/app/taobao_data/ecommerce_orders/selectMall.html',
             parent: angular.element(document.body),
-            targetEvent: event,
+            targetEvent: event
         }).then(function (data) {
             console.info($scope.selectedItem);
             if (angular.isUndefined($scope.selectedItem.channel) || $scope.selectedItem.channel == null) {
                 $scope.selectedItem.channel = [];
             } else {
             }
-            $scope.selectedItem.channel.mall = data;
             $scope.selectedItem.mallUuid = data.uuid;
+            $scope.selectedItem.channel.mall = data;
         });
     };
     //选择客服
@@ -1439,26 +1403,22 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
 
     $scope.rollbackTransfer = function () {
         $scope.showConfirm('确认抛转还原吗？', '', function () {
-            if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
+            if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) { // form
 
-                EcommerceOrdersMaster.rollback($scope.selectedItem.uuid).success(function () {
+                EcommerceOrdersMaster.rollback([ $scope.selectedItem.uuid ]).success(function () {
                     $scope.selectedItem.transferPsoFlag = Constant.TRANSFER_PSO_FLAG[2].value;
                     $scope.queryMenuActionWithPaging();
                     $scope.showInfo('还原成功！');
                 }).error(function (data) {
                     $scope.showError(data.message);
                 });
-
-            }
-
-            else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
-
-                var uuids = "";
+            } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) { // list
+                var uuids = [];
                 angular.forEach($scope.selected, function (item) {
-                    uuids = uuids + item.uuid + ","
+                    uuids.push(item.uuid);
                 });
 
-                var response = EcommerceOrdersMaster.rollback(uuids).success(function () {
+                EcommerceOrdersMaster.rollback(uuids).success(function () {
                     $scope.queryMenuActionWithPaging();
                     $scope.showInfo('还原成功！');
                 }).error(function (data) {
@@ -1467,15 +1427,6 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
             }
         });
     };
-
-    $scope.onOrderFlagChange = function (orderFlag) {
-        if (orderFlag == Constant.ORDER_FLAG[1].value || orderFlag == Constant.ORDER_FLAG[2].value || orderFlag == Constant.ORDER_FLAG[4].value) {
-            $scope.selectedItem.o2oFlag = Constant.EPS_ORDER_O2O_FLAG[1].value;
-        }
-        if (orderFlag == Constant.ORDER_FLAG[3].value || orderFlag == Constant.ORDER_FLAG[5].value || orderFlag == Constant.ORDER_FLAG[6].value) {
-            $scope.selectedItem.o2oFlag = Constant.EPS_ORDER_O2O_FLAG[3].value;
-        }
-    }
 
 });
 
@@ -1585,7 +1536,7 @@ angular.module('IOne-Production').controller('Eo2oChannelSearchController', func
         totalElements: 0,
         displayModel: 0  //0 : image + text //1 : image
     };
-    //查询按钮重查时，翻页到第一页
+    //查询按钮重查时，翻页到第一页 //
     $scope.queryAction = function () {
         $scope.pageOption.currentPage = 0;
         $scope.refreshChannel();
@@ -1615,7 +1566,6 @@ angular.module('IOne-Production').controller('Eo2oChannelSearchController', func
         $mdDialog.cancel();
     };
 });
-
 
 angular.module('IOne-Production').controller('ETaobaoClientController', function ($scope, $mdDialog, EtaobaoCustomers) {
     $scope.pageOption = {

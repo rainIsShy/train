@@ -374,6 +374,10 @@ RES_UUID_MAP = {
         TAG: {
             RES_UUID: 'c7ed1ab0-f83b-4ea8-a2c2-b3fd25651931',
             TITLE: '标签管理'
+        },
+        TAG_CLASS: {
+            RES_UUID: '682ab4ea-7cc8-4be4-af4d-22acc4f3b489',
+            TITLE: '标签分类维护'
         }
     },
 
@@ -521,7 +525,6 @@ RES_UUID_MAP = {
             TITLE: '待处理售后单清单'
         }
     },
-
     PO: {
         RES_UUID: 'E3432ED2-99A9-4DD4-B882-CE7BD7910D54',
         PMM_ORDER: {
@@ -538,12 +541,16 @@ RES_UUID_MAP = {
         }
     },
 
-    INV:{
+    INV: {
         RES_UUID: 'EBED28B2-AD33-48D4-8023-3F6EF166EB6B',
         TITLE: '库存管理',
         INVENTORY_DETAIL: {
             RES_UUID: 'BB0B018F-5295-4F24-9A1B-D81C0E552DB2',
             TITLE: '库存明细查询'
+        },
+        ALLO: {
+            RES_UUID: '7c82a12b-7cf4-4fca-8fa5-20c98e5ec1aa',
+            TITLE: '调拨单维护'
         }
     }
 };
@@ -749,6 +756,7 @@ angular.module('IOne-Constant').constant('Constant', {
             icon: 'fa fa-history',
             subList: [
                 {id: '/reports', name: '报表查询', link: '/reports', uuid: ''},
+                {id: '/eps/report/plmBaseItemFile', name: '电商订单料件明细(包件)', link: '/eps/report/plmBaseItemFile', uuid: ''}
             ]
         },
         {
@@ -967,7 +975,24 @@ angular.module('IOne-Constant').constant('Constant', {
                     link: '/logistics_installations',
                     uuid: RES_UUID_MAP.CBI.LOGISTICS_INSTALLATIONS.RES_UUID
                 },
-                {id: '/fam/tags', name: '标签管理', link: '/fam/tags', uuid: RES_UUID_MAP.CBI.TAG.RES_UUID}
+                {id: '/fam/tags', name: '标签管理', link: '/fam/tags', uuid: RES_UUID_MAP.CBI.TAG.RES_UUID},
+                {id: '/fam/tagClass', name: '标签分类', link: '/fam/tagClass', uuid: RES_UUID_MAP.CBI.TAG_CLASS.RES_UUID}
+            ]
+        },
+        {
+            id: 9,
+            uuid: RES_UUID_MAP.INV.RES_UUID,
+            name: '库存管理',
+            isOpen: false,
+            icon: 'fa fa-bank',
+            subList: [
+                {
+                    id: '/inv/inventoryDetail',
+                    name: '库存明细查询',
+                    link: '/inv/inventoryDetail',
+                    uuid: RES_UUID_MAP.INV.INVENTORY_DETAIL.RES_UUID
+                },
+                {id: '/inv/allo', name: '调拨单维护', link: '/inv/allo', uuid: RES_UUID_MAP.INV.ALLO.RES_UUID}
             ]
         }
     ],

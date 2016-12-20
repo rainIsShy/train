@@ -1,0 +1,27 @@
+<div>
+    <div layout="row">
+        <md-input-container flex="20">
+            <label>起始日期：</label>
+            <input type="date" ng-model="orderDate.from" placeholder="yyyy-MM-dd"/>
+        </md-input-container>
+        <md-input-container flex="20">
+            <label>結束日期：</label>
+            <input type="date" ng-model="orderDate.to" placeholder="yyyy-MM-dd"/>
+        </md-input-container>
+        <md-button ng-click="getReportByIsCsvFile(true)">下載</md-button>
+    </div>
+
+
+</div>
+<div>
+    <div layout="row">
+        <div style="border: 1px solid black;width: 70px ;word-break: break-all;font-weight: bold;"
+             ng-repeat="key in reportKeys" ng-bind="key"></div>
+    </div>
+    <div layout="row" ng-repeat="row in report.content">
+        <div style="border: 1px solid black;width: 70px ;word-break: break-all;"
+             ng-repeat="key in reportKeys" ng-bind="row[key]"></div>
+    </div>
+
+</div>
+<div pagination option="pageOption" callback="getReportByIsCsvFile(false)"></div>

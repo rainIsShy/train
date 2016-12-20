@@ -69,106 +69,80 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
 
     $scope.execute = function () {
         if ($scope.validation()) {
-            var promises = [];
             $scope.logining = true;
+
+            var param = {
+                startTime: moment($scope.listFilterOption.startDate).format('YYYY-MM-DD'),
+                endTime: moment($scope.listFilterOption.endDate).format('YYYY-MM-DD'),
+                dbNames: []
+            };
             angular.forEach($scope.selected, function (item) {
-                var param = {
-                    startTime: moment($scope.listFilterOption.startDate).format('YYYY-MM-DD'),
-                    endTime: moment($scope.listFilterOption.endDate).format('YYYY-MM-DD'),
-                    dbName: item.tiptopDb
-                };
-
-                $scope.syncingDb = item.tiptopDb;
-
-                if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.PLM_ITEM_CHAN_PRICE.name) {
-                    //同步停售
-                    var result = IoneAdapterService.transferIoneAdapter("/tcDsbTask", param, $scope, function (response) {
-                        var totalDsbCount = addResponse(response.updateDsbCount, response.insertDsbCount);
-                        var totalPlmCount = addResponse(response.updatePlmCount, response.insertPlmCount);
-                        $scope.showInfo(item.tiptopDb + '：ERP同步到tiptop_tc_dsb_file，共 ' + totalDsbCount + '笔数据同步成功!\n tiptop_tc_dsb_file 同步到 plm，共 ' + totalPlmCount + '笔数据同步成功!');
-                    }).error(function (data) {
-                        $scope.logining = false;
-                        $scope.showError(data.message);
-                    });
-
-                    promises.push(result);
-
-                }
-                if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.PLM_ITEM_ITEM_FILE.name) {
-                    //同步商品
-                    var result = IoneAdapterService.transferIoneAdapter("/tcImaTask", param, $scope, function (response) {
-                        console.log(response);
-                        var totalImaCount = addResponse(response.updateImaCount, response.insertImaCount);
-                        var totalItemCount = addResponse(response.updateItemCount, response.insertItemCount);
-                        $scope.showInfo(item.tiptopDb + '：ERP同步到tiptop_tc_ima_file，共 ' + totalImaCount + '笔数据同步成功!\n tiptop_tc_ima_file 同步到 plm，共 ' + totalItemCount + '笔数据同步成功!');
-
-                    }).error(function (data) {
-                        $scope.logining = false;
-                        $scope.showError(data.message);
-                    });
-
-                    promises.push(result);
-                }
-
-                if (item.syncType == $scope.TIPTOP_SYNC_TYPE.PLM_ITEM_BOM_FILE.name) {
-                    //BOM同步
-                    var result = IoneAdapterService.transferIoneAdapter("/bmbTask", param, $scope, function (response) {
-                        console.log(response);
-                        var totalBmbCount = addResponse(0, response.insertBmbCount);
-                        var totalBomCount = addResponse(response.updateItemBomCount, response.insertItemBomCount);
-                        $scope.showInfo(item.tiptopDb + '：ERP同步到TIPTOP_BMB_FILE，共 ' + totalBmbCount + '笔数据同步成功!\n TIPTOP_BMB_FILE 同步到 bom，共 ' + totalBomCount + '笔数据同步成功!');
-
-                    }).error(function (data) {
-                        $scope.logining = false;
-                        $scope.showError(data.message);
-                    });
-
-                    promises.push(result);
-                }
-                if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.PLM_ITEM_CHAN_PRICE2.name) {
-                    //渠道销售价格、仓库、库位、销售单位同步
-                    var result = IoneAdapterService.transferIoneAdapter("/chanImaTask", param, $scope, function (response) {
-                        var totalChanImaCount = addResponse(response.updateChanImaCount, response.insertChanImaCount);
-                        var totalPlmCount = addResponse(response.updatePlmCount, response.insertPlmCount);
-                        $scope.showInfo(item.tiptopDb + '：ERP同步到tiptop_chan_ima_file，共 ' + totalChanImaCount + '笔数据同步成功!\n tiptop_chan_ima_file 同步到 plm，共 ' + totalPlmCount + '笔数据同步成功!');
-                    }).error(function (data) {
-                        $scope.logining = false;
-                        $scope.showError(data.message);
-                    });
-
-                    promises.push(result);
-
-                }
-
-                if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.PLM_ITEM_BOM.name) {
-                    //渠道销售价格、仓库、库位、销售单位同步
-                    var result = IoneAdapterService.transferIoneAdapter("/imaBrandTask", param, $scope, function (response) {
-                        var totalTtBrandCount = addResponse(response.updateTtBrandCount, response.insertTtBrandCount);
-                        var totalItemScopeCount = addResponse(response.updateItemScopeCount, response.insertItemScopeCount);
-                        var totalImaBrandCount = addResponse(0, response.insertImaBrandCount);
-                        var totalItemCustomDetailCount = addResponse(response.updateItemCustomDetailCount, response.insertItemCustomDetailCount);
-                        $scope.showInfo(item.tiptopDb + '：ERP同步到 TIPTOP_BRAND_FILE，共 ' + totalTtBrandCount + '笔数据同步成功!\n TIPTOP_BRAND_FILE 同步到 PLM_BASE_CUSTOM_SCOPE，共 ' + totalItemScopeCount + '笔数据同步成功!');
-                        $scope.showInfo(item.tiptopDb + '：ERP同步到 TIPTOP_IMA_BRAND_FILE，共 ' + totalImaBrandCount + '笔数据同步成功!\n TIPTOP_IMA_BRAND_FILE 同步到 PLM_BASE_CUSTOM_DTL_FILE，共 ' + totalItemCustomDetailCount + '笔数据同步成功!');
-                    }).error(function (data) {
-                        $scope.logining = false;
-                        $scope.showError(data.message);
-                    });
-
-                    promises.push(result);
-
-                }
+                param.dbNames.push(item.tiptopDb);
 
             });
 
-
-            $q.all(promises).then(function () {
-                $scope.logining = false;
-                $scope.syncingDb = "";
-
-            });
+            if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.PLM_ITEM_CHAN_PRICE.name) {
+                //同步停售
+                IoneAdapterService.transferIoneAdapter("/tcDsbTask", param, $scope, function (response) {
+                    var totalDsbCount = addResponse(response.updateDsbCount, response.insertDsbCount);
+                    var totalPlmCount = addResponse(response.updatePlmCount, response.insertPlmCount);
+                    $scope.showInfo('ERP同步到tiptop_tc_dsb_file，共 ' + totalDsbCount + '笔数据同步成功!\n tiptop_tc_dsb_file 同步到 plm，共 ' + totalPlmCount + '笔数据同步成功!');
+                    $scope.logining = false;
+                }).error(function (errResp) {
+                    $scope.logining = false;
+                    $scope.showError(errResp.message);
+                });
+            } else if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.PLM_ITEM_ITEM_FILE.name) {
+                //同步商品
+                IoneAdapterService.transferIoneAdapter("/tcImaTask", param, $scope, function (response) {
+                    console.log(response);
+                    var totalImaCount = addResponse(response.updateImaCount, response.insertImaCount);
+                    var totalItemCount = addResponse(response.updateItemCount, response.insertItemCount);
+                    $scope.showInfo('ERP同步到tiptop_tc_ima_file，共 ' + totalImaCount + '笔数据同步成功!\n tiptop_tc_ima_file 同步到 plm，共 ' + totalItemCount + '笔数据同步成功!');
+                    $scope.logining = false;
+                }).error(function (errResp) {
+                    $scope.logining = false;
+                    $scope.showError(errResp.message);
+                });
+            } else if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.PLM_ITEM_BOM_FILE.name) {
+                //BOM同步
+                IoneAdapterService.transferIoneAdapter("/bmbTask", param, $scope, function (response) {
+                    var totalBmbCount = addResponse(0, response.insertBmbCount);
+                    var totalBomCount = addResponse(response.updateItemBomCount, response.insertItemBomCount);
+                    $scope.showInfo('ERP同步到TIPTOP_BMB_FILE，共 ' + totalBmbCount + '笔数据同步成功!\n TIPTOP_BMB_FILE 同步到 bom，共 ' + totalBomCount + '笔数据同步成功!');
+                    $scope.logining = false;
+                }).error(function (errResp) {
+                    $scope.logining = false;
+                    $scope.showError(errResp.message);
+                });
+            } else if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.PLM_ITEM_CHAN_PRICE2.name) {
+                //渠道销售价格、仓库、库位、销售单位同步
+                IoneAdapterService.transferIoneAdapter("/chanImaTask", param, $scope, function (response) {
+                    var totalChanImaCount = addResponse(response.updateChanImaCount, response.insertChanImaCount);
+                    var totalPlmCount = addResponse(response.updatePlmCount, response.insertPlmCount);
+                    $scope.showInfo('ERP同步到tiptop_chan_ima_file，共 ' + totalChanImaCount + '笔数据同步成功!\n tiptop_chan_ima_file 同步到 plm，共 ' + totalPlmCount + '笔数据同步成功!');
+                    $scope.logining = false;
+                }).error(function (errResp) {
+                    $scope.logining = false;
+                    $scope.showError(errResp.message);
+                });
+            } else if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.PLM_ITEM_BOM.name) {
+                //渠道销售价格、仓库、库位、销售单位同步
+                IoneAdapterService.transferIoneAdapter("/imaBrandTask", param, $scope, function (response) {
+                    var totalTtBrandCount = addResponse(response.updateTtBrandCount, response.insertTtBrandCount);
+                    var totalItemScopeCount = addResponse(response.updateItemScopeCount, response.insertItemScopeCount);
+                    var totalImaBrandCount = addResponse(0, response.insertImaBrandCount);
+                    var totalItemCustomDetailCount = addResponse(response.updateItemCustomDetailCount, response.insertItemCustomDetailCount);
+                    $scope.showInfo('ERP同步到 TIPTOP_BRAND_FILE，共 ' + totalTtBrandCount + '笔数据同步成功!\n TIPTOP_BRAND_FILE 同步到 PLM_BASE_CUSTOM_SCOPE，共 ' + totalItemScopeCount + '笔数据同步成功!');
+                    $scope.showInfo('ERP同步到 TIPTOP_IMA_BRAND_FILE，共 ' + totalImaBrandCount + '笔数据同步成功!\n TIPTOP_IMA_BRAND_FILE 同步到 PLM_BASE_CUSTOM_DTL_FILE，共 ' + totalItemCustomDetailCount + '笔数据同步成功!');
+                    $scope.logining = false;
+                }).error(function (errResp) {
+                    $scope.logining = false;
+                    $scope.showError(errResp.message);
+                });
+            }
         }
     };
-
 
     $scope.validation = function () {
         var isPass = true;
@@ -201,10 +175,10 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
         var result = 0;
 
         if (!angular.isUndefined(insertCount)) {
-            result = result + insertCount;
+            result += insertCount;
         }
         if (!angular.isUndefined(updateCount)) {
-            result = result + updateCount;
+            result += updateCount;
         }
 
         return result;
