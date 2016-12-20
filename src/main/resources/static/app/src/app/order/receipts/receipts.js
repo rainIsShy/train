@@ -272,7 +272,7 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
                     uuid: detail.uuid,
                     status: '1'
                 };
-                Receipts.modify(detail.orderMaster.uuid, UpdateInput).success(function (data) {
+                Receipts.modify(detail.orderMaster.uuid, UpdateInput).success(function () {
                     detail.status = '1';
                     $scope.showInfo('取消审核成功！');
                     $scope.getReceiptOrderMasterCount();
@@ -287,7 +287,7 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
                     uuid: detail.uuid,
                     status: '2'
                 };
-                Receipts.modify(detail.orderMaster.uuid, UpdateInput).success(function (data) {
+                Receipts.modify(detail.orderMaster.uuid, UpdateInput).success(function () {
                     detail.status = '2';
                     $scope.showInfo('审核成功！');
                     $scope.getReceiptOrderMasterCount();
@@ -307,7 +307,7 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
                     uuid: detail.uuid,
                     receiptOrderConversion: 'true'
                 };
-                Receipts.modify(detail.orderMaster.uuid, UpdateInput).success(function (data) {
+                Receipts.modify(detail.orderMaster.uuid, UpdateInput).success(function () {
                     //console.info("重新抛转成功返回：");
                     //console.info(data);
                     $scope.showInfo('重新抛转成功！');
@@ -323,7 +323,7 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
                     transferFlag: '2',
                     receiptOrderConversion: 'true'
                 };
-                Receipts.modify(detail.orderMaster.uuid, UpdateInput).success(function (data) {
+                Receipts.modify(detail.orderMaster.uuid, UpdateInput).success(function () {
                     detail.transferFlag = '2';
                     //console.info("抛转成功返回：");
                     //console.info(data);
@@ -343,7 +343,7 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
             var updateInput = {
                 uuid: detail.uuid
             };
-            Receipts.oneOffSync(detail.orderMaster.uuid, updateInput).success(function (response) {
+            Receipts.oneOffSync(detail.orderMaster.uuid, updateInput).success(function () {
                 detail.transferFlag = '2';
                 $scope.showInfo('一键同步成功。');
             }).error(function (response) {
@@ -366,192 +366,166 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
         });
     };
 
-    $scope.statusClickAction = function (event, item) {
-        $scope.stopEventPropagation(event);
-        console.info('status...');
-        //TODO ...
-    };
+    // $scope.statusClickAction = function (event, item) {
+    //     $scope.stopEventPropagation(event);
+    //     console.info('status...');
+    //     //TODO ...
+    // };
 
-    $scope.releaseClickAction = function (event, item) {
-        $scope.stopEventPropagation(event);
-        console.info('release...');
-        //TODO ...
-    };
+    // $scope.releaseClickAction = function (event, item) {
+    //     $scope.stopEventPropagation(event);
+    //     console.info('release...');
+    //     //TODO ...
+    // };
 
-    $scope.deleteClickAction = function (event, item) {
-        $scope.stopEventPropagation(event);
-        console.info('delete...');
-        //TODO ...
-    };
+    // $scope.deleteClickAction = function (event, item) {
+    //     $scope.stopEventPropagation(event);
+    //     console.info('delete...');
+    //     //TODO ...
+    // };
 
     //批量审核
     $scope.confirmAllClickAction = function (event) {
         $scope.stopEventPropagation(event);
-        var promises = [];
+
         var ignoredNos = '';
-        var count = 0;
+        var updateInput = {
+            uuid: [],
+            status: '2'
+        };
         angular.forEach($scope.itemList, function (item) {
-            if (item.selected === true) {
+            if (item.selected) {
                 angular.forEach(item.detailList, function (detail) {
                     if (detail.status != '2') {
-                        var UpdateInput = {
-                            uuid: detail.uuid,
-                            status: '2'
-                        };
-                        var response = Receipts.modify(detail.orderMaster.uuid, UpdateInput).success(function (data) {
-                        }).error(function (response) {
-                            $scope.showError('收银单' + item.no + '-' + detail.no + '审核失败：' + response.message);
-                        });
-                        promises.push(response);
-                        count++;
+                        updateInput.uuid.push(detail.uuid);
                     } else {
-                        ignoredNos = ignoredNos + item.no + '-' + detail.no + '<br>'
+                        ignoredNos += item.no + '-' + detail.no + '<br>';
                     }
-                })
+                });
             }
         });
-        if (count == 0) {
+
+        if (!updateInput.uuid.length) {
             $scope.showWarn('没有选择任何未审核的收退银单，请先选择！');
             return;
         }
-        if (ignoredNos !== '') {
-            ignoredNos = ignoredNos.substr(0, ignoredNos.length - 1);
-            $scope.showWarn('如下已审核过的收退银单将不再次审核：' + '<br>' + ignoredNos);
+        if (ignoredNos) {
+            $scope.showWarn('如下已审核过的收退银单将不再次审核：<br>' + ignoredNos);
         }
-        $q.all(promises).then(function (data) {
+        Receipts.modify('_batch', updateInput).success(function () {
             $scope.refreshList();
-            $scope.showInfo('共' + count + '笔审核成功！');
             $scope.getReceiptOrderMasterCount();
-        }, function (data) {
-            $scope.showError(data.data.message);
+            $scope.showInfo('共' + updateInput.uuid.length + '笔审核成功！');
+        }).error(function (response) {
+            $scope.showError('审核失败：' + response.message);
         });
     };
 
     $scope.revertConfirmAllClickAction = function (event) {
         $scope.stopEventPropagation(event);
-        var promises = [];
+
         var ignoredNos = '';
-        var count = 0;
+        var updateInput = {
+            uuid: [],
+            status: '1'
+        };
         angular.forEach($scope.itemList, function (item) {
-            if (item.selected === true) {
+            if (item.selected) {
                 angular.forEach(item.detailList, function (detail) {
                     if (detail.status == '2' && detail.transferFlag != '2') {
-                        var UpdateInput = {
-                            uuid: detail.uuid,
-                            status: '1'
-                        };
-                        var response = Receipts.modify(detail.orderMaster.uuid, UpdateInput).success(function (response) {
-                        }).error(function (response) {
-                            $scope.showError('收银单' + item.no + '-' + detail.no + '取消审核失败：' + response.message);
-                        });
-                        promises.push(response);
-                        count++;
+                        updateInput.uuid.push(detail.uuid);
                     } else {
-                        ignoredNos = ignoredNos + item.no + '-' + detail.no + '<br>'
+                        ignoredNos += item.no + '-' + detail.no + '<br>';
                     }
-                })
+                });
             }
         });
-        if (count == 0) {
+
+        if (!updateInput.uuid.length) {
             $scope.showWarn('没有选择任已审核的收退银单，请先选择订单！');
             return;
         }
-        if (ignoredNos !== '') {
-            ignoredNos = ignoredNos.substr(0, ignoredNos.length - 1);
-            $scope.showWarn('如下未审核过或已抛转的收退银单将不执行取消审核：' + '<br>' + ignoredNos);
+        if (ignoredNos) {
+            $scope.showWarn('如下未审核过或已抛转的收退银单将不执行取消审核：<br>' + ignoredNos);
         }
-        $q.all(promises).then(function (data) {
+        Receipts.modify('_batch', updateInput).success(function () {
             $scope.refreshList();
-            $scope.showInfo('共' + count + '笔取消审核成功！');
             $scope.getReceiptOrderMasterCount();
-        }, function (data) {
-            $scope.showError(data.data.message);
+            $scope.showInfo('共' + updateInput.uuid.length + '笔取消审核成功！');
+        }).error(function (response) {
+            $scope.showError('取消审核失败：' + response.message);
         });
     };
 
     $scope.transferAllClickAction = function (event) {
         $scope.stopEventPropagation(event);
-        var promises = [];
+
         var ignoredNos = '';
-        var count = 0;
+        var updateInput = {
+            uuid: [],
+            transferFlag: '2',
+            receiptOrderConversion: 'true'
+        };
         angular.forEach($scope.itemList, function (item) {
-            if (item.selected === true) {
+            if (item.selected) {
                 angular.forEach(item.detailList, function (detail) {
                     if (detail.status == '2' && detail.transferFlag != '2') {
-                        var UpdateInput = {
-                            uuid: detail.uuid,
-                            transferFlag: '2',
-                            receiptOrderConversion: 'true'
-                        };
-                        var response = Receipts.modify(detail.orderMaster.uuid, UpdateInput).success(function (data) {
-                        }).error(function (response) {
-                            $scope.showError('收银单' + item.no + '-' + detail.no + '抛转失败：' + response.message);
-                        });
-                        promises.push(response);
-                        count++;
+                        updateInput.uuid.push(detail.uuid);
                     } else {
-                        ignoredNos = ignoredNos + item.no + '-' + detail.no + '<br>'
+                        ignoredNos += item.no + '-' + detail.no + '<br>';
                     }
-                })
+                });
             }
         });
-        if (count == 0) {
+
+        if (!updateInput.uuid.length) {
             $scope.showWarn('没有选择待抛转的收退银单，请先选择！');
             return;
         }
-        if (ignoredNos !== '') {
-            ignoredNos = ignoredNos.substr(0, ignoredNos.length - 1);
-            $scope.showWarn('如下未审核或已抛转的收退银单将不执行抛转：' + '<br>' + ignoredNos);
+        if (ignoredNos) {
+            $scope.showWarn('如下未审核或已抛转的收退银单将不执行抛转：<br>' + ignoredNos);
         }
-        $q.all(promises).then(function (data) {
+        Receipts.modify('_batch', updateInput).success(function () {
             $scope.refreshList();
-            $scope.showInfo('共' + count + '笔抛转成功！');
             $scope.getReceiptOrderMasterCount();
-        }, function (data) {
-            $scope.showError(data.data.message);
+            $scope.showInfo('共' + updateInput.uuid.length + '笔抛转成功！');
+        }).error(function (response) {
+            $scope.showError('抛转失败：' + response.message);
         });
     };
 
     $scope.reTransferAllClickAction = function (event) {
         $scope.stopEventPropagation(event);
-        var promises = [];
         var ignoredNos = '';
-        var count = 0;
+        var updateInput = {
+            uuid: [],
+            receiptOrderConversion: 'true'
+        };
         angular.forEach($scope.itemList, function (item) {
-            if (item.selected === true) {
+            if (item.selected) {
                 angular.forEach(item.detailList, function (detail) {
                     if (detail.status == '2' && detail.transferFlag == '2') {
-                        var UpdateInput = {
-                            uuid: detail.uuid,
-                            receiptOrderConversion: 'true'
-                        };
-                        var response = Receipts.modify(detail.orderMaster.uuid, UpdateInput).success(function (response) {
-                        }).error(function (response) {
-                            $scope.showError('收银单' + item.no + '-' + detail.no + '重新抛转失败：' + response.message);
-                        });
-                        promises.push(response);
-                        count++;
+                        updateInput.uuid.push(detail.uuid);
                     } else {
-                        ignoredNos = ignoredNos + item.no + '-' + detail.no + '<br>'
+                        ignoredNos += item.no + '-' + detail.no + '<br>';
                     }
-                })
+                });
             }
         });
-        if (count == 0) {
+
+        if (!updateInput.uuid.length) {
             $scope.showWarn('没有选择待重新抛转的收退银单，请先选择！');
             return;
         }
-        if (ignoredNos !== '') {
-            ignoredNos = ignoredNos.substr(0, ignoredNos.length - 1);
+        if (ignoredNos) {
             $scope.showWarn('如下未审核或未抛转的收退银单将不执行重新抛转：' + '<br>' + ignoredNos);
         }
-        $q.all(promises).then(function (data) {
+        Receipts.modify('_batch', updateInput).success(function () {
             $scope.refreshList();
-            $scope.showInfo('共' + count + '笔重新抛转成功！');
             $scope.getReceiptOrderMasterCount();
-        }, function (data) {
-            console.info(data);
-            $scope.showError(data.data.message);
+            $scope.showInfo('共' + updateInput.uuid.length + '笔重新抛转成功！');
+        }).error(function (response) {
+            $scope.showError('重新抛转失败：' + response.message);
         });
     };
 

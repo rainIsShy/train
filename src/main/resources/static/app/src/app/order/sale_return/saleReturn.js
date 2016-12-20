@@ -186,48 +186,41 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
             return;
         }
 
-        var action = "审核";
-        if (confirmVal == 1) {
-            action = "取消审核";
-        }
+        var action = confirmVal == 1 ? "取消审核" : "审核";
         $scope.showConfirm('确认' + action + '吗', '', function () {
-            var promises = [];
-            var bError = false;
-            var haveSelectedItems = false;
+            var detailUuids = '';
+            var hasSelectedItems = false;
             angular.forEach($scope.itemList, function (item) {
                 if (item.selected) {
-                    haveSelectedItems = true;
-                    var detailUuids = "";
+                    var hasDetail = false;
+                    hasSelectedItems = true;
                     angular.forEach(item.detailList, function (detail) {
                         if (detail.confirm != confirmVal) {
-                            if (!(confirmVal == 1 && detail.transferReturnFlag == '1')) { //已抛转不能取消审核
-                                detailUuids += detail.uuid + ",";
+                            if (confirmVal != 1 || detail.transferReturnFlag != 1) { // 已抛转不能取消审核
+                                detailUuids += (detailUuids ? ',' : '') + detail.uuid;
+                                hasDetail = true;
                             }
                         }
                     });
-
-                    if (detailUuids != "") {
-                        var response = PsoOrderReturnDetail.confirm(item.uuid, detailUuids, confirmVal).success(function (data) {
-                            $scope.updateDetailsConfirmState(item.detailList, data);
-                            $scope.updateMasterStateByReturnDetails(item);
-                        }).error(function (response) {
-                            bError = true;
-                            $scope.showError('产品销售退货单' + item.no + action + '失败：' + response.message);
-                        });
-                        promises.push(response);
-                    } else {
-                        bError = true;
+                    if (!hasDetail) {
                         $scope.showWarn("产品销售退货单" + item.no + "没有可" + action + "的商品！");
                     }
                 }
             });
-            if (haveSelectedItems) {
-                $q.all(promises).then(function (data) {
-                    if (!bError) {
-                        $scope.showInfo('产品销售退货单' + action + '成功！');
-                    }
+
+            if (hasSelectedItems) {
+                PsoOrderReturnDetail.confirm('batch', detailUuids, confirmVal).success(function (data) {
+                    angular.forEach($scope.itemList, function (item) {
+                        if (item.selected) {
+                            $scope.updateDetailsConfirmState(item.detailList, data);
+                            $scope.updateMasterStateByReturnDetails(item);
+                        }
+                    });
                     $scope.disableBatchMenuButtons();
                     $scope.getReturnOrderMasterCount();
+                    $scope.showInfo('产品销售退货单' + action + '成功！');
+                }).error(function (response) {
+                    $scope.showError('产品销售退货单' + action + '失败：' + response.message);
                 });
             } else {
                 $scope.showWarn("请选择需要" + action + "的产品销售退货单！");
@@ -238,15 +231,12 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
     $scope.confirmClickAction = function (event, item, confirmVal, bApplyAll) {
         $scope.stopEventPropagation(event);
         console.info('confirm...');
-        var action = "审核";
-        if (confirmVal == 1) {
-            action = "取消审核";
-        }
 
+        var action = confirmVal == 1 ? "取消审核" : "审核";
         $scope.showConfirm('确认' + action + '吗？', '', function () {
             var detailUuids = "";
             angular.forEach(item.detailList, function (detail) {
-                if (bApplyAll === true) {
+                if (bApplyAll) {
                     if (detail.confirm != confirmVal) {
                         if (!(confirmVal == 1 && detail.transferReturnFlag == '1')) { //已抛转不能取消审核
                             detailUuids += detail.uuid + ",";
@@ -261,7 +251,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
                 }
             });
 
-            if (detailUuids != "") {
+            if (detailUuids) {
                 PsoOrderReturnDetail.confirm(item.uuid, detailUuids, confirmVal).success(function (data) {
                     $scope.updateDetailsConfirmState(item.detailList, data);
                     $scope.updateMasterStateByReturnDetails(item);
@@ -319,46 +309,40 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
             return;
         }
 
-        var action = "抛转";
-        $scope.showConfirm('确认' + action + '吗?', '', function () {
-            var promises = [];
-            var bError = false;
-            var haveSelectedItems = false;
+        $scope.showConfirm('确认抛转吗?', '', function () {
+            var detailUuids = '';
+            var hasSelectedItems = false, hasDetail = false;
             angular.forEach($scope.itemList, function (item) {
                 if (item.selected) {
-                    haveSelectedItems = true;
-                    var detailUuids = "";
+                    hasSelectedItems = true;
+                    hasDetail = false;
                     angular.forEach(item.detailList, function (detail) {
                         if (detail.confirm == '2' && detail.transferReturnFlag != '1') {
-                            detailUuids += detail.uuid + ",";
+                            detailUuids += (detailUuids ? ',' : '') + detail.uuid;
+                            hasDetail = true;
                         }
                     });
-
-                    if (detailUuids != "") {
-                        var response = PsoOrderReturnDetail.transfer(item.uuid, detailUuids).success(function (data) {
-                            $scope.updateDetailsConfirmState(item.detailList, data);
-                            $scope.updateMasterStateByReturnDetails(item);
-                        }).error(function (response) {
-                            bError = true;
-                            $scope.showError('产品销售退货单' + item.no + action + '失败：' + response.message);
-                        });
-                        promises.push(response);
-                    } else {
-                        bError = true;
-                        $scope.showWarn("产品销售退货单" + item.no + "没有可" + action + "的商品！");
+                    if (!hasDetail) {
+                        $scope.showWarn("产品销售退货单" + item.no + "没有可抛转的商品！");
                     }
                 }
             });
-            if (haveSelectedItems) {
-                $q.all(promises).then(function (data) {
-                    if (!bError) {
-                        $scope.showInfo('产品销售退货单' + action + '成功！');
-                    }
+            if (hasSelectedItems) {
+                PsoOrderReturnDetail.transfer('batch', detailUuids).success(function (data) {
+                    angular.forEach($scope.itemList, function (item) {
+                        if (item.selected) {
+                            $scope.updateDetailsConfirmState(item.detailList, data);
+                            $scope.updateMasterStateByReturnDetails(item);
+                        }
+                    });
                     $scope.disableBatchMenuButtons();
                     $scope.getReturnOrderMasterCount();
+                    $scope.showInfo('产品销售退货单抛转成功！');
+                }).error(function (response) {
+                    $scope.showError('产品销售退货单抛转失败：' + response.message);
                 });
             } else {
-                $scope.showWarn("请选择需要" + action + "的产品销售退货单！");
+                $scope.showWarn("请选择需要抛转的产品销售退货单！");
             }
         });
     };

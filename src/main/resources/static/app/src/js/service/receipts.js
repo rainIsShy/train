@@ -1,6 +1,6 @@
 angular.module('IOne-Production').service('Receipts', function ($http, Constant) {
     this.getAll = function (sizePerPage, page, channelUuid, no, orderReceiptDetailStatus, orderAmount, paidAmount, unpaidAmount, resUuid) {
-        var orderReceiptDetailStatus = orderReceiptDetailStatus == 0 ? '' : orderReceiptDetailStatus;
+        orderReceiptDetailStatus = orderReceiptDetailStatus == 0 ? '' : orderReceiptDetailStatus;
         var url = '/orders?size=' + sizePerPage
             + '&page=' + page
             + '&paidType=0';
@@ -37,10 +37,10 @@ angular.module('IOne-Production').service('Receipts', function ($http, Constant)
     };
 
     this.getReceiptOrderMasterCount = function (orderReceiptDetailStatus, resUuid) {
-        var orderReceiptDetailStatus = orderReceiptDetailStatus == 0 ? '' : orderReceiptDetailStatus;
+        orderReceiptDetailStatus = orderReceiptDetailStatus == 0 ? '' : orderReceiptDetailStatus;
         var url = '/orders/count?'
             + '&paidType=0'
-            + '&orderReceiptDetailStatus=' + orderReceiptDetailStatus;;;;;;
+            + '&orderReceiptDetailStatus=' + orderReceiptDetailStatus;
 
         if (resUuid !== undefined && resUuid !== null) {
             url = url + '&resUuid=' + resUuid;
