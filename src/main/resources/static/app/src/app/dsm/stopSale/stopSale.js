@@ -20,6 +20,7 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
         PLM_ITEM_BOM_FILE: {value: 'PLM_ITEM_BOM_FILE', name: 'BOM信息同步'},
         PLM_ITEM_CHAN_PRICE2: {value: 'PLM_ITEM_CHAN_PRICE', name: '商品渠道信息同步'},
         PLM_ITEM_BOM: {value: 'PLM_ITEM_ITEM_FILE', name: '品牌信息同步'},
+        PLM_ITEM_R: {value: 'PLM_ITEM_ITEM_FILE', name: '商品批号同步'},
         INV_INVENTORY_DTL: {value: 'INV_INVENTORY_DTL', name: '库存数据同步'}
     };
 
@@ -131,6 +132,23 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
                     var totalItemCustomDetailCount = addResponse(response.updateItemCustomDetailCount, response.insertItemCustomDetailCount);
                     $scope.showInfo('ERP同步到 TIPTOP_BRAND_FILE，共 ' + totalTtBrandCount + '笔数据同步成功!\n TIPTOP_BRAND_FILE 同步到 PLM_BASE_CUSTOM_SCOPE，共 ' + totalItemScopeCount + '笔数据同步成功!');
                     $scope.showInfo('ERP同步到 TIPTOP_IMA_BRAND_FILE，共 ' + totalImaBrandCount + '笔数据同步成功!\n TIPTOP_IMA_BRAND_FILE 同步到 PLM_BASE_CUSTOM_DTL_FILE，共 ' + totalItemCustomDetailCount + '笔数据同步成功!');
+                    $scope.logining = false;
+                }).error(function (errResp) {
+                    $scope.logining = false;
+                    $scope.showError(errResp.message);
+                });
+            } else if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.PLM_ITEM_R.name) {
+                //商品批号信息数据同步
+                IoneAdapterService.transferIoneAdapter("/itemColTask", param, $scope, function (response) {
+                    var totalTcDsaCount = addResponse(response.updateTcDsaCount, response.insertTcDsaCount);
+                    var totalItemDsaCount = addResponse(0, response.insertItemDsaCount);
+                    var totalItemColCount = addResponse(0, response.insertItemColCount);
+                    var totalPlmBaseScopeCount = addResponse(response.updatePlmBaseScopeCount, response.insertPlmBaseScopeCount);
+                    var totalPlmBaseCustomDtlFileCount = addResponse(response.updatePlmBaseCustomDtlFileCount, response.insertPlmBaseCustomDtlFileCount);
+                    var totalPlmItemRCount = addResponse(response.updatePlmItemRCount, response.insertPlmItemRCount);
+                    $scope.showInfo('ERP同步到 TIPTOP_TC_DSA_FILE，共 ' + totalTcDsaCount + '笔数据同步成功!\n TIPTOP_TC_DSA_FILE 同步到 PLM_BASE_CUSTOM_SCOPE，共 ' + totalPlmBaseScopeCount + '笔数据同步成功!');
+                    $scope.showInfo('ERP同步到 TIPTOP_ITEM_DSA_FILE，共 ' + totalItemDsaCount + '笔数据同步成功!\n TIPTOP_ITEM_DSA_FILE 同步到 PLM_BASE_CUSTOM_DTL_FILE，共 ' + totalPlmBaseCustomDtlFileCount + '笔数据同步成功!');
+                    $scope.showInfo('ERP同步到 TIPTOP_ITEM_COL_FILE，共 ' + totalItemColCount + '笔数据同步成功!\n TIPTOP_ITEM_COL_FILE 同步到 PLM_ITEM_R，共 ' + totalPlmItemRCount + '笔数据同步成功!');
                     $scope.logining = false;
                 }).error(function (errResp) {
                     $scope.logining = false;

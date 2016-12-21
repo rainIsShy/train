@@ -1604,7 +1604,7 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         OrderItems.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, channelUuid, $scope.searchNo, $scope.searchName).success(function (data) {
             $scope.allData = data;
             if ($scope.allData.content.length < 1) {
-                $scope.showError('当前经销商没有商品，请检查渠道定价是否设置。');
+                $scope.showWarn('未搜索到该商品，请确认是否维护该商品定价信息！');
             }
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
@@ -1692,6 +1692,10 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
 
     $scope.showError = function (info) {
         toastr["error"](info);
+    };
+
+    $scope.showWarn = function(info) {
+        toastr["warning"](info)
     };
 
     $scope.refreshUI = function () {
