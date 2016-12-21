@@ -586,11 +586,13 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                     zeroNos = zeroNos + item.no + ","
                 }
             });
-            if (zeroNos != '') {
-                zeroNos = zeroNos.substr(0, zeroNos.length - 1);
-                $scope.showError('存在金额为0的销售单，不允许审核：' + zeroNos);
-                return;
-            }
+
+            //在 ISSUE #239 取消檢核
+            // if (zeroNos != '') {
+            //     zeroNos = zeroNos.substr(0, zeroNos.length - 1);
+            //     $scope.showError('存在金额为0的销售单，不允许审核：' + zeroNos);
+            //     return;
+            // }
         }
         if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) { // list
             var groupUserNos = '';
