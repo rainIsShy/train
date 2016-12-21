@@ -284,6 +284,7 @@ angular.module('IOne-Production').controller('EPSReceiptsController', function (
                 EPSReceipts.modify(detail.epsOrder.uuid, UpdateInput).success(function (data) {
                     //console.info("重新抛转成功返回：");
                     //console.info(data);
+                    $scope.refreshList();
                     $scope.showInfo('重新抛转成功！');
                 }).error(function (response) {
                     //$scope.showError($scope.getError(response.message));
@@ -300,6 +301,7 @@ angular.module('IOne-Production').controller('EPSReceiptsController', function (
                     detail.transferFlag = '2';
                     //console.info("抛转成功返回：");
                     //console.info(data);
+                    $scope.refreshList();
                     $scope.showInfo('抛转成功！');
                 }).error(function (response) {
                     //$scope.showError($scope.getError(response.message));
