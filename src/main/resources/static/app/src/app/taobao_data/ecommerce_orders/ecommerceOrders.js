@@ -648,15 +648,17 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                             needSelectO2oChannel = needSelectO2oChannel + head.no + "\n\r";
                         }
                     }
-                } else if (angular.isUndefined(head.orderFlag) || head.orderFlag != null) {
-                    if (head.orderFlag == '5') {
-                        if (head.o2oChannel == null) {
-                            needSelectO2oChannel = needSelectO2oChannel + head.no + "\n\r";
-                        }
-                    }
                 } else {
-                    if (head.o2oChannel != null) {
-                        unNeedSelectO2oChannel = unNeedSelectO2oChannel + head.no + "\n\r";
+                    if (angular.isUndefined(head.orderFlag) || head.orderFlag != null) {
+                        if (head.orderFlag == '5') {
+                            if (head.o2oChannel == null) {
+                                needSelectO2oChannel = needSelectO2oChannel + head.no + "\n\r";
+                            }
+                        } else {
+                            if (head.o2oChannel != null) {
+                                unNeedSelectO2oChannel = unNeedSelectO2oChannel + head.no + "\n\r";
+                            }
+                        }
                     }
                 }
 
