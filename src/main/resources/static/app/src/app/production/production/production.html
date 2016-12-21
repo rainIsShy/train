@@ -29,6 +29,7 @@
                             </div>
 
                             <div class="md-whiteframe-z1 column" layout-margin layout-padding  ng-if="selectedItem != null">
+                                <div layout="row"><small style="color:gray;"  ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">上传图片不可大于1M</small></div>
                                 <div layout="row">
                                     <div flex="50">
                                         <md-button class="md-raised" ng-if="selectedItemPics && selectedItemPics.length > 0" ng-click="deleteItemImage()" ng-hide="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">删除</md-button>
