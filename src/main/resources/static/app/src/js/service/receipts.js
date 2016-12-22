@@ -65,6 +65,10 @@ angular.module('IOne-Production').service('Receipts', function ($http, Constant)
         return $http.patch(Constant.BACKEND_BASE + '/orders/' + uuid + '/receipts/' + detailUpdateInput.uuid + '/sync', detailUpdateInput);
     };
 
+    this.auditTransfer = function (orderUuid, uuids) {
+        return $http.patch(Constant.BACKEND_BASE + '/orders/' + orderUuid + '/receipts?action=auditTransfer', uuids);
+    };
+
 });
 
 

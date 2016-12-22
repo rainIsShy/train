@@ -146,8 +146,8 @@ spring:
 
 i1:
   i1-server:
-    url: http://project.benchmarkchina.com:50001
-    #url: http://localhost:8081
+    #url: http://project.benchmarkchina.com:50001
+    url: http://localhost:8081
   i1-adapter:
     #url: http://project.benchmarkchina.com:10812
     url: http://localhost:8082
