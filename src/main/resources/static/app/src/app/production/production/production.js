@@ -426,6 +426,12 @@ angular.module('IOne-Production').controller('ProductionController', function ($
     };
 
     $scope.uploadImage = function (files, type) {
+        //上传文件大小 1M
+        var fileSize = 1024*1024;
+        if(files[0] && files[0].size > fileSize){
+            $scope.showError("上传文件不可大于1M");
+            return;
+        }
         $scope.progress = {value: 0};
         if (files && files.length) {
             for (var i = 0; i < files.length; i++) {
