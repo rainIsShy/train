@@ -20,19 +20,16 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
         PLM_ITEM_BOM_FILE: {value: 'PLM_ITEM_BOM_FILE', name: 'BOM信息同步'},
         PLM_ITEM_CHAN_PRICE2: {value: 'PLM_ITEM_CHAN_PRICE', name: '商品渠道信息同步'},
         PLM_ITEM_BOM: {value: 'PLM_ITEM_ITEM_FILE', name: '品牌信息同步'},
-        PLM_ITEM_R: {value: 'PLM_ITEM_ITEM_FILE', name: '商品批号同步'}
+        PLM_ITEM_R: {value: 'PLM_ITEM_ITEM_FILE', name: '商品批号同步'},
+        INV_INVENTORY_DTL: {value: 'INV_INVENTORY_DTL', name: '库存数据同步'}
     };
-
 
     $scope.selected = [];
     $scope.selectAllFlag = false;
+
     $scope.selectAllAction = function () {
         angular.forEach($scope.itemList, function (item) {
-            if ($scope.selectAllFlag) {
-                item.selected = true;
-            } else {
-                item.selected = false;
-            }
+            item.selected = $scope.selectAllFlag;
         })
     };
 
@@ -41,8 +38,7 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
         var idx = $scope.selected.indexOf(item);
         if (idx > -1) {
             $scope.selected.splice(idx, 1);
-        }
-        else {
+        } else {
             $scope.selected.push(item);
         }
         $scope.selectItemCount = $scope.selected.length;
@@ -55,7 +51,6 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
         $scope.selectAllFlag = false;
     };
 
-
     $scope.getTiptopDbByType = function (syncType) {
         $scope.clearSelection();
         if (angular.isDefined(syncType)) {
@@ -67,14 +62,15 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
 
     $scope.getTiptopDbByType();
 
-
     $scope.execute = function () {
         if ($scope.validation()) {
             $scope.logining = true;
 
             var param = {
                 startTime: moment($scope.listFilterOption.startDate).format('YYYY-MM-DD'),
+                START_DATE: moment($scope.listFilterOption.startDate).format('YYYY-MM-DD'),
                 endTime: moment($scope.listFilterOption.endDate).format('YYYY-MM-DD'),
+                END_DATE: moment($scope.listFilterOption.endDate).format('YYYY-MM-DD'),
                 dbNames: []
             };
             angular.forEach($scope.selected, function (item) {
@@ -153,6 +149,16 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
                     $scope.showInfo('ERP同步到 TIPTOP_TC_DSA_FILE，共 ' + totalTcDsaCount + '笔数据同步成功!\n TIPTOP_TC_DSA_FILE 同步到 PLM_BASE_CUSTOM_SCOPE，共 ' + totalPlmBaseScopeCount + '笔数据同步成功!');
                     $scope.showInfo('ERP同步到 TIPTOP_ITEM_DSA_FILE，共 ' + totalItemDsaCount + '笔数据同步成功!\n TIPTOP_ITEM_DSA_FILE 同步到 PLM_BASE_CUSTOM_DTL_FILE，共 ' + totalPlmBaseCustomDtlFileCount + '笔数据同步成功!');
                     $scope.showInfo('ERP同步到 TIPTOP_ITEM_COL_FILE，共 ' + totalItemColCount + '笔数据同步成功!\n TIPTOP_ITEM_COL_FILE 同步到 PLM_ITEM_R，共 ' + totalPlmItemRCount + '笔数据同步成功!');
+                    $scope.logining = false;
+                }).error(function (errResp) {
+                    $scope.logining = false;
+                    $scope.showError(errResp.message);
+                });
+            } else if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.INV_INVENTORY_DTL.name) {
+                IoneAdapterService.transferIoneAdapter("/inventorySyncTask", param, $scope, function (response) {
+                    var tmpCount = addResponse(response.updateImgCount, response.insertImgCount);
+                    var invCount = addResponse(response.updateInvDtlCount, response.insertInvDtlCount);
+                    $scope.showInfo('ERP同步到 TIPTOP_IMG_FILE，共 ' + tmpCount + '笔数据同步成功!\n TIPTOP_IMG_FILE 同步到 INV_INVENTORY_DTL，共 ' + invCount + '笔数据同步成功!');
                     $scope.logining = false;
                 }).error(function (errResp) {
                     $scope.logining = false;
