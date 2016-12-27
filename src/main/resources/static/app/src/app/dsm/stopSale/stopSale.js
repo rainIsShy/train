@@ -20,7 +20,7 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
         PLM_ITEM_BOM_FILE: {value: 'PLM_ITEM_BOM_FILE', name: 'BOM信息同步'},
         PLM_ITEM_CHAN_PRICE2: {value: 'PLM_ITEM_CHAN_PRICE', name: '商品渠道信息同步'},
         PLM_ITEM_BOM: {value: 'PLM_ITEM_ITEM_FILE', name: '品牌信息同步'},
-        PLM_ITEM_R: {value: 'PLM_ITEM_ITEM_FILE', name: '商品批号同步'},
+        PLM_ITEM_R: {value: 'PLM_ITEM_COL_FILE', name: '商品批号同步'},
         INV_INVENTORY_DTL: {value: 'INV_INVENTORY_DTL', name: '库存数据同步'},
         PSO_DELIVER_ORDER_EXT_DTL: {value: 'PSO_DELIVER_ORDER_EXT_DTL', name: '出货同步'}
     };

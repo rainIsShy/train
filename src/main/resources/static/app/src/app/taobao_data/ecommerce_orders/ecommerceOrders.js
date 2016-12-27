@@ -586,11 +586,13 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                     zeroNos = zeroNos + item.no + ","
                 }
             });
-            if (zeroNos != '') {
-                zeroNos = zeroNos.substr(0, zeroNos.length - 1);
-                $scope.showError('存在金额为0的销售单，不允许审核：' + zeroNos);
-                return;
-            }
+
+            //在 ISSUE #239 取消檢核
+            // if (zeroNos != '') {
+            //     zeroNos = zeroNos.substr(0, zeroNos.length - 1);
+            //     $scope.showError('存在金额为0的销售单，不允许审核：' + zeroNos);
+            //     return;
+            // }
         }
         if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) { // list
             var groupUserNos = '';
@@ -603,6 +605,8 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
             var receivePhone = '';         //联系电话
             var orderNo = '';              //交易订单号
             var predictDeliverDate = '';   //预计送货日期
+            var needSelectO2oChannel = '';
+            var unNeedSelectO2oChannel = '';
 
             angular.forEach($scope.selected, function (head) {
                 if (angular.isUndefined(head.groupUser) || head.groupUser == null) {
@@ -634,6 +638,30 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                 if (angular.isUndefined(head.predictDeliverDate) || head.predictDeliverDate == null) {
                     predictDeliverDate = predictDeliverDate + head.no + "\n\r";
                 }
+
+                if (
+                    (angular.isUndefined(head.orderFlag) || head.orderFlag != null) &&
+                    (angular.isUndefined(head.o2oFlag) || head.o2oFlag != null)
+                ) {
+                    if (head.orderFlag == '3' && head.o2oFlag == '3') {
+                        if (head.o2oChannel == null) {
+                            needSelectO2oChannel = needSelectO2oChannel + head.no + "\n\r";
+                        }
+                    }
+                } else {
+                    if (angular.isUndefined(head.orderFlag) || head.orderFlag != null) {
+                        if (head.orderFlag == '5') {
+                            if (head.o2oChannel == null) {
+                                needSelectO2oChannel = needSelectO2oChannel + head.no + "\n\r";
+                            }
+                        } else {
+                            if (head.o2oChannel != null) {
+                                unNeedSelectO2oChannel = unNeedSelectO2oChannel + head.no + "\n\r";
+                            }
+                        }
+                    }
+                }
+
             });
             if (groupUserNos != '') {
                 groupUserNos = groupUserNos.substr(0, groupUserNos.length - 1);
