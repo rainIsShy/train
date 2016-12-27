@@ -21,7 +21,8 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
         PLM_ITEM_CHAN_PRICE2: {value: 'PLM_ITEM_CHAN_PRICE', name: '商品渠道信息同步'},
         PLM_ITEM_BOM: {value: 'PLM_ITEM_ITEM_FILE', name: '品牌信息同步'},
         PLM_ITEM_R: {value: 'PLM_ITEM_COL_FILE', name: '商品批号同步'},
-        INV_INVENTORY_DTL: {value: 'INV_INVENTORY_DTL', name: '库存数据同步'}
+        INV_INVENTORY_DTL: {value: 'INV_INVENTORY_DTL', name: '库存数据同步'},
+        PSO_DELIVER_ORDER_EXT_DTL: {value: 'PSO_DELIVER_ORDER_EXT_DTL', name: '出货同步'}
     };
 
     $scope.selected = [];
@@ -155,10 +156,22 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
                     $scope.showError(errResp.message);
                 });
             } else if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.INV_INVENTORY_DTL.name) {
+                // 庫存同步
                 IoneAdapterService.transferIoneAdapter("/inventorySyncTask", param, $scope, function (response) {
                     var tmpCount = addResponse(response.updateImgCount, response.insertImgCount);
                     var invCount = addResponse(response.updateInvDtlCount, response.insertInvDtlCount);
                     $scope.showInfo('ERP同步到 TIPTOP_IMG_FILE，共 ' + tmpCount + '笔数据同步成功!\n TIPTOP_IMG_FILE 同步到 INV_INVENTORY_DTL，共 ' + invCount + '笔数据同步成功!');
+                    $scope.logining = false;
+                }).error(function (errResp) {
+                    $scope.logining = false;
+                    $scope.showError(errResp.message);
+                });
+            } else if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.PSO_DELIVER_ORDER_EXT_DTL.name) {
+                // 出货同步
+                IoneAdapterService.transferIoneAdapter("/psoDeliverOrderSyncTask", param, $scope, function (response) {
+                    var tmpCount = addResponse(response.updateOgbCount, response.insertOgbCount);
+                    var orderExtCount = addResponse(response.updatePsoOrderExtDtlCount, response.insertPsoOrderExtDtlCount);
+                    $scope.showInfo('ERP同步到 TIPTOP_OGB_FILE，共 ' + tmpCount + '笔数据同步成功!\n TIPTOP_OGB_FILE，共 ' + response.updateStatusCount + '笔数据失效!\n TIPTOP_OGB_FILE 同步到 INV_INVENTORY_DTL，共 ' + orderExtCount + '笔数据同步成功!');
                     $scope.logining = false;
                 }).error(function (errResp) {
                     $scope.logining = false;
