@@ -1,0 +1,68 @@
+<div flex layout="column" class="menu order-item-background">
+    <div layout="row" layout-md="column" layout-sm="column">
+        <md-input-container>
+            <label>收货人：</label>
+            <input ng-model="queryConditions.receiveName"/>
+        </md-input-container>
+        <md-input-container>
+            <label>联系电话：</label>
+            <input ng-model="queryConditions.receivePhone"/>
+        </md-input-container>
+        <md-input-container>
+            <label>发货起始日期：</label>
+            <input ng-model="queryConditions.receiptDateFrom"/>
+        </md-input-container>
+        <md-input-container>
+            <label>发货截止日期：</label>
+            <input ng-model="queryConditions.receiptDateTo"/>
+        </md-input-container>
+    </div>
+    <div layout="row" layout-md="column" layout-sm="column">
+        <md-input-container>
+            <label>电商订单号：</label>
+            <input ng-model="queryConditions.orderId"/>
+        </md-input-container>
+        <md-input-container>
+            <label>发货状态：</label>
+            <input ng-model="queryConditions.confirm"/>
+        </md-input-container>
+        <md-input-container>
+            <label>物流公司：</label>
+            <input ng-model="queryConditions.supplierName"/>
+        </md-input-container>
+    </div>
+</div>
+
+<div flex layout="column" class="menu">
+    <div layout="row" layout-md="column" layout-sm="column">
+        <md-checkbox ng-model="ocmListMenu.selectAll" layout-align="start center"
+                     aria-label="全选" ng-true-value="true" ng-false-value="false"> &nbsp;全选
+        </md-checkbox>
+        <span flex></span>
+        <md-button class="md-raised" layout-align="end center"
+                   aria-label="查询"> &nbsp;查询
+        </md-button>
+        <md-button class="md-raised" layout-align="end center"
+                   aria-label="EXCEl导入"> &nbsp;EXCEl导入
+        </md-button>
+        <md-button class="md-raised" layout-align="end center"
+                   aria-label="审核发货"> &nbsp;审核发货
+        </md-button>
+    </div>
+</div>
+
+<table>
+    <tr style="background-color:#BDBDBD;">
+        <th></th>
+        <th ng-repeat="column in tableColumns" ng-bind="column.description"></th>
+    </tr>
+    <tr ng-repeat="dtl in logisticsDetailRelations">
+        <td>
+            <md-checkbox>
+            </md-checkbox>
+        </td>
+        <td ng-repeat="column in tableColumns" ng-bind="dtl[column.name]"></td>
+    </tr>
+</table>
+
+<div pagination option="queryConditions" callback="queryAll()"></div>

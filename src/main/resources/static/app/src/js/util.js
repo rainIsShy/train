@@ -491,7 +491,11 @@ RES_UUID_MAP = {
         ALI_PAY: {
             RES_UUID: 'R4GGGH43-70F2-6AHJ-JK90-VCBNJ43899OP',
             TITLE: '支付宝账款管理'
-        }
+        },
+         SHIP_GOODS: {
+             RES_UUID: '88085744-90d8-423f-bed7-7afc312318dc',
+             TITLE: '电商发货管理'
+         }
     },
 
     SYS: {
@@ -863,7 +867,13 @@ angular.module('IOne-Constant').constant('Constant', {
                     name: RES_UUID_MAP.ASS.ASSFORMFLOW.TITLE,
                     link: '/ass/assformFlow',
                     uuid: RES_UUID_MAP.ASS.ASSFORMFLOW.RES_UUID
-                }
+                },
+                 {
+                     id: '/eps/shipGoodsManagement',
+                     name: RES_UUID_MAP.EPS.SHIP_GOODS.TITLE,
+                     link: '/eps/shipGoodsManagement',
+                     uuid: RES_UUID_MAP.EPS.SHIP_GOODS.RES_UUID
+                 }
             ]
         },
         {
