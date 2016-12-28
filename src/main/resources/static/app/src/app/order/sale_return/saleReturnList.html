@@ -144,17 +144,6 @@
                 </div>
 
                 <md-tabs md-dynamic-height md-border-bottom style="padding-top: 30px;">
-                    <md-tab label="产品信息">
-                        <div layout="row" style="background-color: whitesmoke;height: 40px;">
-                            <span style="position: absolute; left: 10px;">
-                                <md-checkbox ng-model="selectedItem.selectAllDetails"
-                                             ng-change="selectAllDetails(selectedItem)"
-                                             aria-label="Checkbox"></md-checkbox>
-                            </span>
-                            <span flex="20" style="margin-left: 50px;margin-top:10px;">选择所有产品</span>
-                        </div>
-                        <div ng-include=" 'app/src/app/order/sale_return/detailTab.html' "></div>
-                    </md-tab>
                     <md-tab label="退货">
                         <div ng-include=" 'app/src/app/order/sale_return/extendDetailTab.html' "></div>
                     </md-tab>
@@ -166,12 +155,6 @@
             <!-- basic search-->
             <div flex layout="row" style="position: relative" layout-align="start center">
                 <md-input-container flex="20" style="margin-left: 50px;" ng-show="selectedItem == null">
-                    <label>启用状态</label>
-                    <md-select ng-model="listFilterOption.select.status">
-                        <md-option ng-repeat="(key, value) in STATUS" ng-value="key">{{value.name}}</md-option>
-                    </md-select>
-                </md-input-container>
-                <md-input-container flex="20" ng-show="selectedItem == null">
                     <label>审核状态</label>
                     <md-select ng-model="listFilterOption.select.confirm">
                         <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
@@ -285,7 +268,7 @@
                                 <div ng-if="menuDisplayOption['revertConfirm'].display && (menuAuthDataMap[menuDisplayOption['revertConfirm'].uuid] || isAdmin() || !menuDisplayOption['revertConfirm'].uuid) && item.confirm == '2'">
                                     <md-button class="md-fab md-mini"
                                                ng-click="confirmClickAction($event, item, 1, true)"
-                                               ng-disabled="item.transferPsoFlag == '1'">
+                                               ng-disabled="item.transferFlag == '1'">
                                         <span>取审</span>
                                     </md-button>
                                     <!--<md-button class="md-button close-btn" aria-label="More"
@@ -296,7 +279,7 @@
                                 <div ng-if="menuDisplayOption['transfer'].display && (menuAuthDataMap[menuDisplayOption['transfer'].uuid] || isAdmin() || !menuDisplayOption['transfer'].uuid)">
                                     <md-button class="md-fab md-mini"
                                                ng-click="transferClickAction($event, item, true)"
-                                               ng-disabled="item.transferPsoFlag == '1'"
+                                               ng-disabled="item.transferFlag == '1'"
                                                style="position: relative;left: 15px;">抛转
                                     </md-button>
                                 </div>
@@ -339,24 +322,23 @@
                                 <img style="max-height: 100px;margin-top:5px;" ng-src="app/img/item.jpeg">
                             </div>
                             <div flex="30">
-                                <div layout-padding>商品名称: <span>{{detail.item.name}}</span></div>
-                                <div layout-padding>规格: <span>{{detail.item.standard}}</span></div>
-                                <div layout-padding>订单单价: <span>￥{{detail.orderDetail.orderPrice}}</span></div>
-                                <div layout-padding>销退原因: <span>{{detail.returnReason.name}}</span></div>
+                                <div layout-padding>商品名称: <span>{{ detail.item.name }}</span></div>
+                                <div layout-padding>商品名称: <span>{{ detail.item.name }}</span></div>
+                                <div layout-padding>规格: <span>{{ detail.item.standard }}</span></div>
+                                <div layout-padding>订单单价: <span>￥{{ detail.orderDetail.orderPrice }}</span></div>
                             </div>
                             <div flex="30">
-                                <div layout-padding>客户名称: <span>{{item.customer.name}}</span></div>
-                                <div layout-padding>收货地址: <span>{{item.receiveAddress}}</span></div>
-                                <div layout-padding>收货人: <span>{{item.receiveName}}</span></div>
-                                <div layout-padding>销退数量: <span>{{detail.returnQuantity}}</span></div>
+                                <div layout-padding>客户名称: <span>{{ item.customer.name }}</span></div>
+                                <div layout-padding>收货地址: <span>{{ item.receiveAddress }}</span></div>
+                                <div layout-padding>收货人: <span>{{ item.receiveName }}</span></div>
+                                <div layout-padding>销退原因: <span>{{ detail.returnReason.name }}</span></div>
 
                             </div>
                             <div flex="30">
-                                <div layout-padding>退货金额: <span>￥{{detail.originalReturnAmount}}</span></div>
-                                <div layout-padding>审核码: <span>{{AUDIT[detail.confirm].name}}</span></div>
-                                <div layout-padding>抛转否:
-                                    <span>{{TRANSFER_PSO_FLAG[detail.transferReturnFlag].name}}</span></div>
-                                <div layout-padding>状态码: <span>{{STATUS[detail.status].name}}</span></div>
+                                <div layout-padding>退货金额: <span>￥{{ detail.originalReturnAmount }}</span></div>
+                                <div layout-padding>审核码: <span>{{ AUDIT[detail.confirm].name }}</span></div>
+                                <div layout-padding>抛转否: <span>{{ TRANSFER_PSO_FLAG[detail.transferReturnFlag].name }}</span></div>
+                                <div layout-padding>销退数量: <span>{{ detail.returnQuantity }}</span></div>
                             </div>
                             <!--<div flex="10">
                                 <div ng-if="detail.confirm != '2'">
