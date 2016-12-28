@@ -145,6 +145,14 @@
 
                 <md-tabs md-dynamic-height md-border-bottom style="padding-top: 30px;">
                     <md-tab label="退货">
+                        <div layout="row" style="background-color: whitesmoke;height: 40px;">
+                                <span style="position: absolute; left: 10px;">
+                                    <md-checkbox ng-model="selectedItem.selectAllDetails"
+                                                 ng-change="selectAllDetails(selectedItem)"
+                                                 aria-label="Checkbox"></md-checkbox>
+                                </span>
+                            <span flex="20" style="margin-left: 50px;margin-top:10px;">选择所有产品</span>
+                        </div>
                         <div ng-include=" 'app/src/app/order/sale_return/extendDetailTab.html' "></div>
                     </md-tab>
                 </md-tabs>

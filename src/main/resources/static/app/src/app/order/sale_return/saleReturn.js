@@ -97,7 +97,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
         item.selectAllDetails = false;
         $scope.selectedItem = item;
         PsoOrderReturnExtendDetail2.get($scope.selectedItem.uuid).success(function (data) {
-            $scope.selectedItem.extendDetailList = data.content;
+            $scope.selectedItem.detailList = data.content;
             // $scope.refreshExtendDetailTab($scope.selectedItem);
         }).error(function (response) {
             $scope.showError(response.message);
@@ -190,7 +190,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
                     hasSelectedItems = true;
                     angular.forEach(item.detailList, function (detail) {
                         if (detail.confirm != confirmVal) {
-                            if (confirmVal != 1 || detail.transferReturnFlag != 1) { // 已抛转不能取消审核
+                            if (confirmVal != 1 || detail.transferFlag != 1) { // 已抛转不能取消审核
                                 extendDetailUuids.push(detail.uuid);
                                 hasDetail = true;
                             }
@@ -233,13 +233,13 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
             angular.forEach(item.detailList, function (detail) {
                 if (bApplyAll) {
                     if (detail.confirm != confirmVal) {
-                        if (!(confirmVal == 1 && detail.transferReturnFlag == '1')) { //已抛转不能取消审核
+                        if (!(confirmVal == 1 && detail.transferFlag == '1')) { //已抛转不能取消审核
                             extendDetailUuids.push(detail.uuid);
                         }
                     }
                 } else {
                     if (detail.confirm != confirmVal && detail.selected == true) {
-                        if (!(confirmVal == 1 && detail.transferReturnFlag == '1')) { //已抛转不能取消审核
+                        if (!(confirmVal == 1 && detail.transferFlag == '1')) { //已抛转不能取消审核
                             extendDetailUuids.push(detail.uuid);
                         }
                     }
@@ -292,7 +292,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
             angular.forEach(responseDetails, function (responseDetail) {
                 if (detail.uuid == responseDetail.uuid) {
                     detail.confirm = responseDetail.confirm;
-                    detail.transferReturnFlag = responseDetail.transferReturnFlag;
+                    detail.transferFlag = responseDetail.transferFlag;
                 }
             });
         });
@@ -314,7 +314,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
                     hasSelectedItems = true;
                     hasDetail = false;
                     angular.forEach(item.detailList, function (detail) {
-                        if (detail.confirm == '2' && detail.transferReturnFlag != '1') {
+                        if (detail.confirm == '2' && detail.transferFlag != '1') {
                             extendDetailUuids.push(detail.uuid);
                             hasDetail = true;
                         }
@@ -333,6 +333,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
                             $scope.updateMasterStateByReturnDetails(item);
                         }
                     });
+
                     $scope.disableBatchMenuButtons();
                     $scope.getReturnOrderMasterCount();
                     $scope.showInfo('产品销售退货单抛转成功！');
@@ -353,11 +354,11 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
             var extendDetailUuids = [];
             angular.forEach(item.detailList, function (detail) {
                 if (bApplyAll === true) {
-                    if (detail.confirm == '2' && detail.transferReturnFlag != '1') {
+                    if (detail.confirm == '2' && detail.transferFlag != '1') {
                         extendDetailUuids.push(detail.uuid);
                     }
                 } else {
-                    if (detail.confirm == '2' && detail.transferReturnFlag != '1' && detail.selected == true) {
+                    if (detail.confirm == '2' && detail.transferFlag != '1' && detail.selected == true) {
                         extendDetailUuids.push(detail.uuid);
                     }
                 }
@@ -389,7 +390,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
         $scope.showConfirm('确认抛转吗？', '', function () {
             // PsoOrderReturnDetail.transfer(item.uuid, detail.uuid).success(function () {
             PsoOrderReturnExtendDetail2.transfer(item.uuid, [ detail.uuid ]).success(function () {
-                detail.transferReturnFlag = '1';
+                detail.transferFlag = '1';
                 detail.selected = false;
                 $scope.updateMasterStateByReturnDetails(item);
                 $scope.disableBatchMenuButtons();
@@ -428,8 +429,8 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
             if (detail.confirm == Constant.CONFIRM[1].value) {
                 confirm = detail.confirm;
             }
-            if (detail.transferReturnFlag == Constant.TRANSFER_PSO_FLAG[2].value) {
-                transferPsoFlag = detail.transferReturnFlag;
+            if (detail.transferFlag == Constant.TRANSFER_PSO_FLAG[2].value) {
+                transferPsoFlag = detail.transferFlag;
             }
             returnAmount += detail.originalReturnAmount;
         });
@@ -535,17 +536,17 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
                 //alert(detail.selectedRef);
                 if (detail.selectedRef) {
                     selectedCount++;
-                    if (confirm == '') {
+                    if (!confirm) {
                         confirm = detail.confirm;
                     } else {
                         if (confirm != detail.confirm) {
                             diffConfirm = true;
                         }
                     }
-                    if (transfer == '') {
-                        transfer = detail.transferReturnFlag;
+                    if (!transfer) {
+                        transfer = detail.transferFlag;
                     } else {
-                        if (transfer != detail.transferReturnFlag) {
+                        if (transfer != detail.transferFlag) {
                             diffTransfer = true;
                         }
                     }
