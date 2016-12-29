@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('ShipGoodsManagementController', function ($scope,$mdDialog,LogisticsDetailRelationsService,SalesOrderMaster,Constant) {
+angular.module('IOne-Production').controller('ShipGoodsManagementController', function ($scope,$mdDialog,LogisticsDetailRelationsService,SalesOrderMaster,TaoBaoAdapterService,Constant) {
     $scope.Constant = Constant;
     $scope.isSelectedAll = false;
     $scope.queryConditions = {
@@ -52,6 +52,15 @@ angular.module('IOne-Production').controller('ShipGoodsManagementController', fu
             dtl.isSelected = $scope.isSelectedAll;
         });
     }
+
+    $scope.shipGoods = function(){
+        angular.forEach($scope.logisticsDetailRelations, function(dtl, key) {
+            if(dtl.isSelected){
+                console.log("需要被發貨的單 ",dtl.orderId);
+            }
+        });
+    }
+
     function init(){
         $scope.queryAll();
     }
