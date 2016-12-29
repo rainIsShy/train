@@ -246,7 +246,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
                 }
             });
 
-            if (extendDetailUuids) {
+            if (extendDetailUuids.length) {
                 // PsoOrderReturnDetail.confirm(item.uuid, detailUuids, confirmVal).success(function (data) {
                 PsoOrderReturnExtendDetail2.confirm(item.uuid, extendDetailUuids, confirmVal).success(function (data) {
                     $scope.updateDetailsConfirmState(item.detailList, data);
@@ -259,7 +259,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
                     $scope.showError('产品销售退货单' + item.no + response.message);
                 });
             } else {
-                $scope.showWarn("请选择需要" + action + "的商品！");
+                $scope.showWarn("没有可" + action + "的商品！");
             }
         });
     };
