@@ -5,23 +5,16 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('ShipGoodsManagementController', function ($scope,$mdDialog,LogisticsDetailRelationsService) {
+angular.module('IOne-Production').controller('ShipGoodsManagementController', function ($scope,$mdDialog,LogisticsDetailRelationsService,SalesOrderMaster,Constant) {
+    $scope.Constant = Constant;
+    $scope.isSelectedAll = false;
     $scope.queryConditions = {
         sizePerPage: 10,
         currentPage: 0,
         totalPage: 0,
         totalElements: 0,
     };
-    $scope.tableColumns = [
-        {name:"supplierName"    ,description: "物流公司" },
-        {name:"orderId"         ,description: "订单号" },
-        {name:"receiveName"     ,description: "收货人" },
-        {name:"receiveAddress"  ,description: "发货地址" },
-        {name:"receivePhone"    ,description: "联系电话" },
-        {name:"confirm"         ,description: "发货状态" },
-        {name:"psoOrderConfirm" ,description: "预订单审核" },
-        {name:"psoOrderTransfer",description: "预订单抛转" },
-    ];
+
     $scope.logisticsDetailRelations = [] ;
     $scope.queryAll = function(){
         LogisticsDetailRelationsService.getAll($scope.queryConditions).then(
@@ -29,12 +22,35 @@ angular.module('IOne-Production').controller('ShipGoodsManagementController', fu
                $scope.queryConditions.totalPage = response.data.totalPages;
                $scope.queryConditions.totalElements = response.data.totalElements;
                $scope.logisticsDetailRelations =  response.data.content;
+               fetchPsoOrder($scope.logisticsDetailRelations);
                console.log(response);
            },
            function () {
                $scope.showError("服務存取失敗!");
            }
         );
+        function fetchPsoOrder(logisticsDetailRelations){
+            angular.forEach(logisticsDetailRelations, function(dtl, key) {
+              dtl.isSelected = false;
+              var orderId = dtl.orderId;
+              SalesOrderMaster.getAll(10,0,'' ,'','' ,null , orderId, null, null, null, null).then(
+                  function (response) {
+                      dtl.psoOrderConfirm = response.data.content[0].confirm;
+                      dtl.psoOrderTransfer = response.data.content[0].transferPsoFlag
+                  },
+                  function () {
+                      $scope.showError("服務存取失敗!");
+                  }
+               );
+
+            });
+        }
+    }
+
+    $scope.selectAll = function(){
+        angular.forEach($scope.logisticsDetailRelations, function(dtl, key) {
+            dtl.isSelected = $scope.isSelectedAll;
+        });
     }
     function init(){
         $scope.queryAll();
