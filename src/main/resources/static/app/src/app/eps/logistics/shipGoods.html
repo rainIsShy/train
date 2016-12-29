@@ -10,11 +10,11 @@
         </md-input-container>
         <md-input-container>
             <label>发货起始日期：</label>
-            <input ng-model="queryConditions.receiptDateFrom"/>
+            <input type="date" ng-model="queryConditions.receiptDateFrom"/>
         </md-input-container>
         <md-input-container>
             <label>发货截止日期：</label>
-            <input ng-model="queryConditions.receiptDateTo"/>
+            <input type="date" ng-model="queryConditions.receiptDateTo"/>
         </md-input-container>
     </div>
     <div layout="row" layout-md="column" layout-sm="column">
@@ -24,8 +24,10 @@
         </md-input-container>
         <md-input-container>
             <label>发货状态：</label>
-            <input ng-model="queryConditions.confirm"/>
         </md-input-container>
+        <md-select placeholder="" ng-model="queryConditions.confirm" class="select">
+            <md-option ng-repeat="(key, value) in Constant.CONFIRM" ng-value="value.value">{{value.name}}</md-option>
+        </md-select>
         <md-input-container>
             <label>物流公司：</label>
             <input ng-model="queryConditions.supplierName"/>
@@ -37,7 +39,7 @@
     <div layout="row" layout-md="column" layout-sm="column">
         <span flex></span>
         <md-button class="md-raised" layout-align="end center"
-                   aria-label="查询"> &nbsp;查询
+                   aria-label="查询" ng-click="queryAll()"> &nbsp;查询
         </md-button>
         <md-button class="md-raised" layout-align="end center"
                    aria-label="EXCEl导入"> &nbsp;EXCEl导入

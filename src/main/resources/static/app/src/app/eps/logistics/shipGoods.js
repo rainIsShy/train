@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('ShipGoodsManagementController', function ($scope,$mdDialog,LogisticsDetailRelationsService,SalesOrderMaster,TaoBaoAdapterService,Constant) {
+angular.module('IOne-Production').controller('ShipGoodsManagementController', function ($scope,$mdDialog,$filter,LogisticsDetailRelationsService,SalesOrderMaster,TaoBaoAdapterService,Constant) {
     $scope.Constant = Constant;
     $scope.isSelectedAll = false;
     $scope.queryConditions = {
@@ -14,16 +14,20 @@ angular.module('IOne-Production').controller('ShipGoodsManagementController', fu
         totalPage: 0,
         totalElements: 0,
     };
-
     $scope.logisticsDetailRelations = [] ;
     $scope.queryAll = function(){
+         angular.forEach($scope.queryConditions, function (value, key) {
+             if (value instanceof Date)$scope.queryConditions[key] = $filter('date')(value, "yyyy-MM-dd");
+         });
+        $scope.queryConditions.status = $scope.Constant.STATUS[1].value ;
+        $scope.queryConditions.size = $scope.queryConditions.sizePerPage;
+        $scope.queryConditions.page = $scope.queryConditions.currentPage;
         LogisticsDetailRelationsService.getAll($scope.queryConditions).then(
            function (response) {
                $scope.queryConditions.totalPage = response.data.totalPages;
                $scope.queryConditions.totalElements = response.data.totalElements;
                $scope.logisticsDetailRelations =  response.data.content;
                fetchPsoOrder($scope.logisticsDetailRelations);
-               console.log(response);
            },
            function () {
                $scope.showError("服務存取失敗!");
