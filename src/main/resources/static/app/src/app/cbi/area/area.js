@@ -281,16 +281,19 @@ angular.module('IOne-Production').controller('MaintenanceController', function (
         }, true);
 
         $scope.selectTmallAndJdArea=function(){
-                MdmArea.getAll().success(function (data) {
-                    $scope.mdmAreaList=data.content;
-                      var secondMdmAreaList=[];
-                        angular.forEach($scope.mdmAreaList,function(data){
-                            if(data.area.uuid==selectedItem.uuid){
-                                secondMdmAreaList.push(data);
-                            }
-                            $scope.secondMdmAreaItem=secondMdmAreaList[0];
-                        });
+            MdmArea.getAll().success(function (data) {
+            $scope.mdmAreaList=data.content;
+              var secondMdmAreaList=[];
+                angular.forEach($scope.mdmAreaList,function(data){
+                    if(data.area.uuid==selectedItem.uuid){
+                        secondMdmAreaList.push(data);
+                    }
+                    $scope.secondMdmAreaItem=secondMdmAreaList[0];
                 });
+            });
+            Area.getOne(selectedItem.uuid).success(function (data) {
+                    $scope.areaList=data;
+            });
         };
 
         $scope.cancelDlg = function(){
@@ -309,6 +312,9 @@ angular.module('IOne-Production').controller('MaintenanceController', function (
 
         $scope.addArea = function(){
          if ($scope.secondMdmAreaItem) {
+            $scope.secondMdmAreaItem.areaUuid=$scope.areaList.uuid;
+            $scope.secondMdmAreaItem.cbiBaseAreaName=$scope.areaList.name;
+            $scope.secondMdmAreaItem.cbiBaseAreaParentUuid=$scope.areaList.parentUuid;
             MdmArea.add($scope.secondMdmAreaItem).success(function () {
                toastr["success"]('添加数据成功。');
             }).error(function () {

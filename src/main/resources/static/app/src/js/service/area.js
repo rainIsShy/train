@@ -4,6 +4,10 @@ angular.module('IOne-Production').service('Area', function ($http, Constant) {
         return $http.get(Constant.BACKEND_BASE + '/areas');
     };
 
+    this.getOne = function (areaUuid) {
+            return $http.get(Constant.BACKEND_BASE + '/areas/' + areaUuid);
+        };
+
     this.getForParent = function (parentUuid) {
         return $http.get(Constant.BACKEND_BASE + '/areas?parentUuid=' + parentUuid);
     };
