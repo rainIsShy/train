@@ -798,6 +798,16 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                 $scope.showError('该单客服人员为空不允许审核。');
                 return;
             }
+
+            if ($scope.checkAuditNeedSelectO2OPrecondition(head)) {
+                $scope.showError('存在需选择O2O门店/经销商的销售单!');
+                return;
+            }
+
+            if ($scope.checkAuditUnNeedSelectO2OPrecondition(head)) {
+                $scope.showError('存在当销售类型为网销订单时不需选择O2O门店/经销商的销售单!');
+                return;
+            }
         }
         $scope.showConfirm('确认审核吗？', '', function () {
             var orderMasterUpdateInput = {
