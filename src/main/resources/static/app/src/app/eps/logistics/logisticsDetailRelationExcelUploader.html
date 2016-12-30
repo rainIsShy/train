@@ -1,0 +1,10 @@
+<md-dialog>
+    <div layout-padding>
+        {{handleMessage}}</br></br>
+        <md-progress-linear md-mode="determinate" value="{{progress.value}}"></md-progress-linear>
+        <div layout="row">
+            <md-button ng-disabled="isStartUpload" ng-click="startUpload()">确认</md-button>
+            <md-button ng-disabled="isNotCloseable" ng-click="closeDialog()">关闭</md-button>
+        </div>
+    </div>
+</md-dialog>'

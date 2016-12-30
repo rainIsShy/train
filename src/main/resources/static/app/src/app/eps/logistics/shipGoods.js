@@ -52,58 +52,54 @@ angular.module('IOne-Production').controller('ShipGoodsManagementController', fu
     }
 
     $scope.addAllByExcel = function(files){
-    if (files.length==0) return;
+        if (files.length==0) return;
 
-    $mdDialog.show({
-        targetEvent: event,
-        template: '<md-dialog>' +
-        '<div layout-padding>'+
-        '{{handleMessage}}</br></br>' +
-        '<md-progress-linear md-mode="determinate" value="{{progress.value}}"></md-progress-linear>'+
-        '<div layout="row">'+
-        '<md-button ng-disabled="isStartUpload" ng-click="startUpload()">确认</md-button>' +
-        '<md-button ng-disabled="isNotCloseable" ng-click="closeDialog()">关闭</md-button>' +
-        '</div>'+
-        '</div>'+
-        '</md-dialog>',
-        locals: {files: files},
-        controller: function DialogController($scope, $mdDialog,files) {
-            var messages = {
-                "confirm" : "确认是否导入EXCEL",
-                "uploading" : "导入中...",
-                "done" : "导入完成",
-            };
-            $scope.handleMessage = messages.confirm;
-            $scope.isStartUpload = false;
-            $scope.isNotCloseable = false;
-            $scope.closeDialog = function () {
-                $mdDialog.hide();
-            }
-            $scope.startUpload = function(){
-                $scope.isStartUpload = true;
-                $scope.isNotCloseable = true;
-                $scope.handleMessage = messages.uploading;
-                $scope.progress = {value: 0};
-                if (files && files.length) {
-                    for (var i = 0; i < files.length; i++) {
-                        var file = files[i];
-                        Upload.upload({
-                            url: Constant.BACKEND_BASE +'/logisticsDetailRelations/excel',
-                            fields: {},
-                            file: file
-                        }).progress(function (evt) {
-                            $scope.progress.value = Math.min(100, parseInt(99.0 * evt.loaded / evt.total));
-                        }).success(function (data) {
-                            $scope.isNotCloseable = false;
-                            $scope.handleMessage = messages.done;
-                        });
-                    }
+        $mdDialog.show({
+            targetEvent: event,
+            templateUrl: 'app/src/app/eps/logistics/logisticsDetailRelationExcelUploader.html',
+            scope: $scope,
+            preserveScope: true,
+            locals: {files: files},
+            controller: DialogController
+            }).then(function () {
+
+            });
+    }
+
+    function DialogController($scope, $mdDialog,files) {
+        var messages = {
+            "confirm" : "确认是否导入EXCEL",
+            "uploading" : "导入中...",
+            "done" : "导入完成",
+        };
+        $scope.handleMessage = messages.confirm;
+        $scope.isStartUpload = false;
+        $scope.isNotCloseable = false;
+        $scope.closeDialog = function () {
+            $mdDialog.hide();
+        }
+        $scope.startUpload = function(){
+            $scope.isStartUpload = true;
+            $scope.isNotCloseable = true;
+            $scope.handleMessage = messages.uploading;
+            $scope.progress = {value: 0};
+            if (files && files.length) {
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    Upload.upload({
+                        url: Constant.BACKEND_BASE +'/logisticsDetailRelations/excel',
+                        fields: {},
+                        file: file
+                    }).progress(function (evt) {
+                        $scope.progress.value = Math.min(100, parseInt(99.0 * evt.loaded / evt.total));
+                    }).success(function (data) {
+                        $scope.isNotCloseable = false;
+                        $scope.handleMessage = messages.done;
+                        $scope.queryAll();
+                    });
                 }
             }
         }
-    }).then(function () {
-
-    });
     }
 
     $scope.selectAll = function(){
