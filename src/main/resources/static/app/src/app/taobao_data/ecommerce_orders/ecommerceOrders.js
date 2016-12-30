@@ -559,15 +559,15 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
 
     $scope.checkAuditNeedSelectO2OPrecondition = function (head) {
         if (
-            (angular.isUndefined(head.orderFlag) || head.orderFlag != null) &&
-            (angular.isUndefined(head.o2oFlag) || head.o2oFlag != null)
+            (angular.isDefined(head.orderFlag) && head.orderFlag != null) &&
+            (angular.isDefined(head.o2oFlag) && head.o2oFlag != null)
         ) {
             if (head.orderFlag == '3' && head.o2oFlag == '3') {
                 if (head.o2oChannel == null) {
                     return true;
                 }
             } else {
-                if (angular.isUndefined(head.orderFlag) || head.orderFlag != null) {
+                if (angular.isDefined(head.orderFlag) && head.orderFlag != null) {
                     if (head.orderFlag == '5') {
                         if (head.o2oChannel == null) {
                             return true;
@@ -585,13 +585,13 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
 
         if (angular.isDefined(head.o2oChannel) && head.o2oChannel != null) {
             if (
-                (angular.isDefined(head.orderFlag) || head.orderFlag != null) &&
-                (angular.isDefined(head.o2oFlag) || head.o2oFlag != null)
+                (angular.isDefined(head.orderFlag) && head.orderFlag != null) &&
+                (angular.isDefined(head.o2oFlag) && head.o2oFlag != null)
             ) {
                 if (head.orderFlag == '3' && head.o2oFlag == '3') {
                     return false;
                 } else {
-                    if (angular.isDefined(head.orderFlag) || head.orderFlag != null) {
+                    if (angular.isDefined(head.orderFlag) && head.orderFlag != null) {
                         if (head.orderFlag == '5') {
                             return false;
                         } else {
