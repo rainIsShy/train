@@ -690,11 +690,11 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                     predictDeliverDate = predictDeliverDate + head.no + "\n\r";
                 }
 
-                if (checkAuditNeedSelectO2OPrecondition(head)) {
+                if ($scope.checkAuditNeedSelectO2OPrecondition(head)) {
                     needSelectO2oChannel = needSelectO2oChannel + head.no + "\n\r";
                 }
 
-                if (checkAuditUnNeedSelectO2OPrecondition(head)) {
+                if ($scope.checkAuditUnNeedSelectO2OPrecondition(head)) {
                     unNeedSelectO2oChannel = unNeedSelectO2oChannel + head.no + "\n\r";
                 }
 
