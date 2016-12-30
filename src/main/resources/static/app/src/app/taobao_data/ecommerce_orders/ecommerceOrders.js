@@ -799,12 +799,12 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                 return;
             }
 
-            if ($scope.checkAuditNeedSelectO2OPrecondition(head)) {
+            if ($scope.checkAuditNeedSelectO2OPrecondition($scope.selectedItem)) {
                 $scope.showError('存在需选择O2O门店/经销商的销售单!');
                 return;
             }
 
-            if ($scope.checkAuditUnNeedSelectO2OPrecondition(head)) {
+            if ($scope.checkAuditUnNeedSelectO2OPrecondition($scope.selectedItem)) {
                 $scope.showError('存在当销售类型为网销订单时不需选择O2O门店/经销商的销售单!');
                 return;
             }
