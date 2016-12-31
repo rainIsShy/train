@@ -159,9 +159,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
         $scope.stopEventPropagation(event);
         item.selectedRef = !item.selected;
 
-        if (item.selected == false
-            || item.selected == undefined
-            || item.selected == null) {
+        if (!item.selected) {
             $scope.selectedItemSize += 1;
             $scope.selectedItemAmount += item.returnAmount;
         } else {
@@ -439,39 +437,6 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
         item.returnAmount = returnAmount;
     };
 
-    /*************************************/
-    // Get all extend details.
-    // $scope.refreshExtendDetailTab = function (selectedItem) {
-    //     var byNo = function () {
-    //         return function (ext1, ext2) {
-    //             var no1, no2;
-    //             if (typeof ext1 === "object" && typeof ext2 === "object" && ext1 && ext2) {
-    //                 no1 = ext1.no;
-    //                 no2 = ext2.no;
-    //                 if (no1 === no2) {
-    //                     return 0;
-    //                 }
-    //                 if (typeof no1 === typeof no2) {
-    //                     return no1 < no2 ? -1 : 1;
-    //                 }
-    //                 return typeof no1 < typeof no2 ? -1 : 1;
-    //             }
-    //         }
-    //     };
-    //
-    //     $scope.selectedItem.extendDetailList = [];
-    //     angular.forEach($scope.selectedItem.detailList, function (orderDetail) {
-    //         orderDetail.selected = false;
-    //         PsoOrderReturnExtendDetail.get(selectedItem.uuid, orderDetail.uuid).success(function (data) {
-    //             if (data.totalElements > 0) {
-    //                 $scope.selectedItem.extendDetailList = $scope.selectedItem.extendDetailList.concat(data.content).sort(byNo());
-    //             }
-    //         }).error(function (response) {
-    //             $scope.showError(response.message);
-    //         });
-    //     });
-    // };
-
     $scope.disableBatchMenuButtons = function () {
         var selectedCount = 0;
         var confirm = '';
@@ -481,40 +446,27 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
         angular.forEach($scope.itemList, function (item) {
             if (item.selectedRef) {
                 selectedCount++;
-                if (confirm == '') {
+                if (!confirm) {
                     confirm = item.confirm;
-                } else {
-                    if (confirm != item.confirm) {
-                        diffConfirm = true;
-                    }
+                } else if (confirm != item.confirm) {
+                    diffConfirm = true;
                 }
-                if (transfer == '') {
+                if (!transfer) {
                     transfer = item.transferPsoFlag;
-                } else {
-                    if (transfer != item.transferPsoFlag) {
-                        diffTransfer = true;
-                    }
+                } else if (transfer != item.transferPsoFlag) {
+                    diffTransfer = true;
                 }
             }
         });
 
-        if (selectedCount == 0) {
+        if (!selectedCount) {
             $scope.disabledBatchConfirm = true;
             $scope.disabledBatchCancelConfirm = true;
             $scope.disabledBatchTransfer = true;
         } else {
-            if (diffConfirm == true) {
-                $scope.disabledBatchConfirm = true;
-                $scope.disabledBatchCancelConfirm = true;
-            } else if (confirm == '2') {
-                $scope.disabledBatchConfirm = true;
-                $scope.disabledBatchCancelConfirm = false;
-            } else {
-                $scope.disabledBatchConfirm = false;
-                $scope.disabledBatchCancelConfirm = true;
-            }
-
-            $scope.disabledBatchTransfer = diffTransfer || transfer == '1';
+            $scope.disabledBatchConfirm = (diffConfirm || confirm == '2' || transfer == '1');
+            $scope.disabledBatchCancelConfirm = (diffConfirm || confirm != '2' || transfer == '1');
+            $scope.disabledBatchTransfer = (diffTransfer || confirm != '2' || transfer == '1');
         }
     };
 
@@ -554,7 +506,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
             });
         }
 
-        if (selectedCount == 0) {
+        if (!selectedCount) {
             $scope.disabledDetailConfirm = true;
             $scope.disabledDetailCancelConfirm = true;
             $scope.disabledDetailTransfer = true;

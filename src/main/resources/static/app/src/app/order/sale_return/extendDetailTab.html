@@ -8,7 +8,7 @@
                              ng-click="selectDetailItemAction($event, extendDetail)"></md-checkbox>
             </div>
             <div flex="33">
-                <div layout-padding>子项次： <span>{{ extendDetail.no }}</span></div>
+                <div layout-padding>项次： <span>{{ extendDetail.no }}</span></div>
                 <div layout-padding>套件商品： <span>{{ extendDetail.parentItem.name }}</span></div>
                 <div layout-padding>商品： <span>{{ extendDetail.item.name }}</span></div>
                 <div layout-padding>商品规格： <span>{{ extendDetail.item.standard }}</span></div>
@@ -24,7 +24,7 @@
             <div flex style="margin-bottom: 45px;">
                 <div layout-padding>销售订单单号： <span>{{ extendDetail.psoOrderMstNo }}</span></div>
                 <div layout-padding>销售订单子项次： <span>{{ extendDetail.psoOrderExtDtlNo }}</span></div>
-                <div layout-padding>销退日期： <span>{{ extendDetail.returnDate }}</span></div>
+                <div layout-padding>销退日期： <span>{{ extendDetail.returnDate | date : 'yyyy-MM-dd' }}</span></div>
                 <div layout-padding>仓库： <span>{{ extendDetail.warehouse.name }}</span></div>
                 <div layout-padding>抛转否： <span>{{ TRANSFER_PSO_FLAG[extendDetail.transferFlag].name }}</span></div>
             </div>

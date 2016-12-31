@@ -276,7 +276,7 @@
                                 <div ng-if="menuDisplayOption['revertConfirm'].display && (menuAuthDataMap[menuDisplayOption['revertConfirm'].uuid] || isAdmin() || !menuDisplayOption['revertConfirm'].uuid) && item.confirm == '2'">
                                     <md-button class="md-fab md-mini"
                                                ng-click="confirmClickAction($event, item, 1, true)"
-                                               ng-disabled="item.transferFlag == '1'">
+                                               ng-disabled="item.transferPsoFlag == '1'">
                                         <span>取审</span>
                                     </md-button>
                                     <!--<md-button class="md-button close-btn" aria-label="More"
@@ -287,7 +287,7 @@
                                 <div ng-if="menuDisplayOption['transfer'].display && (menuAuthDataMap[menuDisplayOption['transfer'].uuid] || isAdmin() || !menuDisplayOption['transfer'].uuid)">
                                     <md-button class="md-fab md-mini"
                                                ng-click="transferClickAction($event, item, true)"
-                                               ng-disabled="item.transferFlag == '1'"
+                                               ng-disabled="item.confirm == '1' || item.transferPsoFlag == '1'"
                                                style="position: relative;left: 15px;">抛转
                                     </md-button>
                                 </div>
@@ -333,7 +333,7 @@
                                 <div layout-padding>套件商品名称: <span>{{ detail.parentItem.name }}</span></div>
                                 <div layout-padding>商品名称: <span>{{ detail.item.name }}</span></div>
                                 <div layout-padding>规格: <span>{{ detail.item.standard }}</span></div>
-                                <div layout-padding>订单单价: <span>￥{{ detail.orderDetail.orderPrice }}</span></div>
+                                <div layout-padding>订单单价: <span>￥{{ detail.orderExtendDetail.orderPrice }}</span></div>
                             </div>
                             <div flex="30">
                                 <div layout-padding>客户名称: <span>{{ item.customer.name }}</span></div>
