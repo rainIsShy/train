@@ -272,10 +272,9 @@ angular.module('IOne-Production').controller('MaintenanceController', function (
 
 
         $scope.selectedItem=selectedItem;
-        $scope.listFilterOption = {
+        listFilterOption = {
            status: Constant.STATUS[1].value,
            confirm: Constant.CONFIRM[2].value,
-           release: Constant.RELEASE[2].value
         };
 
         $scope.$watch('listFilterOption', function () {
