@@ -65,14 +65,16 @@ angular.module('IOne-Production').controller('CBIAreaController', function ($sco
     $scope.selectTmallAndJdArea=function(selectedItem){
         MdmArea.getAll().success(function (data) {
             $scope.mdmAreaList=data.content;
-              var secondMdmAreaList=[];
-                    angular.forEach($scope.mdmAreaList,function(data){
-                        if(data.area.uuid==selectedItem.uuid){
-                            secondMdmAreaList.push(data);
-                        }
-                        $scope.secondMdmAreaList=secondMdmAreaList;
-                    });
+            var secondMdmAreaList=[];
 
+            angular.forEach($scope.mdmAreaList,function(data){
+                if(data.area.uuid==selectedItem.uuid){
+                    secondMdmAreaList.push(data);
+                }
+                $scope.secondMdmAreaList=secondMdmAreaList;
+            });
+        }).error(function () {
+             $scope.showError("查询不成功,信息可能不存在");
         });
     };
 
