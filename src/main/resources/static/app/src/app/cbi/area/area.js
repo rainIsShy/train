@@ -284,13 +284,14 @@ angular.module('IOne-Production').controller('MaintenanceController', function (
         $scope.selectTmallAndJdArea=function(){
             MdmArea.getAll().success(function (data) {
             $scope.mdmAreaList=data.content;
-              var secondMdmAreaList=[];
-                angular.forEach($scope.mdmAreaList,function(data){
-                    if(data.area.uuid==selectedItem.uuid){
-                        secondMdmAreaList.push(data);
-                    }
-                    $scope.secondMdmAreaItem=secondMdmAreaList[0];
-                });
+            var secondMdmAreaList=[];
+
+            angular.forEach($scope.mdmAreaList,function(data){
+                if(data.area.uuid==selectedItem.uuid){
+                    secondMdmAreaList.push(data);
+                }
+                $scope.secondMdmAreaItem=secondMdmAreaList[0];
+            });
             }).error(function(){
                 $scope.showError("地区信息加载失败,请重试");
             });
