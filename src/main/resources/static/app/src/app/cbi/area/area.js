@@ -293,11 +293,13 @@ angular.module('IOne-Production').controller('MaintenanceController', function (
                 $scope.secondMdmAreaItem=secondMdmAreaList[0];
             });
             }).error(function(){
-                $scope.showError("地区信息加载失败,请重试");
+                $scope.showError("电商地区信息加载失败,请重试");
             });
 
-            Area.getOne(selectedItem.uuid).success(function (data) {
+            Area.getOne(selectedItem.uuid).success(function (data){
                     $scope.areaList=data;
+            }).error(function(){
+                $scope.showError("基础地区信息获取失败,请重试");
             });
         };
 
