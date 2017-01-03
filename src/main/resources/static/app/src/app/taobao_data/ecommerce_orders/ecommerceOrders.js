@@ -557,6 +557,57 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
     $scope.effectiveMenuAction = function () {
     };
 
+    $scope.checkAuditNeedSelectO2OPrecondition = function (head) {
+        if (
+            (angular.isDefined(head.orderFlag) && head.orderFlag != null) &&
+            (angular.isDefined(head.o2oFlag) && head.o2oFlag != null)
+        ) {
+            if (head.orderFlag == '3' && head.o2oFlag == '3') {
+                if (head.o2oChannel == null) {
+                    return true;
+                }
+            } else {
+                if (angular.isDefined(head.orderFlag) && head.orderFlag != null) {
+                    if (head.orderFlag == '5') {
+                        if (head.o2oChannel == null) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        return false;
+    };
+
+    $scope.checkAuditUnNeedSelectO2OPrecondition = function (head) {
+
+        if (angular.isDefined(head.o2oChannel) && head.o2oChannel != null) {
+            if (
+                (angular.isDefined(head.orderFlag) && head.orderFlag != null) &&
+                (angular.isDefined(head.o2oFlag) && head.o2oFlag != null)
+            ) {
+                if (head.orderFlag == '3' && head.o2oFlag == '3') {
+                    return false;
+                } else {
+                    if (angular.isDefined(head.orderFlag) && head.orderFlag != null) {
+                        if (head.orderFlag == '5') {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
+
+
+    };
+
     //审核
     $scope.auditMenuAction = function () {
         if ((!$scope.selected || $scope.selected.length == 0) && $scope.selectedTabIndex == 0) { // list
@@ -639,28 +690,36 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                     predictDeliverDate = predictDeliverDate + head.no + "\n\r";
                 }
 
-                if (
-                    (angular.isUndefined(head.orderFlag) || head.orderFlag != null) &&
-                    (angular.isUndefined(head.o2oFlag) || head.o2oFlag != null)
-                ) {
-                    if (head.orderFlag == '3' && head.o2oFlag == '3') {
-                        if (head.o2oChannel == null) {
-                            needSelectO2oChannel = needSelectO2oChannel + head.no + "\n\r";
-                        }
-                    }
-                } else {
-                    if (angular.isUndefined(head.orderFlag) || head.orderFlag != null) {
-                        if (head.orderFlag == '5') {
-                            if (head.o2oChannel == null) {
-                                needSelectO2oChannel = needSelectO2oChannel + head.no + "\n\r";
-                            }
-                        } else {
-                            if (head.o2oChannel != null) {
-                                unNeedSelectO2oChannel = unNeedSelectO2oChannel + head.no + "\n\r";
-                            }
-                        }
-                    }
+                if ($scope.checkAuditNeedSelectO2OPrecondition(head)) {
+                    needSelectO2oChannel = needSelectO2oChannel + head.no + "\n\r";
                 }
+
+                if ($scope.checkAuditUnNeedSelectO2OPrecondition(head)) {
+                    unNeedSelectO2oChannel = unNeedSelectO2oChannel + head.no + "\n\r";
+                }
+
+                // if (
+                //     (angular.isUndefined(head.orderFlag) || head.orderFlag != null) &&
+                //     (angular.isUndefined(head.o2oFlag) || head.o2oFlag != null)
+                // ) {
+                //     if (head.orderFlag == '3' && head.o2oFlag == '3') {
+                //         if (head.o2oChannel == null) {
+                //             needSelectO2oChannel = needSelectO2oChannel + head.no + "\n\r";
+                //         }
+                //     } else {
+                //         if (angular.isUndefined(head.orderFlag) || head.orderFlag != null) {
+                //             if (head.orderFlag == '5') {
+                //                 if (head.o2oChannel == null) {
+                //                     needSelectO2oChannel = needSelectO2oChannel + head.no + "\n\r";
+                //                 }
+                //             } else {
+                //                 if (head.o2oChannel != null) {
+                //                     unNeedSelectO2oChannel = unNeedSelectO2oChannel + head.no + "\n\r";
+                //                 }
+                //             }
+                //         }
+                //     }
+                // }
 
             });
             if (groupUserNos != '') {
@@ -737,6 +796,16 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
             }
             if (angular.isUndefined($scope.selectedItem.groupUser) || $scope.selectedItem.groupUser == null) {
                 $scope.showError('该单客服人员为空不允许审核。');
+                return;
+            }
+
+            if ($scope.checkAuditNeedSelectO2OPrecondition($scope.selectedItem)) {
+                $scope.showError('存在需选择O2O门店/经销商的销售单!');
+                return;
+            }
+
+            if ($scope.checkAuditUnNeedSelectO2OPrecondition($scope.selectedItem)) {
+                $scope.showError('存在当销售类型为网销订单时不需选择O2O门店/经销商的销售单!');
                 return;
             }
         }
