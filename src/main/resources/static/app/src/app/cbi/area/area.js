@@ -292,6 +292,8 @@ angular.module('IOne-Production').controller('MaintenanceController', function (
                     }
                     $scope.secondMdmAreaItem=secondMdmAreaList[0];
                 });
+            }).error(function(){
+                $scope.showError("地区信息加载失败,请重试");
             });
             Area.getOne(selectedItem.uuid).success(function (data) {
                     $scope.areaList=data;
