@@ -171,7 +171,7 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
                 IoneAdapterService.transferIoneAdapter("/psoDeliverOrderSyncTask", param, $scope, function (response) {
                     var tmpCount = addResponse(response.updateOgbCount, response.insertOgbCount);
                     var orderExtCount = addResponse(response.updatePsoOrderExtDtlCount, response.insertPsoOrderExtDtlCount);
-                    $scope.showInfo('ERP同步到 TIPTOP_OGB_FILE，共 ' + tmpCount + '笔数据同步成功!\n TIPTOP_OGB_FILE，共 ' + response.updateStatusCount + '笔数据失效!\n TIPTOP_OGB_FILE 同步到 INV_INVENTORY_DTL，共 ' + orderExtCount + '笔数据同步成功!');
+                    $scope.showInfo('ERP同步到 TIPTOP_OGB_FILE，共 ' + tmpCount + '笔数据同步成功!\n TIPTOP_OGB_FILE，共 ' + response.updateStatusCount + '笔数据失效!\n TIPTOP_OGB_FILE 同步到 PSO_DELIVER_ORDER_EXT_DTL，共 ' + orderExtCount + '笔数据同步成功!');
                     $scope.logining = false;
                 }).error(function (errResp) {
                     $scope.logining = false;

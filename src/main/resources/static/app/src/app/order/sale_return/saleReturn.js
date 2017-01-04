@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('SaleOrderReturnController', function ($scope, $q, PsoOrderReturnMaster, PsoOrderReturnDetail, PsoOrderReturnExtendDetail, IoneAdapterService, Constant, $mdDialog) {
+angular.module('IOne-Production').controller('SaleOrderReturnController', function ($scope, $q, PsoOrderReturnMaster, PsoOrderReturnExtendDetail2, Constant) {
     $scope.selectedItemSize = 0;
     $scope.selectedItemAmount = 0;
     $scope.pageOption = {
@@ -73,7 +73,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
     }, true);
 
     $scope.queryEnter = function (e) {
-        if (e.keyCode === 13) {
+        if (e.keyCode === 13) { // Enter
             $scope.pageOption.currentPage = 0;
             $scope.pageOption.totalPage = 0;
             $scope.pageOption.totalElements = 0;
@@ -96,9 +96,9 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
     $scope.showDetailPanelAction = function (item) {
         item.selectAllDetails = false;
         $scope.selectedItem = item;
-        PsoOrderReturnDetail.get($scope.selectedItem.uuid).success(function (data) {
+        PsoOrderReturnExtendDetail2.get($scope.selectedItem.uuid).success(function (data) {
             $scope.selectedItem.detailList = data.content;
-            $scope.refreshExtendDetailTab($scope.selectedItem);
+            // $scope.refreshExtendDetailTab($scope.selectedItem);
         }).error(function (response) {
             $scope.showError(response.message);
         });
@@ -117,11 +117,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
      */
     $scope.selectAllDetails = function (item) {
         angular.forEach(item.detailList, function (detail) {
-            if (item.selectAllDetails) {
-                detail.selected = true;
-            } else {
-                detail.selected = false;
-            }
+            detail.selected = item.selectAllDetails;
             detail.selectedRef = detail.selected;
         });
         $scope.disableDetailMenuButtons();
@@ -146,12 +142,10 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
      */
     $scope.attachDetailList = function (item) {
         item.showMorePanel = !item.showMorePanel;
-        PsoOrderReturnDetail.get(item.uuid).success(function (data) {
+        PsoOrderReturnExtendDetail2.get(item.uuid).success(function (data) {
             item.detailList = data.content;
             $scope.updateMasterStateByReturnDetails(item); //根据退货单身计算总价、审核状态，抛转状态
-        })/*.error(function (response) {
-         $scope.showError(response.message);
-         })*/;
+        });
     };
 
     /**
@@ -165,9 +159,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
         $scope.stopEventPropagation(event);
         item.selectedRef = !item.selected;
 
-        if (item.selected == false
-            || item.selected == undefined
-            || item.selected == null) {
+        if (!item.selected) {
             $scope.selectedItemSize += 1;
             $scope.selectedItemAmount += item.returnAmount;
         } else {
@@ -188,7 +180,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
 
         var action = confirmVal == 1 ? "取消审核" : "审核";
         $scope.showConfirm('确认' + action + '吗', '', function () {
-            var detailUuids = '';
+            var extendDetailUuids = [];
             var hasSelectedItems = false;
             angular.forEach($scope.itemList, function (item) {
                 if (item.selected) {
@@ -196,8 +188,8 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
                     hasSelectedItems = true;
                     angular.forEach(item.detailList, function (detail) {
                         if (detail.confirm != confirmVal) {
-                            if (confirmVal != 1 || detail.transferReturnFlag != 1) { // 已抛转不能取消审核
-                                detailUuids += (detailUuids ? ',' : '') + detail.uuid;
+                            if (confirmVal != 1 || detail.transferFlag != 1) { // 已抛转不能取消审核
+                                extendDetailUuids.push(detail.uuid);
                                 hasDetail = true;
                             }
                         }
@@ -209,7 +201,8 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
             });
 
             if (hasSelectedItems) {
-                PsoOrderReturnDetail.confirm('batch', detailUuids, confirmVal).success(function (data) {
+                // PsoOrderReturnDetail.confirm('batch', detailUuids, confirmVal).success(function (data) {
+                PsoOrderReturnExtendDetail2.confirm('_batch', extendDetailUuids, confirmVal).success(function (data) {
                     angular.forEach($scope.itemList, function (item) {
                         if (item.selected) {
                             $scope.updateDetailsConfirmState(item.detailList, data);
@@ -234,25 +227,26 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
 
         var action = confirmVal == 1 ? "取消审核" : "审核";
         $scope.showConfirm('确认' + action + '吗？', '', function () {
-            var detailUuids = "";
+            var extendDetailUuids = [];
             angular.forEach(item.detailList, function (detail) {
                 if (bApplyAll) {
                     if (detail.confirm != confirmVal) {
-                        if (!(confirmVal == 1 && detail.transferReturnFlag == '1')) { //已抛转不能取消审核
-                            detailUuids += detail.uuid + ",";
+                        if (!(confirmVal == 1 && detail.transferFlag == '1')) { //已抛转不能取消审核
+                            extendDetailUuids.push(detail.uuid);
                         }
                     }
                 } else {
                     if (detail.confirm != confirmVal && detail.selected == true) {
-                        if (!(confirmVal == 1 && detail.transferReturnFlag == '1')) { //已抛转不能取消审核
-                            detailUuids += detail.uuid + ",";
+                        if (!(confirmVal == 1 && detail.transferFlag == '1')) { //已抛转不能取消审核
+                            extendDetailUuids.push(detail.uuid);
                         }
                     }
                 }
             });
 
-            if (detailUuids) {
-                PsoOrderReturnDetail.confirm(item.uuid, detailUuids, confirmVal).success(function (data) {
+            if (extendDetailUuids.length) {
+                // PsoOrderReturnDetail.confirm(item.uuid, detailUuids, confirmVal).success(function (data) {
+                PsoOrderReturnExtendDetail2.confirm(item.uuid, extendDetailUuids, confirmVal).success(function (data) {
                     $scope.updateDetailsConfirmState(item.detailList, data);
                     $scope.updateMasterStateByReturnDetails(item);
                     $scope.showInfo('产品销售退货单' + action + '成功！');
@@ -263,7 +257,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
                     $scope.showError('产品销售退货单' + item.no + response.message);
                 });
             } else {
-                $scope.showWarn("请选择需要" + action + "的商品！");
+                $scope.showWarn("没有可" + action + "的商品！");
             }
         });
     };
@@ -277,7 +271,8 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
         }
 
         $scope.showConfirm('确认' + action + '吗？', '', function () {
-            PsoOrderReturnDetail.confirm(item.uuid, detail.uuid, confirmVal).success(function (data) {
+            // PsoOrderReturnDetail.confirm(item.uuid, detail.uuid, confirmVal).success(function () {
+            PsoOrderReturnExtendDetail2.confirm(item.uuid, [ detail.uuid ], confirmVal).success(function () {
                 detail.confirm = confirmVal;
                 $scope.updateMasterStateByReturnDetails(item);
                 $scope.disableBatchMenuButtons();
@@ -295,7 +290,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
             angular.forEach(responseDetails, function (responseDetail) {
                 if (detail.uuid == responseDetail.uuid) {
                     detail.confirm = responseDetail.confirm;
-                    detail.transferReturnFlag = responseDetail.transferReturnFlag;
+                    detail.transferFlag = responseDetail.transferFlag;
                 }
             });
         });
@@ -310,15 +305,15 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
         }
 
         $scope.showConfirm('确认抛转吗?', '', function () {
-            var detailUuids = '';
+            var extendDetailUuids = [];
             var hasSelectedItems = false, hasDetail = false;
             angular.forEach($scope.itemList, function (item) {
                 if (item.selected) {
                     hasSelectedItems = true;
                     hasDetail = false;
                     angular.forEach(item.detailList, function (detail) {
-                        if (detail.confirm == '2' && detail.transferReturnFlag != '1') {
-                            detailUuids += (detailUuids ? ',' : '') + detail.uuid;
+                        if (detail.confirm == '2' && detail.transferFlag != '1') {
+                            extendDetailUuids.push(detail.uuid);
                             hasDetail = true;
                         }
                     });
@@ -328,13 +323,15 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
                 }
             });
             if (hasSelectedItems) {
-                PsoOrderReturnDetail.transfer('batch', detailUuids).success(function (data) {
+                // PsoOrderReturnDetail.transfer('batch', detailUuids).success(function (data) {
+                PsoOrderReturnExtendDetail2.transfer('_batch', extendDetailUuids).success(function (data) {
                     angular.forEach($scope.itemList, function (item) {
                         if (item.selected) {
                             $scope.updateDetailsConfirmState(item.detailList, data);
                             $scope.updateMasterStateByReturnDetails(item);
                         }
                     });
+
                     $scope.disableBatchMenuButtons();
                     $scope.getReturnOrderMasterCount();
                     $scope.showInfo('产品销售退货单抛转成功！');
@@ -352,21 +349,22 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
         console.info('transfer...');
 
         $scope.showConfirm('确认抛转吗？', '', function () {
-            var detailUuids = "";
+            var extendDetailUuids = [];
             angular.forEach(item.detailList, function (detail) {
                 if (bApplyAll === true) {
-                    if (detail.confirm == '2' && detail.transferReturnFlag != '1') {
-                        detailUuids += detail.uuid + ",";
+                    if (detail.confirm == '2' && detail.transferFlag != '1') {
+                        extendDetailUuids.push(detail.uuid);
                     }
                 } else {
-                    if (detail.confirm == '2' && detail.transferReturnFlag != '1' && detail.selected == true) {
-                        detailUuids += detail.uuid + ",";
+                    if (detail.confirm == '2' && detail.transferFlag != '1' && detail.selected == true) {
+                        extendDetailUuids.push(detail.uuid);
                     }
                 }
             });
 
-            if (detailUuids != "") {
-                PsoOrderReturnDetail.transfer(item.uuid, detailUuids).success(function (data) {
+            if (extendDetailUuids.length) {
+                // PsoOrderReturnDetail.transfer(item.uuid, detailUuids).success(function (data) {
+                PsoOrderReturnExtendDetail2.transfer(item.uuid, extendDetailUuids).success(function (data) {
                     $scope.resetDetailCheckBoxes(item);
                     $scope.updateDetailsConfirmState(item.detailList, data);
                     $scope.updateMasterStateByReturnDetails(item);
@@ -388,8 +386,9 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
         console.info('transfer...');
 
         $scope.showConfirm('确认抛转吗？', '', function () {
-            PsoOrderReturnDetail.transfer(item.uuid, detail.uuid).success(function (data) {
-                detail.transferReturnFlag = '1';
+            // PsoOrderReturnDetail.transfer(item.uuid, detail.uuid).success(function () {
+            PsoOrderReturnExtendDetail2.transfer(item.uuid, [ detail.uuid ]).success(function () {
+                detail.transferFlag = '1';
                 detail.selected = false;
                 $scope.updateMasterStateByReturnDetails(item);
                 $scope.disableBatchMenuButtons();
@@ -404,11 +403,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
 
     $scope.selectAllAction = function () {
         angular.forEach($scope.itemList, function (item) {
-            if ($scope.selectAllFlag) {
-                item.selected = true;
-            } else {
-                item.selected = false;
-            }
+            item.selected = $scope.selectAllFlag;
             item.selectedRef = item.selected;
         });
 
@@ -432,8 +427,8 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
             if (detail.confirm == Constant.CONFIRM[1].value) {
                 confirm = detail.confirm;
             }
-            if (detail.transferReturnFlag == Constant.TRANSFER_PSO_FLAG[2].value) {
-                transferPsoFlag = detail.transferReturnFlag;
+            if (detail.transferFlag == Constant.TRANSFER_PSO_FLAG[2].value) {
+                transferPsoFlag = detail.transferFlag;
             }
             returnAmount += detail.originalReturnAmount;
         });
@@ -442,88 +437,36 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
         item.returnAmount = returnAmount;
     };
 
-    /*************************************/
-    // Get all extend details.
-    $scope.refreshExtendDetailTab = function (selectedItem) {
-        var byNo = function () {
-            return function (ext1, ext2) {
-                var no1, no2;
-                if (typeof ext1 === "object" && typeof ext2 === "object" && ext1 && ext2) {
-                    no1 = ext1.no;
-                    no2 = ext2.no;
-                    if (no1 === no2) {
-                        return 0;
-                    }
-                    if (typeof no1 === typeof no2) {
-                        return no1 < no2 ? -1 : 1;
-                    }
-                    return typeof no1 < typeof no2 ? -1 : 1;
-                }
-            }
-        };
-
-        $scope.selectedItem.extendDetailList = [];
-        angular.forEach($scope.selectedItem.detailList, function (orderDetail, index) {
-            orderDetail.selected = false;
-            PsoOrderReturnExtendDetail.get(selectedItem.uuid, orderDetail.uuid).success(function (data) {
-                if (data.totalElements > 0) {
-                    $scope.selectedItem.extendDetailList = $scope.selectedItem.extendDetailList.concat(data.content).sort(byNo());
-                }
-            }).error(function (response) {
-                $scope.showError(response.message);
-            });
-        });
-    };
-
     $scope.disableBatchMenuButtons = function () {
         var selectedCount = 0;
         var confirm = '';
         var transfer = '';
         var diffConfirm = false;
         var diffTransfer = false;
-        angular.forEach($scope.itemList, function (item, index) {
+        angular.forEach($scope.itemList, function (item) {
             if (item.selectedRef) {
                 selectedCount++;
-                if (confirm == '') {
+                if (!confirm) {
                     confirm = item.confirm;
-                } else {
-                    if (confirm != item.confirm) {
-                        diffConfirm = true;
-                    }
+                } else if (confirm != item.confirm) {
+                    diffConfirm = true;
                 }
-                if (transfer == '') {
+                if (!transfer) {
                     transfer = item.transferPsoFlag;
-                } else {
-                    if (transfer != item.transferPsoFlag) {
-                        diffTransfer = true;
-                    }
+                } else if (transfer != item.transferPsoFlag) {
+                    diffTransfer = true;
                 }
             }
         });
 
-        if (selectedCount == 0) {
+        if (!selectedCount) {
             $scope.disabledBatchConfirm = true;
             $scope.disabledBatchCancelConfirm = true;
             $scope.disabledBatchTransfer = true;
         } else {
-            if (diffConfirm == true) {
-                $scope.disabledBatchConfirm = true;
-                $scope.disabledBatchCancelConfirm = true;
-            } else if (confirm == '2') {
-                $scope.disabledBatchConfirm = true;
-                $scope.disabledBatchCancelConfirm = false;
-            } else {
-                $scope.disabledBatchConfirm = false;
-                $scope.disabledBatchCancelConfirm = true;
-            }
-
-            if (diffTransfer == true) {
-                $scope.disabledBatchTransfer = true;
-            } else if (transfer == '1') {
-                $scope.disabledBatchTransfer = true;
-            } else {
-                $scope.disabledBatchTransfer = false;
-            }
+            $scope.disabledBatchConfirm = (diffConfirm || confirm == '2' || transfer == '1');
+            $scope.disabledBatchCancelConfirm = (diffConfirm || confirm != '2' || transfer == '1');
+            $scope.disabledBatchTransfer = (diffTransfer || confirm != '2' || transfer == '1');
         }
     };
 
@@ -541,21 +484,21 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
         var diffConfirm = false;
         var diffTransfer = false;
         if ($scope.selectedItem != null) {
-            angular.forEach($scope.selectedItem.detailList, function (detail, index) {
+            angular.forEach($scope.selectedItem.detailList, function (detail) {
                 //alert(detail.selectedRef);
                 if (detail.selectedRef) {
                     selectedCount++;
-                    if (confirm == '') {
+                    if (!confirm) {
                         confirm = detail.confirm;
                     } else {
                         if (confirm != detail.confirm) {
                             diffConfirm = true;
                         }
                     }
-                    if (transfer == '') {
-                        transfer = detail.transferReturnFlag;
+                    if (!transfer) {
+                        transfer = detail.transferFlag;
                     } else {
-                        if (transfer != detail.transferReturnFlag) {
+                        if (transfer != detail.transferFlag) {
                             diffTransfer = true;
                         }
                     }
@@ -563,7 +506,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
             });
         }
 
-        if (selectedCount == 0) {
+        if (!selectedCount) {
             $scope.disabledDetailConfirm = true;
             $scope.disabledDetailCancelConfirm = true;
             $scope.disabledDetailTransfer = true;

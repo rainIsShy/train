@@ -1,21 +1,54 @@
 <div layout="row" layout-wrap style="margin-top: 5px;">
-    <div flex="100" ng-repeat="extendDetail in selectedItem.extendDetailList" ng-click=""
+    <div flex="100" ng-repeat="extendDetail in selectedItem.detailList" ng-click=""
          class="prod-item"
          style="position: relative;padding-bottom: 0px; min-height: 200px;margin-top: 10px;">
         <div layout="row" class="height: 100%;">
+            <div flex="5">
+                <md-checkbox ng-model="extendDetail.selected" aria-label="Checkbox" style="margin-left: 18px;"
+                             ng-click="selectDetailItemAction($event, extendDetail)"></md-checkbox>
+            </div>
             <div flex="33">
-                <div layout-padding>子项次： <span>{{extendDetail.no}}</span></div>
-                <div layout-padding>套件商品： <span>{{extendDetail.parentItem.name}}</span></div>
-                <div layout-padding>商品： <span>{{extendDetail.item.name}}</span></div>
+                <div layout-padding>项次： <span>{{ extendDetail.no }}</span></div>
+                <div layout-padding>套件商品： <span>{{ extendDetail.parentItem.name }}</span></div>
+                <div layout-padding>商品： <span>{{ extendDetail.item.name }}</span></div>
+                <div layout-padding>商品规格： <span>{{ extendDetail.item.standard }}</span></div>
+                <div layout-padding>备注： <span>{{ extendDetail.remark }}</span></div>
             </div>
             <div flex="33" style="margin-bottom: 45px;">
-                <div layout-padding>销退数量： <span>{{extendDetail.returnQuantity}}</span></div>
-                <div layout-padding>税前金额： <span>￥{{extendDetail.originalReturnAmount}}</span></div>
-                <div layout-padding>含税金额： <span>￥{{extendDetail.originalReturnAmountTax}}</span></div>
+                <div layout-padding>销退数量： <span>{{ extendDetail.returnQuantity }}</span></div>
+                <div layout-padding>税前金额： <span>￥{{ extendDetail.originalReturnAmount }}</span></div>
+                <div layout-padding>含税金额： <span>￥{{ extendDetail.originalReturnAmountTax }}</span></div>
+                <div layout-padding>销退原因： <span>{{ extendDetail.returnReason.name }}</span></div>
+                <div layout-padding>审核码： <span>{{ AUDIT[extendDetail.confirm].name }}</span></div>
             </div>
-            <div flex="33" style="margin-bottom: 45px;">
-                <div layout-padding>销售订单单号： <span>{{extendDetail.psoOrderMstNo}}</span></div>
-                <div layout-padding>销售订单子项次： <span>{{extendDetail.psoOrderExtDtlNo}}</span></div>
+            <div flex style="margin-bottom: 45px;">
+                <div layout-padding>销售订单单号： <span>{{ extendDetail.psoOrderMstNo }}</span></div>
+                <div layout-padding>销售订单子项次： <span>{{ extendDetail.psoOrderExtDtlNo }}</span></div>
+                <div layout-padding>销退日期： <span>{{ extendDetail.returnDate | date : 'yyyy-MM-dd' }}</span></div>
+                <div layout-padding>仓库： <span>{{ extendDetail.warehouse.name }}</span></div>
+                <div layout-padding>抛转否： <span>{{ TRANSFER_PSO_FLAG[extendDetail.transferFlag].name }}</span></div>
+            </div>
+        </div>
+        <div layout="row" style="position: absolute; right: -5px; bottom: 2px;">
+            <div ng-if="menuDisplayOption['detail2Confirm'].display && (menuAuthDataMap[menuDisplayOption['detail2Confirm'].uuid] || isAdmin() || !menuDisplayOption['detail2Confirm'].uuid) && extendDetail.confirm != '2'">
+                <md-button ng-show="extendDetail.confirm != '2'" class="md-button close-btn"
+                           ng-click="confirmDetailClickAction($event, selectedItem, '2', extendDetail)">
+                    <span><ng-md-icon icon="visibility" size="20"></ng-md-icon>审核</span>
+                </md-button>
+            </div>
+            <div ng-if="menuDisplayOption['detail2RevertConfirm'].display && (menuAuthDataMap[menuDisplayOption['detail2RevertConfirm'].uuid] || isAdmin() || !menuDisplayOption['detail2RevertConfirm'].uuid) && extendDetail.confirm == '2'">
+                <md-button ng-show="extendDetail.confirm == '2'" class="md-button close-btn"
+                           ng-click="confirmDetailClickAction($event, selectedItem, '1', extendDetail)"
+                           ng-disabled="extendDetail.transferFlag == '1'">
+                    <span><ng-md-icon icon="visibility_off" size="20"></ng-md-icon>取审</span>
+                </md-button>
+            </div>
+            <div ng-if="menuDisplayOption['detail2Transfer'].display && (menuAuthDataMap[menuDisplayOption['detail2Transfer'].uuid] || isAdmin() || !menuDisplayOption['detail2Transfer'].uuid)">
+                <md-button class="md-button close-btn"
+                           ng-click="transferDetailClickAction($event, selectedItem, extendDetail)"
+                           ng-disabled="extendDetail.transferFlag == '1' || extendDetail.confirm != '2'">
+                    <span><ng-md-icon icon="send" size="20"></ng-md-icon>抛转</span>
+                </md-button>
             </div>
         </div>
         <md-divider style="margin-top: 3px"></md-divider>

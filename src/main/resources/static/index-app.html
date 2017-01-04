@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html ng-app="IOne" ng-cloak ng-controller="MainController">
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no"/>
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+    <link rel='stylesheet' href='bower_components/angular/angular-csp.css'>
+    <link rel="stylesheet" href="bower_components/toastr/toastr.min.css">
+    <link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css">
+    <link rel="stylesheet" href="bower_components/angular-material-data-table/dist/md-data-table.min.css">
+    <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.min.css">
+    <link rel="stylesheet" href="bower_components/angular-material-icons/angular-material-icons.css">
+    <link rel="stylesheet" href="app/js/jOrgChart/jquery.jOrgChart.css">
+
+
+    <link rel="stylesheet" href="app/css/style.css">
+    <link rel="stylesheet" href="app/css/auth.css">
+    <link rel="stylesheet" href="app/css/temp.css">
+
+    <title>Industry One</title>
+</head>
+
+<body style="overflow: initial;">
+
+<div layout="column" class="layout-max-width">
+    <div layout="row">
+        <!--div class="gray-border" ng-include=" 'app/src/app/nav.html' " ng-hide="autoLogin"></div-->
+        <div flex layout="column">
+            <!--div layout="row" ng-hide="autoLogin" >
+                <div class="md-toolbar-tools banner-2">
+                    <md-button class="md-icon-button banner-size" ng-show="!lockMenuFlag" ng-click="lockMenu(true)"><i class="fa fa-bars"></i></md-button>
+                    <div ng-cloak ng-show="selectedMainMenu && selectedMenu">{{selectedMainMenu.name}} / {{selectedMenu.name}}</div>
+                    <md-button class="md-icon-button" style="position: absolute; right: 5px;" ng-click="logout()">
+                        <ng-md-icon icon="logout"></ng-md-icon>
+                    </md-button>
+                </div>
+            </div-->
+
+            <div flex ng-view></div>
+        </div>
+    </div>
+
+    <div ng-controller="FooterController"></div>
+</div>
+
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/angular-route/angular-route.min.js"></script>
+<script src="bower_components/angular-resource/angular-resource.min.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+<script src="bower_components/angular-aria/angular-aria.min.js"></script>
+<script src="bower_components/angular-material/angular-material.min.js"></script>
+<script src="bower_components/toastr/toastr.min.js"></script>
+<script src="bower_components/ng-file-upload/ng-file-upload-all.min.js"></script>
+<script src="bower_components/moment/min/moment.min.js"></script>
+<script src="bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
+<script src="bower_components/angular-ui-tree/dist/angular-ui-tree.min.js"></script>
+<script src="bower_components/angular-material-icons/angular-material-icons.min.js"></script>
+
+<script src="app/js/jOrgChart/jquery.jOrgChart.js"></script>
+<script src="app/js/jOrgChart/taffy.js"></script>
+<script src="bower_components/angular-messages/angular-messages.min.js"></script>
+
+<script src="app/src/js/util.js"></script>
+<script src="app/src/js/service/authenticationService.js"></script>
+<script src="app/src/js/directive/menu.js"></script>
+<script src="app/src/js/directive/directive.js"></script>
+<script src="app/src/js/directive/angular-flexslider.js"></script>
+
+<script src="app/src/js/service/auth.js"></script>
+<script src="app/src/js/service/cbi.js"></script>
+<script src="app/src/js/service/pmmOrder.js"></script>
+<script src="app/src/js/service/ocm.js"></script>
+<script src="app/src/js/service/salesSlip.js"></script>
+<script src="app/src/js/service/bookingSlip.js"></script>
+<script src="app/src/js/service/saleOrderChangeService.js"></script>
+<script src="app/src/js/service/bookingSlipChange.js"></script>
+<script src="app/src/js/service/saleOrderReturn.js"></script>
+<script src="app/src/js/service/returnSalesOrders.js"></script>
+<script src="app/src/js/service/receipts.js"></script>
+<script src="app/src/js/service/receipt2s.js"></script>
+<script src="app/src/js/service/production.js"></script>
+
+<script src="app/src/app/inv/app/inventoryDetailApp.js"></script>
+<script src="app/src/js/service/inventoryDetailService.js"></script>
+
+
+<script src="app/src/app.js"></script>
+
+<!-- adapter service -->
+<script src="app/src/js/service/adapter/ErpAdapterService.js"></script>
+<script src="app/src/js/service/adapter/JdEcAdapterService.js"></script>
+<script src="app/src/js/service/adapter/TaobaoEcAdapterService.js"></script>
+<script src="app/src/js/service/adapter/IoneAdapterService.js"></script>
+
+</body>
+</html>
