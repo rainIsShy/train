@@ -4,7 +4,7 @@
         <div layout="column" class="md-padding" ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS">
             <div layout="row" class="main-body border">
                 <div flex class="right-body">
-                    <div layout="row" style="height: 415px; overflow-y:auto;margin: 25px;margin-bottom: 5px;">
+                    <div layout="row" style="height: 410px; overflow-y:auto;margin: 25px;margin-bottom: 5px;">
                         <table flex style="width:100%;">
                             <thead>
                             <tr>
@@ -18,7 +18,7 @@
                             </tr>
                             </thead>
                             <tbody style="overflow-y:auto;     overflow-x: hidden;height:450px;"
-                                   ng-repeat="r in allInventoryDetailData.content | orderBy:['item.no', 'warehouse.no' ]">
+                                   ng-repeat="r in allInventoryDetailData | orderBy:['item.no', 'warehouse.no' ]">
                             <tr ng-class="($even)? 'tr-even':''">
                                 <!--仓库编号 -->
                                 <td class="summary-item-for-purchaseOrder" style="width: auto;">
@@ -50,7 +50,7 @@
                                 </td>
                                 <!--库存单位-->
                                 <td>
-                                    <span><center>{{r.unit}}</center>
+                                    <span><center>{{(r.item.type==1)?r.item.unit: r.unit}}</center>
                                     </span>
                                 </td>
                                 <!--库存数量-->

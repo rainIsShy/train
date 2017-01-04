@@ -5,36 +5,28 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('InventoryDetailAppController', function ($mdDialog, $scope, $location, InventoryDetailService) {
+angular.module('IOne-Production').controller('InventoryDetailAppController', function ($mdDialog, $scope, $location, Production, InventoryDetailService) {
 
     $scope.inventoryDetailQuery = {
         warehouseKeyWord: '',
         itemKeyWord: '',
-        itemFileNo: $location.$$search.itemNo
-    };
-    // 搜索清單數值
-    $scope.pageOption = {
-        sizePerPage: 7, // 报表每页5笔分页显示
-        currentPage: 0,
-        totalPage: 0,
-        totalElements: 0,
-        displayModel: 0  //0 : image + text //1 : image
+        itemUuid: $location.$$search.itemUuid
     };
 
-    $scope.enterKeyDown = function (e) {
-        var keycode = window.event ? e.keyCode : e.which;
-        if (keycode === 13) {
-            $scope.refreshList();
-        }
+    $scope.pageOption = {
+        sizePerPage: 5,
+        currentPage: 0,
+        totalPage: 0,
+        totalElements: 0
     };
 
     $scope.refreshList = function () {
-        InventoryDetailService.getAll(
-            $scope.pageOption.currentPage,
+        Production.getInventory(
             $scope.pageOption.sizePerPage,
-            $scope.inventoryDetailQuery
+            $scope.pageOption.currentPage,
+            $scope.inventoryDetailQuery.itemUuid
         ).success(function (data) {
-            $scope.allInventoryDetailData = data;
+            $scope.allInventoryDetailData = data.content;
             $scope.pageOption.totalPage = data.totalPages;
             $scope.pageOption.totalElements = data.totalElements;
         });

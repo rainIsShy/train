@@ -68,6 +68,16 @@ angular.module('IOne-Production').service('Production', function($http, Constant
     this.deleteImage = function(productionUuid, type) {
         return $http.delete(Constant.BACKEND_BASE + '/items/' + productionUuid + '/images?imageTypes=' + type);
     };
+
+    this.getInventory = function (sizePerPage, currentPage, productionUuid) {
+        var query = {
+            params: angular.merge({}, {
+                size: sizePerPage,
+                page: currentPage
+            })
+        };
+        return $http.get(Constant.BACKEND_BASE + '/items/' + productionUuid + '/inventory', query);
+    };
 });
 
 angular.module('IOne-Production').service('ProductionBom', function($http, Constant) {
