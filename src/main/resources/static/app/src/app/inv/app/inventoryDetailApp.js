@@ -14,7 +14,7 @@ angular.module('IOne-Production').controller('InventoryDetailAppController', fun
     };
     // 搜索清單數值
     $scope.pageOption = {
-        sizePerPage: 5, // 报表每页5笔分页显示
+        sizePerPage: 7, // 报表每页5笔分页显示
         currentPage: 0,
         totalPage: 0,
         totalElements: 0,
@@ -24,11 +24,11 @@ angular.module('IOne-Production').controller('InventoryDetailAppController', fun
     $scope.enterKeyDown = function (e) {
         var keycode = window.event ? e.keyCode : e.which;
         if (keycode === 13) {
-            $scope.queryReport();
+            $scope.refreshList();
         }
     };
 
-    $scope.queryReport = function () {
+    $scope.refreshList = function () {
         InventoryDetailService.getAll(
             $scope.pageOption.currentPage,
             $scope.pageOption.sizePerPage,
@@ -40,7 +40,7 @@ angular.module('IOne-Production').controller('InventoryDetailAppController', fun
         });
     };
 
-    $scope.queryReport();
+    $scope.refreshList();
 
 });
 
