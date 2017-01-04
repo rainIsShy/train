@@ -1,0 +1,61 @@
+<md-dialog style="padding: 30px;">
+    <md-content layout="row">
+        <div layout="row">
+            <form name="copyTemplateForm" novalidate>
+                <div layout="row">
+                    <md-input-container>
+                        <label>淘宝省</label>
+                        <input name="no" type="text" ng-model="secondMdmAreaItem.tbAreaState" required md-maxlength="20">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>淘宝市</label>
+                        <input name="name" type="text" ng-model="secondMdmAreaItem.tbAreaCity" required md-maxlength="20">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>淘宝县</label>
+                        <input name="no" type="text" ng-model="secondMdmAreaItem.tbAreaDistrict" required md-maxlength="20">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>淘宝镇</label>
+                        <input name="name" type="text" ng-model="secondMdmAreaItem.tbAreaTown" required md-maxlength="20">
+                    </md-input-container>
+                    <md-select  ng-model="secondMdmAreaItem.cityType" class="select">
+                        <label>城市类型</label>
+                        <md-option ng-repeat="(key, value) in cityType" ng-value="key">{{value.name}}</md-option>
+                    </md-select>
+                </div>
+                <div layout="row">
+                    <md-input-container>
+                        <label>京东省</label>
+                        <input name="no" type="text" ng-model="secondMdmAreaItem.jdAreaProvince" required md-maxlength="20">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>京东市</label>
+                        <input name="name" type="text" ng-model="secondMdmAreaItem.jdAreaCity" required md-maxlength="20">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>京东区</label>
+                        <input name="no" type="text" ng-model="secondMdmAreaItem.jdAreaCounty" required md-maxlength="20">
+                    </md-input-container>
+                    <md-select  ng-model="secondMdmAreaItem.cityType" class="select">
+                        <label>城市类型</label>
+                        <md-option ng-repeat="(key, value) in cityType" ng-value="key">{{value.name}}</md-option>
+                    </md-select>
+                </div>
+
+                <div layout="row">
+                    <md-button ng-show="secondMdmAreaItem.uuid!=null" ng-click="updateArea()">
+                            <i class="fa fa-check"></i>&nbsp;更新
+                    </md-button>
+                    <md-button ng-show="secondMdmAreaItem.uuid==null" ng-click="addArea()">
+                        <i class="fa fa-plus"></i>&nbsp;添加
+                    </md-button>
+                    <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+                </div>
+            </form>
+
+
+
+        </div>
+    </md-content>
+</md-dialog>

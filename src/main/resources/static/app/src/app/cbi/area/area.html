@@ -21,37 +21,100 @@
                                    ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS">
                             <i class="fa fa-times"></i>&nbsp;{{formMenuDisplayOption['304-quit'].name}}
                         </md-button>
+                        <md-button ng-click="selectTmallAndJdArea(selectedItem)" ng-if="formMenuDisplayOption['304-quit'].display"
+                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                            <i class="fa fa-search ng-scope"></i>&nbsp;查找
+                        </md-button>
+                        <md-button ng-click="maintenanceArea(selectedItem)" ng-if="formMenuDisplayOption['304-quit'].display"
+                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                            <i class="fa fa-plus"></i>&nbsp;维护
+                        </md-button>
                     </div>
                 </md-content>
             </div>
 
+            <div layout="row" layout-align="space-between start" flex>
 
-            <table class="template-data">
-                <tr>
-                    <th ng-repeat="header in headers">
-                        <span class="title">{{header.name}}</span>
-                    </th>
-                </tr>
-                <tr>
-                    <td ng-repeat="header in headers">
-                        <div class="item" ng-repeat="item in selectedTemplateData[header.grade]"
-                             ng-click="nodeDataClickHandler(header.grade, item)"
-                             ng-class="item.selected ? 'selected-item':''">
-                            <span>{{item.name}}</span>
+                <div flex="50">
+                    <table class="template-data">
+                        <tr>
+                            <th ng-repeat="header in headers">
+                                <span class="title">{{header.name}}</span>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td ng-repeat="header in headers">
+                                <div class="item" ng-repeat="item in selectedTemplateData[header.grade]"
+                                     ng-click="nodeDataClickHandler(header.grade, item)"
+                                     ng-class="item.selected ? 'selected-item':''">
+                                    <span>{{item.name}}</span>
                             <span ng-click="deleteNodeData($event, item)"
                                   style="width: 20px;float: right;padding: 0px 5px 0px 5px;color:grey;"
                                   ng-if="ui_status == UI_STATUS.EDIT_UI_STATUS">
                                 <i class="fa fa-times">-</i>
                             </span>
-                        </div>
-                        <div class="item plus" ng-click="addNodeData(header.grade)"
-                             ng-if="ui_status == UI_STATUS.EDIT_UI_STATUS && header.showAddButton">
-                            <i class="fa fa-plus">+</i>
-                        </div>
-                    </td>
-                </tr>
-            </table>
+                                </div>
+                                <div class="item plus" ng-click="addNodeData(header.grade)"
+                                     ng-if="ui_status == UI_STATUS.EDIT_UI_STATUS && header.showAddButton">
+                                    <i class="fa fa-plus">+</i>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div flex>
+                    <table class="template-data">
+                        <tr>
+                            <th ng-repeat="secondHeader in secondHeaders">
+                                <span class="" style="font-size:13px">{{secondHeader.name}}</span>
+                            </th>
+                        </tr>
+                        <tr ng-repeat="secondMdmAreaItem in secondMdmAreaList">
+                            <td class="item"
+                                ng-click="nodeDataClickHandler(header.grade, item)"
+                                ng-class="item.selected ? 'selected-item':''">
+                                <span>{{secondMdmAreaItem.tbAreaState}}</span>
+                            </td>
+                            <td class="item"
+                                ng-click="nodeDataClickHandler(header.grade, item)"
+                                ng-class="item.selected ? 'selected-item':''">
+                                <span>{{secondMdmAreaItem.tbAreaCity}}</span>
+                            </td>
+                            <td class="item"
+                                ng-click="nodeDataClickHandler(header.grade, item)"
+                                ng-class="item.selected ? 'selected-item':''">
+                                <span>{{secondMdmAreaItem.tbAreaDistrict}}</span>
+                            </td>
+                            <td class="item"
+                                ng-click="nodeDataClickHandler(header.grade, item)"
+                                ng-class="item.selected ? 'selected-item':''">
+                                <span>{{secondMdmAreaItem.tbAreaTown}}</span>
+                            </td>
 
+                            <td class="item"
+                                ng-click="nodeDataClickHandler(header.grade, item)"
+                                ng-class="item.selected ? 'selected-item':''">
+                                <span>{{secondMdmAreaItem.jdAreaProvince}}</span>
+                            </td>
+                            <td class="item"
+                                ng-click="nodeDataClickHandler(header.grade, item)"
+                                ng-class="item.selected ? 'selected-item':''">
+                                <span>{{secondMdmAreaItem.jdAreaCity}}</span>
+                            </td>
+                            <td class="item"
+                                ng-click="nodeDataClickHandler(header.grade, item)"
+                                ng-class="item.selected ? 'selected-item':''">
+                                <span>{{secondMdmAreaItem.jdAreaCounty}}</span>
+                            </td>
+                            <td class="item"
+                                ng-click="nodeDataClickHandler(header.grade, item)"
+                                ng-class="item.selected ? 'selected-item':''">
+                                <span>{{secondMdmAreaItem.cityType ==1 ? '直辖市':'普通城市'}}</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
             <div id="templateNodeContainer" class="editor-container">
                 <md-input-container>
                     <label>层级</label>
