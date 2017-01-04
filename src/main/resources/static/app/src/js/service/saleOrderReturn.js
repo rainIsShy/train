@@ -7,33 +7,33 @@ angular.module('IOne-Production').service('PsoOrderReturnMaster', function ($htt
             + '&page=' + page
             + '&onlyReturn=1';
 
-        if (confirm !== '') {
-            url = url + '&returnOrderDetailConfirm=' + confirm;
+        if (confirm) {
+            url = url + '&returnOrderExtendDetailConfirm=' + confirm;
         }
-        if (transferPsoFlag !== '') {
-            url = url + '&returnOrderDetailTransferPsoFlag=' + transferPsoFlag;
+        if (transferPsoFlag) {
+            url = url + '&returnOrderExtendDetailTransferFlag=' + transferPsoFlag;
         }
-        if (status !== '') {
-            url = url + '&returnOrderDetailStatus=' + status;
-        }
-        if (filter.no !== null && filter.no !== undefined) {
+        // if (status !== '') {
+        //     url = url + '&returnOrderDetailStatus=' + status;
+        // }
+        if (filter.no) {
             url = url + '&orderMasterNo=' + filter.no;
         }
-        if (filter.employeeName !== null && filter.employeeName !== undefined) {
+        if (filter.employeeName) {
             url = url + '&employeeName=' + filter.employeeName;
         }
-        if (filter.employeeNo !== null && filter.employeeNo !== undefined) {
+        if (filter.employeeNo) {
             url = url + '&employeeNo=' + filter.employeeNo;
         }
-        if (filter.customerName !== null && filter.customerName !== undefined) {
+        if (filter.customerName) {
             url = url + '&customerName=' + filter.customerName;
         }
-        if (filter.select.startOrderDate !== null && filter.select.startOrderDate !== undefined) {
+        if (filter.select.startOrderDate) {
             var startOrderDate = new Date(filter.select.startOrderDate);
             startOrderDate = moment(startOrderDate).format('YYYY-MM-DD 00:00:00');
             url = url + '&orderDateBegin=' + startOrderDate;
         }
-        if (filter.select.endOrderDate !== null && filter.select.endOrderDate !== undefined) {
+        if (filter.select.endOrderDate) {
             var endOrderDate = new Date(filter.select.endOrderDate);
             endOrderDate = moment(endOrderDate).format('YYYY-MM-DD 23:59:59');
             url = url + '&orderDateEnd=' + endOrderDate;
@@ -106,5 +106,27 @@ angular.module('IOne-Production').service('PsoOrderReturnDetail', function ($htt
 angular.module('IOne-Production').service('PsoOrderReturnExtendDetail', function ($http, Constant) {
     this.get = function (masterUuid, returnDetailUuid) {
         return $http.get(Constant.BACKEND_BASE + '/orders/' + masterUuid + '/returnOrders/' + returnDetailUuid + "/extends");
+    };
+});
+
+angular.module('IOne-Production').service('PsoOrderReturnExtendDetail2', function ($http, Constant) {
+    this.get = function (masterUuid) {
+        return $http.get(Constant.BACKEND_BASE + '/orders/' + masterUuid + '/returnOrdersExtends');
+    };
+
+    this.confirm = function (masterUuid, returnExtendDetailUuids, val) {
+        return $http.patch(Constant.BACKEND_BASE + '/orders/' + masterUuid + '/returnOrdersExtends?action=confirm', {
+            'uuids': returnExtendDetailUuids,
+            'modifyOnly': '1',
+            'confirm': val
+        });
+    };
+
+    this.transfer = function (masterUuid, returnExtendDetailUuids) {
+        return $http.patch(Constant.BACKEND_BASE + '/orders/' + masterUuid + '/returnOrdersExtends?action=transfer', {
+            'uuids': returnExtendDetailUuids,
+            'modifyOnly': '1',
+            'transferReturnFlag': '1'
+        });
     };
 });
