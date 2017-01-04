@@ -537,4 +537,21 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
             $scope.menuList[1].subList[7].suffix = data;
         });
     }
+
+    $scope.transferExtDtlClickAction = function (event, item) {
+        $scope.stopEventPropagation(event);
+        $scope.showConfirm('确认抛转吗？', '', function () {
+            var param = {
+                PSO_ORDER_MST_UUID: item.uuid
+            };
+            IoneAdapterService.transferIoneAdapter("/psoReturnTask", param, $scope, function (response) {
+                $scope.showInfo('共 ' + response.insertCount + ' 笔退货抛转成功!\n');
+                //$scope.showInfo('共 ' + response.insertCount + ' 笔退货抛转成功!\n'+'更新抛转状态'+ response.updateCount + '笔');
+                $scope.logining = false;
+            }).error(function (errResp) {
+                $scope.logining = false;
+                $scope.showError(errResp.message);
+            });
+        });
+    };
 });
