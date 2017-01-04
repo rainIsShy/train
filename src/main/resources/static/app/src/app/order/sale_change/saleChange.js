@@ -685,7 +685,7 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
         var byExtendNo = function () {
             return function (orderChangeExt1, orderChangeExt2) {
                 var no1, no2;
-                if (typeof orderChangeExt1 === "object" && typeof orderChangeExt2 === "object" && orderChangeExt1 && orderChangeExt2) {
+                if (typeof orderChangeExt1 === "object" && typeof orderChangeExt2 === "object" && orderChangeExt1 && orderChangeExt2 && orderChangeExt1.orderExtendDetail && orderChangeExt2.orderExtendDetail ) {
                     no1 = orderChangeExt1.orderExtendDetail.no;
                     no2 = orderChangeExt2.orderExtendDetail.no;
                     if (no1 === no2) {
@@ -706,8 +706,22 @@ angular.module('IOne-Production').controller('SaleOrderChangeController', functi
                     $scope.selectedItem.extendDetailList = $scope.selectedItem.extendDetailList.concat(data.content);
                 }
                 $scope.selectedItem.extendDetailList = $scope.selectedItem.extendDetailList.sort(byExtendNo());
+                resortByOrderExtendDetail($scope.selectedItem.extendDetailList);
             });
         });
+
+        function resortByOrderExtendDetail(extendDetailList){
+            var nonNullOrderExtendDetails = [];
+            var nullOrderExtendDetails = [];
+            for(var i =0 ;i<extendDetailList.length ;i++){
+                if(extendDetailList[i].orderExtendDetail==null){
+                    nullOrderExtendDetails.push(extendDetailList[i]);
+                }else{
+                    nonNullOrderExtendDetails.push(extendDetailList[i]);
+                }
+            }
+            $scope.selectedItem.extendDetailList = nonNullOrderExtendDetails.concat( nullOrderExtendDetails );
+        }
     };
 
     /*$scope.refreshExtendDetail2Tab = function (selectedItem) {
