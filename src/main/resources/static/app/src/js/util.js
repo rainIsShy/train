@@ -551,7 +551,11 @@ RES_UUID_MAP = {
         ALLO: {
             RES_UUID: '7c82a12b-7cf4-4fca-8fa5-20c98e5ec1aa',
             TITLE: '调拨单维护'
-        }
+        },
+        INVENTORY_DETAIL_APP: {
+            RES_UUID: '62e761f5-1bca-4b40-a5d6-87064b4431b1',
+            TITLE: '库存明细查询APP'
+        },
     }
 };
 
@@ -719,7 +723,13 @@ angular.module('IOne-Constant').constant('Constant', {
                     link: '/inv/inventoryDetail',
                     uuid: RES_UUID_MAP.INV.INVENTORY_DETAIL.RES_UUID
                 },
-                {id: '/inv/allo', name: '调拨单维护', link: '/inv/allo', uuid: RES_UUID_MAP.INV.ALLO.RES_UUID}
+                {id: '/inv/allo', name: '调拨单维护', link: '/inv/allo', uuid: RES_UUID_MAP.INV.ALLO.RES_UUID},
+                {
+                    id: '/inventoryDetailApp',
+                    name: '库存明细查询APP',
+                    link: '/inventoryDetailApp',
+                    uuid: RES_UUID_MAP.INV.INVENTORY_DETAIL_APP.RES_UUID
+                },
             ]
         },
         {

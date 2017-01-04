@@ -81,8 +81,18 @@ angular.module('IOne').controller('MainController', function($rootScope, $scope,
                                                              $mdToast, $mdDialog, $window, $http, AuthenticationService, MenuService, ResService, OrderMaster,
                                                              SalesOrderMaster, UserService, PsoOrderChangeMaster, SalesOrderChangeMaster,
                                                              PsoOrderReturnMaster, PSOReturnSalesOrdersMasterService, Receipts, Receipt2s) {
-    ////////////////UPDATE SERVER LINK///////////////////////////
-    Constant.BACKEND_BASE = $rootScope.globals.adapterInfo.i1ServerUrl;
+    //auto login. get the urls from cookies
+    //auto login doesn't invoke the login method in javascirpt which means the adaptorInfo api won't be invoked.
+    if ($cookieStore.get(AUTO_LOGIN_COOKIE)) {
+        var urls = $cookies.get(URLS_COOKIE);
+        if (urls) {
+            urls = Base64.decode(urls);
+
+            if (urls) {
+                $rootScope.globals.adapterInfo = JSON.parse(urls);
+            }
+        }
+    }
 
     ////////////////UPDATE SERVER LINK///////////////////////////
     Constant.BACKEND_BASE = $rootScope.globals.adapterInfo.i1ServerUrl;
@@ -91,6 +101,7 @@ angular.module('IOne').controller('MainController', function($rootScope, $scope,
     $scope.currentUser = $scope.globals.currentUser.username;
     $scope.displayName = $cookieStore.get(DISPLAY_NAME_COOKIE);
     $scope.displayType = $cookieStore.get(DISPLAY_TYPE_COOKIE);
+    $scope.isAutoLogin = $cookieStore.get(AUTO_LOGIN_COOKIE);
 
     ///////////////////////////////////Nav, will refactor to a single controller
     $scope.menuAction = function(mainMenu, menu) {
@@ -348,34 +359,36 @@ angular.module('IOne').controller('MainController', function($rootScope, $scope,
         return $scope.currentUser == 'admin';
     };
 
-    OrderMaster.getOrderMasterCount(Constant.AUDIT[1].value, Constant.STATUS[1].value, Constant.TRANSFER_PSO_FLAG[2].value, RES_UUID_MAP.PSO.ORDER.LIST_PAGE.RES_UUID).success(function (data) {
-        $scope.menuList[1].subList[1].suffix = data;
-    });
-    SalesOrderMaster.getOrderMasterCount(Constant.AUDIT[1].value, Constant.STATUS[1].value, Constant.TRANSFER_PSO_FLAG[2].value, RES_UUID_MAP.PSO.SO.LIST_PAGE.RES_UUID).success(function (data) {
-        $scope.menuList[1].subList[2].suffix = data;
-    });
-    //变更
-    PsoOrderChangeMaster.getOrderMasterCount(Constant.CONFIRM[1].value, Constant.STATUS[1].value, Constant.TRANSFER_PSO_FLAG[2].value, RES_UUID_MAP.PSO.ORDER_CHANGE.RES_UUID).success(function (data) {
-        $scope.menuList[1].subList[4].suffix = data;
-    });
-    SalesOrderChangeMaster.getOrderMasterCount(Constant.CONFIRM[1].value, Constant.STATUS[1].value, Constant.TRANSFER_PSO_FLAG[2].value, RES_UUID_MAP.PSO.SO_CHANGE.RES_UUID).success(function (data) {
-        $scope.menuList[1].subList[6].suffix = data;
-    });
-    //退货
-    PsoOrderReturnMaster.getReturnOrderMasterCount(Constant.CONFIRM[1].value, Constant.STATUS[1].value, Constant.TRANSFER_PSO_FLAG[2].value, RES_UUID_MAP.PSO.ORDER_RETURN.RES_UUID).success(function (data) {
-        $scope.menuList[1].subList[7].suffix = data;
-    });
-    PSOReturnSalesOrdersMasterService.getReturnOrderMasterCount(Constant.AUDIT[1].value, Constant.STATUS[1].value, Constant.TRANSFER_PSO_FLAG[2].value, RES_UUID_MAP.PSO.SO_RETURN.RES_UUID).success(function (data) {
-        $scope.menuList[1].subList[8].suffix = data;
-    });
-    //收退银
-    Receipts.getReceiptOrderMasterCount(Constant.CONFIRM[1].value, RES_UUID_MAP.PSO.ORDER_RECEIPT.RES_UUID).success(function (data) {
-        $scope.menuList[1].subList[9].suffix = data;
-    });
-    Receipt2s.getReceiptOrderMasterCount(Constant.CONFIRM[1].value, RES_UUID_MAP.PSO.SO_RECEIPT.RES_UUID).success(function (data) {
-        $scope.menuList[1].subList[10].suffix = data;
-    });
-
+    //Don't run these counting if it's auto login
+    if ($scope.isAutoLogin != '1') {
+        OrderMaster.getOrderMasterCount(Constant.AUDIT[1].value, Constant.STATUS[1].value, Constant.TRANSFER_PSO_FLAG[2].value, RES_UUID_MAP.PSO.ORDER.LIST_PAGE.RES_UUID).success(function (data) {
+            $scope.menuList[1].subList[1].suffix = data;
+        });
+        SalesOrderMaster.getOrderMasterCount(Constant.AUDIT[1].value, Constant.STATUS[1].value, Constant.TRANSFER_PSO_FLAG[2].value, RES_UUID_MAP.PSO.SO.LIST_PAGE.RES_UUID).success(function (data) {
+            $scope.menuList[1].subList[2].suffix = data;
+        });
+        //变更
+        PsoOrderChangeMaster.getOrderMasterCount(Constant.CONFIRM[1].value, Constant.STATUS[1].value, Constant.TRANSFER_PSO_FLAG[2].value, RES_UUID_MAP.PSO.ORDER_CHANGE.RES_UUID).success(function (data) {
+            $scope.menuList[1].subList[4].suffix = data;
+        });
+        SalesOrderChangeMaster.getOrderMasterCount(Constant.CONFIRM[1].value, Constant.STATUS[1].value, Constant.TRANSFER_PSO_FLAG[2].value, RES_UUID_MAP.PSO.SO_CHANGE.RES_UUID).success(function (data) {
+            $scope.menuList[1].subList[6].suffix = data;
+        });
+        //退货
+        PsoOrderReturnMaster.getReturnOrderMasterCount(Constant.CONFIRM[1].value, Constant.STATUS[1].value, Constant.TRANSFER_PSO_FLAG[2].value, RES_UUID_MAP.PSO.ORDER_RETURN.RES_UUID).success(function (data) {
+            $scope.menuList[1].subList[7].suffix = data;
+        });
+        PSOReturnSalesOrdersMasterService.getReturnOrderMasterCount(Constant.AUDIT[1].value, Constant.STATUS[1].value, Constant.TRANSFER_PSO_FLAG[2].value, RES_UUID_MAP.PSO.SO_RETURN.RES_UUID).success(function (data) {
+            $scope.menuList[1].subList[8].suffix = data;
+        });
+        //收退银
+        Receipts.getReceiptOrderMasterCount(Constant.CONFIRM[1].value, RES_UUID_MAP.PSO.ORDER_RECEIPT.RES_UUID).success(function (data) {
+            $scope.menuList[1].subList[9].suffix = data;
+        });
+        Receipt2s.getReceiptOrderMasterCount(Constant.CONFIRM[1].value, RES_UUID_MAP.PSO.SO_RECEIPT.RES_UUID).success(function (data) {
+            $scope.menuList[1].subList[10].suffix = data;
+        });
+    }
     $scope.stopEventPropagation = function(event) {
         event.stopPropagation();
     };

@@ -1,0 +1,103 @@
+<div class="main-panel">
+    <div flex layout="row">
+        <!--畫面 start -->
+        <div layout="column" class="md-padding" ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS">
+            <div layout="row" class="main-body border">
+                <div flex class="right-body">
+                    <div layout="row" style="height: 410px; overflow-y:auto;margin: 25px;margin-bottom: 5px;">
+                        <table flex style="width:100%;">
+                            <thead>
+                            <tr>
+                                <td align="center" class=" table-head" flex="100">仓库编号</td>
+                                <td align="center" class=" table-head" flex="100">仓库名称</td>
+                                <td align="center" class=" table-head" flex="100">库位</td>
+                                <td align="center" class=" table-head" flex="100">批号</td>
+                                <td align="center" class=" table-head" flex="100">颜色说明</td>
+                                <td align="center" class=" table-head" flex="100">库存单位</td>
+                                <td align="center" class=" table-head" flex="100">库存数量</td>
+                            </tr>
+                            </thead>
+                            <tbody style="overflow-y:auto;     overflow-x: hidden;height:450px;"
+                                   ng-repeat="r in allInventoryDetailData | orderBy:['item.no', 'warehouse.no' ]">
+                            <tr ng-class="($even)? 'tr-even':''">
+                                <!--仓库编号 -->
+                                <td class="summary-item-for-purchaseOrder" style="width: auto;">
+                                <span flex="100" style="position: relative"><center>{{r.warehouse.no}}</center>
+                                </span>
+                                </td>
+                                <!--仓库名称-->
+                                <td>
+                                        <span flex><center>
+                                        {{r.warehouse.name}}</center>
+                                    </span>
+                                </td>
+                                <!--库位-->
+                                <td style="font-size: 14px;"
+                                    layout-align="space-between center">
+                                    <center>
+                                        {{r.storeId}}
+                                    </center>
+                                </td>
+                                <!--批号-->
+                                <td>
+                                    <span><center>{{r.batchNumber }}</center>
+                                    </span>
+                                </td>
+                                <!--颜色说明-->
+                                <td>
+                                    <span><center>{{r.itemRelation.referenceName}}</center>
+                                    </span>
+                                </td>
+                                <!--库存单位-->
+                                <td>
+                                    <span><center>{{(r.item.type==1)?r.item.unit: r.unit}}</center>
+                                    </span>
+                                </td>
+                                <!--库存数量-->
+                                <td>
+                                    <span><center>{{r.inventoryQty}}</center>
+                                    </span>
+                                </td>
+                            </tr>
+                            <!--<md-divider></md-divider>-->
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- status panel-->
+                    <div pagination option="pageOption" callback="refreshList()"></div>
+                </div>
+            </div>
+        </div>
+        <!--畫面 end -->
+    </div>
+</div>
+
+
+<style>
+
+    table tbody tr:nth-child(even) {
+        background-color: #e6ecf8;
+    }
+
+    table thead tr td {
+        background-color: #2f4554;
+        color: #ffffff;
+        text-align: center;
+        font-size: 12pt;
+        font-weight: bold;
+    }
+
+    .md-container {
+        background-color: #ffffff;
+    }
+
+    .tr-even {
+        background-color: #e6ecf8;
+    }
+
+    table tbody tr td {
+        padding: 12px 45px;
+        border-bottom: 1px ridge rgba(127, 143, 164, 0.39);
+        border-right: 0.5px dotted rgba(47, 69, 84, 0.32);
+    }
+</style>
