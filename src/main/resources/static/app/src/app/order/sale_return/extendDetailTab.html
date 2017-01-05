@@ -43,13 +43,13 @@
                     <span><ng-md-icon icon="visibility_off" size="20"></ng-md-icon>取审</span>
                 </md-button>
             </div>
-            <div ng-if="menuDisplayOption['detail2Transfer'].display && (menuAuthDataMap[menuDisplayOption['detail2Transfer'].uuid] || isAdmin() || !menuDisplayOption['detail2Transfer'].uuid)">
+            <!--<div ng-if="menuDisplayOption['detail2Transfer'].display && (menuAuthDataMap[menuDisplayOption['detail2Transfer'].uuid] || isAdmin() || !menuDisplayOption['detail2Transfer'].uuid)">
                 <md-button class="md-button close-btn"
                            ng-click="transferDetailClickAction($event, selectedItem, extendDetail)"
                            ng-disabled="extendDetail.transferFlag == '1' || extendDetail.confirm != '2'">
                     <span><ng-md-icon icon="send" size="20"></ng-md-icon>抛转</span>
                 </md-button>
-            </div>
+            </div>-->
         </div>
         <md-divider style="margin-top: 3px"></md-divider>
     </div>

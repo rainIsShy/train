@@ -549,6 +549,9 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
                 $scope.showInfo(item.no + ' 共 ' + response.insertCount + ' 笔退货抛转成功!\n');
                 $scope.refreshList();
                 $scope.getReturnOrderMasterCount();
+                if($scope.selectedItem){
+                    $scope.showDetailPanelAction($scope.selectedItem);
+                }
                 $scope.logining = false;
             }).error(function (errResp) {
                 $scope.logining = false;
