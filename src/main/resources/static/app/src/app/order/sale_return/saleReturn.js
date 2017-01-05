@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('SaleOrderReturnController', function ($scope, $q, PsoOrderReturnMaster, PsoOrderReturnExtendDetail2, Constant) {
+angular.module('IOne-Production').controller('SaleOrderReturnController', function ($scope, $q, PsoOrderReturnMaster, PsoOrderReturnExtendDetail2, IoneAdapterService, Constant) {
     $scope.selectedItemSize = 0;
     $scope.selectedItemAmount = 0;
     $scope.pageOption = {
@@ -542,16 +542,47 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
         $scope.stopEventPropagation(event);
         $scope.showConfirm('确认抛转吗？', '', function () {
             var param = {
-                PSO_ORDER_MST_UUID: item.uuid
+                PSO_ORDER_MST_UUID: [item.uuid]
             };
+            $scope.logining = true;
             IoneAdapterService.transferIoneAdapter("/psoReturnTask", param, $scope, function (response) {
-                $scope.showInfo('共 ' + response.insertCount + ' 笔退货抛转成功!\n');
-                //$scope.showInfo('共 ' + response.insertCount + ' 笔退货抛转成功!\n'+'更新抛转状态'+ response.updateCount + '笔');
+                $scope.showInfo(item.no + ' 共 ' + response.insertCount + ' 笔退货抛转成功!\n');
+                $scope.refreshList();
+                $scope.getReturnOrderMasterCount();
                 $scope.logining = false;
             }).error(function (errResp) {
                 $scope.logining = false;
-                $scope.showError(errResp.message);
+                $scope.showError(item.no + ' 抛转失败：' + errResp.message);
             });
         });
     };
+
+    $scope.transferAllExtDtlClickAction = function (event) {
+        $scope.stopEventPropagation(event);
+        if ($scope.selectedItemSize == 0) {
+            $scope.showWarn('请先选择记录！');
+            return;
+        }
+        var param = {
+            PSO_ORDER_MST_UUID: []
+        };
+        angular.forEach($scope.itemList, function (item) {
+            if (item.selected) {
+                if (item.confirm != '1' && item.transferPsoFlag != '1') {
+                    param.PSO_ORDER_MST_UUID.push(item.uuid);
+                }
+            }
+        });
+        $scope.logining = true;
+        IoneAdapterService.transferIoneAdapter("/psoReturnTask", param, $scope, function (response) {
+            $scope.showInfo('共 ' + response.insertCount + ' 笔退货抛转成功!\n');
+            $scope.refreshList();
+            $scope.getReturnOrderMasterCount();
+            $scope.logining = false;
+        }).error(function (errResp) {
+            $scope.logining = false;
+            $scope.showError('抛转失败：' + errResp.message);
+        });
+    };
+
 });

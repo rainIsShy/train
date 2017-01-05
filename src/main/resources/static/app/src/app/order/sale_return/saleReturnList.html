@@ -86,7 +86,7 @@
                     <md-menu-item
                             ng-if="menuDisplayOption['batchTransfer'].display && (menuAuthDataMap[menuDisplayOption['batchTransfer'].uuid] || isAdmin() || !menuDisplayOption['batchTransfer'].uuid)">
                         <md-button ng-disabled="disabledBatchTransfer" class="md-button" aria-label="More"
-                                   ng-click="transferAllClickAction($event)">
+                                   ng-click="transferAllExtDtlClickAction($event)">
                             <ng-md-icon icon="send"></ng-md-icon>
                             批量抛转
                         </md-button>
@@ -237,6 +237,11 @@
                     </md-menu-content>
                 </md-menu>-->
             </div>
+
+            <div align="center"><span ng-if="logining">
+                <img style="width: 20px;padding-top: 13px;" src="app/img/spinner.gif"/>抛转中...</span>
+            </div>
+
             <div ng-repeat="item in itemList | orderBy:sortByField"
                  ng-class="selectedItem.no == item.no ? 'selected-item':''">
                 <div class="summary-item">
