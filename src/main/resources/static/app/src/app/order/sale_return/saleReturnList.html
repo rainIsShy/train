@@ -41,10 +41,10 @@
                     <md-menu-item
                             ng-if="menuDisplayOption['detailTransfer'].display && (menuAuthDataMap[menuDisplayOption['detailTransfer'].uuid] || isAdmin() || !menuDisplayOption['detailTransfer'].uuid)">
                         <md-button class="md-button" aria-label="More"
-                                   ng-click="transferClickAction($event, selectedItem, false)"
-                                   ng-disabled="disabledDetailTransfer">
+                                   ng-click="transferExtDtlClickAction($event, selectedItem)"
+                                   ng-disabled="selectedItem.confirm == '1' || selectedItem.transferPsoFlag == '1'">
                             <ng-md-icon icon="lock_open"></ng-md-icon>
-                            抛转已选产品
+                            抛转退货
                         </md-button>
                     </md-menu-item>
                 </md-menu-content>
@@ -86,7 +86,7 @@
                     <md-menu-item
                             ng-if="menuDisplayOption['batchTransfer'].display && (menuAuthDataMap[menuDisplayOption['batchTransfer'].uuid] || isAdmin() || !menuDisplayOption['batchTransfer'].uuid)">
                         <md-button ng-disabled="disabledBatchTransfer" class="md-button" aria-label="More"
-                                   ng-click="transferAllClickAction($event)">
+                                   ng-click="transferAllExtDtlClickAction($event)">
                             <ng-md-icon icon="send"></ng-md-icon>
                             批量抛转
                         </md-button>
@@ -237,6 +237,11 @@
                     </md-menu-content>
                 </md-menu>-->
             </div>
+
+            <div align="center"><span ng-if="logining">
+                <img style="width: 20px;padding-top: 13px;" src="app/img/spinner.gif"/>抛转中...</span>
+            </div>
+
             <div ng-repeat="item in itemList | orderBy:sortByField"
                  ng-class="selectedItem.no == item.no ? 'selected-item':''">
                 <div class="summary-item">
