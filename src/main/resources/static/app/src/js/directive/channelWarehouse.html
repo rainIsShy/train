@@ -1,0 +1,39 @@
+<div layout="column">
+    <div flex style="padding: 20px 0px 0px 0px;" layout="row" layout-md="column" layout-sm="column"
+         layout-align="space-around left"
+         ng-show="ui_status != UI_STATUS.EDIT_UI_STATUS_MODIFY && ui_status != UI_STATUS.EDIT_UI_STATUS_ADD">
+        <div flex="40" layout="row" layout-md="column" layout-sm="column"
+             ng-if="formMenuDisplayOption['611-selectAll'].display">
+            <md-checkbox ng-model="ocmListMenu.selectAll" ng-change="ocmListMenuAction(611, $event)"
+                         aria-label="全选" ng-true-value="true" ng-false-value="false"> &nbsp;{{formMenuDisplayOption['611-selectAll'].name}}
+            </md-checkbox>
+        </div>
+
+        <div flex="15" layout="row" layout-md="column" layout-sm="column"
+             ng-if="formMenuDisplayOption['612-audit'].display && (menuAuthDataMap[formMenuDisplayOption['612-audit'].uuid] || isAdmin() || !formMenuDisplayOption['612-audit'].uuid)">
+            <md-button class="md-raised" ng-click="ocmListMenuAction(612, $event)"
+                       aria-label="默认仓库" ng-disabled="audit_button_disabled == 'N'"> &nbsp;{{formMenuDisplayOption['612-audit'].name}}
+            </md-button>
+        </div>
+        <div flex="15" layout="row" layout-md="column" layout-sm="column"
+             ng-if="formMenuDisplayOption['613-revertAudit'].display && (menuAuthDataMap[formMenuDisplayOption['613-revertAudit'].uuid] || isAdmin() || !formMenuDisplayOption['613-revertAudit'].uuid)">
+            <md-button class="md-raised" ng-click="ocmListMenuAction(613, $event)"
+                       aria-label="取消默认" ng-disabled="revert_audit_button_disabled == 'Y'"> &nbsp;{{formMenuDisplayOption['613-revertAudit'].name}}
+            </md-button>
+        </div>
+        <div flex="15" layout="row" layout-md="column" layout-sm="column"
+             ng-if="formMenuDisplayOption['614-valid'].display && (menuAuthDataMap[formMenuDisplayOption['614-valid'].uuid] || isAdmin() || !formMenuDisplayOption['614-valid'].uuid)">
+            <md-button class="md-raised" ng-click="ocmListMenuAction(614, $event)"
+                       aria-label="有效" ng-disabled="valid_status_button_disabled == 1"> &nbsp;{{formMenuDisplayOption['614-valid'].name}}
+            </md-button>
+        </div>
+
+        <div flex="15" layout="row" layout-md="column" layout-sm="column"
+             ng-if="formMenuDisplayOption['615-invalid'].display && (menuAuthDataMap[formMenuDisplayOption['615-invalid'].uuid] || isAdmin() || !formMenuDisplayOption['615-invalid'].uuid)">
+            <md-button class="md-raised" ng-click="ocmListMenuAction(615, $event)"
+                       aria-label="无效" ng-disabled="invalid_status_button_disabled == 1"> &nbsp;{{formMenuDisplayOption['615-invalid'].name}}
+            </md-button>
+        </div>
+
+    </div>
+</div>
