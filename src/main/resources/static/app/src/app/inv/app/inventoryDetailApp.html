@@ -4,7 +4,7 @@
         <div layout="column" class="md-padding" ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS">
             <div layout="row" class="main-body border">
                 <div flex class="right-body">
-                    <div layout="row" style="height: 410px; overflow-y:auto;margin: 25px;margin-bottom: 5px;">
+                    <div layout="row" style="overflow-y:auto;margin: 25px;">
                         <table flex style="width:100%;">
                             <thead>
                             <tr>
@@ -17,7 +17,7 @@
                                 <td align="center" class=" table-head" flex="100">库存数量</td>
                             </tr>
                             </thead>
-                            <tbody style="overflow-y:auto;     overflow-x: hidden;height:450px;"
+                            <tbody style="overflow-y:auto;  overflow-x: hidden;"
                                    ng-repeat="r in allInventoryDetailData | orderBy:['item.no', 'warehouse.no' ]">
                             <tr ng-class="($even)? 'tr-even':''">
                                 <!--仓库编号 -->
@@ -95,9 +95,18 @@
         background-color: #e6ecf8;
     }
 
+    .table-head {
+        min-width: 120px;
+    }
     table tbody tr td {
-        padding: 12px 45px;
+        width: 100%;
+        padding: 12px 5px;
         border-bottom: 1px ridge rgba(127, 143, 164, 0.39);
         border-right: 0.5px dotted rgba(47, 69, 84, 0.32);
+    }
+
+    .pagination {
+        position: absolute;
+        top: 90%;
     }
 </style>

@@ -77,10 +77,10 @@ angular.module('IOne').run(function($rootScope, $cookieStore, $window, $http) {
  * Main Controller for whole UI as the parent of all sub controllers.
  * All other controllers can share this controller and share data here.
  */
-angular.module('IOne').controller('MainController', function($rootScope, $scope, $mdUtil, $mdSidenav, $location, $timeout, $cookieStore, Constant,
-                                                             $mdToast, $mdDialog, $window, $http, AuthenticationService, MenuService, ResService, OrderMaster,
-                                                             SalesOrderMaster, UserService, PsoOrderChangeMaster, SalesOrderChangeMaster,
-                                                             PsoOrderReturnMaster, PSOReturnSalesOrdersMasterService, Receipts, Receipt2s) {
+angular.module('IOne').controller('MainController', function ($rootScope, $scope, $mdUtil, $mdSidenav, $location, $timeout, $cookies, $cookieStore, Constant,
+                                                              $mdToast, $mdDialog, $window, $http, AuthenticationService, Base64, MenuService, ResService, OrderMaster,
+                                                              SalesOrderMaster, UserService, PsoOrderChangeMaster, SalesOrderChangeMaster,
+                                                              PsoOrderReturnMaster, PSOReturnSalesOrdersMasterService, Receipts, Receipt2s) {
     //auto login. get the urls from cookies
     //auto login doesn't invoke the login method in javascirpt which means the adaptorInfo api won't be invoked.
     if ($cookieStore.get(AUTO_LOGIN_COOKIE)) {

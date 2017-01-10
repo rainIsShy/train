@@ -14,7 +14,7 @@ angular.module('IOne-Production').controller('InventoryDetailAppController', fun
     };
 
     $scope.pageOption = {
-        sizePerPage: 5,
+        sizePerPage: 7,
         currentPage: 0,
         totalPage: 0,
         totalElements: 0
