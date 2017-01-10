@@ -235,11 +235,10 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
         }
 
         if (channelRelation.returnWarehouseFlag == Constant.DEFAULT_WAREHOUSE[0].value) {
-            $scope.audit_button_disabled = "N";
+            $scope.audit_button_disabled = "Y";
         } else {
-            $scope.revert_audit_button_disabled = "Y";
+            $scope.revert_audit_button_disabled = "N";
         }
-        console.log($scope.revert_audit_button_disabled);
     };
 
     $scope.selectAllMenuAction = function () {
@@ -269,7 +268,7 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
                         var ChannelRelationUpdateInput = {
                             status: Constant.STATUS[1].value
                         };
-                        var response = ChannelSeriesRelationService.modify(channelRelation.uuid, ChannelRelationUpdateInput).success(function () {
+                        var response = ChannelWarehouseRelationService.modify(channelRelation.uuid, ChannelRelationUpdateInput).success(function () {
 
                         });
                         promises.push(response);
@@ -338,9 +337,66 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
 
     };
 
+    $scope.auditMenuAction = function () {
+        if ($scope.selected.length == 0) {
+            $scope.showWarn("请选择");
+            return;
+        }
+        if ($scope.selected.length > 1) {
+            $scope.showWarn("请不要选择多个");
+            return;
+        }
+        angular.forEach($scope.channelRelationList.content,function(item){
+           if(item.returnWarehouseFlag=='Y'){
+                $scope.hasReturnWarehouseFlag = true;
+           }
+        });
+        if($scope.hasReturnWarehouseFlag){
+            $scope.showWarn("请将之前的默认仓库取消");
+            return;
+        }
+         $scope.showConfirm('确认修改为默认仓库吗？', '', function () {
+            var promises = [];
+            angular.forEach($scope.selected, function (channelRelation) {
+                var ChannelRelationUpdateInput = {
+                    returnWarehouseFlag: Constant.DEFAULT_WAREHOUSE[0].value
+                };
+                var response = ChannelWarehouseRelationService.modify(channelRelation.uuid, ChannelRelationUpdateInput).success(function () {
 
+                });
+                promises.push(response);
+            });
+            $q.all(promises).then(function () {
+                $scope.showInfo('修改数据成功。');
+                $scope.editItem($scope.selectedItem);
+            })
+         });
+    };
 
+    $scope.revertAuditMenuAction = function () {
+                if ($scope.selected.length > 0) {
+                    if($scope.selected.length > 1){
+                        $scope.showWarn("请不要选择多个");
+                    }else{
+                    $scope.showConfirm('确认取消默认仓库吗？', '', function () {
+                            var promises = [];
+                            angular.forEach($scope.selected, function (channelRelation) {
+                                var ChannelRelationUpdateInput = {
+                                    returnWarehouseFlag: Constant.DEFAULT_WAREHOUSE[1].value
+                                };
+                                var response = ChannelWarehouseRelationService.modify(channelRelation.uuid, ChannelRelationUpdateInput).success(function () {
 
+                                });
+                                promises.push(response);
+                            });
+                            $q.all(promises).then(function () {
+                                $scope.showInfo('修改数据成功。');
+                                $scope.editItem($scope.selectedItem);
+                            })
+                    });
+                }
+                }
+            };
 
     //Save modification.
     $scope.modifyMenuAction = function () {

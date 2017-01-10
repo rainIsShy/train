@@ -12,13 +12,13 @@
         <div flex="15" layout="row" layout-md="column" layout-sm="column"
              ng-if="formMenuDisplayOption['612-audit'].display && (menuAuthDataMap[formMenuDisplayOption['612-audit'].uuid] || isAdmin() || !formMenuDisplayOption['612-audit'].uuid)">
             <md-button class="md-raised" ng-click="ocmListMenuAction(612, $event)"
-                       aria-label="默认仓库" ng-disabled="audit_button_disabled == 'N'"> &nbsp;{{formMenuDisplayOption['612-audit'].name}}
+                       aria-label="默认仓库" ng-disabled="audit_button_disabled == 'Y'"> &nbsp;{{formMenuDisplayOption['612-audit'].name}}
             </md-button>
         </div>
         <div flex="15" layout="row" layout-md="column" layout-sm="column"
              ng-if="formMenuDisplayOption['613-revertAudit'].display && (menuAuthDataMap[formMenuDisplayOption['613-revertAudit'].uuid] || isAdmin() || !formMenuDisplayOption['613-revertAudit'].uuid)">
             <md-button class="md-raised" ng-click="ocmListMenuAction(613, $event)"
-                       aria-label="取消默认" ng-disabled="revert_audit_button_disabled == 'Y'"> &nbsp;{{formMenuDisplayOption['613-revertAudit'].name}}
+                       aria-label="取消默认" ng-disabled="revert_audit_button_disabled == 'N'"> &nbsp;{{formMenuDisplayOption['613-revertAudit'].name}}
             </md-button>
         </div>
         <div flex="15" layout="row" layout-md="column" layout-sm="column"
