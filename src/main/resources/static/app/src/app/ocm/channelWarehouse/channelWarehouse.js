@@ -33,7 +33,7 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
         '304-quit': {display: true, name: '退出编辑', uuid: '63367BAD-6D79-4994-B420-EBFAA30D8357'},
 
         '611-selectAll': {display: true, name: '全选', uuid: ''},
-        '612-audit': {display: true, name: '默认仓库', uuid: '07CE2BF9-3D4A-4290-A53D-A6ACD9B53D89'},
+        '612-audit': {display: true, name: '默认退货仓', uuid: '07CE2BF9-3D4A-4290-A53D-A6ACD9B53D89'},
         '613-revertAudit': {display: true, name: '取消默认', uuid: '539F19A0-66FD-4812-BA22-2D9FE91EA7EE'},
         '614-valid': {display: true, name: '有效', uuid: '9ECF3001-3E5F-41FC-8B54-74FD1CDB7161'},
         '615-invalid': {display: true, name: '无效', uuid: '3F09E969-7653-4F30-9D4C-C3FB8CA31B66'}
@@ -334,16 +334,6 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
             $scope.showWarn("请不要选择多个");
             return;
         }
-        $scope.hasReturnWarehouseFlag = false;
-        angular.forEach($scope.channelRelationList.content,function(item){
-           if(item.returnWarehouseFlag=='Y'){
-                $scope.hasReturnWarehouseFlag = true;
-           }
-        });
-        if($scope.hasReturnWarehouseFlag){
-            $scope.showWarn("请将之前的默认仓库取消");
-            return;
-        }
         $scope.showConfirm('确认修改为默认仓库吗？', '', function () {
             var promises = [];
             angular.forEach($scope.selected, function (channelRelation) {
@@ -430,10 +420,10 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
             });
 
             $q.all(promises).then(function (data) {
-                $scope.showInfo('新增渠道区域信息成功。');
+                $scope.showInfo('新增渠道信息成功。');
                 $scope.editItem($scope.selectedItem);
             }, function (data) {
-                $scope.showInfo('新增渠道区域信息完成。');
+                $scope.showInfo('新增渠道信息完成。');
                 $scope.editItem($scope.selectedItem);
             });
         } else {
@@ -448,7 +438,7 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
 
     $scope.deleteMenuAction = function () {
         if ($scope.selected.length > 0) {
-            $scope.showConfirm('确认删除吗？', '删除的渠道区域信息不可恢复。', function () {
+            $scope.showConfirm('确认删除吗？', '删除的仓库信息不可恢复。', function () {
                 if ($scope.selected) {
                     var promises = [];
                     angular.forEach($scope.selected, function (channelItemInfo) {
