@@ -47,7 +47,7 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
          '603-revertAudit': {display: true, name: '取消审核', uuid: '539F19A0-66FD-4812-BA22-2D9FE91EA7EE'},
          '604-valid': {display: true, name: '有效', uuid: '9ECF3001-3E5F-41FC-8B54-74FD1CDB7161'},
          '605-invalid': {display: true, name: '无效', uuid: '3F09E969-7653-4F30-9D4C-C3FB8CA31B66'},
-     };
+   };
 
 
      $scope.pageOption = {
@@ -82,14 +82,14 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
 
      $scope.searchChannelRelationWithPaging=function(no,name){
          ChannelWarehouseRelationService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.selectedItem.uuid)
-              .success(function (data) {
-                  var dataResult = [];
-                  angular.forEach(data.content,function(item){
+             .success(function (data) {
+                 var dataResult = [];
+                 angular.forEach(data.content,function(item){
                      if(no == item.warehouse.no || name == item.warehouse.name){
                          dataResult.push(item);
                      }
 
-                     if(no == undefined && name == undefined || no == "" && name == undefined || no == undefined && name == "" || no == "" && name == ""){
+                 if((no == undefined && name == undefined) || (no == "" && name == undefined)　 || (no == undefined && name == "") || (no == "" && name == "")){
                          dataResult.push(item);
                      }
 
@@ -300,7 +300,6 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
                             status: Constant.STATUS[2].value
                         };
                         var response = ChannelWarehouseRelationService.modify(channelRelation.uuid, channelRelationUpdateInput).success(function () {
-
                         });
                         promises.push(response);
                     });
@@ -346,14 +345,13 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
             $scope.showWarn("请将之前的默认仓库取消");
             return;
         }
-         $scope.showConfirm('确认修改为默认仓库吗？', '', function () {
+        $scope.showConfirm('确认修改为默认仓库吗？', '', function () {
             var promises = [];
             angular.forEach($scope.selected, function (channelRelation) {
                 var ChannelRelationUpdateInput = {
                     returnWarehouseFlag: Constant.DEFAULT_WAREHOUSE[0].value
                 };
                 var response = ChannelWarehouseRelationService.modify(channelRelation.uuid, ChannelRelationUpdateInput).success(function () {
-
                 });
                 promises.push(response);
             });
@@ -361,35 +359,34 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
                 $scope.showInfo('修改数据成功。');
                 $scope.editItem($scope.selectedItem);
             })
-         });
+        });
     };
 
     $scope.revertAuditMenuAction = function () {
-                if ($scope.selected.length == 0) {
-                    $scope.showWarn("请选择");
-                    return;
-                }
-                if($scope.selected.length > 1){
-                    $scope.showWarn("请不要选择多个");
-                }else{
-                $scope.showConfirm('确认取消默认仓库吗？', '', function () {
-                        var promises = [];
-                        angular.forEach($scope.selected, function (channelRelation) {
-                            var ChannelRelationUpdateInput = {
-                                returnWarehouseFlag: Constant.DEFAULT_WAREHOUSE[1].value
-                            };
-                            var response = ChannelWarehouseRelationService.modify(channelRelation.uuid, ChannelRelationUpdateInput).success(function () {
-
-                            });
-                            promises.push(response);
-                        });
-                        $q.all(promises).then(function () {
-                            $scope.showInfo('修改数据成功。');
-                            $scope.editItem($scope.selectedItem);
-                        })
+        if ($scope.selected.length == 0) {
+            $scope.showWarn("请选择");
+            return;
+        }
+        if($scope.selected.length > 1){
+            $scope.showWarn("请不要选择多个");
+        }else{
+        $scope.showConfirm('确认取消默认仓库吗？', '', function () {
+            var promises = [];
+            angular.forEach($scope.selected, function (channelRelation) {
+                var ChannelRelationUpdateInput = {
+                    returnWarehouseFlag: Constant.DEFAULT_WAREHOUSE[1].value
+                };
+                var response = ChannelWarehouseRelationService.modify(channelRelation.uuid, ChannelRelationUpdateInput).success(function () {
                 });
-                }
-            };
+                promises.push(response);
+            });
+            $q.all(promises).then(function () {
+                $scope.showInfo('修改数据成功。');
+                $scope.editItem($scope.selectedItem);
+            })
+        });
+        }
+    };
 
     //Save modification.
     $scope.modifyMenuAction = function () {
@@ -424,7 +421,6 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
     $scope.addMenuAction = function () {
         if ($scope.channelRelationList.content != undefined && $scope.channelRelationList.content.length > 0) {
             var promises = [];
-
             angular.forEach($scope.channelRelationList.content, function (channelRelation) {
                 channelRelation.channelUuid = $scope.selectedItem.uuid;
                 channelRelation.seriesUuid = channelRelation.series.uuid;
@@ -507,27 +503,27 @@ angular.module('IOne-Production').controller('AddWarehouseController', function 
     };
 
     $scope.editItem = function (channel) {
-             $scope.selectedItem = channel;
-             $scope.pageOption.currentPage = 0;
-             $scope.pageOption.totalPage = 0;
-             $scope.pageOption.totalElements = 0;
-         };
+        $scope.selectedItem = channel;
+        scope.pageOption.currentPage = 0;
+        $scope.pageOption.totalPage = 0;
+        $scope.pageOption.totalElements = 0;
+    };
 
 
 
     $scope.resetInitialValue = function () {
-            $scope.revert_audit_button_disabled = 0;
-            $scope.audit_button_disabled = 0;
-            $scope.valid_status_button_disabled = 0;
-            $scope.invalid_status_button_disabled = 0;
-        }
+        $scope.revert_audit_button_disabled = 0;
+        $scope.audit_button_disabled = 0;
+        $scope.valid_status_button_disabled = 0;
+        $scope.invalid_status_button_disabled = 0;
+    }
 
     $scope.ocmListMenu = {
-            selectAll : true,
-            status: Constant.STATUS[0].value,
-            confirm: Constant.CONFIRM[0].value,
-            showQueryBar : true
-        };
+        selectAll : true,
+        status: Constant.STATUS[0].value,
+        confirm: Constant.CONFIRM[0].value,
+        showQueryBar : true
+    };
 
     $scope.pageOption = {
         sizePerPage: 10,
@@ -605,28 +601,28 @@ angular.module('IOne-Production').controller('AddWarehouseController', function 
             $scope.selectedTemplateNode = selectedObject;
             $mdDialog.hide($scope.selectedTemplateNode);
         if ($scope.selectedTemplateNode != undefined && $scope.selectedTemplateNode.length > 0) {
-                    var promises = [];
-                    angular.forEach($scope.selectedTemplateNode, function (channelRelation) {
-                        channelRelation.channelUuid = $scope.channel.uuid;
-                        channelRelation.warehouseUuid = channelRelation.uuid;
-                        var channelRelationResponse = ChannelWarehouseRelationService.add(channelRelation).error(function (data) {
-                            toastr["error"]("重复添加");
-                        });
-                        promises.push(channelRelationResponse);
-                    });
+            var promises = [];
+            angular.forEach($scope.selectedTemplateNode, function (channelRelation) {
+                channelRelation.channelUuid = $scope.channel.uuid;
+                channelRelation.warehouseUuid = channelRelation.uuid;
+                var channelRelationResponse = ChannelWarehouseRelationService.add(channelRelation).error(function (data) {
+                    toastr["error"]("重复添加");
+                });
+                promises.push(channelRelationResponse);
+            });
 
-                    $q.all(promises).then(function (data) {
-                        toastr["success"]("新增渠道仓库信息成功。");
-                        $scope.editItem($scope.selectedItem);
-                    }, function (data) {
-                        toastr["success"]('新增渠道仓库信息完成。');
-                        $scope.editItem($scope.selectedItem);
-                    });
-                } else {
-                    $scope.channelRelationList = $scope.ExistedChannelRelationList;
-                }
-                  $scope.cancelDlg();
-                  $scope.editItem($scope.channel);
+            $q.all(promises).then(function (data) {
+                toastr["success"]("新增渠道仓库信息成功。");
+                $scope.editItem($scope.selectedItem);
+            }, function (data) {
+                toastr["success"]('新增渠道仓库信息完成。');
+                $scope.editItem($scope.selectedItem);
+            });
+        } else {
+            $scope.channelRelationList = $scope.ExistedChannelRelationList;
+        }
+          $scope.cancelDlg();
+          $scope.editItem($scope.channel);
         }
     };
 
@@ -637,38 +633,38 @@ angular.module('IOne-Production').controller('AddWarehouseController', function 
     $scope.selected = [];
 
     $scope.addSeriesToggle = function (item, selected) {
-            var idx = selected.indexOf(item);
-            if (idx > -1) {
-                selected.splice(idx, 1);
-            }
-            else {
-                selected.push(item);
-            }
-        };
+        var idx = selected.indexOf(item);
+        if (idx > -1) {
+            selected.splice(idx, 1);
+        }
+        else {
+            selected.push(item);
+        }
+    };
     $scope.exists = function (item, list) {
             return list.indexOf(item) > -1;
     };
 
    $scope.selectAllMenuAction = function (no,name) {
-             if ($scope.ocmListMenu.selectAll == true) {
-                    $scope.selected = [];
-                    if(no == undefined && name == undefined){
-                    angular.forEach($scope.allProductionsData, function (item) {
-                          $scope.selected.push(item);
-                          $scope.ocmListMenu.selectAll = false;
-                         });
-                    }
+       if ($scope.ocmListMenu.selectAll == true) {
+            $scope.selected = [];
+            if(no == undefined && name == undefined){
+            angular.forEach($scope.allProductionsData, function (item) {
+                  $scope.selected.push(item);
+                  $scope.ocmListMenu.selectAll = false;
+                 });
+            }
 
-                    angular.forEach($scope.allProductionsData, function (item) {
-                    if(item.no.indexOf(no)>-1 || item.name.indexOf(name)>-1){
-                         $scope.selected.push(item);
-                    }
-                    $scope.ocmListMenu.selectAll = false;
-                    });
+            angular.forEach($scope.allProductionsData, function (item) {
+            if(item.no.indexOf(no)>-1 || item.name.indexOf(name)>-1){
+                 $scope.selected.push(item);
+            }
+            $scope.ocmListMenu.selectAll = false;
+            });
 
-             }else if ($scope.ocmListMenu.selectAll == false) {
-                 $scope.selected = [];
-                 $scope.ocmListMenu.selectAll = true;
-             }
-        };
+        }else if ($scope.ocmListMenu.selectAll == false) {
+         $scope.selected = [];
+         $scope.ocmListMenu.selectAll = true;
+       }
+   };
 });
