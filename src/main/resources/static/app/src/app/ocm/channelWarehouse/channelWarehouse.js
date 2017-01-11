@@ -255,6 +255,7 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
                     var promises = [];
                     angular.forEach($scope.selected, function (channelRelation) {
                         var ChannelRelationUpdateInput = {
+                            returnWarehouseFlag:'N',
                             status: Constant.STATUS[1].value
                         };
                         var response = ChannelWarehouseRelationService.modify(channelRelation.uuid, ChannelRelationUpdateInput).success(function () {
@@ -295,6 +296,7 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
                     var promises = [];
                     angular.forEach($scope.selected, function (channelRelation) {
                         var channelRelationUpdateInput = {
+                            returnWarehouseFlag:'N',
                             status: Constant.STATUS[2].value
                         };
                         var response = ChannelWarehouseRelationService.modify(channelRelation.uuid, channelRelationUpdateInput).success(function () {
@@ -338,6 +340,7 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
             var promises = [];
             angular.forEach($scope.selected, function (channelRelation) {
                 var ChannelRelationUpdateInput = {
+                    channelUuid: channelRelation.channel.uuid,
                     returnWarehouseFlag: Constant.DEFAULT_WAREHOUSE[0].value
                 };
                 var response = ChannelWarehouseRelationService.modify(channelRelation.uuid, ChannelRelationUpdateInput).success(function () {
