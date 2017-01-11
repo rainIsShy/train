@@ -89,17 +89,8 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
                          dataResult.push(item);
                      }
 
-                     if(no == undefined && name == undefined){
+                     if(no == undefined && name == undefined || no == "" && name == undefined || no == undefined && name == "" || no == "" && name == ""){
                          dataResult.push(item);
-                     }
-                     if(no == "" && name == undefined){
-                         dataResult.push(item);
-                     }
-                     if(no == undefined && name == ""){
-                          dataResult.push(item);
-                     }
-                     if(no == "" && name == ""){
-                           dataResult.push(item);
                      }
 
                  });
@@ -219,8 +210,8 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
                     $scope.invalid_status_button_disabled = 1;
                 }
                 if ($scope.firstLoopConfirm !== channelRelation.returnWarehouseFlag) {
-                    $scope.audit_button_disabled = "N";
-                    $scope.revert_audit_button_disabled = "Y";
+                    $scope.audit_button_disabled = 0;
+                    $scope.revert_audit_button_disabled = 1;
                 }
             }
         });
@@ -235,9 +226,9 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
         }
 
         if (channelRelation.returnWarehouseFlag == Constant.DEFAULT_WAREHOUSE[0].value) {
-            $scope.audit_button_disabled = "Y";
+            $scope.audit_button_disabled = 1;
         } else {
-            $scope.revert_audit_button_disabled = "N";
+            $scope.revert_audit_button_disabled = 1;
         }
     };
 
@@ -374,27 +365,29 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
     };
 
     $scope.revertAuditMenuAction = function () {
-                if ($scope.selected.length > 0) {
-                    if($scope.selected.length > 1){
-                        $scope.showWarn("请不要选择多个");
-                    }else{
-                    $scope.showConfirm('确认取消默认仓库吗？', '', function () {
-                            var promises = [];
-                            angular.forEach($scope.selected, function (channelRelation) {
-                                var ChannelRelationUpdateInput = {
-                                    returnWarehouseFlag: Constant.DEFAULT_WAREHOUSE[1].value
-                                };
-                                var response = ChannelWarehouseRelationService.modify(channelRelation.uuid, ChannelRelationUpdateInput).success(function () {
-
-                                });
-                                promises.push(response);
-                            });
-                            $q.all(promises).then(function () {
-                                $scope.showInfo('修改数据成功。');
-                                $scope.editItem($scope.selectedItem);
-                            })
-                    });
+                if ($scope.selected.length == 0) {
+                    $scope.showWarn("请选择");
+                    return;
                 }
+                if($scope.selected.length > 1){
+                    $scope.showWarn("请不要选择多个");
+                }else{
+                $scope.showConfirm('确认取消默认仓库吗？', '', function () {
+                        var promises = [];
+                        angular.forEach($scope.selected, function (channelRelation) {
+                            var ChannelRelationUpdateInput = {
+                                returnWarehouseFlag: Constant.DEFAULT_WAREHOUSE[1].value
+                            };
+                            var response = ChannelWarehouseRelationService.modify(channelRelation.uuid, ChannelRelationUpdateInput).success(function () {
+
+                            });
+                            promises.push(response);
+                        });
+                        $q.all(promises).then(function () {
+                            $scope.showInfo('修改数据成功。');
+                            $scope.editItem($scope.selectedItem);
+                        })
+                });
                 }
             };
 
