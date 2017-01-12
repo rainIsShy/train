@@ -564,7 +564,7 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
     }
 
     $scope.isReTransferable = function (receiptOrderDetail) {
-        return receiptOrderDetail.transferFlag == '2' &&
+        return receiptOrderDetail.transferFlag == Constant.TRANSFER_FLAG[2].value &&
             receiptOrderDetail.paidType != Constant.PAID_TYPE[4].value &&
             $scope.menuDisplayOption['reTransfer1'].display &&
             ( $scope.menuAuthDataMap[$scope.menuDisplayOption['reTransfer1'].uuid] || $scope.isAdmin() || !$scope.menuDisplayOption['reTransfer1'].uuid);
