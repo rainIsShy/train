@@ -508,6 +508,14 @@ angular.module('IOne-Production').service('ChannelLevelService', function ($http
     };
 
 
+    this.getByChannelUuid = function (channelUuid) {
+        return $http.get(Constant.BACKEND_BASE + '/channelLevels?channelUuid=' + channelUuid);
+    };
+
+    this.getByParentOcmBaseChanUuid = function (parentOcmBaseChanUuid) {
+        return $http.get(Constant.BACKEND_BASE + '/channelLevels?parentOcmBaseChanUuid=' + parentOcmBaseChanUuid);
+    };
+
     this.add = function (ChannelLevelInput) {
         return $http.post(Constant.BACKEND_BASE + '/channelLevels/', ChannelLevelInput);
     };

@@ -1,0 +1,39 @@
+<md-dialog style="padding:10px;min-width: 800px;max-height: 800px; overflow-y:scroll">
+    <md-content layout="column">
+        <div layout="row">
+            <md-button class="md-icon-button" ng-click="cancelDlg()">
+                <ng-md-icon icon="close"></ng-md-icon>
+            </md-button>
+        </div>
+        <div>
+            <md-input-container flex="40">
+                <label>分类</label>
+                <md-select ng-model="catalogue" ng-change="refreshProduction(catalogue.uuid)">
+                    <md-option ng-repeat="catalogue in catalogueList" ng-value="catalogue">{{catalogue.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+        </div>
+        <div layout="row" layout-wrap>
+            <div flex="25" flex-md="50" flex-sm="100" ng-repeat="production in allProductionsData.content"
+                 class="prod-item" style="padding: 5px;">
+                <div layout="row" class="content">
+                    <div flex="100" ng-class="centre">
+                        <img ng-class="prod-sm-img" ng-click="selectItem(production.item)"
+                             src="{{getImageFullPath(production.item.path)}}">
+                        <div class="centre">
+                            <div class="value">{{production.item.no}}</div>
+
+                            <div class="value">{{production.item.name}}</div>
+
+                            <div class="value">{{production.item.standard}}</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div pagination option="pageOption" callback="refreshProduction()"></div>
+    </md-content>
+</md-dialog>

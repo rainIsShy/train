@@ -1,0 +1,138 @@
+<div class="main-panel">
+    <div layout="row" layout-md="column" layout-sm="column" class="menu" style="margin: 0px 0px; width: 1050px;">
+        <!--畫面 start -->
+        <div flex="100" layout-padding>
+            <div layout="row" layout-wrap layout-margin>
+                <div flex="25" flex-sm="100">
+                    <md-input-container flex>
+                        <label>调拨单号</label>
+                        <input name="no" type="text" ng-model="allotMaster.no" ng-disabled="true">
+                    </md-input-container>
+                </div>
+                <div flex="25" flex-sm="100">
+                    <md-input-container flex>
+                        <label>申请日期</label>
+                        <input name="no" type="text" ng-model="allotMaster.applyDate" ng-disabled="true">
+                    </md-input-container>
+                </div>
+                <div flex="25" flex-sm="100">
+                    <md-input-container flex>
+                        <label>拨出门店</label>
+                        <input type="text" ng-model="allotMaster.outChannel.name" ng-disabled="allotTypeFlag"
+                               ng-click="openChannelDlg();">
+                    </md-input-container>
+                </div>
+
+                <div flex="25" flex-sm="100">
+                    <md-input-container flex>
+                        <label>拨入门店</label>
+                        <input type="text" ng-model="allotMaster.inChannel.name" ng-disabled="allotTypeFlag"
+                               ng-click="openChannelDlg();">
+                    </md-input-container>
+                </div>
+
+                <div flex="25" flex-sm="100">
+                    <md-input-container flex>
+                        <label>配送区域</label>
+                        <input type="text" ng-model="allotMaster.area.name" ng-click="openAreaDlg();">
+                    </md-input-container>
+                </div>
+
+                <div flex="25" flex-sm="100">
+                    <md-input-container flex="15">
+                        <label>类型</label>
+                        <md-select ng-model="allotMaster.allotTypeNo" ng-disabled="true">
+                            <md-option ng-repeat="(key, value) in ALLOTTYPE" ng-value="key">{{value.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div flex="25" flex-sm="100">
+                    <md-input-container flex>
+                        <label>配送日期</label>
+                        <input type="date" ng-model="allotMaster.deliverDate"/>
+                    </md-input-container>
+                </div>
+
+                <div flex="25" flex-sm="100">
+                    <md-input-container flex>
+                        <label>备注</label>
+                        <input name="no" type="text" ng-model="allotMaster.remark">
+                    </md-input-container>
+                </div>
+
+            </div>
+            <div layout="row" class="prod-item" ng-repeat="data in itemList"
+                 style="background-color: #F3F3F3;font-size:small;margin-left:5px ">
+                <div flex="20" layout-wrap layout-margin>
+                    <img ng-class="prod-sm-img" src="{{getImageFullPath(data.item.path)}}">
+                </div>
+                <div flex="25" layout="column" flex-sm="100" layout-wrap layout-margin>
+                    <div>型号: {{data.item.model}}</div>
+                    <div>规格: {{data.item.standard}}</div>
+                    <div>单位: {{data.item.unit}}</div>
+                    <div>颜色: {{data.item.color}}</div>
+                </div>
+                <div flex="20" layout="column" flex-sm="100" layout-wrap layout-margin>
+                    <md-input-container flex="80">
+                        <label>数量</label>
+                        <input type="number" ng-model="data.itetmKeyWord">
+                    </md-input-container>
+                </div>
+                <div flex="20" layout="column" flex-sm="100" layout-wrap layout-margin>
+                    <div>
+                        <md-input-container flex="80">
+                            <label>配送日期</label>
+                            <input type="date" ng-model="data.delvierDate">
+                        </md-input-container>
+                    </div>
+                    <div>
+                        <md-input-container flex="80">
+                            <label>备注</label>
+                            <input type="text" ng-model="data.remark">
+                        </md-input-container>
+                    </div>
+                </div>
+                <div flex="5" layout="column" flex-sm="100" layout-wrap layout-margin>
+                    <div class="item-name">删除</div>
+                </div>
+
+                <md-divider></md-divider>
+            </div>
+            <!-- status panel-->
+            <div pagination option="pageOption" callback="refreshList()"></div>
+
+            <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
+                 ng-if="allotTypeFlag == true" ng-click="openItemDlg()">
+                <i class="fa fa-plus"></i>&nbsp;&nbsp;新增商品...</a>
+            </div>
+
+            <div class="left-title flex-70 hide-md hide-sm banner-2" style="position: relative;" aria-hidden="false">
+                <div sytle="background-color:#3F51B5" layout="row">
+
+                    <div aria-label="More" style="font-size: xx-large; margin-right: 5%; text-align: right;">
+                        <span sytle="font-size: x-large;">编辑</span>
+                    </div>
+
+                    <div aria-label="More" style="font-size: xx-large; margin-right: 5%; text-align: right;">
+                        <span sytle="font-size: x-large;">确认</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--畫面 end -->
+    </div>
+</div>
+
+<style>
+    .confirm-div {
+        text-align: center;
+        padding: 30px;
+        background-color: #9E9E9E;
+        font-size: 20px;
+        cursor: pointer;
+        margin: 8px;
+    }
+
+</style>
+

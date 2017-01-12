@@ -249,6 +249,17 @@ angular.module('IOne-Production').service('ProductionCatalogueDetails', function
         return $http.post(Constant.BACKEND_BASE + url);
 
     };
+
+    this.getAllByAppCatalogue = function (sizePerPage, page, catalogueUuid, endModifyDate) {
+        var url = '/itemCatalogueDetails?size=' + sizePerPage +
+            '&page=' + page +
+            '&endModifyDate=' + endModifyDate;
+        if (catalogueUuid != null) {
+            url = url + '&catalogueUuid=' + catalogueUuid;
+        }
+
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
 });
 
 angular.module('IOne-Production').service('ProductionUnit', function ($http, Constant) {

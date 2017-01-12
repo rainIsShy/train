@@ -33,6 +33,26 @@ angular.module('IOne-Production').service('AlloMasterService', function ($http, 
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
+    this.getAllFromApp = function (sizePerPage, page, confirm, status, allotTypeNo, psoOrderMstNo) {
+        confirm = confirm == 0 ? '' : confirm;
+        status = status == 0 ? '' : status;
+
+        var url = '/allotMasters?size=' + sizePerPage
+            + '&page=' + page
+            + '&confirm=' + confirm
+            + '&status=' + status;
+
+        if (allotTypeNo !== null && allotTypeNo != undefined) {
+            url = url + '&allotTypeNo=' + allotTypeNo;
+        }
+
+        if (psoOrderMstNo != null && psoOrderMstNo != '') {
+            url = url + '&psoOrderMstNo=' + psoOrderMstNo;
+        }
+
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
 
     this.get = function (uuid) {
         return $http.get(Constant.BACKEND_BASE + '/allotMasters/' + uuid);
@@ -108,6 +128,12 @@ angular.module('IOne-Production').service('AllotExtendDetail2Service', function 
     this.delete = function (extendUuid, uuid) {
         return $http.delete(Constant.BACKEND_BASE + '/allotExtendDetails/' + extendUuid + '/extend2s/' + uuid);
     }
+});
+
+angular.module('IOne-Production').service('AllotTypeService', function ($http, Constant) {
+    this.getByNo = function (no) {
+        return $http.get(Constant.BACKEND_BASE + '/allotTypes?no= ' + no);
+    };
 });
 
 

@@ -1,0 +1,43 @@
+<md-dialog style="padding:10px; min-width: 800px;max-height: 800px;overflow-y:scroll  ">
+    <md-content layout="column">
+        <div>
+            <form name="searchChannel" novalidate="">
+                <div layout="row">
+                    <div flex="100" flex-sm="100">
+                        <md-input-container>
+                            <label>地区1</label>
+                            <md-select ng-model="area3" ng-change="refreshSubArea('4', area3.uuid)">
+                                <md-option ng-repeat="area in areaGrade3List" ng-value="area">{{area.name}}</md-option>
+                            </md-select>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>地区2</label>
+                            <md-select ng-model="area4" ng-change="refreshSubArea('5', area4.uuid)">
+                                <md-option ng-repeat="area in areaGrade4List" ng-value="area">{{area.name}}</md-option>
+                            </md-select>
+
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>地区3</label>
+                            <md-select ng-model="area5">
+                                <md-option ng-repeat="area in areaGrade5List" ng-value="area">{{area.name}}</md-option>
+                            </md-select>
+
+                        </md-input-container>
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+        <div layout="row">
+            <md-button ng-click="hideDlg(area5)">
+                <i class="fa fa-check"></i>&nbsp;确定
+            </md-button>
+            <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+        </div>
+
+    </md-content>
+</md-dialog>
