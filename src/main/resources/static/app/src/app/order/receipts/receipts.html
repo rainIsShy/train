@@ -219,27 +219,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--<div align="right">
-                                        <md-button class="md-button" aria-label="More" ng-click="toggleDetailMorePanelAction(detail)">
-                                            查看更多...
-                                        </md-button>
-                                        <md-button class="md-button" aria-label="More" ng-click="deleteDetailAction(detail)">
-                                            <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>删除
-                                        </md-button>
-                                        <md-button class="md-button" aria-label="More"
-                                                   ng-click="editItemAction(detail, 'PSO_ORDER_DTL', '订单: ' + selectedItem.no + ' / ' + '产品信息: ' + detail.no)">
-                                            <ng-md-icon icon="edit" size="20"></ng-md-icon>编辑
-                                        </md-button>
-                                    </div>
-                                    &lt;!&ndash; detail panel &ndash;&gt;
-                                    <div layout="row" ng-show="detail.showMorePanel">
-                                        <div layout-margin>Have more stuff here....</div>
-                                    </div>-->
                                     <md-divider></md-divider>
                                 </div>
-                                <!--<div flex="100" class="add-new" style="margin: 10px 0 0 0;" ng-click="preAddItemAction({}, 'PSO_ORDER_DTL', '新增订单')">
-                                    <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
-                                </div>-->
                             </div>
                         </md-tab>
                     </md-tabs>
@@ -248,11 +229,6 @@
             <div flex class="right-body">
                 <!-- basic search-->
                 <div layout="row" layout-align="start center">
-                    <!--<span style="position: absolute; top: 15px; left: 10px;">
-                        <md-checkbox ng-model="selectAllFlag" aria-label="Checkbox" ng-change="selectAllAction()"></md-checkbox>
-                    </span>
-                    style="position: relative"
-                    -->
                     <md-button flex="5" ng-click="openChannelDlg()" class="md-icon-button" ng-show="selectedItem == null">
                         <i class="fa fa-search"></i>
                     </md-button>
@@ -303,38 +279,6 @@
                         <input type="number" ng-model="listFilterOption.unpaidAmount" ng-keypress="queryEnter($event)">
                     </md-input-container>
 
-                    <!--<md-input-container flex="15" ng-show="selectedItem == null">
-                        <label>收款用途</label>
-                        <md-select ng-model="listFilterOption.confirm">
-                            <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
-                        </md-select>
-                    </md-input-container>
-
-                    <md-input-container flex="15">
-                        <label>收款时间：</label>
-                        <input type="date" ng-model="listFilterOption.startOrderDate">
-                    </md-input-container>
-
-                    <md-input-container flex="15" ng-show="selectedItem == null">
-                        <label>收款对象</label>
-                        <md-select ng-model="listFilterOption.confirm">
-                            <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
-                        </md-select>
-                    </md-input-container>
-
-                    <md-input-container flex="15" ng-show="selectedItem == null">
-                        <label>付款方式</label>
-                        <md-select ng-model="listFilterOption.confirm">
-                            <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
-                        </md-select>
-                    </md-input-container>
-
-                    <md-input-container flex="15" ng-show="selectedItem == null">
-                        <label>银行卡卡种</label>
-                        <md-select ng-model="listFilterOption.confirm">
-                            <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
-                        </md-select>
-                    </md-input-container>-->
                 </div>
                 <!-- status panel-->
                 <div layout="row" layout-warp layout-padding layout-margin ng-show="!selectedItem"
@@ -398,25 +342,6 @@
                                             style="font-style: italic">{{item.orderDate| date:'yyyy-MM-dd'}}</span></span>
                                 </div>
                                 <div layout="row" layout-align="end center">
-                                    <!--<div ng-if="item.confirm != CONFIRM[2].value">
-                                        <md-button class="md-fab md-mini" ng-click="confirmClickAction($event, item)">
-                                            <span>审核</span>
-                                        </md-button>
-                                    </div>
-                                    <div ng-if="item.confirm == CONFIRM[2].value">
-                                        <md-button class="md-fab md-primary md-mini" ng-click="confirmClickAction($event, item)">
-                                            <span>取审</span>
-                                        </md-button>
-                                    </div>-->
-                                    <!--<md-switch ng-model="item.confirm" aria-label="Switch 1" class="md-block" ng-true-value="'2'" ng-false-value="'1'" ng-click="confirmClickAction($event, item)">
-                                        审核
-                                    </md-switch>
-                                    <md-switch ng-model="item.status" aria-label="Switch 1" class="md-block" ng-true-value="'1'" ng-false-value="'2'" ng-click="statusClickAction($event, item)">
-                                        启用
-                                    </md-switch>
-                                    <md-switch ng-model="item.release" aria-label="Switch 1" class="md-block" ng-true-value="'2'" ng-false-value="'1'" ng-click="releaseClickAction($event, item)">
-                                        发布
-                                    </md-switch>-->
                                     <md-button class="md-button close-btn" aria-label="More" ng-click="toggleDetailMorePanelAction(item)" style="position: relative;left: 15px;">
                                         查看收退银
                                     </md-button>

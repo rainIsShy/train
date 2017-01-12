@@ -366,24 +366,6 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
         });
     };
 
-    // $scope.statusClickAction = function (event, item) {
-    //     $scope.stopEventPropagation(event);
-    //     console.info('status...');
-    //     //TODO ...
-    // };
-
-    // $scope.releaseClickAction = function (event, item) {
-    //     $scope.stopEventPropagation(event);
-    //     console.info('release...');
-    //     //TODO ...
-    // };
-
-    // $scope.deleteClickAction = function (event, item) {
-    //     $scope.stopEventPropagation(event);
-    //     console.info('delete...');
-    //     //TODO ...
-    // };
-
     //批量审核
     $scope.confirmAllClickAction = function (event) {
         $scope.stopEventPropagation(event);
