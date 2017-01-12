@@ -500,7 +500,7 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
             return;
         }
         if (ignoredNos) {
-            $scope.showWarn('如下未审核或未抛转的收退银单将不执行重新抛转：' + '<br>' + ignoredNos);
+            $scope.showWarn('如下未审核,未抛转或是销退退款的收退银单将不执行重新抛转：' + '<br>' + ignoredNos);
         }
         Receipts.modify('_batch', updateInput).success(function () {
             $scope.refreshList();
