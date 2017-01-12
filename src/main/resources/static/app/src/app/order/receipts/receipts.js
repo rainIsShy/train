@@ -570,6 +570,13 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
             $scope.menuList[1].subList[9].suffix = data;
         });
     }
+
+    $scope.isReTransferable = function (receiptOrderDetail) {
+        return receiptOrderDetail.transferFlag == '2' &&
+            receiptOrderDetail.paidType != Constant.PAID_TYPE[4].value &&
+            $scope.menuDisplayOption['reTransfer1'].display &&
+            ( $scope.menuAuthDataMap[$scope.menuDisplayOption['reTransfer1'].uuid] || $scope.isAdmin() || !$scope.menuDisplayOption['reTransfer1'].uuid);
+    }
 });
 
 angular.module('IOne-Production').controller('selectChannelController', function ($scope, $mdDialog, ChannelService) {
