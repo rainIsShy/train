@@ -486,7 +486,7 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
         angular.forEach($scope.itemList, function (item) {
             if (item.selected) {
                 angular.forEach(item.detailList, function (detail) {
-                    if (detail.status == '2' && detail.transferFlag == '2') {
+                    if ($scope.isReTransferable(detail)) {
                         updateInput.uuid.push(detail.uuid);
                     } else {
                         ignoredNos += item.no + '-' + detail.no + '<br>';
