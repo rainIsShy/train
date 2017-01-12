@@ -243,7 +243,6 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
                     item.confirm = Constant.CONFIRM[1].value;
                     $scope.showInfo('取消审核成功！');
                 }).error(function (response) {
-                    //$scope.showError($scope.getError(response.message));
                     $scope.showError(response.message);
                 });
             });
@@ -292,7 +291,6 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
                     $scope.showInfo('审核成功！');
                     $scope.getReceiptOrderMasterCount();
                 }).error(function (response) {
-                    //$scope.showError($scope.getError(response.message));
                     $scope.showError(response.message);
                 });
             });
@@ -308,11 +306,8 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
                     receiptOrderConversion: 'true'
                 };
                 Receipts.modify(detail.orderMaster.uuid, UpdateInput).success(function () {
-                    //console.info("重新抛转成功返回：");
-                    //console.info(data);
                     $scope.showInfo('重新抛转成功！');
                 }).error(function (response) {
-                    //$scope.showError($scope.getError(response.message));
                     $scope.showError(response.message);
                 });
             });
@@ -325,11 +320,8 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
                 };
                 Receipts.modify(detail.orderMaster.uuid, UpdateInput).success(function () {
                     detail.transferFlag = '2';
-                    //console.info("抛转成功返回：");
-                    //console.info(data);
                     $scope.showInfo('抛转成功！');
                 }).error(function (response) {
-                    //$scope.showError($scope.getError(response.message));
                     $scope.showError(response.message);
                 });
             });
