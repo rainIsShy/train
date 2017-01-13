@@ -603,7 +603,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
                     var detailUuids = [];
                     var confirmVal = {'name' : '审核' , 'value' : 1};
                     angular.forEach(returnSalesOrderMaster.detailList, function (detail) {
-                        if (detail.confirm != confirmVal)) {
+                        if (detail.confirm != confirmVal) {
                             detailUuids.push(detail.uuid);
                         }
                     });
