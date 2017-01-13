@@ -13,6 +13,9 @@ angular.module('IOne-Production').service('PSOReturnSalesOrdersMasterService', f
         if (filterOptions.orderMasterNo) {
             url += '&no=' + filterOptions.orderMasterNo;
         }
+        if (filterOptions.psoOrderMstNo) {
+            url += '&psoOrderMstNo=' + filterOptions.psoOrderMstNo;
+        }
         if (filterOptions.orderDateBegin) {
             url += '&orderDateBegin=' + moment(new Date(filterOptions.orderDateBegin)).format('YYYY-MM-DD 00:00:00');
         }

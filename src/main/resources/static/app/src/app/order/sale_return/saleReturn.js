@@ -598,33 +598,36 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
             };
             $scope.logining = true;
             IoneAdapterService.transferIoneAdapter("/psoReturnTask", param, $scope, function (response) {
-                PSOReturnSalesOrdersMasterService.getAll(10, 0, {'psoOrderMstNo' : item.no}, $scope.RES_UUID_MAP.PSO.SO_RETURN.RES_UUID).success(function(data){
+                var filterOptions = {
+                    psoOrderMstNo: '2016122900000003',
+                    onlyReturn: '1'
+                };
+                PSOReturnSalesOrdersMasterService.getAll(10, 0, filterOptions, $scope.RES_UUID_MAP.PSO.SO_RETURN.RES_UUID).success(function(data){
                     var returnSalesOrderMaster = data.content[0];
                     var detailUuids = [];
-                    var confirmVal = {'name' : '审核' , 'value' : 1};
+                    var confirmVal = '2';
                     PSOReturnSalesOrdersExtends2Service.getAll(returnSalesOrderMaster.uuid).success(function (data) {
                         angular.forEach(data.content, function (detail) {
-                            if (detail.confirm != confirmVal.value) {
+                            if (detail.confirm != '2') {
                                 detailUuids.push(detail.uuid);
                             }
                         });
-                    }).error(function (response) {
-                        $scope.showError(response.message);
-                    });
-
-                    PSOReturnSalesOrdersExtends2Service.confirm(returnSalesOrderMaster.uuid, detailUuids, confirmVal.value).success(function (data) {
-                        var transferData = {
-                            'PSO_SO_MST_UUID': item.uuid,
-                            'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
-                        };
-                        ErpAdapterService.transferErpAdapter('/returnSalesOrderToOhaTask', transferData, $scope, function (resp) {
-                            $scope.showInfo('一键抛转成功');
-                            $scope.refreshList();
-                            $scope.getReturnOrderMasterCount();
-                            $scope.logining = false;
-                        });
+                         PSOReturnSalesOrdersExtends2Service.confirm(returnSalesOrderMaster.uuid, detailUuids, '2').success(function (data) {
+                            var transferData = {
+                               'PSO_SO_MST_UUID': returnSalesOrderMaster.uuid,
+                               'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
+                            };
+                            ErpAdapterService.transferErpAdapter('/returnSalesOrderToOhaTask', transferData, $scope, function (resp) {
+                                $scope.showInfo('一键抛转成功');
+                                $scope.refreshList();
+                                $scope.getReturnOrderMasterCount();
+                                $scope.logining = false;
+                            });
                     }).error(function (response) {
                         $scope.showError('预订单退货单审核失败 : ' + response.message);
+                    });
+                    }).error(function (response) {
+                        $scope.showError(response.message);
                     });
                 });
             }).error(function (errResp) {
