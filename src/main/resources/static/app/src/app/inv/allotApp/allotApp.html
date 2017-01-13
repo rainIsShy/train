@@ -1,8 +1,8 @@
 <div class="main-panel">
     <div layout="row" layout-md="column" layout-sm="column" class="menu" style="margin: 0px 0px; width: 1050px;">
         <!--畫面 start -->
-        <div flex="100" layout-padding>
-            <div layout="row" layout-wrap layout-margin>
+        <div flex="100">
+            <div flex="100" layout="row" layout-wrap layout-margin>
                 <div flex="25" flex-sm="100">
                     <md-input-container flex>
                         <label>调拨单号</label>
@@ -26,7 +26,8 @@
                 <div flex="25" flex-sm="100">
                     <md-input-container flex>
                         <label>拨入门店</label>
-                        <input type="text" ng-model="allotMaster.inChannel.name" ng-disabled="allotTypeFlag"
+                        <input type="text" ng-model="allotMaster.inChannel.name"
+                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
                                ng-click="openChannelDlg();">
                     </md-input-container>
                 </div>
@@ -34,7 +35,8 @@
                 <div flex="25" flex-sm="100">
                     <md-input-container flex>
                         <label>配送区域</label>
-                        <input type="text" ng-model="allotMaster.area.name" ng-click="openAreaDlg();">
+                        <input type="text" ng-model="allotMaster.area.name" ng-click="openAreaDlg();"
+                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS">
                     </md-input-container>
                 </div>
 
@@ -49,51 +51,63 @@
                 <div flex="25" flex-sm="100">
                     <md-input-container flex>
                         <label>配送日期</label>
-                        <input type="date" ng-model="allotMaster.deliverDate"/>
+                        <input type="date" ng-model="allotMaster.deliverDate" ng-change="changeDeliverDate();"
+                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"/>
                     </md-input-container>
                 </div>
 
                 <div flex="25" flex-sm="100">
                     <md-input-container flex>
                         <label>备注</label>
-                        <input name="no" type="text" ng-model="allotMaster.remark">
+                        <input name="no" type="text" ng-model="allotMaster.remark"
+                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS">
                     </md-input-container>
                 </div>
 
             </div>
-            <div layout="row" class="prod-item" ng-repeat="data in itemList"
+            <div flex="100" layout="row" class="prod-item" ng-repeat="data in itemList"
                  style="background-color: #F3F3F3;font-size:small;margin-left:5px ">
-                <div flex="20" layout-wrap layout-margin>
+                <div flex="25" layout-wrap layout-margin>
                     <img ng-class="prod-sm-img" src="{{getImageFullPath(data.item.path)}}">
                 </div>
-                <div flex="25" layout="column" flex-sm="100" layout-wrap layout-margin>
+                <div flex="20" layout="column" flex-sm="100" layout-wrap layout-margin>
                     <div>型号: {{data.item.model}}</div>
                     <div>规格: {{data.item.standard}}</div>
                     <div>单位: {{data.item.unit}}</div>
                     <div>颜色: {{data.item.color}}</div>
                 </div>
-                <div flex="20" layout="column" flex-sm="100" layout-wrap layout-margin>
-                    <md-input-container flex="80">
+                <div flex="10" layout="column" flex-sm="100" layout-wrap layout-margin>
+                    <md-input-container flex="100">
                         <label>数量</label>
-                        <input type="number" ng-model="data.itetmKeyWord">
+                        <input type="number" ng-model="data.allotQty"
+                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS">
                     </md-input-container>
                 </div>
-                <div flex="20" layout="column" flex-sm="100" layout-wrap layout-margin>
+                <div flex="15" layout="column" flex-sm="100" layout-wrap layout-margin>
                     <div>
-                        <md-input-container flex="80">
+                        <md-input-container flex="100">
                             <label>配送日期</label>
-                            <input type="date" ng-model="data.delvierDate">
+                            <input type="date" ng-model="data.deliverDate"
+                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS">
                         </md-input-container>
                     </div>
+                </div>
+                <div flex="15" layout="column" flex-sm="100" layout-wrap layout-margin>
+
                     <div>
                         <md-input-container flex="80">
                             <label>备注</label>
-                            <input type="text" ng-model="data.remark">
+                            <input type="text" ng-model="data.remark"
+                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS">
                         </md-input-container>
                     </div>
                 </div>
-                <div flex="5" layout="column" flex-sm="100" layout-wrap layout-margin>
-                    <div class="item-name">删除</div>
+                <div layout="column" flex-sm="100" ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS" layout-wrap
+                     layout-margin>
+                    <md-button class="md-button" aria-label="More" style="padding-right:20px;min-width:60px;"
+                               ng-click="deleteClickAction(data)">
+                        <ng-md-icon icon="delete"></ng-md-icon>
+                    </md-button>
                 </div>
 
                 <md-divider></md-divider>
@@ -102,19 +116,27 @@
             <div pagination option="pageOption" callback="refreshList()"></div>
 
             <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
-                 ng-if="allotTypeFlag == true" ng-click="openItemDlg()">
+                 ng-if="allotTypeFlag == true && ui_status !=  UI_STATUS.VIEW_UI_STATUS" ng-click="openItemDlg()">
                 <i class="fa fa-plus"></i>&nbsp;&nbsp;新增商品...</a>
             </div>
 
             <div class="left-title flex-70 hide-md hide-sm banner-2" style="position: relative;" aria-hidden="false">
                 <div sytle="background-color:#3F51B5" layout="row">
 
-                    <div aria-label="More" style="font-size: xx-large; margin-right: 5%; text-align: right;">
+                    <div aria-label="More" ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS"
+                         style="font-size: xx-large; margin-right: 5%; text-align: right;"
+                         ng-click="editClickAction();">
                         <span sytle="font-size: x-large;">编辑</span>
                     </div>
 
                     <div aria-label="More" style="font-size: xx-large; margin-right: 5%; text-align: right;">
-                        <span sytle="font-size: x-large;">确认</span>
+                        <md-button class="md-button" aria-label="More" style="padding-right:20px;min-width:60px;"
+                                   ng-click="saveClickAction(data)">
+                            <!--<ng-md-icon icon="delete"></ng-md-icon>-->
+                            <span sytle="font-size: x-large;">确认</span>
+                        </md-button>
+
+
                     </div>
                 </div>
             </div>

@@ -5,8 +5,8 @@
                 <ng-md-icon icon="close"></ng-md-icon>
             </md-button>
         </div>
-        <div>
-            <md-input-container flex="40">
+        <div flex="40">
+            <md-input-container>
                 <label>分类</label>
                 <md-select ng-model="catalogue" ng-change="refreshProduction(catalogue.uuid)">
                     <md-option ng-repeat="catalogue in catalogueList" ng-value="catalogue">{{catalogue.name}}

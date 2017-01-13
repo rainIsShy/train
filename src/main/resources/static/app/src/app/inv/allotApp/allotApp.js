@@ -5,10 +5,10 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('AllotAppController', function ($mdDialog, $scope, $location, Constant, OrderMaster, OrderDetail, AlloMasterService, AllotTypeService, ChannelLevelService, OCMChannelService) {
+angular.module('IOne-Production').controller('AllotAppController', function ($mdDialog, $scope, $location, Constant, OrderMaster, OrderDetail, AlloMasterService, AlloDetailService, AllotTypeService, ChannelLevelService, OCMChannelService, CBIEmployeeService, ChannelPriceService) {
 
     $scope.allotQuery = {
-        orderNo: $location.$$search.orderNo,
+        // orderNo: $location.$$search.orderNo,
         orderUuid: $location.$$search.orderUuid,
         allotTypeNo: $location.$$search.allotTypeNo,
         channelUuid: $location.$$search.channelUuid
@@ -19,12 +19,16 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
         no: '',
         applyDate: '',
         allotTypeNo: '',
+        allotTypeUuid: '',
         allotTypeName: '',
         outChannel: {},
         outChannelName: '',
         inChannel: {},
         inChannelName: '',
-        area: {}
+        psoOrderMstNo: '',
+        area: {},
+        employeeUuid: '',
+        departmentUuid: ''
     };
 
     $scope.ALLOTTYPE = {
@@ -38,48 +42,80 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
         totalElements: 0
     };
 
-    $scope.refreshList = function () {
+    $scope.deleteDetailUuids = [];
 
-        OrderDetail.getAllBySalesSampleType(
-            $scope.pageOption.sizePerPage,
-            $scope.pageOption.currentPage,
-            $scope.allotQuery.orderUuid
-        ).success(function (data) {
+    $scope.refreshList = function () {
+        OrderDetail.getAllBySalesSampleType($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.allotQuery.orderUuid).success(function (data) {
             $scope.itemList = data.content;
             $scope.pageOption.totalPage = data.totalPages;
             $scope.pageOption.totalElements = data.totalElements;
-        });
 
+            angular.forEach($scope.itemList, function (orderDetail) {
+                orderDetail.allotPrice = 0;
+                orderDetail.allotQty = 0;
+                ChannelPriceService.getByChannelUuidAndItemUuid($scope.allotQuery.channelUuid, orderDetail.item.uuid).success(function (data) {
+                    if (data.content) {
+                        orderDetail.allotPrice = data.content[0].standardPrice
+                    }
+                });
+            })
+        });
+    };
+
+    $scope.refreshAllotDetailList = function (allotMasterUuid) {
+        AlloDetailService.get(allotMasterUuid).success(function (data) {
+            console.log(data);
+            $scope.itemList = data.content;
+            angular.forEach($scope.itemList, function (detail) {
+                detail.deliverDate = new Date(detail.deliverDate);
+            });
+            $scope.pageOption.totalPage = data.totalPages;
+            $scope.pageOption.totalElements = data.totalElements;
+        });
     };
 
     $scope.initialApp = function () {
         $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
 
+        $scope.allotTypeFlag = $scope.allotQuery.allotTypeNo == "6402" ? true : false;
+        $scope.allotMaster.allotTypeNo = $scope.allotQuery.allotTypeNo;
+        $scope.getAllotType($scope.allotQuery.allotTypeNo);
+
         OrderMaster.get($scope.allotQuery.orderUuid).success(function (data) {
             $scope.allotQuery.orderNo = data.no;
             $scope.initData();
         });
-    };;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    };
 
     $scope.initData = function () {
-        $scope.allotTypeFlag = $scope.allotQuery.allotTypeNo == "6402" ? true : false;
-        $scope.allotMaster.allotTypeNo = $scope.allotQuery.allotTypeNo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
         AlloMasterService.getAllFromApp($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, $scope.allotQuery.allotTypeNo, $scope.allotQuery.orderNo).success(function (data) {
             if (data.totalElements > 0) {
                 $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
+                if (data.content) {
+                    $scope.allotMaster = data.content[0];
+                    $scope.allotMaster.applyDate = $scope.getFormatDate($scope.allotMaster.applyDate);
+                    $scope.allotMaster.allotTypeNo = $scope.allotMaster.allotType.no;
+                    $scope.refreshAllotDetailList($scope.allotMaster.uuid);
+                    console.log(data.content[0]);
+                }
             } else {
                 //可新增狀態
                 $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS);
 
-                var formatDate = new Date();
-                moment(formatDate).format('YYYY-MM-DD');
-                $scope.allotMaster.applyDate = moment(formatDate).format('YYYY-MM-DD');
+                $scope.allotMaster.applyDate = moment(new Date()).format('YYYY-MM-DD');
                 $scope.allotMaster.allotTypeNo = $scope.allotQuery.allotTypeNo;
+
+                $scope.setCurrentEmployee($scope.currentUser);
 
                 $scope.refreshList();
                 ChannelLevelService.getByChannelUuid($scope.allotQuery.channelUuid).success(function (data) {
                     $scope.channelLevelList = data.content;
                     angular.forEach($scope.channelLevelList, function (item) {
+                        if (item.channel.area != null) {
+                            $scope.allotMaster.area = item.channel.area;
+                        }
+
                         $scope.allotMaster.inChannel = item.channel;
                         //true: 上館; false:轉館
                         if ($scope.allotTypeFlag) {
@@ -96,13 +132,37 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                 });
             }
         });
-
-
     };
 
+    $scope.getFormatDate = function (date) {
+        return moment(date).format('YYYY-MM-DD');
+    };
+
+    //取得目前登入人員的員工uuid，部門uuid
+    $scope.setCurrentEmployee = function (no) {
+        CBIEmployeeService.getByNo(no).success(function (data) {
+            if (data.content[0]) {
+                $scope.allotMaster.employeeUuid = data.content[0].uuid;
+                $scope.allotMaster.departmentUuid = data.content[0].department.uuid;
+            }
+        });
+    };;;;;;;;;;;;;;
+
+    $scope.getAllotType = function (no) {
+        AllotTypeService.getByNo(no).success(function (data) {
+            if (data.content[0]) {
+                $scope.allotMaster.allotTypeUuid = data.content[0].uuid;
+            }
+        });
+    };
 
     $scope.initialApp();
-    // $scope.refreshList();
+
+    $scope.changeDeliverDate = function () {
+        angular.forEach($scope.itemList, function (detail) {
+            detail.deliverDate = new Date($scope.allotMaster.deliverDate);
+        });
+    };;;;;;;;;;;;;;
 
     $scope.openChannelDlg = function () {
         if (!$scope.allotTypeFlag) {
@@ -130,7 +190,6 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             locals: {}
         }).then(function (data) {
             $scope.allotMaster.area = data;
-            console.log(data);
         });
     };
 
@@ -147,9 +206,63 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             };
 
             $scope.itemList.push(orderDetail);
-            console.log($scope.itemList);
         });
     };
+
+    $scope.editClickAction = function () {
+        $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS);
+    };
+
+    $scope.deleteClickAction = function (orderDetail) {
+        $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
+            if (orderDetail.uuid != null) {
+                $scope.deleteDetailUuids.push(orderDetail.uuid);
+            }
+            $scope.itemList.splice($scope.itemList.indexOf(orderDetail), 1);
+        });
+    };;;;;;;;;;;;;;
+
+    $scope.saveClickAction = function () {
+        var details = [];
+
+        angular.forEach($scope.itemList, function (detail) {
+            var AllotDetailInput = {
+                itemUuid: detail.item.uuid,
+                allotPrice: detail.allotPrice,
+                allotQty: detail.allotQty,
+                oriAllotAmt: detail.allotPrice * detail.allotQty,
+                oriAllotAmtTax: detail.allotPrice * detail.allotQty,
+                customizeFlag: detail.item.customizationFlag == 'Y' ? '1' : '2',
+                deliverDate: detail.deliverDate,
+                oriDeliverDate: detail.deliverDate,
+                remark: detail.remark
+            };
+
+            details.push(AllotDetailInput);
+        });
+
+        var AllotMasterInput = {
+            allotTypeUuid: $scope.allotMaster.allotTypeUuid,
+            applyDate: $scope.allotMaster.applyDate,
+            channelUuid: $scope.allotQuery.channelUuid,
+            ocmBaseChanOutUuid: $scope.allotMaster.outChannel.uuid,
+            ocmBaseChanInUuid: $scope.allotMaster.inChannel.uuid,
+            areaUuid: $scope.allotMaster.area.uuid,
+            storeAddress: $scope.allotMaster.outChannel.name + '调货到' + $scope.allotMaster.inChannel.name,
+            psoOrderMstNo: $scope.allotQuery.orderNo,
+            employeeUuid: $scope.allotMaster.employeeUuid,
+            departmentUuid: $scope.allotMaster.departmentUuid,
+            remark: $scope.allotMaster.remark,
+            details: details
+        };;;;;;;;;;;;;;
+
+        console.log(AllotMasterInput);
+        $scope.showConfirm('确认新增吗？', '', function () {
+            AlloMasterService.add(AllotMasterInput).success(function (data) {
+                $scope.initialApp();
+            });
+        });
+    };;;;;;;;;;;;;;
 
     $scope.getImageFullPath = function (path) {
         if (path == null) {
@@ -161,6 +274,8 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             return Constant.BACKEND_BASE + '/app/assets/IMAGE/' + path;
         }
     };
+
+
 });
 
 angular.module('IOne-Production').controller('AllotChannelSelectController', function ($scope, $mdDialog, ChannelLevelService, domain, channelUuid) {
@@ -220,15 +335,12 @@ angular.module('IOne-Production').controller('AllotAreaSelectController', functi
     $scope.refreshArea = function () {
         var grade2Uuid = '723F3CCA-79C5-4C00-BEAF-C74622B54142';
         Area.getGradeAndParentUuid(3, grade2Uuid).success(function (data) {
-            $scope.areaGrade3List = data.content;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-            console.log($scope.areaGrade3List);
+            $scope.areaGrade3List = data.content;
         });
     };
 
 
     $scope.refreshSubArea = function (grade, parentUuid) {
-        console.log(grade);
-        console.log(parentUuid);
         Area.getGradeAndParentUuid(grade, parentUuid).success(function (data) {
             if (grade == '4') {
                 $scope.areaGrade4List = data.content
@@ -236,7 +348,6 @@ angular.module('IOne-Production').controller('AllotAreaSelectController', functi
                 $scope.areaGrade5List = data.content
             }
 
-            console.log(data.content);
         });
     };
 
@@ -283,8 +394,7 @@ angular.module('IOne-Production').controller('AllotItemSelectController', functi
         Catalogue.getAppCatalogue(today).success(function (data) {
             $scope.catalogueList = data.content;
         });
-    };;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+    };
     $scope.getImageFullPath = function (path) {
         if (path == null) {
             return Constant.BACKEND_BASE + '/app/img/item.jpeg';

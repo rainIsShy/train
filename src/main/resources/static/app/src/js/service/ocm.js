@@ -96,7 +96,7 @@ angular.module('IOne-Production').service('ChannelPriceService', function ($http
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
-    this.getByItemUuid = function (channelUuid, itemUuid) {
+    this.getByChannelUuidAndItemUuid = function (channelUuid, itemUuid) {
         var url = '/channelPrices?channelUuid=' + channelUuid + "&itemUuid=" + itemUuid;
         return $http.get(Constant.BACKEND_BASE + url);
     };
