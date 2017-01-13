@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('SaleOrderReturnController', function ($scope, $q, PsoOrderReturnMaster, PsoOrderReturnExtendDetail2, IoneAdapterService, Constant) {
+angular.module('IOne-Production').controller('SaleOrderReturnController', function ($scope, $q, PsoOrderReturnMaster, PsoOrderReturnExtendDetail2, IoneAdapterService, PSOReturnSalesOrdersMasterService, PSOReturnSalesOrdersExtends2Service, ErpAdapterService, Constant) {
     $scope.selectedItemSize = 0;
     $scope.selectedItemAmount = 0;
     $scope.pageOption = {
@@ -35,7 +35,9 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
         'detailTransfer': {display: true, name: '抛转', uuid: '8fb85cea-8acd-4c57-8777-57107b502ddc'},
         'detail2Confirm': {display: true, name: '审核', uuid: '3778eacc-323c-4363-bc4e-f9710aaef0cb'},
         'detail2RevertConfirm': {display: true, name: '取审', uuid: 'e02ca1e7-0a89-42fd-b762-5c1fa2f4bbb7'},
-        'detail2Transfer': {display: true, name: '抛转', uuid: 'efe0f528-bc80-40b7-b34f-7170ce55a4db'}
+        'detail2Transfer': {display: true, name: '抛转', uuid: 'efe0f528-bc80-40b7-b34f-7170ce55a4db'},
+        'oneOffSync': {display: true, name: '一键抛转', uuid: ''},
+        'auditTransfer': {display: true, name: '审核抛转', uuid: ''}
     };
 
     $scope.sortByAction = function (field) {
@@ -587,5 +589,55 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
             $scope.showError('抛转失败：' + errResp.message);
         });
     };
+
+    $scope.oneOffSync = function(event, item){
+        $scope.stopEventPropagation(event);
+        $scope.showConfirm('确认一键抛转吗？', '', function () {
+            var param = {
+                PSO_ORDER_MST_UUID: [item.uuid]
+            };
+            $scope.logining = true;
+            IoneAdapterService.transferIoneAdapter("/psoReturnTask", param, $scope, function (response) {
+                PSOReturnSalesOrdersMasterService.getAll(10, 0, {'no' : item.no}).success(function(data){
+                    var returnSalesOrderMaster = data.content[0];
+                    var detailUuids = [];
+                    var confirmVal = {'name' : '审核' , 'value' : 1};
+                    angular.forEach(returnSalesOrderMaster.detailList, function (detail) {
+                        if (detail.confirm != confirmVal)) {
+                            detailUuids.push(detail.uuid);
+                        }
+                    });
+                    PSOReturnSalesOrdersExtends2Service.confirm(returnSalesOrderMaster.uuid, detailUuids, confirmVal.value).success(function (data) {
+                        var transferData = {
+                            'PSO_SO_MST_UUID': item.uuid,
+                            'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
+                        };
+                        ErpAdapterService.transferErpAdapter('/returnSalesOrderToOhaTask', transferData, $scope, function (resp) {
+                            $scope.showInfo('一键抛转成功');
+                            $scope.refreshList();
+                            $scope.refreshList();
+                            $scope.getReturnOrderMasterCount();
+                            if($scope.selectedItem){
+                                $scope.showDetailPanelAction($scope.selectedItem);
+                            }
+                            $scope.logining = false;
+                        });
+                    }).error(function (response) {
+                        $scope.showError('预订单退货单审核失败 : ' + response.message);
+                    });
+                });
+            }).error(function (errResp) {
+                $scope.logining = false;
+                $scope.showError('抛转到预订单退货单失败：' + errResp.message);
+            });
+        });
+    }
+
+    $scope.auditTransfer = function(event, item){
+        $scope.stopEventPropagation(event);
+        $scope.showConfirm('确认抛转吗？', '', function () {
+
+        });
+    }
 
 });

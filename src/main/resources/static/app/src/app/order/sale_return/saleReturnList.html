@@ -273,10 +273,6 @@
                                                ng-click="confirmClickAction($event, item, 2, true)">
                                         <span>审核</span>
                                     </md-button>
-                                    <!--<md-button class="md-button close-btn" aria-label="More"
-                                               ng-click="confirmClickAction($event, item, 2)"
-                                               style="position: relative;left: 15px;">审核
-                                    </md-button>-->
                                 </div>
                                 <div ng-if="menuDisplayOption['revertConfirm'].display && (menuAuthDataMap[menuDisplayOption['revertConfirm'].uuid] || isAdmin() || !menuDisplayOption['revertConfirm'].uuid) && item.confirm == '2'">
                                     <md-button class="md-fab md-mini"
@@ -284,10 +280,6 @@
                                                ng-disabled="item.transferPsoFlag == '1'">
                                         <span>取审</span>
                                     </md-button>
-                                    <!--<md-button class="md-button close-btn" aria-label="More"
-                                               ng-click="confirmClickAction($event, item, 1)"
-                                               style="position: relative;left: 15px;">取审
-                                    </md-button>-->
                                 </div>
                                 <div ng-if="menuDisplayOption['transfer'].display && (menuAuthDataMap[menuDisplayOption['transfer'].uuid] || isAdmin() || !menuDisplayOption['transfer'].uuid)">
                                     <md-button class="md-fab md-mini"
@@ -296,24 +288,19 @@
                                                style="position: relative;left: 15px;">抛转
                                     </md-button>
                                 </div>
-                                <!--<div ng-if="item.transferPsoFlag != '1'">
-                                    &lt;!&ndash;<md-button class="md-fab md-mini" ng-click="transferClickAction($event, item)">
-                                        <span>抛转</span>
-                                    </md-button>&ndash;&gt;
-                                    <md-button class="md-button close-btn" aria-label="More"
-                                               ng-click="transferClickAction($event, item)"
-                                               ng-disabled="selectedItem.transferPsoFlag == '1'"
-                                               style="position: relative;left: 15px;">抛转
+                                <div ng-if="menuDisplayOption['oneOffSync'].display && (menuAuthDataMap[menuDisplayOption['oneOffSync'].uuid] || isAdmin() || !menuDisplayOption['oneOffSync'].uuid)">
+                                    <md-button class="md-fab md-mini"
+                                               ng-click="oneOffSync($event, item)"
+                                               ng-disabled=""
+                                               style="position: relative;left: 15px;">一键
                                     </md-button>
                                 </div>
-                                <div ng-if="item.transferPsoFlag == '1'">
-                                    &lt;!&ndash;<md-button class="md-fab md-primary md-mini">
-                                        <span>已抛</span>
-                                    </md-button>&ndash;&gt;
-                                    <md-button class="md-button close-btn" aria-label="More"
-                                               style="position: relative;left: 15px;">已抛
+                                <div ng-if="menuDisplayOption['auditTransfer'].display && (menuAuthDataMap[menuDisplayOption['auditTransfer'].uuid] || isAdmin() || !menuDisplayOption['auditTransfer'].uuid)">
+                                    <md-button class="md-fab md-mini"
+                                               ng-click="auditTransfer($event, item)"
+                                               style="position: relative;left: 15px;">审抛
                                     </md-button>
-                                </div>-->
+                                </div>
                                 <md-button class="md-button close-btn" aria-label="More"
                                            ng-click="toggleMorePanelAction(item)"
                                            style="position: relative;left: 15px;">
