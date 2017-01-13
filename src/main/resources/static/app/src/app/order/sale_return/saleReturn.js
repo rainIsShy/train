@@ -598,15 +598,20 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
             };
             $scope.logining = true;
             IoneAdapterService.transferIoneAdapter("/psoReturnTask", param, $scope, function (response) {
-                PSOReturnSalesOrdersMasterService.getAll(10, 0, {'no' : item.no}).success(function(data){
+                PSOReturnSalesOrdersMasterService.getAll(10, 0, {'psoOrderMstNo' : item.no}, $scope.RES_UUID_MAP.PSO.SO_RETURN.RES_UUID).success(function(data){
                     var returnSalesOrderMaster = data.content[0];
                     var detailUuids = [];
                     var confirmVal = {'name' : '审核' , 'value' : 1};
-                    angular.forEach(returnSalesOrderMaster.detailList, function (detail) {
-                        if (detail.confirm != confirmVal) {
-                            detailUuids.push(detail.uuid);
-                        }
+                    PSOReturnSalesOrdersExtends2Service.getAll(returnSalesOrderMaster.uuid).success(function (data) {
+                        angular.forEach(data.content, function (detail) {
+                            if (detail.confirm != confirmVal.value) {
+                                detailUuids.push(detail.uuid);
+                            }
+                        });
+                    }).error(function (response) {
+                        $scope.showError(response.message);
                     });
+
                     PSOReturnSalesOrdersExtends2Service.confirm(returnSalesOrderMaster.uuid, detailUuids, confirmVal.value).success(function (data) {
                         var transferData = {
                             'PSO_SO_MST_UUID': item.uuid,
@@ -615,11 +620,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
                         ErpAdapterService.transferErpAdapter('/returnSalesOrderToOhaTask', transferData, $scope, function (resp) {
                             $scope.showInfo('一键抛转成功');
                             $scope.refreshList();
-                            $scope.refreshList();
                             $scope.getReturnOrderMasterCount();
-                            if($scope.selectedItem){
-                                $scope.showDetailPanelAction($scope.selectedItem);
-                            }
                             $scope.logining = false;
                         });
                     }).error(function (response) {
