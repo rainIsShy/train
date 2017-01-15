@@ -625,9 +625,11 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
                             });
                     }).error(function (response) {
                         $scope.showError('预订单退货单审核失败 : ' + response.message);
+                        $scope.logining = false;
                     });
                     }).error(function (response) {
                         $scope.showError(response.message);
+                        $scope.logining = false;
                     });
                 });
             }).error(function (errResp) {
@@ -637,10 +639,24 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
         });
     }
 
-    $scope.auditTransfer = function(event, item){
+    $scope.auditTransfer = function(event, item, confirmVal){
         $scope.stopEventPropagation(event);
-        $scope.showConfirm('确认抛转吗？', '', function () {
-
+        $scope.showConfirm('确认审核抛转吗？', '', function () {
+             var extendDetailUuids = [];
+             angular.forEach(item.detailList, function (detail) {
+                 if (detail.confirm != confirmVal) {
+                     extendDetailUuids.push(detail.uuid);
+                 }
+             });
+             if (extendDetailUuids.length) {
+                 PsoOrderReturnExtendDetail2.confirm(item.uuid, extendDetailUuids, confirmVal).success(function (data) {
+                    $scope.oneOffSync(event, item);
+                 }).error(function (response) {
+                     $scope.showError('产品销售退货单' + item.no + response.message);
+                 });
+             } else {
+                 $scope.showWarn("没有可审核的商品！");
+             }
         });
     }
 

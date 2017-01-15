@@ -291,13 +291,14 @@
                                 <div ng-if="menuDisplayOption['oneOffSync'].display && (menuAuthDataMap[menuDisplayOption['oneOffSync'].uuid] || isAdmin() || !menuDisplayOption['oneOffSync'].uuid)">
                                     <md-button class="md-fab md-mini"
                                                ng-click="oneOffSync($event, item)"
-                                               ng-disabled=""
+                                               ng-disabled="item.confirm == '1' || item.transferPsoFlag == '1'"
                                                style="position: relative;left: 15px;">一键
                                     </md-button>
                                 </div>
                                 <div ng-if="menuDisplayOption['auditTransfer'].display && (menuAuthDataMap[menuDisplayOption['auditTransfer'].uuid] || isAdmin() || !menuDisplayOption['auditTransfer'].uuid)">
                                     <md-button class="md-fab md-mini"
-                                               ng-click="auditTransfer($event, item)"
+                                               ng-click="auditTransfer($event, item, 2, true)"
+                                               ng-disabled="item.transferPsoFlag == '1'"
                                                style="position: relative;left: 15px;">审抛
                                     </md-button>
                                 </div>
