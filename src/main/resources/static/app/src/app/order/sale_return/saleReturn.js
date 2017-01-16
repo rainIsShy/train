@@ -36,8 +36,8 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
         'detail2Confirm': {display: true, name: '审核', uuid: '3778eacc-323c-4363-bc4e-f9710aaef0cb'},
         'detail2RevertConfirm': {display: true, name: '取审', uuid: 'e02ca1e7-0a89-42fd-b762-5c1fa2f4bbb7'},
         'detail2Transfer': {display: true, name: '抛转', uuid: 'efe0f528-bc80-40b7-b34f-7170ce55a4db'},
-        'oneOffSync': {display: true, name: '一键抛转', uuid: ''},
-        'auditTransfer': {display: true, name: '审核抛转', uuid: ''}
+        'oneOffSync': {display: true, name: '一键抛转', uuid: '3A8BB0DED66B4F7992EAFE84B6E69108'},
+        'auditTransfer': {display: true, name: '审核抛转', uuid: '0DD7BEADE8774D73B7E5A53B080CE0A8'}
     };
 
     $scope.sortByAction = function (field) {
@@ -424,7 +424,7 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
     $scope.updateMasterStateByReturnDetails = function (item) {
         var confirm = Constant.CONFIRM[2].value;
         var transferPsoFlag = Constant.TRANSFER_PSO_FLAG[1].value;
-        var returnAmount = 0;
+        var returnAmount = 0.0;
         angular.forEach(item.detailList, function (detail) {
             if (detail.confirm == Constant.CONFIRM[1].value) {
                 confirm = detail.confirm;
@@ -432,11 +432,11 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
             if (detail.transferFlag == Constant.TRANSFER_PSO_FLAG[2].value) {
                 transferPsoFlag = detail.transferFlag;
             }
-            returnAmount += detail.originalReturnAmount;
+            returnAmount += detail.originalReturnAmount*100;
         });
         item.confirm = confirm;
         item.transferPsoFlag = transferPsoFlag;
-        item.returnAmount = returnAmount;
+        item.returnAmount = returnAmount/100;
     };
 
     $scope.disableBatchMenuButtons = function () {
