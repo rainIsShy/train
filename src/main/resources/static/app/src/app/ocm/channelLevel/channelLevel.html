@@ -63,16 +63,16 @@
                     <div layout="row" layout-wrap layout-margin>
                         <span flex=100" flex-sm="100" layout-padding>
                             <span class="item-name">渠道/直营店名称</span>
-                            <span class="item-content">{{selectedItem.channel.name}}</span>
+                            <span class="item-content">{{selectedItem.no}}</span>
                         </span>
                         <span flex="100" flex-sm="100" layout-padding>
                             <span class="item-name">上层渠道</span>
-                            <span class="item-content">{{selectedItem.parentOcmBaseChanName}}</span>
+                            <span class="item-content">{{selectedItem.name}}</span>
                         </span>
                     </div>
 
                     <md-tabs md-dynamic-height md-border-bottom style="padding-top: 30px;">
-                        <md-tab label="下層渠道信息">
+                        <md-tab label="下层渠道信息">
                             <div layout="row" layout-wrap style="margin-top: 20px;">
                                 <div flex="100" ng-repeat="detail in selectedItem.detailList" ng-click=""
                                      class="prod-item" style="position: relative;">
@@ -179,7 +179,7 @@
                         </md-menu-content>
                     </md-menu>
                 </div>
-                <div ng-repeat="item in itemList | orderBy:sortByField"
+                <div ng-repeat="item in itemParent | orderBy : 'no'"
                      ng-class="selectedItem.uuid == item.uuid ? 'selected-item':''">
                     <div class="summary-item" style="background-color: transparent">
                         <div layout="row" layout-wrap>
@@ -189,13 +189,12 @@
                             </span>
                             <div flex="100" layout="row"
                                  style="padding-left: 50px;padding-top: 10px; font-weight: bold;">
-                                <span flex ng-click="showDetailPanelAction(item)" class="summary-item__title">{{item.channel.no}}</span>
+                                <span flex ng-click="showDetailPanelAction(item)" class="summary-item__title">{{item.no}}</span>
                             </div>
                             <div flex="100" layout="row" style="padding-left: 50px;padding-top: 10px;font-size: 14px;"
                                  layout-align="space-between center" ng-hide="selectedItem">
                                 <div flex layout="row" style="color:#7f8fa4">
-                                    <span>渠道: <span style="font-style: italic">{{item.channel.name}}&nbsp;&nbsp;/</span></span>
-                                    <span>上层渠道: <span style="font-style: italic">{{item.parentOcmBaseChanName}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                    <span>渠道: <span style="font-style: italic">{{item.name}}&nbsp;&nbsp;/</span></span>
                                 </div>
                                 <div layout="row" layout-align="end center">
                                     <md-button class="md-button close-btn" aria-label="More"

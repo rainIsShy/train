@@ -46,6 +46,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
             $scope.itemList = data.content;
             $scope.pageOption.totalPage = data.totalPages;
             $scope.pageOption.totalElements = data.totalElements;
+            $scope.getChannelParent();
             angular.forEach($scope.itemList, function (item) {
                 item.detailList = [];
                 $scope.getChannelName(item);
@@ -63,7 +64,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
     };
 
     $scope.refreshSubList = function (item) {
-        ChannelLevelService.getAll($scope.pageDetailOption.sizePerPage, $scope.pageDetailOption.currentPage, '', '', '', '', '', '', item.channel.uuid, item.channel.uuid, RES_UUID_MAP.OCM.CHANNEL_LEVEL.RES_UUID).success(function (data) {
+        ChannelLevelService.getAll($scope.pageDetailOption.sizePerPage, $scope.pageDetailOption.currentPage, '', '', '', '', '', '', item.uuid, item.uuid, RES_UUID_MAP.OCM.CHANNEL_LEVEL.RES_UUID).success(function (data) {
             $scope.subItemList = data.content;
             $scope.pageDetailOption.totalPage = data.totalPages;
             $scope.pageDetailOption.totalElements = data.totalElements;
@@ -76,6 +77,21 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
         ChannelService.get(item.parentOcmBaseChanUuid).success(function (data) {
             item.parentOcmBaseChanName = data.name;
         });
+    };
+
+    $scope.getChannelParent = function (){
+        $scope.itemParent=[];
+        var mapParentOcmBaseUuid = {};
+        angular.forEach($scope.itemList,function(item){
+            if(mapParentOcmBaseUuid[item.parentOcmBaseChanUuid]){
+               return;
+           }
+           mapParentOcmBaseUuid[item.parentOcmBaseChanUuid] = true;
+           ChannelService.get(item.parentOcmBaseChanUuid).success(function (data){
+               $scope.itemParent.push(data);
+           });
+        });
+
     };
 
     $scope.$watch('listFilterOption', function () {
@@ -119,7 +135,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
     $scope.toggleMorePanelAction = function (item) {
         console.log(item);
         item.showMorePanel = !item.showMorePanel;
-
+        $scope.refreshSubList(item);
         if (item.showMorePanel) {
             // item.detailList = $scope.subItemList;
         }
@@ -165,8 +181,8 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
         $scope.domain = domain;
         $scope.addItem = {};
         if ($scope.domain == 'ChannelLevelDetail') {
-            $scope.addItem.parentOcmBaseChanUuid = $scope.selectedItem.channel.uuid;
-            $scope.addItem.parentChannelName = $scope.selectedItem.channel.name;
+            $scope.addItem.parentOcmBaseChanUuid = $scope.selectedItem.uuid;
+            $scope.addItem.parentChannelName = $scope.selectedItem.name;
         }
     };
 
