@@ -123,6 +123,8 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                 ChannelService.get(list.parentOcmBaseChanUuid).success(function (data){
                     $scope.parentOcmBaseChanName = data.name;
                 });
+            }else{
+                    $scope.parentOcmBaseChanName=null;
             }
         });
         $scope.selectedItem=item;
