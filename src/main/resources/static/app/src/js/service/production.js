@@ -126,6 +126,10 @@ angular.module('IOne-Production').service('ProductionCustom', function($http, Co
 
     this.getCustom = function(customUuid) {
         return $http.get(Constant.BACKEND_BASE + '/itemCustoms/' + customUuid + '/scopes');
+    };;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+    this.getInformationByCustom = function (itemUuid, customUuid) {
+        return $http.get(Constant.BACKEND_BASE + '/itemCustoms/' + customUuid + '/scopes?action=getInformation&itemUuid=' + itemUuid);
     }
 });
 
@@ -135,6 +139,10 @@ angular.module('IOne-Production').service('ProductionItemCustom', function($http
             productionUuid = '';
         }
         return $http.get(Constant.BACKEND_BASE + '/items/' + productionUuid + '/customs?itemUuid=' + productionUuid);
+    };
+
+    this.getByItemCustomUuid = function (productionUuid, itemCustomUuid) {
+        return $http.get(Constant.BACKEND_BASE + '/items/' + productionUuid + '/customs?itemCustomUuid=' + itemCustomUuid);
     };
 
     this.add = function(productionUuid, itemCustom) {
@@ -250,12 +258,20 @@ angular.module('IOne-Production').service('ProductionCatalogueDetails', function
 
     };
 
-    this.getAllByAppCatalogue = function (sizePerPage, page, catalogueUuid, endModifyDate) {
+    this.getAllByAppCatalogue = function (sizePerPage, page, channelUuid, endModifyDate, no, name) {
         var url = '/itemCatalogueDetails?size=' + sizePerPage +
             '&page=' + page +
+            '&channelUuid=' + channelUuid;
             '&endModifyDate=' + endModifyDate;
-        if (catalogueUuid != null) {
-            url = url + '&catalogueUuid=' + catalogueUuid;
+
+
+        if (no != null) {
+            url = url + '&itemNo=' + no;
+        }
+
+
+        if (name != null) {
+            url = url + '&itemName=' + name;
         }
 
         return $http.get(Constant.BACKEND_BASE + url);

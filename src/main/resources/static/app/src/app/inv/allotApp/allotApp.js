@@ -8,7 +8,6 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
 angular.module('IOne-Production').controller('AllotAppController', function ($mdDialog, $scope, $location, Constant, OrderMaster, OrderDetail, AlloMasterService, AlloDetailService, AllotTypeService, ChannelLevelService, OCMChannelService, CBIEmployeeService, ChannelPriceService) {
 
     $scope.allotQuery = {
-        // orderNo: $location.$$search.orderNo,
         orderUuid: $location.$$search.orderUuid,
         allotTypeNo: $location.$$search.allotTypeNo,
         channelUuid: $location.$$search.channelUuid
@@ -52,8 +51,9 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
 
             angular.forEach($scope.itemList, function (orderDetail) {
                 orderDetail.allotPrice = 0;
-                orderDetail.allotQty = 0;
+                orderDetail.allotQty = 1;
                 ChannelPriceService.getByChannelUuidAndItemUuid($scope.allotQuery.channelUuid, orderDetail.item.uuid).success(function (data) {
+                    console.log(data);
                     if (data.content) {
                         orderDetail.allotPrice = data.content[0].standardPrice
                     }
@@ -62,9 +62,9 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
         });
     };
 
+
     $scope.refreshAllotDetailList = function (allotMasterUuid) {
         AlloDetailService.get(allotMasterUuid).success(function (data) {
-            console.log(data);
             $scope.itemList = data.content;
             angular.forEach($scope.itemList, function (detail) {
                 detail.deliverDate = new Date(detail.deliverDate);
@@ -97,18 +97,19 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                     $scope.allotMaster.applyDate = $scope.getFormatDate($scope.allotMaster.applyDate);
                     $scope.allotMaster.allotTypeNo = $scope.allotMaster.allotType.no;
                     $scope.refreshAllotDetailList($scope.allotMaster.uuid);
-                    console.log(data.content[0]);
+                    console.log($scope.allotMaster);
                 }
             } else {
                 //可新增狀態
                 $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS);
+                $scope.status = 'add';
 
                 $scope.allotMaster.applyDate = moment(new Date()).format('YYYY-MM-DD');
                 $scope.allotMaster.allotTypeNo = $scope.allotQuery.allotTypeNo;
 
                 $scope.setCurrentEmployee($scope.currentUser);
-
                 $scope.refreshList();
+
                 ChannelLevelService.getByChannelUuid($scope.allotQuery.channelUuid).success(function (data) {
                     $scope.channelLevelList = data.content;
                     angular.forEach($scope.channelLevelList, function (item) {
@@ -146,7 +147,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                 $scope.allotMaster.departmentUuid = data.content[0].department.uuid;
             }
         });
-    };;;;;;;;;;;;;;
+    };;;;;;;;;;;;;;;;;;
 
     $scope.getAllotType = function (no) {
         AllotTypeService.getByNo(no).success(function (data) {
@@ -162,7 +163,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
         angular.forEach($scope.itemList, function (detail) {
             detail.deliverDate = new Date($scope.allotMaster.deliverDate);
         });
-    };;;;;;;;;;;;;;
+    };
 
     $scope.openChannelDlg = function () {
         if (!$scope.allotTypeFlag) {
@@ -199,19 +200,36 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             templateUrl: 'app/src/app/inv/allotApp/selectItems.html',
             parent: angular.element(document.body),
             targetEvent: event,
-            locals: {}
+            locals: {
+                channelUuid: $scope.allotQuery.channelUuid
+            }
         }).then(function (data) {
             var orderDetail = {
-                item: data
+                item: data,
+                allotPrice: 0,
+                allotQty: 1
             };
+            orderDetail.allotQty = 1;
 
-            $scope.itemList.push(orderDetail);
+            ChannelPriceService.getByChannelUuidAndItemUuid($scope.allotQuery.channelUuid, data.uuid).success(function (data) {
+                if (data.totalElements > 0) {
+                    orderDetail.allotPrice = data.content[0].standardPrice
+                }
+                $scope.itemList.push(orderDetail);
+            });
         });
     };
 
     $scope.editClickAction = function () {
         $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS);
+        $scope.status = $scope.allotMaster.no != null ? 'edit' : 'add';
     };
+
+
+    $scope.cancelEditClickAction = function () {
+        $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
+    };
+
 
     $scope.deleteClickAction = function (orderDetail) {
         $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
@@ -220,49 +238,106 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             }
             $scope.itemList.splice($scope.itemList.indexOf(orderDetail), 1);
         });
-    };;;;;;;;;;;;;;
+    };
 
     $scope.saveClickAction = function () {
-        var details = [];
 
-        angular.forEach($scope.itemList, function (detail) {
-            var AllotDetailInput = {
-                itemUuid: detail.item.uuid,
-                allotPrice: detail.allotPrice,
-                allotQty: detail.allotQty,
-                oriAllotAmt: detail.allotPrice * detail.allotQty,
-                oriAllotAmtTax: detail.allotPrice * detail.allotQty,
-                customizeFlag: detail.item.customizationFlag == 'Y' ? '1' : '2',
-                deliverDate: detail.deliverDate,
-                oriDeliverDate: detail.deliverDate,
-                remark: detail.remark
+        if ($scope.status == 'add') {
+            var detailInputs = [];
+
+            angular.forEach($scope.itemList, function (detail) {
+                var AllotDetailInput = {
+                    itemUuid: detail.item.uuid,
+                    allotPrice: detail.allotPrice,
+                    allotQty: detail.allotQty,
+                    oriAllotAmt: detail.allotPrice * detail.allotQty,
+                    oriAllotAmtTax: detail.allotPrice * detail.allotQty,
+                    customizeFlag: detail.item.customizationFlag == 'Y' ? '1' : '2',
+                    deliverDate: detail.deliverDate,
+                    oriDeliverDate: detail.deliverDate,
+                    remark: detail.remark,
+                    itemAttribute: detail.item.informationScope
+                };
+                detailInputs.push(AllotDetailInput);
+            });
+
+            var AllotMasterInput = {
+                allotTypeUuid: $scope.allotMaster.allotTypeUuid,
+                applyDate: $scope.allotMaster.applyDate,
+                channelUuid: $scope.allotQuery.channelUuid,
+                ocmBaseChanOutUuid: $scope.allotMaster.outChannel.uuid,
+                ocmBaseChanInUuid: $scope.allotMaster.inChannel.uuid,
+                areaUuid: $scope.allotMaster.area.uuid,
+                storeAddress: $scope.allotMaster.outChannel.name + '调货到' + $scope.allotMaster.inChannel.name,
+                psoOrderMstNo: $scope.allotQuery.orderNo,
+                employeeUuid: $scope.allotMaster.employeeUuid,
+                departmentUuid: $scope.allotMaster.departmentUuid,
+                remark: $scope.allotMaster.remark,
+                details: detailInputs
             };
 
-            details.push(AllotDetailInput);
-        });
-
-        var AllotMasterInput = {
-            allotTypeUuid: $scope.allotMaster.allotTypeUuid,
-            applyDate: $scope.allotMaster.applyDate,
-            channelUuid: $scope.allotQuery.channelUuid,
-            ocmBaseChanOutUuid: $scope.allotMaster.outChannel.uuid,
-            ocmBaseChanInUuid: $scope.allotMaster.inChannel.uuid,
-            areaUuid: $scope.allotMaster.area.uuid,
-            storeAddress: $scope.allotMaster.outChannel.name + '调货到' + $scope.allotMaster.inChannel.name,
-            psoOrderMstNo: $scope.allotQuery.orderNo,
-            employeeUuid: $scope.allotMaster.employeeUuid,
-            departmentUuid: $scope.allotMaster.departmentUuid,
-            remark: $scope.allotMaster.remark,
-            details: details
-        };;;;;;;;;;;;;;
-
-        console.log(AllotMasterInput);
-        $scope.showConfirm('确认新增吗？', '', function () {
-            AlloMasterService.add(AllotMasterInput).success(function (data) {
-                $scope.initialApp();
+            console.log(AllotMasterInput);
+            $scope.showConfirm('是否确认生成调拨单？', '', function () {
+                AlloMasterService.add(AllotMasterInput).success(function (data) {
+                    $scope.initialApp();
+                });
             });
-        });
-    };;;;;;;;;;;;;;
+        } else if ($scope.status == 'edit') {
+
+            var detailInputs = [];
+            var detailUpdateInputs = [];
+
+            angular.forEach($scope.itemList, function (detail) {
+                if (detail.uuid != null) {
+                    var AllotDetailUpdateInput = {
+                        uuid: detail.uuid,
+                        allotPrice: detail.allotPrice,
+                        allotQty: detail.allotQty,
+                        oriAllotAmt: detail.allotPrice * detail.allotQty,
+                        oriAllotAmtTax: detail.allotPrice * detail.allotQty,
+                        customizeFlag: detail.item.customizationFlag == 'Y' ? '1' : '2',
+                        deliverDate: detail.deliverDate,
+                        oriDeliverDate: detail.deliverDate,
+                        remark: detail.remark
+                    };
+                    detailUpdateInputs.push(AllotDetailUpdateInput);
+                } else {
+                    var AllotDetailInput = {
+                        itemUuid: detail.item.uuid,
+                        allotPrice: detail.allotPrice,
+                        allotQty: detail.allotQty,
+                        oriAllotAmt: detail.allotPrice * detail.allotQty,
+                        oriAllotAmtTax: detail.allotPrice * detail.allotQty,
+                        customizeFlag: detail.item.customizationFlag == 'Y' ? '1' : '2',
+                        deliverDate: detail.deliverDate,
+                        oriDeliverDate: detail.deliverDate,
+                        remark: detail.remark,
+                        itemAttribute: detail.item.informationScope
+                    };
+                    detailInputs.push(AllotDetailInput);
+                }
+            });
+
+            var AllotMasterUpdateInput = {
+                uuid: $scope.allotMaster.uuid,
+                ocmBaseChanOutUuid: $scope.allotMaster.outChannel.uuid,
+                ocmBaseChanInUuid: $scope.allotMaster.inChannel.uuid,
+                areaUuid: $scope.allotMaster.area.uuid,
+                storeAddress: $scope.allotMaster.outChannel.name + '调货到' + $scope.allotMaster.inChannel.name,
+                remark: $scope.allotMaster.remark,
+                detailInputs: detailInputs,
+                details: detailUpdateInputs,
+                deleteDetailUuids: $scope.deleteDetailUuids
+            };
+            console.log(AllotMasterUpdateInput);
+
+            $scope.showConfirm('是否确认修改调拨单？', '', function () {
+                AlloMasterService.modify(AllotMasterUpdateInput.uuid, AllotMasterUpdateInput).success(function (data) {
+                    $scope.initialApp();
+                });
+            });
+        }
+    };
 
     $scope.getImageFullPath = function (path) {
         if (path == null) {
@@ -287,21 +362,15 @@ angular.module('IOne-Production').controller('AllotChannelSelectController', fun
         displayModel: 0  //0 : image + text //1 : image
     };
 
-    console.log(channelUuid);
     $scope.domain = domain;
     $scope.channelUuid = channelUuid;
-    console.log($scope.channelUuid);
-
 
     $scope.refreshChannel = function () {
         ChannelLevelService.getByChannelUuid($scope.channelUuid).success(function (data) {
             $scope.channelLevelList = data.content;
-            console.log($scope.channelLevelList);
             angular.forEach($scope.channelLevelList, function (channel) {
-                console.log(channel);
-                ChannelLevelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, '', '', '', '', channel.parentOcmBaseChanUuid, '', '').success(function (data) {
+                ChannelLevelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, '', '', '', '', channel.parentOcmBaseChanUuid, $scope.channelUuid, '').success(function (data) {
                     $scope.allChannel = data.content;
-                    console.log($scope.allChannel);
                 });
             });
         });
@@ -347,7 +416,6 @@ angular.module('IOne-Production').controller('AllotAreaSelectController', functi
             } else {
                 $scope.areaGrade5List = data.content
             }
-
         });
     };
 
@@ -369,32 +437,75 @@ angular.module('IOne-Production').controller('AllotAreaSelectController', functi
 });
 
 
-angular.module('IOne-Production').controller('AllotItemSelectController', function ($scope, $mdDialog, Constant, Catalogue, ProductionCatalogueDetails) {
+angular.module('IOne-Production').controller('AllotItemSelectController', function ($scope, $mdDialog, Constant, Catalogue, OrderItemCustomDetail, OrderCustomScope, ProductionCatalogueDetails, ItemRelationService, ProductionItemCustom, ProductionCustom, channelUuid) {
     $scope.pageOption = {
-        sizePerPage: 16,
+        sizePerPage: 12,
         currentPage: 0,
         totalPage: 0,
         totalElements: 0,
         displayModel: 0  //0 : image + text //1 : image
     };
 
-    var today = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+    $scope.selectedCustom = {
+        informationUuids: []
+    };
 
-    $scope.refreshProduction = function (catalogueUuid) {
-        ProductionCatalogueDetails.getAllByAppCatalogue($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, catalogueUuid, today).success(function (data) {
-                console.log(data);
-                $scope.allProductionsData = data;
+
+    var today = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+    $scope.channelUuid = channelUuid;
+
+    $scope.refreshProduction = function (searchItemNo, searchItemName) {
+        $scope.searchItemNo = searchItemNo;
+        $scope.searchItemName = searchItemName;
+        ProductionCatalogueDetails.getAllByAppCatalogue($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.channelUuid, today, $scope.searchItemNo, $scope.searchItemName).success(function (data) {
+            $scope.allProductionsData = data.content;
                 $scope.pageOption.totalPage = data.totalPages;
                 $scope.pageOption.totalElements = data.totalElements;
             }
         );
     };
 
-    $scope.refreshCatalogue = function () {
-        Catalogue.getAppCatalogue(today).success(function (data) {
-            $scope.catalogueList = data.content;
-        });
+
+    $scope.refreshProduction();
+    $scope.itemCustomUuid = '126BA49C-271E-46F4-8D2D-A8A5A1D99CDD';
+
+    $scope.selectItem = function (item) {
+        $scope.selectedItem = item;
+        $scope.showCustomTab = true;
+        if ($scope.selectedItem.customizeFlag == 'Y') {
+            $scope.showCustomTab = true;
+            $scope.itemUuid = '393FF02F-2C10-4149-AFF3-E484D10BD9C5';
+            ProductionCustom.getInformationByCustom('393FF02F-2C10-4149-AFF3-E484D10BD9C5', $scope.itemCustomUuid).success(function (data) {
+                if (data.totalElements > 0) {
+                    $scope.informationList = data.content;
+                }
+            });
+        } else {
+            $mdDialog.hide($scope.selectedItem);
+        }
     };
+
+    $scope.checkBoxChangeHandler = function (data, selected) {
+        if (selected == true) {
+            $scope.selectedCustom.informationUuids.push(data.uuid);
+        } else {
+            angular.forEach($scope.selectedCustom.informationUuids, function (value, index) {
+                if (value == data.uuid) {
+                    $scope.selectedCustom.informationUuids.splice(index, 1);
+                }
+            });
+        }
+
+        if ($scope.selectedCustom.informationUuids.length > 0) {
+            ItemRelationService.getAll($scope.itemUuid, $scope.itemCustomUuid, $scope.selectedCustom.informationUuids).success(function (itemRelationData) {
+                $scope.itemRelationList = itemRelationData.content;
+            });
+        } else {
+            $scope.itemRelationList = null;
+            $scope.selectedCustom.informationScope = null;
+        }
+    };
+
     $scope.getImageFullPath = function (path) {
         if (path == null) {
             return Constant.BACKEND_BASE + '/app/img/item.jpeg';
@@ -406,16 +517,9 @@ angular.module('IOne-Production').controller('AllotItemSelectController', functi
         }
     };
 
-    $scope.refreshCatalogue();
-    $scope.refreshProduction('');
-
-    $scope.selectItem = function (item) {
-        $scope.selectedItem = item;
+    $scope.hideDlg = function () {
+        $scope.selectedItem.informationScope = $scope.selectedCustom.informationScope;
         $mdDialog.hide($scope.selectedItem);
-    };
-
-    $scope.hideDlg = function (item) {
-        $mdDialog.hide(item);
     };
     $scope.cancelDlg = function () {
         $mdDialog.cancel();

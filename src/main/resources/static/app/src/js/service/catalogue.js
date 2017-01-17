@@ -123,13 +123,6 @@ angular.module('IOne-Production').service('Catalogue', function($http, Constant)
 
     };
 
-    this.getAppCatalogue = function (endModifyDate) {
-
-        return $http.get(Constant.BACKEND_BASE + '/catalogues?endModifyDate=' + endModifyDate
-            + '&endModifyDateCondition=lte&page=0&release=2&size=10000');
-
-    };
-
     this.add = function(templateNodeData) {
         return $http.post(Constant.BACKEND_BASE + '/catalogues', templateNodeData);
     };
