@@ -92,10 +92,11 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
         AlloMasterService.getAllFromApp($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, $scope.allotQuery.allotTypeNo, $scope.allotQuery.orderNo).success(function (data) {
             if (data.totalElements > 0) {
                 $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
+                console.log(data);
                 if (data.content) {
                     $scope.allotMaster = data.content[0];
                     $scope.allotMaster.applyDate = $scope.getFormatDate($scope.allotMaster.applyDate);
-                    $scope.allotMaster.allotTypeNo = $scope.allotMaster.allotType.no;
+                    $scope.allotMaster.allotTypeNo = $scope.allotMaster.allotQuery.allotTypeNo;
                     $scope.refreshAllotDetailList($scope.allotMaster.uuid);
                     console.log($scope.allotMaster);
                 }

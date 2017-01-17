@@ -49,7 +49,7 @@ angular.module('IOne-Production').service('AlloMasterService', function ($http, 
         if (psoOrderMstNo != null && psoOrderMstNo != '') {
             url = url + '&psoOrderMstNo=' + psoOrderMstNo;
         }
-
+        console.log(url);
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
