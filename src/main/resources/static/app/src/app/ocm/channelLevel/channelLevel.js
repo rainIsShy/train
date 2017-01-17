@@ -118,7 +118,14 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
      */
     $scope.showDetailPanelAction = function (item) {
         $scope.refreshSubList(item);
-        $scope.selectedItem = item;
+        angular.forEach($scope.itemList,function(list){
+            if(item.uuid==list.channel.uuid){
+                ChannelService.get(list.parentOcmBaseChanUuid).success(function (data){
+                    $scope.parentOcmBaseChanName = data.name;
+                });
+            }
+        });
+        $scope.selectedItem=item;
     };
 
     /**
