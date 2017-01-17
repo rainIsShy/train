@@ -44,8 +44,17 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
     $scope.refreshList = function () {
         ChannelLevelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, '', '', '', '', $scope.keyword, $scope.parentKeyword, '', '', '', '', RES_UUID_MAP.OCM.CHANNEL_LEVEL.RES_UUID).success(function (data) {
             $scope.itemList = data.content;
+            var mapTotalElements={};
+            var totalElements=0;
+            angular.forEach($scope.itemList,function(item){
+                if(mapTotalElements[item.parentOcmBaseChanUuid]){
+                    return;
+                }
+                mapTotalElements[item.parentOcmBaseChanUuid]=true;
+                totalElements=totalElements+1;
+            });
             $scope.pageOption.totalPage = data.totalPages;
-            $scope.pageOption.totalElements = data.totalElements;
+            $scope.pageOption.totalElements = totalElements;
             $scope.getChannelParent();
             angular.forEach($scope.itemList, function (item) {
                 item.detailList = [];
