@@ -147,8 +147,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                 $scope.allotMaster.departmentUuid = data.content[0].department.uuid;
             }
         });
-    };;;;;;;;;;;;;;;;;;
-
+    };
     $scope.getAllotType = function (no) {
         AllotTypeService.getByNo(no).success(function (data) {
             if (data.content[0]) {
@@ -474,7 +473,7 @@ angular.module('IOne-Production').controller('AllotItemSelectController', functi
         $scope.showCustomTab = true;
         if ($scope.selectedItem.customizeFlag == 'Y') {
             $scope.showCustomTab = true;
-            $scope.itemUuid = '393FF02F-2C10-4149-AFF3-E484D10BD9C5';
+            $scope.itemUuid = item.uuid;
             ProductionCustom.getInformationByCustom('393FF02F-2C10-4149-AFF3-E484D10BD9C5', $scope.itemCustomUuid).success(function (data) {
                 if (data.totalElements > 0) {
                     $scope.informationList = data.content;
