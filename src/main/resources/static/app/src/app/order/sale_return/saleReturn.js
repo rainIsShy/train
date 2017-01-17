@@ -36,8 +36,8 @@ angular.module('IOne-Production').controller('SaleOrderReturnController', functi
         'detail2Confirm': {display: true, name: '审核', uuid: '3778eacc-323c-4363-bc4e-f9710aaef0cb'},
         'detail2RevertConfirm': {display: true, name: '取审', uuid: 'e02ca1e7-0a89-42fd-b762-5c1fa2f4bbb7'},
         'detail2Transfer': {display: true, name: '抛转', uuid: 'efe0f528-bc80-40b7-b34f-7170ce55a4db'},
-        'oneOffSync': {display: true, name: '一键抛转', uuid: '3A8BB0DED66B4F7992EAFE84B6E69108'},
-        'auditTransfer': {display: true, name: '审核抛转', uuid: '0DD7BEADE8774D73B7E5A53B080CE0A8'}
+        'oneOffSync': {display: true, name: '一键抛转', uuid: 'A2AEECBA-8136-4415-A097-3C3859D31EB1'},
+        'auditTransfer': {display: true, name: '审核抛转', uuid: 'AFD8C732-16A2-4FC6-85EF-32079DB90C66'}
     };
 
     $scope.sortByAction = function (field) {
