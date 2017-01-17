@@ -300,7 +300,7 @@
                                 <div ng-if="menuDisplayOption['auditTransfer'].display && (menuAuthDataMap[menuDisplayOption['auditTransfer'].uuid] || isAdmin() || !menuDisplayOption['auditTransfer'].uuid)">
                                     <md-button class="md-fab md-mini"
                                                ng-click="auditTransfer($event, item, 2, true)"
-                                               ng-disabled="item.transferPsoFlag == '1'"
+                                               ng-disabled="item.confirm == '2' || item.transferPsoFlag == '1'"
                                                style="position: relative;left: 15px;">审抛
                                     </md-button>
                                 </div>

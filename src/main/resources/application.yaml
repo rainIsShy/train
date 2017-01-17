@@ -173,14 +173,14 @@ i1:
     #url: http://project.benchmarkchina.com:10811
     url: http://localhost:8081
   i1-adapter:
-    url: http://project.benchmarkchina.com:10812
-    #url: http://localhost:8082
+    #url: http://project.benchmarkchina.com:10812
+    url: http://localhost:8082
   tiptop-adapter:
-    url: http://project.benchmarkchina.com:10813
-    #url: http://localhost:8083
+    #url: http://project.benchmarkchina.com:10813
+    url: http://localhost:8083
   ec-adapter:
-    #url: http://project.benchmarkchina.com:10814
-    url: http://localhost:8084
+    url: http://project.benchmarkchina.com:10814
+    #url: http://localhost:8084
   tmall-adapter:
     url: http://project.benchmarkchina.com:10815
 
