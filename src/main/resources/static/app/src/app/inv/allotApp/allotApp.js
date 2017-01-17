@@ -238,8 +238,41 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
         });
     };
 
+    $scope.validField = function () {
+        var validation = true;
+        if ($scope.allotMaster.outChannel.uuid == null) {
+            $scope.showError('请选择拨出门店!');
+            validation = false;
+        }
+
+        if ($scope.allotMaster.inChannel.uuid == null) {
+            $scope.showError('请选择拨入门店!');
+            validation = false;
+        }
+
+        if ($scope.allotMaster.area.uuid == null) {
+            $scope.showError('请选择配送区域!');
+            validation = false;
+        }
+
+        angular.forEach($scope.itemList, function (detail) {
+            if (detail.allotQty == 0) {
+                $scope.showError('请填写商品数量!');
+                validation = false;
+            }
+
+            if (detail.deliverDate == null) {
+                $scope.showError('请填写配送日期!');
+                validation = false;
+            }
+        });
+    };
+
     $scope.saveClickAction = function () {
 
+        if (!$scope.validField()) {
+            return;
+        }
         if ($scope.status == 'add') {
             var detailInputs = [];
 
