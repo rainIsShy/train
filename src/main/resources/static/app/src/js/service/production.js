@@ -126,7 +126,7 @@ angular.module('IOne-Production').service('ProductionCustom', function($http, Co
 
     this.getCustom = function(customUuid) {
         return $http.get(Constant.BACKEND_BASE + '/itemCustoms/' + customUuid + '/scopes');
-    };;;;;;;;;;;;;;;;;;;;;;;;;;;
+    };
 
     this.getInformationByCustom = function (itemUuid, customUuid) {
         return $http.get(Constant.BACKEND_BASE + '/itemCustoms/' + customUuid + '/scopes?action=getInformation&itemUuid=' + itemUuid);
