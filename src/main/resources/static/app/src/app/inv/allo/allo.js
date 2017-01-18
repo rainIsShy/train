@@ -6,7 +6,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
 }]);
 
 
-angular.module('IOne-Production').controller('AlloController', function ($scope, $q, $mdDialog, $timeout, Constant, AlloMasterService, AlloDetailService, AllotExtendDetailService, AllotExtendDetail2Service, OrderItemCustomDetail, OrderCustomScope) {
+angular.module('IOne-Production').controller('AlloController', function ($scope, $q, $mdDialog, $timeout, Constant, AlloMasterService, AlloDetailService, AllotExtendDetailService, AllotExtendDetail2Service, OrderItemCustomDetail, OrderCustomScope, ErpAdapterService) {
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
@@ -389,6 +389,22 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
             if (item.confirm != 2) {
                 return;
             }
+
+            $scope.showConfirm('确认抛转吗？', '', function () {
+                var transferData = {
+                    'INV_ALLOT_MST_UUID': item.uuid,
+                    'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
+                };
+                ErpAdapterService.transferErpAdapter('/invAllotToRvqTask', transferData, $scope, function (data) {
+                    item.transferFlag = '1';
+                    $scope.refreshList();
+                    $scope.refreshDetailList(item, true);
+                    $scope.showInfo("抛转成功!");
+                }, function () {
+                    item.transferFlag = '2';
+                });
+            });
+           /*
             $scope.showConfirm('确认抛转吗？', '', function () {
                 alloMasterUpdateInput = {
                     uuid: item.uuid,
@@ -403,6 +419,7 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
             }, function () {
                 item.transferFlag = '2';
             });
+            */
         } else {
             $scope.showConfirm('确认抛转还原吗？', '', function () {
                 alloMasterUpdateInput = {
