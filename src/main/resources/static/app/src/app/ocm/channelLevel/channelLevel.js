@@ -276,13 +276,6 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                 }
             });
 
-
-            // if ($scope.domain == 'ChannelLevelMaster') {
-            //
-            // } else if ($scope.domain == 'ChannelLevelDetail') {
-            //     //TODO edit order dtl
-            //     console.info('edit order dtl...');
-            // }
         }
     };
 
@@ -433,17 +426,6 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
         });
 
     };
-
-    // $scope.openAddChannelDetailDlg = function () {
-    //     // $mdDialog.show({
-    //     //     controller: 'AddChannelDetailController',
-    //     //     templateUrl: 'app/src/app/ocm/channelLevel/selectChannelDetail.html',
-    //     //     parent: angular.element(document.body),
-    //     //     targetEvent: event
-    //     // }).then(function (data) {
-    //     //
-    //     // });
-    // };
 
 });
 
