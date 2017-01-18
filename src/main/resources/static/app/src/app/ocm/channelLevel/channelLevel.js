@@ -180,11 +180,14 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
         $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS);
         $scope.status = 'edit';
         $scope.addItem = {
-            channelUuid: source.channel.uuid,
-            channelName: source.channel.name,
+            channelUuid: source.uuid,
+            channelName: source.name,
             parentChannelUuid: source.parentOcmBaseChanUuid,
             parentChannelName: source.parentOcmBaseChanName
         };
+        if($scope.status = 'edit'){
+            $scope.addItem.parentChannelName = $scope.parentOcmBaseChanName;
+        }
     };
 
     /**
@@ -244,14 +247,26 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
 
             ChannelLevelService.validLoop($scope.addItem.channelUuid, $scope.addItem.parentOcmBaseChanUuid).success(function (data) {
                 if (data) {
-                    ChannelLevelService.modify($scope.selectedItem.uuid, ChannelLevelUpdateInput).success(function () {
+                    angular.forEach($scope.itemList,function(listItem){
+                        if(listItem.channel.uuid == $scope.addItem.channelUuid){
+                            ChannelLevelService.modify(listItem.uuid, ChannelLevelUpdateInput).success(function () {
+                                $scope.refreshList();
+                                $scope.getChannelName($scope.selectedItem);
+                                ChannelService.get($scope.addItem.parentOcmBaseChanUuid).success(function (data) {
+                                    $scope.selectedItem.parentOcmBaseChanName = data.name;
+                                });
+                                $scope.showInfo("修改成功!");
+                            });
+                        }
+                    });
+                    $scope.addParentItem = {
+                        channelUuid: $scope.addItem.channelUuid,
+                        parentOcmBaseChanUuid: $scope.addItem.parentOcmBaseChanUuid
+                    };
+                    ChannelLevelService.add($scope.addParentItem).success(function () {
+                        $scope.showInfo("维护上层渠道成功!");
+                        $scope.refreshSubList($scope.selectedItem);
                         $scope.refreshList();
-                        $scope.getChannelName($scope.selectedItem);
-                        ChannelService.get($scope.addItem.parentOcmBaseChanUuid).success(function (data) {
-                            $scope.selectedItem.parentOcmBaseChanName = data.name;
-                        });
-                        $scope.showInfo("修改成功!");
-
                     });
 
                 } else {
@@ -312,19 +327,19 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
         //TODO ...
     };
 
-    $scope.deleteClickAction = function (event, item) {
+     $scope.deleteClickAction = function (event, item) {
         $scope.stopEventPropagation(event);
-
         $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
-            ChannelLevelService.delete(item.uuid).success(function (data) {
-                $scope.showInfo("删除成功!");
-                $scope.refreshList();
-                $scope.selectedItem = null;
-
+            angular.forEach($scope.itemList,function(listItem){
+                if(item.uuid == listItem.parentOcmBaseChanUuid){
+                    ChannelLevelService.delete(listItem.uuid).success(function (data) {
+                         $scope.showInfo("删除成功!");
+                         $scope.refreshList();
+                    });
+                };
             });
         });
-
-    };
+     };
 
     $scope.confirmAllClickAction = function (event) {
         $scope.stopEventPropagation(event);
@@ -351,10 +366,13 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
             if ($scope.selected) {
                 var promises = [];
                 angular.forEach($scope.selected, function (item) {
-                    var response = ChannelLevelService.delete(item.uuid).success(function (data) {
-
+                    angular.forEach($scope.itemList,function(listItem){
+                        if(item.uuid == listItem.parentOcmBaseChanUuid){
+                            var response = ChannelLevelService.delete(listItem.uuid).success(function (data) {
+                            })
+                        };
+                        promises.push(response);
                     });
-                    promises.push(response);
                 });
                 $q.all(promises).then(function () {
                     $scope.showInfo('删除数据成功。');
