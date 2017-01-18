@@ -157,6 +157,18 @@ RES_UUID_MAP = {
                 TITLE: '渠道商品信息维护-表单'
             }
         },
+        CHANNEL_WAREHOUSE: {
+            RES_UUID: 'E169A8AE-B8B9-4F55-90CA-35C235790BC2',
+            TITLE: '渠道仓库维护',
+            LIST_PAGE: {
+                RES_UUID: '',
+                TITLE: '渠道仓库维护-清单'
+            },
+            FORM_PAGE: {
+                RES_UUID: '',
+                TITLE: '渠道仓库维护-表单'
+            }
+        },
         CHANNEL_RELATION: {
             RES_UUID: '5D97BD7E-03DC-46DA-9E47-7E35C02012F3',
             TITLE: '渠道区域维护',
@@ -695,6 +707,12 @@ angular.module('IOne-Constant').constant('Constant', {
                     name: '渠道商品信息维护',
                     link: '/channelItemInfo',
                     uuid: RES_UUID_MAP.OCM.CHANNEL_INFO.RES_UUID
+                },
+                 {
+                    id: '/channelWarehouse',
+                    name: '渠道仓库维护',
+                    link: '/channelWarehouse',
+                    uuid: RES_UUID_MAP.OCM.CHANNEL_WAREHOUSE.RES_UUID
                 },
                 {
                     id: '/channelRelation',
@@ -1355,5 +1373,10 @@ angular.module('IOne-Constant').constant('Constant', {
         1: {value: '1', name: '采购未发出'},
         2: {value: '2', name: '采购发出'},
         3: {value: '3', name: '采购退回'}
+    },
+    'DEFAULT_WAREHOUSE': {
+         0: {value: 'Y', name: '默认仓库'},
+         1: {value: 'N', name: '取消默认'},
+
     }
 });

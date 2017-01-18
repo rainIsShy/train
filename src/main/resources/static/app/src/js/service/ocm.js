@@ -611,8 +611,43 @@ angular.module('IOne-Production').service('ChannelSeriesRelationService', functi
 
 });
 
+angular.module('IOne-Production').service('ChannelWarehouseRelationService', function ($http, Constant) {
+    this.getAll = function (channelUuid, resUuid) {
+        var url = '/channelWarehouseRelations?channelUuid=' + channelUuid + '&resUuid=' + resUuid;
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
 
 
+    this.getAllWithPaging = function (sizePerPage, page, channelUuid) {
+        var url = '/channelWarehouseRelations?size=' + sizePerPage
+            + '&page=' + page
+            + '&channelUuid=' + channelUuid;
+
+
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
+
+    this.get = function (channelRelationUuid) {
+        return $http.get(Constant.BACKEND_BASE + '/channelWarehouseRelations/' + channelRelationUuid);
+    };
+
+    this.add = function (channelRelationInput) {
+        return $http.post(Constant.BACKEND_BASE + '/channelWarehouseRelations/', channelRelationInput);
+    };
+
+    this.modify = function (channelRelationUuid, channelRelationUpdateInput) {
+        return $http.patch(Constant.BACKEND_BASE + '/channelWarehouseRelations/' + channelRelationUuid, channelRelationUpdateInput);
+    };
+
+    this.modifyAll = function (channelRelationUpdateInput) {
+        return $http.patch(Constant.BACKEND_BASE + '/channelWarehouseRelations/', channelRelationUpdateInput);
+    };
+
+    this.delete = function (channelRelationUuid) {
+        return $http.delete(Constant.BACKEND_BASE + '/channelWarehouseRelations/' + channelRelationUuid);
+    };
+});
 
 
 
