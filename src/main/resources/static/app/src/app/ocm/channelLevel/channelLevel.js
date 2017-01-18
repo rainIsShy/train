@@ -231,6 +231,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                             $scope.showInfo("新增下层渠道成功!");
                             $scope.refreshSubList($scope.selectedItem);
                             $scope.refreshList();
+                            $scope.listItemAction();
                         });
                     }
 
@@ -267,10 +268,11 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                         $scope.showInfo("维护上层渠道成功!");
                         $scope.refreshSubList($scope.selectedItem);
                         $scope.refreshList();
+                        $scope.listItemAction();
                     });
 
                 } else {
-                    $scope.showError("不可设置此上層渠道!");
+                    $scope.showError("不可设置此上层渠道!");
                 }
             });
 
@@ -335,6 +337,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                     ChannelLevelService.delete(listItem.uuid).success(function (data) {
                          $scope.showInfo("删除成功!");
                          $scope.refreshList();
+                         $scope.selectedItem=null;
                     });
                 };
             });
