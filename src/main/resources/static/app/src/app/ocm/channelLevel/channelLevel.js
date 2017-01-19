@@ -224,13 +224,14 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
             return;
         }
 
-        if ($scope.status == 'add') {
+        if ($scope.status == 'add' || $scope.status=='addParent') {
             ChannelLevelService.validLoop($scope.addItem.channelUuid, $scope.addItem.parentOcmBaseChanUuid).success(function (data) {
                 if (data) {
                     if ($scope.domain == 'ChannelLevelMaster') {
                         ChannelLevelService.add($scope.addItem).success(function () {
                             $scope.showInfo("新增渠道成功!");
                             $scope.refreshList();
+                            $scope.listItemAction();
                         });
                     } else if ($scope.domain == 'ChannelLevelDetail') {
                         console.log($scope.addItem);
