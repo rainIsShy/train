@@ -198,13 +198,18 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
     $scope.preAddItemAction = function (source, domain, desc) {
 
         $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS);
-        $scope.status = 'add';
         $scope.desc = desc;
         $scope.source = source;
         $scope.domain = domain;
         $scope.addItem = {};
         $scope.tempParentChannelUuid=$scope.parentOcmBaseChanUuid;
         if ($scope.domain == 'ChannelLevelDetail') {
+            $scope.status = 'add';
+            $scope.addItem.parentOcmBaseChanUuid = $scope.selectedItem.uuid;
+            $scope.addItem.parentChannelName = $scope.selectedItem.name;
+        }
+        if ($scope.domain == 'ChannelLevelMaster') {
+            $scope.status = 'addParent';
             $scope.addItem.parentOcmBaseChanUuid = $scope.selectedItem.uuid;
             $scope.addItem.parentChannelName = $scope.selectedItem.name;
         }
