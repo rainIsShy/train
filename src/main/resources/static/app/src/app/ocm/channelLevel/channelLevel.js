@@ -241,7 +241,6 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                         }
                         ChannelLevelService.add($scope.addItem).success(function () {
                             $scope.showInfo("新增下层渠道成功!");
-                            $scope.refreshSubList($scope.selectedItem);
                             $scope.refreshList();
                             $scope.listItemAction();
                         });
@@ -251,13 +250,10 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                     $scope.showError("此上层渠道己存在层级中，无法新增!");
                 }
             });
-
-
         } else if ($scope.status == 'edit') {
             ChannelLevelUpdateInput = {
                 parentOcmBaseChanUuid: $scope.addItem.parentOcmBaseChanUuid
             };
-
             ChannelLevelService.validLoop($scope.addItem.channelUuid, $scope.addItem.parentOcmBaseChanUuid).success(function (data) {
                 if (data) {
                     angular.forEach($scope.itemList,function(listItem){
@@ -272,6 +268,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                             $scope.showInfo("修改成功!");
                             $scope.refreshList();
                             $scope.listItemAction();
+                            $scope.parentOcmBaseChanName=$scope.addItem.parentChannelName;
                         });
                         return;
                     }
@@ -288,8 +285,10 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                     }
                     ChannelLevelService.add($scope.addItem).success(function () {
                         $scope.showInfo("维护上层渠道成功!");
+                        $scope.showDetailPanelAction($scope.selectedItem);
                         $scope.refreshList();
                         $scope.listItemAction();
+                        $scope.parentOcmBaseChanName=$scope.addItem.parentChannelName;
                         return;
                     });
                 } else {
