@@ -251,24 +251,31 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                     angular.forEach($scope.itemList,function(listItem){
                         if(listItem.channel.uuid == $scope.addItem.channelUuid){
                             ChannelLevelService.modify(listItem.uuid, ChannelLevelUpdateInput).success(function () {
-                                $scope.refreshList();
                                 $scope.getChannelName($scope.selectedItem);
                                 ChannelService.get($scope.addItem.parentOcmBaseChanUuid).success(function (data) {
                                     $scope.selectedItem.parentOcmBaseChanName = data.name;
                                 });
                                 $scope.showInfo("修改成功!");
+                                $scope.refreshList();
+                                $scope.listItemAction();
+                            });
+                        } else {
+                            angular.forEach($scope.itemList,function(item){
+                                if(item.parentOcmBaseChanUuid == $scope.addItem.channelUuid && item.uuid == $scope.addItem.parentOcmBaseChanUuid){
+                                    $scope.tempChannelLevel=true;
+                                }
+                            });
+                            if($scope.tempChannelLevel){
+                                $scope.showError("不可设置此上层渠道!");
+                                return;
+                            }
+                            ChannelLevelService.add($scope.addItem).success(function () {
+                                $scope.showInfo("维护上层渠道成功!");
+                                $scope.refreshSubList($scope.selectedItem);
+                                $scope.refreshList();
+                                $scope.listItemAction();
                             });
                         }
-                    });
-                    $scope.addParentItem = {
-                        channelUuid: $scope.addItem.channelUuid,
-                        parentOcmBaseChanUuid: $scope.addItem.parentOcmBaseChanUuid
-                    };
-                    ChannelLevelService.add($scope.addParentItem).success(function () {
-                        $scope.showInfo("维护上层渠道成功!");
-                        $scope.refreshSubList($scope.selectedItem);
-                        $scope.refreshList();
-                        $scope.listItemAction();
                     });
 
                 } else {
