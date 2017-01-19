@@ -1,4 +1,114 @@
-<div class="main-panel">
+<!--調撥單查詢-->
+<div class="main-panel" ng-show="allotMaster == null">
+    <div layout="row" layout-md="column" layout-sm="column" class="menu" style="margin: 0px 0px; width: 1050px;">
+        <!--畫面 start -->
+        <div flex="100">
+            <div flex="100" layout="row" layout-wrap layout-margin>
+                <div>
+                    <md-button
+                            ng-class="listFilterOption.currentQueryMode == QUERY_MODE['ALL'].value ? 'query-active' : 'md-raised'"
+                            style="margin-top: 22px;height: 20px;"
+                            ng-click="refreshList(QUERY_MODE['ALL']);">
+                        <span>{{QUERY_MODE["ALL"].name}} <span
+                                class="query-count">{{QUERY_MODE["ALL"].count}}</span></span>
+                    </md-button>
+                </div>
+                <div>
+                    <md-button
+                            ng-class="listFilterOption.currentQueryMode == QUERY_MODE['WEEK'].value ? 'query-active' : 'md-raised'"
+                            style="margin-top: 22px;height: 20px;"
+                            ng-click="refreshList(QUERY_MODE['WEEK']);">
+                        <span>{{QUERY_MODE["WEEK"].name}}  <span class="query-count">{{QUERY_MODE["WEEK"].count}}</span></span>
+                    </md-button>
+
+                </div>
+                <div>
+                    <md-button
+                            ng-class="listFilterOption.currentQueryMode == QUERY_MODE['LAST_MONTH'].value ? 'query-active' : 'md-raised'"
+                            style="margin-top: 22px;height: 20px;"
+                            ng-click="refreshList(QUERY_MODE['LAST_MONTH']);">
+                        <span>{{QUERY_MODE["LAST_MONTH"].name}}  <span class="query-count">{{QUERY_MODE["LAST_MONTH"].count}}</span></span>
+                    </md-button>
+                </div>
+
+                <div>
+                    <md-button
+                            ng-class="listFilterOption.currentQueryMode == QUERY_MODE['LAST_THREE_MONTH'].value ? 'query-active' : 'md-raised'"
+                            style="margin-top: 22px;height: 20px;"
+                            ng-click="refreshList(QUERY_MODE['LAST_THREE_MONTH']);">
+                        <span>{{QUERY_MODE["LAST_THREE_MONTH"].name}} <span class="query-count">{{QUERY_MODE["LAST_THREE_MONTH"].count}}</span></span>
+                    </md-button>
+                </div>
+
+                <md-input-container flex="15">
+                    <label>审核状态</label>
+                    <md-select ng-model="listFilterOption.confirm">
+                        <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
+                    </md-select>
+                </md-input-container>
+
+                <div flex="20" flex-sm="100">
+                    <md-input-container flex="15">
+                        <label>类型</label>
+                        <md-select ng-model="listFilterOption.allotType">
+                            <md-option ng-repeat="allotType in allotTypeList" ng-value="allotType">{{allotType.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div>
+                    <md-button class="md-raised" style="margin-top: 22px;height: 20px;" ng-click="initCreateData()">
+                        <span>新增</span>
+                    </md-button>
+                </div>
+
+            </div>
+            <div flex="100" class="prod-item" ng-repeat="data in allotMasterList" style="background-color: #F3F3F3;"
+                 layout-wrap layout-margin>
+
+                <div flex="100" layout="row">
+                    <div flex="35">申请单号：&nbsp;{{data.no}}</div>
+                    <div flex="35">类型:&nbsp;{{data.allotType.name}}</div>
+                    <div flex="30">审核状态: {{CONFIRM[data.confirm].name}}</div>
+                </div>
+                <md-divider style="margin: 7px 7px 7px 7px;    border-style: groove;"></md-divider>
+                <div flex="100" layout="row" flex-sm="100" ng-repeat="detail in data.detailList"
+                     style="background-color: #F3F3F3;font-size:small;" layout-wrap layout-margin>
+                    <div flex="30" layout="row">
+                        <div flex="50">
+                            <img ng-class="prod-sm-img" src="{{getImageFullPath(detail.item.path)}}">
+                        </div>
+                        <div flex="50">
+                            <div>商品型号: {{detail.item.name}}</div>
+                            <div>商品规格: {{detail.item.standard}}</div>
+                            <div>调拨数量: {{detail.allotQty}}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div flex="100" layout="row">
+                    <div flex="30">拨出门店：&nbsp;{{data.outChannel.name}}</div>
+                    <div flex="30">拨入门店:&nbsp;{{data.inChannel.name}}</div>
+                    <div flex="30">配送区域: {{data.area.name}}</div>
+
+                    <div flex="10">
+                        <md-button class="md-raised" aria-label="More"
+                                   ng-click="editItem(data)">
+                            <span>调拨详情</span>
+                        </md-button>
+                    </div>
+                </div>
+                <md-divider style="margin: 10px 0px 30px 0px;"></md-divider>
+            </div>
+            <!-- status panel-->
+            <div pagination option="pageOption" callback="refreshList()"></div>
+        </div>
+    </div>
+</div>
+
+<!--調撥單維護-->
+<div ng-show="allotMaster != null" class="main-panel">
     <div layout="row" layout-md="column" layout-sm="column" class="menu" style="margin: 0px 0px; width: 1050px;">
         <!--畫面 start -->
         <div flex="100">
@@ -44,7 +154,8 @@
                 <div flex="20" flex-sm="100">
                     <md-input-container flex="15">
                         <label>类型</label>
-                        <md-select ng-model="allotMaster.allotTypeNo" ng-disabled="true">
+                        <md-select ng-model="allotMaster.allotTypeNo" ng-disabled="!canAllotTypeEditAble()"
+                                   ng-change="changeAllotType()">
                             <md-option ng-repeat="(key, value) in ALLOTTYPE" ng-value="key">{{value.name}}</md-option>
                         </md-select>
                     </md-input-container>
@@ -123,7 +234,6 @@
                     </div>
                 </div>
                 <div flex="15" layout="column" flex-sm="100" layout-wrap layout-margin>
-
                     <div>
                         <md-input-container flex="80">
                             <label>备注</label>
@@ -139,21 +249,16 @@
                         <ng-md-icon icon="delete"></ng-md-icon>
                     </md-button>
                 </div>
-
                 <md-divider></md-divider>
             </div>
-            <!-- status panel-->
             <div pagination option="pageOption" callback="refreshList()"></div>
 
             <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
-                 ng-if="allotTypeFlag == true && ui_status !=  UI_STATUS.VIEW_UI_STATUS" ng-click="openItemDlg()">
+                 ng-if="ui_status !=  UI_STATUS.VIEW_UI_STATUS && ((fromAppWork == appWork.QUERY) || (fromAppWork == appWork.MAINTAIN && allotMaster.allotTypeNo !='6404'))"
+                 ng-click="openItemDlg();">
                 <i class="fa fa-plus"></i>&nbsp;&nbsp;新增商品...</a>
             </div>
-
-
         </div>
-
-        <!--畫面 end -->
     </div>
 </div>
 
@@ -167,5 +272,15 @@
         margin: 8px;
     }
 
+    .query-active {
+        background-color: red !important;
+        color: white;
+    }
+
+    .query-count {
+        font-size: large;
+        font-weight: bold;
+        padding-left: 10px;
+    }
 </style>
 

@@ -258,22 +258,25 @@ angular.module('IOne-Production').service('ProductionCatalogueDetails', function
 
     };
 
-    this.getAllByAppCatalogue = function (sizePerPage, page, channelUuid, endModifyDate, no, name) {
+    this.getAllByAppCatalogue = function (sizePerPage, page, channelUuid, endModifyDate, no, name, standard) {
         var url = '/itemCatalogueDetails?size=' + sizePerPage +
             '&page=' + page +
             '&channelUuid=' + channelUuid;
             '&endModifyDate=' + endModifyDate;
 
-
-        if (no != null) {
+        if (no != undefined && no != null) {
             url = url + '&itemNo=' + no;
         }
 
 
-        if (name != null) {
+        if (name != undefined && name != null) {
             url = url + '&itemName=' + name;
         }
 
+        if (standard != undefined && standard != null && standard != '') {
+            url = url + '&itemStandard=' + standard;
+        }
+        console.log(url);
         return $http.get(Constant.BACKEND_BASE + url);
     };
 });

@@ -53,6 +53,32 @@ angular.module('IOne-Production').service('AlloMasterService', function ($http, 
     };
 
 
+    this.getAllFromQueryApp = function (sizePerPage, page, confirm, applyDateBegin, applyDateEnd, channelUuid) {
+        confirm = confirm == 0 ? '' : confirm;
+
+        var url = '/allotMasters?size=' + sizePerPage
+            + '&page=' + page
+            + '&confirm=' + confirm;
+
+        if (channelUuid !== null && channelUuid != undefined) {
+            url = url + '&channelUuid=' + channelUuid;
+            url = url + '&inOutChannelUuid=' + channelUuid
+        }
+
+
+        if (applyDateBegin != null && applyDateBegin != '') {
+            url = url + '&applyDateBegin=' + applyDateBegin;
+        }
+
+        if (applyDateEnd != null && applyDateEnd != '') {
+            url = url + '&applyDateEnd=' + applyDateEnd;
+        }
+
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
+
+
     this.get = function (uuid) {
         return $http.get(Constant.BACKEND_BASE + '/allotMasters/' + uuid);
     };
@@ -130,9 +156,16 @@ angular.module('IOne-Production').service('AllotExtendDetail2Service', function 
 });
 
 angular.module('IOne-Production').service('AllotTypeService', function ($http, Constant) {
+
+    this.getAll = function () {
+        return $http.get(Constant.BACKEND_BASE + '/allotTypes');
+    };
+
     this.getByNo = function (no) {
         return $http.get(Constant.BACKEND_BASE + '/allotTypes?no= ' + no);
     };
+
+
 });
 
 

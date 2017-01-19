@@ -559,7 +559,7 @@ RES_UUID_MAP = {
         ALLOT_APP: {
             RES_UUID: '45188954-8e15-4deb-b60a-089da30e877f',
             TITLE: '调拨单维护APP'
-        },
+        }
     }
 };
 

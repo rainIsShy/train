@@ -7,15 +7,20 @@
         </div>
         <form name="addItemForm" ng-if="!showCustomTab" novalidate>
             <div layout="row" flex="40">
-                <md-input-container flex="40">
+                <md-input-container flex="30">
                     <label>商品编号{{searchItemNo}}</label>
                     <input name="no" type="text" ng-model="searchItemNo">
                 </md-input-container>
-                <md-input-container flex="40">
+                <md-input-container flex="30">
                     <label>商品名称</label>
                     <input name="name" type="text" ng-model="searchItemName" md-maxlength="20">
                 </md-input-container>
-                <md-button ng-click="refreshProduction(searchItemNo, searchItemName)" ng-disabled="searchData.$invalid">
+                <md-input-container flex="30">
+                    <label>商品規格</label>
+                    <input name="name" type="text" ng-model="searchStandard" md-maxlength="20">
+                </md-input-container>
+                <md-button ng-click="refreshProduction(searchItemNo, searchItemName, searchStandard)"
+                           ng-disabled="searchData.$invalid">
                     <i class="fa fa-search"></i>
                 </md-button>
             </div>
