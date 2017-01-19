@@ -395,11 +395,11 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
                     'INV_ALLOT_MST_UUID': item.uuid,
                     'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
                 };
-                ErpAdapterService.transferErpAdapter('/invAllotToRvqTask', transferData, $scope, function (data) {
+                ErpAdapterService.transferErpAdapter('/invAllotToRvqTask', transferData, $scope, function (response) {
                     item.transferFlag = '1';
+                    $scope.showInfo(item.no + '抛转成功!' + '<br>' + ' RVQ_FILE: ' + response.insertRvqCount + ' 笔' + '<br>' + ' TC_RVR_FILE: ' + response.insertTcRvrCount + ' 笔' + '<br>' + ' RVR_FILE: ' + response.insertRvrCount + ' 笔');
                     $scope.refreshList();
                     $scope.refreshDetailList(item, true);
-                    $scope.showInfo("抛转成功!");
                 }, function () {
                     item.transferFlag = '2';
                 });
