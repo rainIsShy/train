@@ -131,9 +131,11 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
             if(item.uuid==list.channel.uuid){
                 ChannelService.get(list.parentOcmBaseChanUuid).success(function (data){
                     $scope.parentOcmBaseChanName = data.name;
+                    $scope.parentOcmBaseChanUuid = data.uuid;
                 });
             }else{
                     $scope.parentOcmBaseChanName=null;
+                    $scope.parentOcmBaseChanUuid = null;
             }
         });
         $scope.selectedItem=item;
@@ -201,9 +203,10 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
         $scope.source = source;
         $scope.domain = domain;
         $scope.addItem = {};
+        $scope.tempParentChannelUuid=$scope.parentOcmBaseChanUuid;
         if ($scope.domain == 'ChannelLevelDetail') {
             $scope.addItem.parentOcmBaseChanUuid = $scope.selectedItem.uuid;
-            $scope.addItem.parentChannelName = $scope.selectedItem.name;
+            $scope.addItem.parentChannelName = $scope.parentOcmBaseChanName;
         }
     };
 
@@ -226,7 +229,10 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                         });
                     } else if ($scope.domain == 'ChannelLevelDetail') {
                         console.log($scope.addItem);
-
+                        if($scope.addItem.channelUuid == $scope.tempParentChannelUuid){
+                            $scope.showError("此渠道己是上级渠道，无法新增!");
+                            return;
+                        }
                         ChannelLevelService.add($scope.addItem).success(function () {
                             $scope.showInfo("新增下层渠道成功!");
                             $scope.refreshSubList($scope.selectedItem);
@@ -250,34 +256,41 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                 if (data) {
                     angular.forEach($scope.itemList,function(listItem){
                         if(listItem.channel.uuid == $scope.addItem.channelUuid){
-                            ChannelLevelService.modify(listItem.uuid, ChannelLevelUpdateInput).success(function () {
-                                $scope.getChannelName($scope.selectedItem);
-                                ChannelService.get($scope.addItem.parentOcmBaseChanUuid).success(function (data) {
-                                    $scope.selectedItem.parentOcmBaseChanName = data.name;
-                                });
-                                $scope.showInfo("修改成功!");
-                                $scope.refreshList();
-                                $scope.listItemAction();
-                            });
-                        } else {
-                            angular.forEach($scope.itemList,function(item){
-                                if(item.parentOcmBaseChanUuid == $scope.addItem.channelUuid && item.uuid == $scope.addItem.parentOcmBaseChanUuid){
-                                    $scope.tempChannelLevel=true;
-                                }
-                            });
-                            if($scope.tempChannelLevel){
-                                $scope.showError("不可设置此上层渠道!");
-                                return;
-                            }
-                            ChannelLevelService.add($scope.addItem).success(function () {
-                                $scope.showInfo("维护上层渠道成功!");
-                                $scope.refreshSubList($scope.selectedItem);
-                                $scope.refreshList();
-                                $scope.listItemAction();
-                            });
+                           $scope.tempModifyChannelLevel=true;
+                           $scope.tempListItemUuid=listItem.uuid;
+                           return;
                         }
                     });
-
+                    if($scope.tempModifyChannelLevel){
+                        ChannelLevelService.modify($scope.tempListItemUuid, ChannelLevelUpdateInput).success(function () {
+                            $scope.getChannelName($scope.selectedItem);
+                            ChannelService.get($scope.addItem.parentOcmBaseChanUuid).success(function (data) {
+                                $scope.selectedItem.parentOcmBaseChanName = data.name;
+                            });
+                            $scope.showInfo("修改成功!");
+                            $scope.refreshList();
+                            $scope.listItemAction();
+                        });
+                        return;
+                    }
+                    $scope.tempChannelLevel=false;
+                    angular.forEach($scope.itemList,function(item){
+                        if(item.parentOcmBaseChanUuid == $scope.addItem.channelUuid && item.channel.uuid == $scope.addItem.parentOcmBaseChanUuid){
+                            $scope.tempAddChannelLevel=true;
+                            return;
+                        }
+                    });
+                    if($scope.tempAddChannelLevel){
+                        $scope.showError("不可设置此上层渠道!");
+                        return;
+                    }
+                    ChannelLevelService.add($scope.addItem).success(function () {
+                        $scope.showInfo("维护上层渠道成功!");
+                        $scope.refreshSubList($scope.selectedItem);
+                        $scope.refreshList();
+                        $scope.listItemAction();
+                        return;
+                    });
                 } else {
                     $scope.showError("不可设置此上层渠道!");
                 }
