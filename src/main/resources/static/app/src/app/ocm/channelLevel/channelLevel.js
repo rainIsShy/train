@@ -206,7 +206,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
         $scope.tempParentChannelUuid=$scope.parentOcmBaseChanUuid;
         if ($scope.domain == 'ChannelLevelDetail') {
             $scope.addItem.parentOcmBaseChanUuid = $scope.selectedItem.uuid;
-            $scope.addItem.parentChannelName = $scope.parentOcmBaseChanName;
+            $scope.addItem.parentChannelName = $scope.selectedItem.name;
         }
     };
 

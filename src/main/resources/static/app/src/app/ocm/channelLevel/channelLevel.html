@@ -81,9 +81,7 @@
                                             <div layout-padding>渠道编号 : <span>{{detail.channel.no}}</span></div>
                                             <div layout-padding>渠道名称 : <span>{{detail.channel.name}}</span></div>
                                         </div>
-                                        <!--<div flex="50" style="margin-bottom: 45px;">-->
-                                        <!--<div layout-padding>渠道/直营店名称 :  <span>{{detail.channel.name}}</span></div>-->
-                                        <!--</div>-->
+
                                         <div style="position: absolute; right: -10px; bottom: 10px;">
                                             <md-button class="md-button close-btn" aria-label="More"
                                                        ng-click="deleteDetailAction(detail)"
@@ -91,10 +89,7 @@
                                                 <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>
                                                 删除
                                             </md-button>
-                                            <!--<md-button class="md-button close-btn" aria-label="More"-->
-                                            <!--ng-click="editItemAction(detail, 'PSO_ORDER_DTL', '订单: ' + selectedItem.no + ' / ' + '产品信息: ' + detail.no)">-->
-                                            <!--<ng-md-icon icon="edit" size="20"></ng-md-icon>编辑-->
-                                            <!--</md-button>-->
+
                                         </div>
                                     </div>
                                     <!-- detail panel -->
@@ -120,24 +115,6 @@
                         <md-checkbox ng-model="selectAllFlag" aria-label="Checkbox"
                                      ng-change="selectAllAction()"></md-checkbox>
                     </span>
-                    <!--<md-input-container flex="15" style="margin-left: 50px;" ng-show="selectedItem == null">-->
-                    <!--<label>启用状态</label>-->
-                    <!--<md-select ng-model="listFilterOption.status">-->
-                    <!--<md-option ng-repeat="(key, value) in STATUS" ng-value="key">{{value.name}}</md-option>-->
-                    <!--</md-select>-->
-                    <!--</md-input-container>-->
-                    <!--<md-input-container flex="15" ng-show="selectedItem == null">-->
-                    <!--<label>审核状态</label>-->
-                    <!--<md-select ng-model="listFilterOption.confirm">-->
-                    <!--<md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>-->
-                    <!--</md-select>-->
-                    <!--</md-input-container>-->
-                    <!--<md-input-container flex="15" ng-show="selectedItem == null">-->
-                    <!--<label>发布状态</label>-->
-                    <!--<md-select ng-model="listFilterOption.release">-->
-                    <!--<md-option ng-repeat="(key, value) in RELEASE" ng-value="key">{{value.name}}</md-option>-->
-                    <!--</md-select>-->
-                    <!--</md-input-container>-->
                     <md-input-container flex style="margin-left: 50px;">
                         <label>渠道</label>
                         <input ng-model="keyword" ng-keypress="queryEnter($event)">
