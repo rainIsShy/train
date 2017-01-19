@@ -228,6 +228,10 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
             ChannelLevelService.validLoop($scope.addItem.channelUuid, $scope.addItem.parentOcmBaseChanUuid).success(function (data) {
                 if (data) {
                     if ($scope.domain == 'ChannelLevelMaster') {
+                        if($scope.addItem.channelUuid == $scope.addItem.parentOcmBaseChanUuid){
+                            $scope.showError('无法新增!');
+                            return;
+                        }
                         ChannelLevelService.add($scope.addItem).success(function () {
                             $scope.showInfo("新增渠道成功!");
                             $scope.refreshList();
@@ -351,6 +355,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                          $scope.showInfo("删除成功!");
                          $scope.refreshList();
                          $scope.selectedItem=null;
+                         $scope.listItemAction();
                     });
                 };
             });
