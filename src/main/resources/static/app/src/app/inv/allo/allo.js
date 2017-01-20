@@ -400,9 +400,9 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
                     $scope.showInfo(item.no + '抛转成功!' + '<br>' + ' RVQ_FILE: ' + response.insertRvqCount + ' 笔' + '<br>' + ' TC_RVR_FILE: ' + response.insertTcRvrCount + ' 笔' + '<br>' + ' RVR_FILE: ' + response.insertRvrCount + ' 笔');
                     $scope.refreshList();
                     $scope.refreshDetailList(item, true);
-                }, function () {
-                    item.transferFlag = '2';
                 });
+            }, function () {
+                item.transferFlag = '2';
             });
            /*
             $scope.showConfirm('确认抛转吗？', '', function () {
