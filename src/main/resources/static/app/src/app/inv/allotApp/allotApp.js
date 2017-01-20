@@ -10,8 +10,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
     $scope.appWork = {
         QUERY: 'queryApp',  //查询单
         MAINTAIN: 'maintain' //上馆转馆维护
-    };;;;;;;;;;;;;
-
+    };
     var today = new Date();
     var lastWeek = today.setDate(today.getDate() + -7);
     var lastMonth = today.setMonth(today.getMonth() + -1);
@@ -76,8 +75,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                 queryMode.count = data.totalElements;
             });
         })
-    };;;;;;;;;;;;;
-
+    };
     $scope.refreshDetailList = function (allotMasterList) {
         angular.forEach(allotMasterList, function (data) {
             AlloDetailService.get(data.uuid).success(function (detail) {
@@ -158,13 +156,13 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
         }
 
         $scope.changeAllotType();
-    };;;;;;;;;;;;;
+    };
 
     $scope.editItem = function (item) {
         $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
         $scope.allotMaster = item;
         $scope.refreshAllotDetailList(item.uuid);
-    };;;;;;;;;;;;;
+    };
 
 
     //提供上館/轉館APP時使用
@@ -223,9 +221,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             employeeUuid: '',
             departmentUuid: ''
         };
-    };;;;;;;;;;;;;
-
-
+    };
     //判斷點擊是上館/轉館單，還是查詢單
     if ($scope.allotQuery.orderUuid != '' && $scope.allotQuery.allotTypeNo != null) {
         //初始化编辑画面的处理
@@ -248,9 +244,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
         } else {
             return true;
         }
-    };;;;;;;;;;;;;
-
-
+    };
     $scope.changeAllotType = function () {
         $scope.allotMaster.outChannel = null;
         $scope.allotMaster.inChannel = null;
@@ -275,11 +269,14 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                 }
             });
         });
-    };;;;;;;;;;;;;
+    };
 
     $scope.changeDeliverDate = function () {
         angular.forEach($scope.itemList, function (detail) {
-            detail.deliverDate = new Date($scope.allotMaster.deliverDate);
+            console.log($scope.allotMaster.deliverDate);
+            if ($scope.allotMaster.deliverDate != null) {
+                detail.deliverDate = new Date($scope.allotMaster.deliverDate);
+            }
         });
     };
 
