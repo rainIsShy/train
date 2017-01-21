@@ -77,7 +77,7 @@
                      style="background-color: #F3F3F3;font-size:small;" layout-wrap layout-margin>
                     <div flex="30" layout="row">
                         <div flex="50">
-                            <img ng-class="prod-sm-img" src="{{getImageFullPath(detail.item.path)}}">
+                            <img class="prod-sm-img" src="{{getImageFullPath(detail.item.path)}}">
                         </div>
                         <div flex="50">
                             <div>商品型号: {{detail.item.name}}</div>
@@ -284,9 +284,5 @@
         padding-left: 10px;
     }
 
-    .prod-sm-img {
-        max-width: 100%;
-        max-height: 100%;
-    }
 </style>
 
