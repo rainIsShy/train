@@ -29,7 +29,7 @@
                      class="prod-item" style="padding: 5px;">
                     <div layout="row" class="content">
                         <div flex="100" ng-class="centre">
-                            <img ng-class="prod-sm-img" ng-click="selectItem(production.item)"
+                            <img class="prod-sm-img" ng-click="selectItem(production.item)"
                                  src="{{getImageFullPath(production.item.path)}}">
                             <div class="centre">
                                 <div class="value">{{production.item.no}}</div>
@@ -50,7 +50,7 @@
             <div layout="row">
                 <div flex="50" layout="column">
                     <div flex="100" ng-class="centre">
-                        <img ng-class="prod-sm-img" src="{{getImageFullPath(selectItem.path)}}">
+                        <img class="prod-sm-img" src="{{getImageFullPath(selectItem.path)}}">
                     </div>
                 </div>
                 <div flex="50" layout="column">
@@ -79,5 +79,7 @@
         </form>
     </md-content>
 </md-dialog>
+
+
 
 
