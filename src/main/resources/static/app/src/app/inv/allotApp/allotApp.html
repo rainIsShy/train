@@ -62,8 +62,8 @@
                         <span>新增</span>
                     </md-button>
                 </div>
-
             </div>
+
             <div flex="100" class="prod-item" ng-repeat="data in allotMasterList" style="background-color: #F3F3F3;"
                  layout-wrap layout-margin>
 
@@ -93,18 +93,19 @@
                     <div flex="30">配送区域: {{data.area.name}}</div>
 
                     <div flex="10">
-                        <md-button class="md-raised" aria-label="More"
+                        <md-button class="md-raised" aria-label="More" style="margin-left: -20px;"
                                    ng-click="editItem(data)">
                             <span>调拨详情</span>
                         </md-button>
                     </div>
                 </div>
                 <md-divider style="margin: 10px 0px 30px 0px;"></md-divider>
+
             </div>
-            <!-- status panel-->
-            <div pagination option="pageOption" callback="refreshList()"></div>
+            <div pagination option="queryPageOption" callback="refreshList(listFilterOption.currentQueryMode)"></div>
         </div>
     </div>
+
 </div>
 
 <!--調撥單維護-->
@@ -130,7 +131,7 @@
                         <label>拨出门店</label>
                         <input type="text" ng-model="allotMaster.outChannel.name"
                                ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
-                               ng-click="openChannelDlg();">
+                               ng-click="openChannelDlg('out');">
                     </md-input-container>
                 </div>
 
@@ -139,7 +140,7 @@
                         <label>拨入门店</label>
                         <input type="text" ng-model="allotMaster.inChannel.name"
                                ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
-                               ng-click="openChannelDlg();">
+                               ng-click="openChannelDlg('in');">
                     </md-input-container>
                 </div>
 
@@ -217,7 +218,7 @@
                     <div>单位: {{data.item.unit}}</div>
                     <div>颜色: {{data.item.color}}</div>
                 </div>
-                <div flex="10" layout="column" flex-sm="100" layout-wrap layout-margin>
+                <div flex="5" layout="column" flex-sm="100" layout-wrap layout-margin>
                     <md-input-container flex="100">
                         <label>数量</label>
                         <input type="number" ng-model="data.allotQty"
@@ -226,19 +227,19 @@
                 </div>
                 <div flex="15" layout="column" flex-sm="100" layout-wrap layout-margin>
                     <div>
-                        <md-input-container flex="90">
+                        <md-input-container flex="80">
                             <label>配送日期</label>
                             <input type="date" ng-model="data.deliverDate"
                                    ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS">
                         </md-input-container>
                     </div>
                 </div>
-                <div flex="15" layout="column" flex-sm="100" layout-wrap layout-margin>
+                <div flex="20" layout="column" flex-sm="100" layout-wrap layout-margin>
                     <div>
-                        <md-input-container flex="80">
-                            <label>备注</label>
-                            <input type="text" ng-model="data.remark"
-                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                        <md-input-container flex="90">
+                            <label>定制备注</label>
+                            <textarea ng-model="data.customizeRemark"
+                                      ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS && detail.item.customizationFlag == 'N'"></textarea>
                         </md-input-container>
                     </div>
                 </div>
