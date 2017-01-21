@@ -76,10 +76,10 @@
                 <div flex="100" layout="row" flex-sm="100" ng-repeat="detail in data.detailList"
                      style="background-color: #F3F3F3;font-size:small;" layout-wrap layout-margin>
                     <div flex="30" layout="row">
-                        <div flex="50">
+                        <div flex="50" style="padding: 2px">
                             <img class="prod-sm-img" src="{{getImageFullPath(detail.item.path)}}">
                         </div>
-                        <div flex="50">
+                        <div flex="50" layout-wrap layout-margin>
                             <div>商品型号: {{detail.item.name}}</div>
                             <div>商品规格: {{detail.item.standard}}</div>
                             <div>调拨数量: {{detail.allotQty}}</div>
@@ -213,7 +213,7 @@
                     </div>
                 </div>
                 <div flex="20" layout="column" flex-sm="100" layout-wrap layout-margin>
-                    <div>型号: {{data.item.model}}</div>
+                    <div>型号: {{data.item.name}}</div>
                     <div>规格: {{data.item.standard}}</div>
                     <div>单位: {{data.item.unit}}</div>
                     <div>颜色: {{data.item.color}}</div>
@@ -222,7 +222,7 @@
                     <md-input-container flex="100">
                         <label>数量</label>
                         <input type="number" ng-model="data.allotQty"
-                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS" style="margin-top:inherit">
                     </md-input-container>
                 </div>
                 <div flex="15" layout="column" flex-sm="100" layout-wrap layout-margin>
