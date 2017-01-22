@@ -245,6 +245,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                         }
                         ChannelLevelService.add($scope.addItem).success(function () {
                             $scope.showInfo("新增下层渠道成功!");
+                            $scope.refreshSubList($scope.selectedItem);
                             $scope.refreshList();
                             $scope.listItemAction();
                         });
@@ -270,6 +271,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                     if($scope.tempModifyChannelLevel){
                         ChannelLevelService.modify($scope.tempListItemUuid, ChannelLevelUpdateInput).success(function () {
                             $scope.showInfo("修改成功!");
+                            $scope.refreshSubList($scope.selectedItem);
                             $scope.refreshList();
                             $scope.listItemAction();
                             $scope.parentOcmBaseChanName=$scope.addItem.parentChannelName;
