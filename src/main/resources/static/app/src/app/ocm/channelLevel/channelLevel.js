@@ -229,7 +229,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                 if (data) {
                     if ($scope.domain == 'ChannelLevelMaster') {
                         if($scope.addItem.channelUuid == $scope.addItem.parentOcmBaseChanUuid){
-                            $scope.showError('无法新增!');
+                            $scope.showError('不可新增此上下级渠道!');
                             return;
                         }
                         ChannelLevelService.add($scope.addItem).success(function () {
@@ -286,7 +286,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                         }
                     });
                     if($scope.tempAddChannelLevel){
-                        $scope.showError("不可设置此上层渠道!");
+                        $scope.showError("不可新增此上层渠道!");
                         return;
                     }
                     ChannelLevelService.add($scope.addItem).success(function () {
