@@ -1,6 +1,7 @@
 <!--調撥單查詢-->
 <div class="main-panel" ng-show="allotMaster == null">
-    <div layout="row" layout-md="column" layout-sm="column" class="menu" style="margin: 0px 0px; width: 1050px;">
+    <div layout="row" layout-md="column" layout-sm="column" class="menu"
+         style="margin: 0px 0px; width: 1050px;font-size: small">
         <!--畫面 start -->
         <div flex="100">
             <div flex="100" layout="row" layout-wrap layout-margin>
@@ -110,7 +111,8 @@
 
 <!--調撥單維護-->
 <div ng-show="allotMaster != null" class="main-panel">
-    <div layout="row" layout-md="column" layout-sm="column" class="menu" style="margin: 0px 0px; width: 1050px;">
+    <div layout="row" layout-md="column" layout-sm="column" class="menu"
+         style="margin: 0px 0px; width: 1050px; font-size: small">
         <!--畫面 start -->
         <div flex="100">
             <div flex="100" layout="row" layout-wrap layout-margin>
@@ -186,8 +188,8 @@
                     </md-button>
                 </div>
 
-                <div flex="8" flex-sm="100">
-                    <md-button class="md-button" aria-label="More" style="padding:5px"
+                <div flex-sm="100">
+                    <md-button class="md-button" aria-label="More" style="font-size:small;"
                                ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS"
                                ng-disabled="status =='add'"
                                ng-click="cancelEditClickAction(data)">
@@ -196,8 +198,8 @@
                     </md-button>
                 </div>
 
-                <div flex="8" flex-sm="100">
-                    <md-button class="md-button" aria-label="More" style="padding:5px"
+                <div flex-sm="100">
+                    <md-button class="md-button" aria-label="More" style="font-size:small;"
                                ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
                                ng-click="saveClickAction(data)">
                         <ng-md-icon icon="save"></ng-md-icon>
@@ -239,7 +241,7 @@
                         <md-input-container flex="90">
                             <label>定制备注</label>
                             <textarea ng-model="data.customizeRemark"
-                                      ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS && detail.item.customizationFlag == 'N'"></textarea>
+                                      ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || detail.item.customizationFlag == 'N'"></textarea>
                         </md-input-container>
                     </div>
                 </div>

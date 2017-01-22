@@ -78,6 +78,10 @@ angular.module('IOne-Production').service('Production', function($http, Constant
         };
         return $http.get(Constant.BACKEND_BASE + '/items/' + productionUuid + '/inventory', query);
     };
+
+    this.getDeliveryDate = function (itemUuid, channelUuid) {
+        return $http.get(Constant.BACKEND_BASE + '/items/' + itemUuid + '?action=queryDeliverDate&channelUuid=' + channelUuid);
+    }
 });
 
 angular.module('IOne-Production').service('ProductionBom', function($http, Constant) {

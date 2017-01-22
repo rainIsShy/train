@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('AllotAppController', function ($mdDialog, $scope, $location, Constant, OrderMaster, OrderDetail, AlloMasterService, AlloDetailService, AllotTypeService, ChannelLevelService, OCMChannelService, CBIEmployeeService, ChannelPriceService) {
+angular.module('IOne-Production').controller('AllotAppController', function ($mdDialog, $scope, $location, Constant, OrderMaster, OrderDetail, AlloMasterService, AlloDetailService, AllotTypeService, ChannelLevelService, OCMChannelService, CBIEmployeeService, ChannelPriceService, Production) {
 
     $scope.appWork = {
         QUERY: 'queryApp',  //查询单
@@ -65,7 +65,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
     //查询画面清单
     $scope.refreshList = function (condition) {
         angular.forEach($scope.QUERY_MODE, function (queryMode) {
-            console.log($scope.queryPageOption.sizePerPage);;;
+            console.log($scope.queryPageOption.sizePerPage);
             AlloMasterService.getAllFromQueryApp($scope.queryPageOption.sizePerPage, $scope.queryPageOption.currentPage, $scope.listFilterOption.confirm, queryMode.queryDate, '', $scope.listFilterOption.channelUuid).success(function (data) {
                 //itemlist只塞符合目前查询的类型
                 if (queryMode.value == condition.value) {
@@ -91,10 +91,8 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
 
     };
 
-
     //要删除的商品
     $scope.deleteDetailUuids = [];
-
 
     //查询样品清单
     $scope.refreshOrderDetailList = function () {
@@ -114,7 +112,6 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             })
         });
     };
-
 
     $scope.refreshAllotDetailList = function (allotMasterUuid) {
         AlloDetailService.get(allotMasterUuid).success(function (data) {
@@ -241,7 +238,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
             $scope.refreshList($scope.QUERY_MODE['ALL']);
         }
-    };;;
+    };
 
     $scope.initAllotApp();
 
@@ -288,6 +285,13 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             }
         });
     };
+
+    // $scope.getMinDeliverDate = function(itemUuid, channelUuid) {
+    //     Production.getDeliveryDate(itemUuid, channelUuid).success(function(data) {
+    //         console.log(data);
+    //         return data.deliverDate;
+    //     })
+    // }
 
     //渠道开窗
     $scope.openChannelDlg = function (type) {
@@ -343,7 +347,13 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
 
             ChannelPriceService.getByChannelUuidAndItemUuid($scope.allotQuery.channelUuid, data.uuid).success(function (data) {
                 if (data.totalElements > 0) {
-                    orderDetail.allotPrice = data.content[0].standardPrice
+                    console.log(data.content[0].item.uuid);
+                    orderDetail.allotPrice = data.content[0].standardPrice;
+                    //取得最小配送天数
+                    Production.getDeliveryDate(data.content[0].item.uuid, $scope.allotQuery.channelUuid).success(function (data) {
+                        orderDetail.deliverDate = new Date(data.deliverDate);
+                        orderDetail.minDeliverDate = new Date(data.deliverDate);
+                    });
                 }
                 $scope.itemList.push(orderDetail);
             });
