@@ -254,8 +254,8 @@
                                     <ng-md-icon ng-show="sortByField == 'applyDate'" icon="play_arrow"></ng-md-icon>
                                     按申请日期
                                 </md-button>
-                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('no')">
-                                    <ng-md-icon ng-show="sortByField == 'no'" icon="play_arrow"></ng-md-icon>
+                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('-no')">
+                                    <ng-md-icon ng-show="sortByField == '-no'" icon="play_arrow"></ng-md-icon>
                                     按编号
                                 </md-button>
                             </md-menu-item>
@@ -311,7 +311,7 @@
                                     <md-button class="md-button close-btn" aria-label="More"
                                                ng-click="toggleMorePanelAction(item)"
                                                style="position: relative;left: 15px;">
-                                        查看更多...
+                                        查看更多
                                     </md-button>
                                 </div>
                             </div>

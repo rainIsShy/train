@@ -201,6 +201,8 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         $scope.sortType = '';
     };
 
+    $scope.sortByField = '-no';
+
     $scope.$watch('listFilterOption', function () {
         $scope.pageOption.currentPage = 0;
         $scope.pageOption.totalPage = 0;
