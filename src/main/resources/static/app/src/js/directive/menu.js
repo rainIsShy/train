@@ -299,6 +299,29 @@ angular.module('IOne-directives').directive('channelSeriesRelationTable2', funct
 });
 
 
+angular.module('IOne-directives').directive('channelWarehouse', function(Constant) {
+    return {
+        templateUrl: 'app/src/js/directive/channelWarehouse.html',
+        link: function($scope) {
+          $scope.ocmListMenuAction = function(menuId, $event) {
+                if(menuId == 611) {
+                    $scope.selectAllMenuAction();
+                 } else if(menuId == 612) {
+                    $scope.auditMenuAction();
+                } else if(menuId == 613) {
+                    $scope.revertAuditMenuAction();
+                } else if(menuId == 614) {
+                    $scope.validStatusMenuAction();
+                } else if(menuId == 615) {
+                    $scope.invalidStatusMenuAction();
+                }
+
+           }
+        }
+    }
+});
+
+
 
 angular.module('IOne-directives').directive('taobaoOrderListMenu', function(Constant) {
     return {

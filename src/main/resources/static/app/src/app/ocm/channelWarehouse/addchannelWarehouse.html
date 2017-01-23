@@ -1,0 +1,50 @@
+<md-dialog style="min-width: 500px;max-height: 500px;">
+    <md-content layout="column">
+
+        <div layout="row" style="position:fixed;top:-2px;z-index:2; background-color:white;">
+            <div style="margin-left:305px;"></div>
+            <md-button class="md-button" aria-label="More" ng-click="select(selected)">
+                确定
+            </md-button>
+            <md-button class="md-icon-button" ng-click="cancelDlg()">
+                取消
+            </md-button>
+        </div>
+
+
+        <div layout="row" style="position:fixed;width:469px;height:76px; top:30px;z-index:1; background-color:white;">
+            <div align="center" flex="20" style="margin-left:6px;margin-top:27px;">
+                <md-checkbox ng-click="selectAllMenuAction(searchQuery.no,searchQuery.name)">全选
+                </md-checkbox>
+            </div>
+            <div align="center" flex="37" style="margin-left:-4px;margin-top:7px;">
+                <md-input-container>
+                    <label>仓库编号</label>
+                    <input type="text" ng-model="searchQuery.no" ng-keypress="queryEnter($event)">
+                </md-input-container>
+            </div>
+            <div align="center" flex="40" style="margin-left:-2px;margin-top:7px;">
+                <md-input-container>
+                    <label>仓库名称</label>
+                    <input type="text" ng-model="searchQuery.name" ng-keypress="queryEnter($event)">
+                </md-input-container>
+            </div>
+        </div>
+
+
+        <div style="margin-top: 110px;">
+            <md-list-item ng-repeat="data in allProductionsData | filter:searchQuery:false "
+                          style="margin-left: -10px; margin-top: 20px;">
+                <div align="center" flex="5">
+                    <md-checkbox ng-checked="exists(data, selected)" ng-click="addSeriesToggle(data, selected)">
+                    </md-checkbox>
+                </div>
+                <div align="center" flex="45" class="table-item">{{data.no}}</div>
+                <div align="center" flex="45" class="table-item">{{data.name}}</div>
+            </md-list-item>
+            <div pagination option="pageOption" callback="refreshAllTemplate()"></div>
+        </div>
+
+    </md-content>
+</md-dialog>
+

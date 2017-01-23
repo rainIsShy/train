@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', function ($scope, PSOReturnSalesOrdersMasterService, PSOReturnSalesOrdersExtends2Service, Constant) {
+angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', function ($scope, PSOReturnSalesOrdersMasterService, PSOReturnSalesOrdersExtends2Service, Constant, ErpAdapterService) {
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
@@ -305,27 +305,20 @@ angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', f
         $scope.stopEventPropagation(event);
 
         $scope.showConfirm('确认抛转吗？', '', function () {
-            var detailUuids = [];
-            angular.forEach(item.detailList, function (detail) {
-                if (detail.transferFlag != '1' && (bApplyAll || detail.selected)) {
-                    detailUuids.push(detail.uuid);
+            var transferData = {
+                'PSO_SO_MST_UUID': item.uuid,
+                'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
+            };
+
+            ErpAdapterService.transferErpAdapter('/returnSalesOrderToOhaTask', transferData, $scope, function (resp) {
+                $scope.showInfo('预订单退货单抛转成功');
+                $scope.refreshList();
+                $scope.getReturnOrderMasterCount();
+                if ($scope.selectedItem) {
+                    $scope.showDetailPanelAction($scope.selectedItem);
                 }
             });
 
-            if (detailUuids.length) {
-                PSOReturnSalesOrdersExtends2Service.transfer(item.uuid, detailUuids).success(function () {
-                    $scope.updateDetailsTransferState(item.detailList, detailUuids);
-                    $scope.updateMasterStateByReturnDetails(item);
-                    $scope.disableBatchMenuButtons();
-                    $scope.disableDetailMenuButtons();
-                    $scope.getReturnOrderMasterCount();
-                    $scope.showInfo('预订单退货单抛转成功！');
-                }).error(function (response) {
-                    $scope.showError('预订单退货单抛转失败,状态:' + response.status + '<br>' + response.message);
-                });
-            } else {
-                $scope.showWarn("请选择需要抛转的商品！");
-            }
         });
     };
 
@@ -338,33 +331,28 @@ angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', f
         }
 
         $scope.showConfirm('确认抛转吗?', '', function () {
-            var detailUuids = [];
+            var uuids = "";
             angular.forEach($scope.itemList, function (item) {
                 if (item.selected) {
-                    angular.forEach(item.detailList, function (detail) {
-                        if (detail.transferFlag != '1') {
-                            detailUuids.push(detail.uuid);
-                        }
-                    });
+                    uuids = uuids + item.uuid + ',';
                 }
             });
-            if (detailUuids.length) {
-                PSOReturnSalesOrdersExtends2Service.transfer('_batch', detailUuids).success(function () {
-                    angular.forEach($scope.itemList, function (item) {
-                        if (item.selected) {
-                            $scope.updateDetailsTransferState(item.detailList, detailUuids);
-                            $scope.updateMasterStateByReturnDetails(item);
-                        }
-                    });
+
+            var transferData = {
+                'PSO_SO_MST_UUID': uuids,
+                'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
+            };
+
+            if (uuids.length) {
+                ErpAdapterService.transferErpAdapter('/returnSalesOrderToOhaTask', transferData, $scope, function (response) {
+                    $scope.showInfo('预订单退货单抛转成功');
+                    $scope.refreshList();
                     $scope.getReturnOrderMasterCount();
-                    $scope.disableBatchMenuButtons();
-                    $scope.showInfo('预订单退货单抛转成功！');
-                }).error(function (response) {
-                    $scope.showError('预订单退货单批量抛转失败,状态:' + response.status + '<br>' + response.message);
                 });
             } else {
                 $scope.showWarn("请选择需要抛转的预订单退货单！");
             }
+
         });
     };
 

@@ -33,9 +33,9 @@
                                 ng-if="menuDisplayOption['detailTransfer'].display && (menuAuthDataMap[menuDisplayOption['detailTransfer'].uuid] || isAdmin() || !menuDisplayOption['detailTransfer'].uuid)">
                             <md-button class="md-button" aria-label="More"
                                        ng-click="transferClickAction($event, selectedItem, false)"
-                                       ng-disabled="disabledDetailTransfer">
+                                       ng-disabled="selectedItem.confirm != '2' || selectedItem.transferPsoFlag == '1'">
                                 <ng-md-icon icon="send"></ng-md-icon>
-                                抛转已选产品
+                                抛转退货
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>
