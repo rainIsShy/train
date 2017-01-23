@@ -130,19 +130,28 @@
                 </div>
                 <div flex="20" flex-sm="100">
                     <md-input-container flex>
-                        <label>拨出门店</label>
-                        <input type="text" ng-model="allotMaster.outChannel.name"
-                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
-                               ng-click="openChannelDlg('out');">
+                        <label class="label">拨出门店</label>
+                        <input type="text" ng-model="allotMaster.outChannel.name" ng-disabled="true">
+                        <md-button class="md-icon-button close-btn float-right"
+                                   style="color: gray;margin-top: 10px;" aria-label="More"
+                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
+                                   ng-click="openChannelDlg('out');">
+                            <ng-md-icon icon="search"></ng-md-icon>
+                        </md-button>
                     </md-input-container>
                 </div>
 
                 <div flex="20" flex-sm="100">
                     <md-input-container flex>
-                        <label>拨入门店</label>
-                        <input type="text" ng-model="allotMaster.inChannel.name"
-                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
+                        <label class="label">拨入门店</label>
+                        <input type="text" ng-model="allotMaster.inChannel.name" ng-disabled="true"
                                ng-click="openChannelDlg('in');">
+                        <md-button class="md-icon-button close-btn float-right"
+                                   style="color: gray;margin-top: 10px;" aria-label="More"
+                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
+                                   ng-click="openChannelDlg('in');">
+                            <ng-md-icon icon="search"></ng-md-icon>
+                        </md-button>
                     </md-input-container>
                 </div>
 

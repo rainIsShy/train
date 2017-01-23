@@ -411,6 +411,10 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             if (detail.deliverDate == null) {
                 $scope.showError('请填写配送日期!');
                 validation = false;
+            } else {
+                if (detail.deliverDate < detail.minDeliverDate) {
+                    $scope.showError('配送日期不可小於 ' + detail.minDeliverDate + ' !');
+                }
             }
         });
         return validation;
