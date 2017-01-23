@@ -376,17 +376,18 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
 
     $scope.validField = function () {
         var validation = true;
-        if ($scope.allotMaster.outChannel.uuid == null) {
+        console.log($scope.allotMaster.outChannel);
+        if ($scope.allotMaster.outChannel == null) {
             $scope.showError('请选择拨出门店!');
             validation = false;
         }
 
-        if ($scope.allotMaster.inChannel.uuid == null) {
+        if ($scope.allotMaster.inChannel == null) {
             $scope.showError('请选择拨入门店!');
             validation = false;
         }
 
-        if ($scope.allotMaster.area.uuid == null) {
+        if ($scope.allotMaster.area == null) {
             $scope.showError('请选择配送区域!');
             validation = false;
         }
