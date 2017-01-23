@@ -55,7 +55,6 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
     };
 
 
-    console.log($scope.listFilterOption.allotType);
     $scope.queryPageOption = {
         sizePerPage: 2,
         currentPage: 0,
@@ -304,7 +303,6 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
 
     $scope.changeDeliverDate = function () {
         angular.forEach($scope.itemList, function (detail) {
-            console.log($scope.allotMaster.deliverDate);
             if ($scope.allotMaster.deliverDate != null) {
                 detail.deliverDate = new Date($scope.allotMaster.deliverDate);
             }
@@ -366,7 +364,6 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
 
             ChannelPriceService.getByChannelUuidAndItemUuid($scope.allotQuery.channelUuid, data.uuid).success(function (data) {
                 if (data.totalElements > 0) {
-                    console.log(data.content[0].item.uuid);
                     orderDetail.allotPrice = data.content[0].standardPrice;
                     //取得最小配送天数
                     Production.getDeliveryDate(data.content[0].item.uuid, $scope.allotQuery.channelUuid).success(function (data) {
@@ -401,7 +398,6 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
 
     $scope.validField = function () {
         var validation = true;
-        console.log($scope.allotMaster.outChannel);
         if ($scope.allotMaster.outChannel == null) {
             $scope.showError('请选择拨出门店!');
             validation = false;
@@ -459,7 +455,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                     customizeFlag: detail.item.customizationFlag == 'Y' ? '1' : '2',
                     deliverDate: detail.deliverDate,
                     oriDeliverDate: detail.deliverDate,
-                    customizeRemark: detail.remark,
+                    customizeRemark: detail.customizeRemark,
                     itemAttribute: detail.item.informationScope
                 };
                 detailInputs.push(AllotDetailInput);
@@ -480,7 +476,6 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                 details: detailInputs
             };
 
-            console.log(AllotMasterInput);
             $scope.showConfirm('是否确认生成调拨单？', '', function () {
                 AlloMasterService.add(AllotMasterInput).success(function (data) {
                     $scope.initAllotApp();
@@ -503,7 +498,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                         customizeFlag: detail.item.customizationFlag == 'Y' ? '1' : '2',
                         deliverDate: detail.deliverDate,
                         oriDeliverDate: detail.deliverDate,
-                        customizeRemark: detail.remark
+                        customizeRemark: detail.customizeRemark
                     };
                     detailUpdateInputs.push(AllotDetailUpdateInput);
                 } else {
@@ -516,7 +511,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                         customizeFlag: detail.item.customizationFlag == 'Y' ? '1' : '2',
                         deliverDate: detail.deliverDate,
                         oriDeliverDate: detail.deliverDate,
-                        customizeRemark: detail.remark,
+                        customizeRemark: detail.customizeRemark,
                         itemAttribute: detail.item.informationScope
                     };
                     detailInputs.push(AllotDetailInput);
@@ -534,7 +529,6 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                 details: detailUpdateInputs,
                 deleteDetailUuids: $scope.deleteDetailUuids
             };
-            console.log(AllotMasterUpdateInput);
 
             $scope.showConfirm('是否确认修改调拨单？', '', function () {
                 AlloMasterService.modify(AllotMasterUpdateInput.uuid, AllotMasterUpdateInput).success(function (data) {
