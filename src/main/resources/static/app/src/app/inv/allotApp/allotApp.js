@@ -63,9 +63,6 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
         totalElements: 0
     };
 
-
-
-
     $scope.pageOption = {
         sizePerPage: 3,
         currentPage: 0,
@@ -118,7 +115,11 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                 orderDetail.allotQty = 1;
                 ChannelPriceService.getByChannelUuidAndItemUuid($scope.allotQuery.channelUuid, orderDetail.item.uuid).success(function (data) {
                     if (data.content) {
-                        orderDetail.allotPrice = data.content[0].standardPrice
+                        orderDetail.allotPrice = data.content[0].standardPrice;
+                        Production.getDeliveryDate(data.content[0].item.uuid, $scope.allotQuery.channelUuid).success(function (data) {
+                            orderDetail.deliverDate = new Date(data.deliverDate);
+                            orderDetail.minDeliverDate = new Date(data.deliverDate);
+                        });
                     }
                 });
             })
