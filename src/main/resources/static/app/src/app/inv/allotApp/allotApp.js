@@ -676,10 +676,12 @@ angular.module('IOne-Production').controller('AllotItemSelectController', functi
     $scope.selectItem = function (item) {
         $scope.selectedItem = item;
         $scope.showCustomTab = true;
-        if ($scope.selectedItem.customizeFlag == 'Y') {
+        console.log(item);
+        console.log($scope.selectedItem);
+        if ($scope.selectedItem.customizationFlag == 'Y') {
             $scope.showCustomTab = true;
             $scope.itemUuid = item.uuid;
-            ProductionCustom.getInformationByCustom('393FF02F-2C10-4149-AFF3-E484D10BD9C5', $scope.itemCustomUuid).success(function (data) {
+            ProductionCustom.getInformationByCustom($scope.itemUuid, $scope.itemCustomUuid).success(function (data) {
                 if (data.totalElements > 0) {
                     $scope.informationList = data.content;
                 }
