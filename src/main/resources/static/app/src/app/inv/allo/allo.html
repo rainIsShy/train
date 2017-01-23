@@ -90,6 +90,13 @@
                                 批量作废
                             </md-button>
                         </md-menu-item>
+                        <md-menu-item ng-if="isAuthorized('205-batchTransfer')">
+                            <md-button class="md-button" aria-label="More" ng-disabled="!canBatchTransfer()"
+                                       ng-click="transferAllClickAction($event)">
+                                <ng-md-icon icon="send"></ng-md-icon>
+                                批量抛转
+                            </md-button>
+                        </md-menu-item>
                     </md-menu-content>
                 </md-menu>
             </div>

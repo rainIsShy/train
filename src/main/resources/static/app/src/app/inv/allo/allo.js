@@ -33,7 +33,8 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         '201-batchConfirm': {display: true, name: '批量审核', uuid: '30227911-a5e7-4381-b852-13ab981a556f'},
         '202-batchCancelConfirm': {display: true, name: '批量取消审核', uuid: 'dde1cd28-8882-4b80-83b6-fa79bdcd5bbb'},
         '203-batchEnableStatus': {display: true, name: '批量启用', uuid: '4a17aa8d-9bfb-49a9-aea4-c3d61ddd73ab'},
-        '204-batchDisableStatus': {display: true, name: '批量取消启用', uuid: '0f79bcb1-69b6-4247-9a9a-22c1736268d8'}
+        '204-batchDisableStatus': {display: true, name: '批量取消启用', uuid: '0f79bcb1-69b6-4247-9a9a-22c1736268d8'},
+        '205-batchTransfer': {display: true, name: '批量抛转', uuid: '09922192-5ab4-4475-bf41-610d00afabee'}
     };
 
     $scope.getMenuAuthData($scope.RES_UUID_MAP.INV.ALLO.RES_UUID).success(function (data) {
@@ -163,6 +164,18 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         if ($scope.selected.length > 0) {
             for (var i = 0; i < $scope.selected.length; i++) {
                 if ($scope.selected[i].status == Constant.STATUS[2].value) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    };
+
+    $scope.canBatchTransfer = function () {
+        if ($scope.selected.length > 0) {
+            for (var i = 0; i < $scope.selected.length; i++) {
+                if ($scope.selected[i].confirm == Constant.CONFIRM[1].value || $scope.selected[i].transferFlag == Constant.TRANSFER_PSO_FLAG[1].value) {
                     return false;
                 }
             }
@@ -651,6 +664,33 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         });
     };
 
+    $scope.transferAllClickAction = function (event) {
+        $scope.stopEventPropagation(event);
+        if ($scope.selectedItemSize == 0) {
+            $scope.showWarn('请先选择记录！');
+            return;
+        }
+        $scope.showConfirm('确认抛转吗?', '', function () {
+            var uuids = "";
+            angular.forEach($scope.itemList, function (item) {
+                if (item.selected) {
+                    uuids = uuids + item.uuid + ',';
+                }
+            });
+            var transferData = {
+                'INV_ALLOT_MST_UUID': uuids,
+                'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
+            };
+            if (uuids.length) {
+                ErpAdapterService.transferErpAdapter('/invAllotToRvqTask', transferData, $scope, function (response) {
+                    $scope.showInfo('抛转成功!' + '<br>' + ' RVQ_FILE: ' + response.insertRvqCount + ' 笔' + '<br>' + ' TC_RVR_FILE: ' + response.insertTcRvrCount + ' 笔' + '<br>' + ' RVR_FILE: ' + response.insertRvrCount + ' 笔');
+                    $scope.refreshList();
+                });
+            } else {
+                $scope.showWarn("请选择需要抛转的调拨单！");
+            }
+        });
+    };
 
 });
 
