@@ -205,18 +205,29 @@
                         <label>申请截止日期</label>
                         <input type="date" ng-model="listFilterOption.applyDateEnd"/>
                     </md-input-container>
+                    <md-input-container flex="15" ng-show="selectedItem == null">
+                        <label>单号：</label>
+                        <input type="text" ng-model="listFilterOption.no">
+                    </md-input-container>
                     <md-button flex="10" class="md-raised" ng-disabled="listForm.$invalid"
                                ng-if="isAuthorized('106-query')"
                                style="margin-top: 22px;height: 20px;"
                                ng-click="queryAction($event)">查询
                     </md-button>
+                    <span flex style="padding-top: 10px;" align="right">
+                        <md-button class="md-icon-button" aria-label="Eat cake" ng-click="showAdvancedSearchAction()">
+                            <ng-md-icon icon="expand_more" ng-show="!displayAdvancedSearPanel"></ng-md-icon>
+                            <ng-md-icon icon="expand_less" ng-show="displayAdvancedSearPanel"></ng-md-icon>
+                        </md-button>
+                    </span>
+
                 </div>
                 <!-- advanced search-->
-                <div layout="row" ng-show="displayAdvancedSearPanel">
-                    <!-- fill more searching here.-->
-                    <div flex>
-                        Have you stuff here...
-                    </div>
+                <div class="search-bar" layout="row" ng-show="displayAdvancedSearPanel" layout-align="start center">
+                    <md-input-container flex="15" flex="20" style="margin-left: 50px;" ng-show="selectedItem == null">
+                        <label>来源单号：</label>
+                        <input type="text" ng-model="listFilterOption.psoOrderMstNo">
+                    </md-input-container>
                 </div>
                 <!-- status panel-->
                 <div layout="row" layout-warp layout-padding layout-margin ng-show="!selectedItem"

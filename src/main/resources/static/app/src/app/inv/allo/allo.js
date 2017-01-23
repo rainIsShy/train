@@ -54,6 +54,10 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         return false;
     };
 
+    $scope.showAdvancedSearchAction = function () {
+        $scope.displayAdvancedSearPanel = !$scope.displayAdvancedSearPanel;
+        $scope.selectedItem = null;
+    };
 
     $scope.disableConfirmMenuItem = function (item) {
         if (item !== null && item !== undefined) {
@@ -174,6 +178,7 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         transferFlag: Constant.CONFIRM[0].value,
         release: Constant.RELEASE[0].value,
         no: '',
+        psoOrderMstNo: '',
         applyDateStart: '',
         applyDateEnd: ''
     };
@@ -225,7 +230,8 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
             applyDateEnd = $scope.queryDateFormat($scope.listFilterOption.applyDateEnd);
         }
 
-        AlloMasterService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption.confirm, $scope.listFilterOption.status, $scope.listFilterOption.transferFlag, $scope.listFilterOption.no, applyDateStart, applyDateEnd, RES_UUID_MAP.INV.ALLO.RES_UUID).success(function (data) {
+        AlloMasterService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption.confirm, $scope.listFilterOption.status, $scope.listFilterOption.transferFlag,
+            $scope.listFilterOption.no, applyDateStart, applyDateEnd, $scope.listFilterOption.psoOrderMstNo, RES_UUID_MAP.INV.ALLO.RES_UUID).success(function (data) {
             $scope.itemList = data.content;
             $scope.pageOption.totalPage = data.totalPages;
             $scope.pageOption.totalElements = data.totalElements;

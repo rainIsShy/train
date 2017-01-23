@@ -1,5 +1,5 @@
 angular.module('IOne-Production').service('AlloMasterService', function ($http, Constant) {
-    this.getAll = function (sizePerPage, page, confirm, status, transferFlag, no, applyDateBegin, applyDateEnd, resUuid) {
+    this.getAll = function (sizePerPage, page, confirm, status, transferFlag, no, applyDateBegin, applyDateEnd, psoOrderMstNo, resUuid) {
         confirm = confirm == 0 ? '' : confirm;
         status = status == 0 ? '' : status;
         transferFlag = transferFlag == 0 ? '' : transferFlag;
@@ -13,6 +13,9 @@ angular.module('IOne-Production').service('AlloMasterService', function ($http, 
             url = url + '&no=' + no;
         }
 
+        if (psoOrderMstNo !== null && psoOrderMstNo != undefined) {
+            url = url + '&psoOrderMstNo=' + psoOrderMstNo;
+        }
 
         if (applyDateBegin != null && applyDateBegin != '') {
             url = url + '&applyDateBegin=' + applyDateBegin;
