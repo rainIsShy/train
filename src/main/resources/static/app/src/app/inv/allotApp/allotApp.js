@@ -31,15 +31,31 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
 
     };
 
+    $scope.QUERY_ALLOTTYPE = {
+        0000: {value: '', name: '全部'},
+        6401: {value: '6401', name: '新店上样'},
+        6402: {value: '6402', name: '上馆'},
+        6404: {value: '6404', name: '转馆'},
+        9999: {value: '9999', name: '盘点'},
+    };
+
+    $scope.ALLOTTYPE = {
+        6401: {value: '6401', name: '新店上样'},
+        6402: {value: '6402', name: '上馆'},
+        6404: {value: '6404', name: '转馆'},
+        9999: {value: '9999', name: '盘点'},
+    };
 
     $scope.listFilterOption = {
         confirm: Constant.CONFIRM[0].value,
-        allotType: '',
+        allotType: 0,
         channelUuid: $scope.allotQuery.channelUuid,
-        currentQueryMode: $scope.QUERY_MODE['ALL'].value
+        currentQueryMode: $scope.QUERY_MODE['ALL'].value,
+        currentQueryType: $scope.QUERY_MODE['ALL']
     };
 
 
+    console.log($scope.listFilterOption.allotType);
     $scope.queryPageOption = {
         sizePerPage: 2,
         currentPage: 0,
@@ -48,12 +64,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
     };
 
 
-    $scope.ALLOTTYPE = {
-        6401: {value: '6401', name: '新店上样'},
-        6402: {value: '6402', name: '上馆'},
-        6404: {value: '6404', name: '转馆'},
-        9999: {value: '9999', name: '盘点'},
-    };
+
 
     $scope.pageOption = {
         sizePerPage: 3,
@@ -65,11 +76,12 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
     //查询画面清单
     $scope.refreshList = function (condition) {
         angular.forEach($scope.QUERY_MODE, function (queryMode) {
-            console.log($scope.queryPageOption.sizePerPage);
-            AlloMasterService.getAllFromQueryApp($scope.queryPageOption.sizePerPage, $scope.queryPageOption.currentPage, $scope.listFilterOption.confirm, queryMode.queryDate, '', $scope.listFilterOption.channelUuid).success(function (data) {
+
+            AlloMasterService.getAllFromQueryApp($scope.queryPageOption.sizePerPage, $scope.queryPageOption.currentPage, $scope.listFilterOption.confirm, queryMode.queryDate, '', $scope.listFilterOption.channelUuid, $scope.listFilterOption.allotType).success(function (data) {
                 //itemlist只塞符合目前查询的类型
                 if (queryMode.value == condition.value) {
                     $scope.listFilterOption.currentQueryMode = condition.value;
+                    $scope.listFilterOption.currentQueryType = condition;
                     $scope.allotMasterList = data.content;
                     $scope.queryPageOption.totalPage = data.totalPages;
                     $scope.queryPageOption.totalElements = data.totalElements;
@@ -149,10 +161,10 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
 
         //若不是從上館轉館單來的，不需要做預設查詢
         if (!angular.isUndefined($scope.allotQuery.orderUuid)) {
-            console.log($scope.allotQuery.orderUuid);
             $scope.refreshOrderDetailList();
         } else {
             $scope.itemList = [];
+            $scope.allotMaster.allotTypeNo = $scope.ALLOTTYPE['6401'].value
         }
 
         $scope.changeAllotType();
@@ -262,12 +274,24 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                     $scope.allotMaster.area = item.channel.area;
                 }
 
-                $scope.allotMaster.inChannel = item.channel;
+                if ($scope.allotMaster.allotTypeNo == '9999') {
+                    $scope.allotMaster.outChannel = item.channel;
+                } else {
+                    //盘点默认拨出门店为当前登录账号所属的OCM_BASE_CHAN_UUID
+                    $scope.allotMaster.inChannel = item.channel;
+                }
+
+
                 if ($scope.allotMaster.allotTypeNo == '6401' || $scope.allotMaster.allotTypeNo == '6402') {
                     OCMChannelService.get(item.parentOcmBaseChanUuid).success(function (data) {
-                        console.log(data);
                         $scope.allotMaster.outChannel = data;
                     });
+                } else if ($scope.allotMaster.allotTypeNo == '9999') {
+                    //盤點拨入门店为当前登录账号所属门店OCM_BASE_CHAN_UUID的上级门店
+                    OCMChannelService.get(item.parentOcmBaseChanUuid).success(function (data) {
+                        $scope.allotMaster.inChannel = data;
+                    });
+
                 } else {
                     ChannelLevelService.getByParentOcmBaseChanUuid(item.parentOcmBaseChanUuid).success(function (data) {
                         $scope.outChannelList = data.content;
@@ -409,6 +433,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             } else {
                 if (detail.deliverDate < detail.minDeliverDate) {
                     $scope.showError('配送日期不可小於 ' + detail.minDeliverDate + ' !');
+                    validation = false;
                 }
             }
         });

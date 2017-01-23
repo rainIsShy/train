@@ -53,7 +53,7 @@ angular.module('IOne-Production').service('AlloMasterService', function ($http, 
     };
 
 
-    this.getAllFromQueryApp = function (sizePerPage, page, confirm, applyDateBegin, applyDateEnd, channelUuid) {
+    this.getAllFromQueryApp = function (sizePerPage, page, confirm, applyDateBegin, applyDateEnd, channelUuid, allotTypeNo) {
         confirm = confirm == 0 ? '' : confirm;
 
         var url = '/allotMasters?size=' + sizePerPage
@@ -72,6 +72,10 @@ angular.module('IOne-Production').service('AlloMasterService', function ($http, 
 
         if (applyDateEnd != null && applyDateEnd != '') {
             url = url + '&applyDateEnd=' + applyDateEnd;
+        }
+
+        if (allotTypeNo != null && allotTypeNo != '' && allotTypeNo != 0) {
+            url = url + '&allotTypeNo=' + allotTypeNo;
         }
 
         return $http.get(Constant.BACKEND_BASE + url);

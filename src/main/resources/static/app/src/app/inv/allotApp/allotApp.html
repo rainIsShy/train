@@ -21,7 +21,6 @@
                             ng-click="refreshList(QUERY_MODE['WEEK']);">
                         <span>{{QUERY_MODE["WEEK"].name}}  <span class="query-count">{{QUERY_MODE["WEEK"].count}}</span></span>
                     </md-button>
-
                 </div>
                 <div>
                     <md-button
@@ -43,7 +42,8 @@
 
                 <md-input-container flex="15">
                     <label>审核状态</label>
-                    <md-select ng-model="listFilterOption.confirm">
+                    <md-select ng-model="listFilterOption.confirm"
+                               ng-change="refreshList(listFilterOption.currentQueryType);">
                         <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
                     </md-select>
                 </md-input-container>
@@ -51,8 +51,10 @@
                 <div flex="20" flex-sm="100">
                     <md-input-container flex="15">
                         <label>类型</label>
-                        <md-select ng-model="listFilterOption.allotType">
-                            <md-option ng-repeat="(key, value) in ALLOTTYPE" ng-value="key">{{value.name}}</md-option>
+                        <md-select ng-model="listFilterOption.allotType"
+                                   ng-change="refreshList(listFilterOption.currentQueryType);">
+                            <md-option ng-repeat="(key, value) in QUERY_ALLOTTYPE" ng-value="key">{{value.name}}
+                            </md-option>
                         </md-select>
                     </md-input-container>
                 </div>
@@ -102,7 +104,7 @@
                 <md-divider style="margin: 10px 0px 30px 0px;"></md-divider>
 
             </div>
-            <div pagination option="queryPageOption" callback="refreshList(listFilterOption.currentQueryMode)"></div>
+            <div pagination option="queryPageOption" callback="refreshList(listFilterOption.currentQueryType)"></div>
         </div>
     </div>
 
