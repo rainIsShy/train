@@ -524,6 +524,10 @@ angular.module('IOne-Production').service('ChannelLevelService', function ($http
         return $http.get(Constant.BACKEND_BASE + '/channelLevels/' + uuid + '?action=valid&parentOcmBaseChanUuid=' + parentOcmBaseChanUuid);
     }
 
+    this.getLowerChannel = function(uuid){
+        return $http.get(Constant.BACKEND_BASE + '/channelLevels/' + uuid + '?action=lower');
+    }
+
 });
 
 angular.module('IOne-Production').service('ChannelRelationService', function ($http, Constant) {

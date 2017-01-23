@@ -12,7 +12,7 @@
                         <i class="fa fa-search"></i>
                     </md-button>
                 </div>
-                <md-list-item class="md-2-line" ng-repeat="channel in allChannel.content"
+                <md-list-item class="md-2-line" ng-repeat="channel in someParentChannel"
                               ng-click="selectChannel(channel)">
                     <div class="md-list-item-text">
                         <h3> {{channel.no}} | {{ channel.name }} </h3>
