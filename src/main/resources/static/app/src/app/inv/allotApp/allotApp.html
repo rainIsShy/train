@@ -52,8 +52,7 @@
                     <md-input-container flex="15">
                         <label>类型</label>
                         <md-select ng-model="listFilterOption.allotType">
-                            <md-option ng-repeat="allotType in allotTypeList" ng-value="allotType">{{allotType.name}}
-                            </md-option>
+                            <md-option ng-repeat="(key, value) in ALLOTTYPE" ng-value="key">{{value.name}}</md-option>
                         </md-select>
                     </md-input-container>
                 </div>
@@ -191,14 +190,14 @@
                 <div flex="8" flex-sm="100">
                     <md-button class="md-button" aria-label="More" style="padding:5px"
                                ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS"
-                               ng-click="editClickAction(data)" ng-disabled="allotMaster.confirm !='1'">
+                               ng-click="editClickAction(data)" ng-disabled="allotMaster.confirm =='1'">
                         <ng-md-icon icon="edit"></ng-md-icon>
                         <span>编辑</span>
                     </md-button>
                 </div>
 
                 <div flex-sm="100">
-                    <md-button class="md-button" aria-label="More" style="font-size:small;"
+                    <md-button class="md-button" aria-label="More" style="padding:5px"
                                ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS"
                                ng-disabled="status =='add'"
                                ng-click="cancelEditClickAction(data)">
@@ -208,7 +207,7 @@
                 </div>
 
                 <div flex-sm="100">
-                    <md-button class="md-button" aria-label="More" style="font-size:small;"
+                    <md-button class="md-button" aria-label="More" style="padding:5px"
                                ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
                                ng-click="saveClickAction(data)">
                         <ng-md-icon icon="save"></ng-md-icon>

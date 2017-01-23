@@ -286,12 +286,6 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
         });
     };
 
-    // $scope.getMinDeliverDate = function(itemUuid, channelUuid) {
-    //     Production.getDeliveryDate(itemUuid, channelUuid).success(function(data) {
-    //         console.log(data);
-    //         return data.deliverDate;
-    //     })
-    // }
 
     //渠道开窗
     $scope.openChannelDlg = function (type) {

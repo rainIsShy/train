@@ -1,28 +1,52 @@
 <md-dialog style="padding:10px;min-width: 800px;max-height: 800px; overflow-y:scroll">
-    <md-content layout="column">
+    <md-content flex="90" layout="column">
         <div layout="row">
             <md-button class="md-icon-button" ng-click="cancelDlg()">
                 <ng-md-icon icon="close"></ng-md-icon>
             </md-button>
         </div>
         <form name="addItemForm" ng-if="!showCustomTab" novalidate>
-            <div layout="row" flex="40">
-                <md-input-container flex="30">
-                    <label>商品编号{{searchItemNo}}</label>
-                    <input name="no" type="text" ng-model="searchItemNo">
-                </md-input-container>
-                <md-input-container flex="30">
-                    <label>商品名称</label>
-                    <input name="name" type="text" ng-model="searchItemName" md-maxlength="20">
-                </md-input-container>
-                <md-input-container flex="30">
-                    <label>商品規格</label>
-                    <input name="name" type="text" ng-model="searchStandard" md-maxlength="20">
-                </md-input-container>
-                <md-button ng-click="refreshProduction(searchItemNo, searchItemName, searchStandard)"
-                           ng-disabled="searchData.$invalid">
-                    <i class="fa fa-search"></i>
-                </md-button>
+            <div layout="row" layout-wrap layout-margin>
+                <!--<md-input-container flex="30">-->
+                <!--<label>商品编号{{searchItemNo}}</label>-->
+                <!--<input name="no" type="text" ng-model="searchItemNo">-->
+                <!--</md-input-container>-->
+                <!--<md-input-container flex="30">-->
+                <!--<label>商品名称</label>-->
+                <!--<input name="name" type="text" ng-model="searchItemName" md-maxlength="20">-->
+                <!--</md-input-container>-->
+                <!--<md-input-container flex="30">-->
+                <!--<label>商品規格</label>-->
+                <!--<input name="name" type="text" ng-model="searchStandard" md-maxlength="20">-->
+                <!--<md-button ng-click="refreshProduction(searchItemNo, searchItemName, searchStandard)"-->
+                <!--ng-disabled="searchData.$invalid">-->
+                <!--<i class="fa fa-search"></i>-->
+                <!--</md-button>-->
+                <!--</md-input-container>-->
+
+                <div flex="30" flex-sm="100">
+                    <md-input-container flex="30">
+                        <label>商品编号{{searchItemNo}}</label>
+                        <input name="no" type="text" ng-model="searchItemNo">
+                    </md-input-container>
+                </div>
+                <div flex="30" flex-sm="100">
+                    <md-input-container flex="30">
+                        <label>商品名称</label>
+                        <input name="name" type="text" ng-model="searchItemName">
+                    </md-input-container>
+                </div>
+                <div flex="40" flex-sm="100">
+                    <md-input-container flex>
+                        <label>商品規格</label>
+                        <input name="name" type="text" ng-model="searchStandard">
+                        <md-button class="md-icon-button close-btn float-right" style="margin-top: 10px;"
+                                   ng-click="refreshProduction(searchItemNo, searchItemName, searchStandard)"
+                                   ng-disabled="searchData.$invalid">
+                            <i class="fa fa-search"></i>
+                        </md-button>
+                    </md-input-container>
+                </div>
             </div>
             <div layout="row" layout-wrap>
                 <div flex="30" flex-md="50" flex-sm="100" ng-repeat="production in allProductionsData"
