@@ -88,7 +88,7 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
 
     $scope.showCancelConfirmMenuItem = function (item) {
         if (item !== null && item !== undefined) {
-            return item.confirm == 2 && $scope.isAuthorized('102-cancelConfirm');
+            return item.confirm == 2 && item.transferFlag == 1 && $scope.isAuthorized('102-cancelConfirm');
         }
         return false;
     };
@@ -139,7 +139,7 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
     $scope.canBatchCancelConfirm = function () {
         if ($scope.selected.length > 0) {
             for (var i = 0; i < $scope.selected.length; i++) {
-                if ($scope.selected[i].confirm == Constant.CONFIRM[1].value) {
+                if ($scope.selected[i].confirm == Constant.CONFIRM[1].value || $scope.selected[i].transferFlag == Constant.TRANSFER_PSO_FLAG[1].value) {
                     return false;
                 }
             }
