@@ -616,7 +616,7 @@ angular.module('IOne-Production').controller('AllotAreaSelectController', functi
 
 angular.module('IOne-Production').controller('AllotItemSelectController', function ($scope, $mdDialog, Constant, Catalogue, OrderItemCustomDetail, OrderCustomScope, ProductionCatalogueDetails, ItemRelationService, ProductionItemCustom, ProductionCustom, channelUuid) {
     $scope.pageOption = {
-        sizePerPage: 9,
+        sizePerPage: 6,
         currentPage: 0,
         totalPage: 0,
         totalElements: 0,
