@@ -1,9 +1,9 @@
 <!--調撥單查詢-->
 <div class="main-panel" ng-show="allotMaster == null">
     <div layout="row" layout-md="column" layout-sm="column" class="menu"
-         style="margin: 0px 0px; width: 1050px;font-size: small">
+         style="margin: 0px 0px; font-size: small">
         <!--畫面 start -->
-        <div flex="95">
+        <div flex="100">
             <div flex="100" layout="row" layout-wrap layout-margin>
                 <div>
                     <md-button
@@ -113,9 +113,9 @@
 <!--調撥單維護-->
 <div ng-show="allotMaster != null" class="main-panel">
     <div layout="row" layout-md="column" layout-sm="column" class="menu"
-         style="margin: 0px 0px; width: 1050px; font-size: small">
+         style="margin: 0px 0px;  font-size: small">
         <!--畫面 start -->
-        <div flex="95">
+        <div flex="100">
             <div flex="100" layout="row" layout-wrap layout-margin>
                 <div flex="20" flex-sm="100">
                     <md-input-container flex>
@@ -159,8 +159,14 @@
                 <div flex="15" flex-sm="100">
                     <md-input-container flex>
                         <label>配送区域</label>
-                        <input type="text" ng-model="allotMaster.area.name" ng-click="openAreaDlg();"
-                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                        <input type="text" ng-model="allotMaster.area.name"
+                               ng-disabled="true">
+                        <md-button class="md-icon-button close-btn float-right"
+                                   style="color: gray;margin-top: 10px;" aria-label="More"
+                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
+                                   ng-click="openAreaDlg();">
+                            <ng-md-icon icon="search"></ng-md-icon>
+                        </md-button>
                     </md-input-container>
                 </div>
 
