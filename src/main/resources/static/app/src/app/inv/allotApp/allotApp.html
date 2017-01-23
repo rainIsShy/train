@@ -75,20 +75,21 @@
                     <div flex="30">审核状态: {{CONFIRM[data.confirm].name}}</div>
                 </div>
                 <md-divider style="margin: 7px 7px 7px 7px;    border-style: groove;"></md-divider>
-                <div flex="100" layout="row" flex-sm="100" ng-repeat="detail in data.detailList"
-                     style="background-color: #F3F3F3;font-size:small;" layout-wrap layout-margin>
-                    <div flex="30" layout="row">
-                        <div flex="50" style="padding: 2px">
-                            <img class="prod-sm-img" src="{{getImageFullPath(detail.item.path)}}">
-                        </div>
-                        <div flex="50" layout-wrap layout-margin>
-                            <div>商品型号: {{detail.item.name}}</div>
-                            <div>商品规格: {{detail.item.standard}}</div>
-                            <div>调拨数量: {{detail.allotQty}}</div>
+                <div flex="100" layout="row">
+                    <div flex="30" flex-sm="100" ng-repeat="detail in data.detailList"
+                         style="background-color: #F3F3F3;font-size:small;" layout-wrap layout-margin>
+                        <div layout="row" style="padding: 2px">
+                            <div flex="50">
+                                <img class="prod-sm-img" src="{{getImageFullPath(detail.item.path)}}">
+                            </div>
+                            <div flex="50" layout-wrap layout-margin>
+                                <div>商品型号: {{detail.item.name}}</div>
+                                <div>商品规格: {{detail.item.standard}}</div>
+                                <div>调拨数量: {{detail.allotQty}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
                 <div flex="100" layout="row">
                     <div flex="30">拨出门店：&nbsp;{{data.outChannel.name}}</div>
                     <div flex="30">拨入门店:&nbsp;{{data.inChannel.name}}</div>

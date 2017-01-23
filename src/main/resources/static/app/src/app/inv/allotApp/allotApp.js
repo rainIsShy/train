@@ -483,6 +483,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             $scope.showConfirm('是否确认生成调拨单？', '', function () {
                 AlloMasterService.add(AllotMasterInput).success(function (data) {
                     $scope.initAllotApp();
+                    $scope.editItem(data);
                 });
             });
         } else if ($scope.status == 'edit') {
@@ -537,6 +538,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             $scope.showConfirm('是否确认修改调拨单？', '', function () {
                 AlloMasterService.modify(AllotMasterUpdateInput.uuid, AllotMasterUpdateInput).success(function (data) {
                     $scope.initAllotApp();
+                    $scope.editItem(data);
                 });
             });
         }
@@ -676,8 +678,6 @@ angular.module('IOne-Production').controller('AllotItemSelectController', functi
     $scope.selectItem = function (item) {
         $scope.selectedItem = item;
         $scope.showCustomTab = true;
-        console.log(item);
-        console.log($scope.selectedItem);
         if ($scope.selectedItem.customizationFlag == 'Y') {
             $scope.showCustomTab = true;
             $scope.itemUuid = item.uuid;
