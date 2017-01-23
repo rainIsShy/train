@@ -503,7 +503,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                         customizeFlag: detail.item.customizationFlag == 'Y' ? '1' : '2',
                         deliverDate: detail.deliverDate,
                         oriDeliverDate: detail.deliverDate,
-                        remark: detail.remark
+                        customizeRemark: detail.remark
                     };
                     detailUpdateInputs.push(AllotDetailUpdateInput);
                 } else {
@@ -516,7 +516,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                         customizeFlag: detail.item.customizationFlag == 'Y' ? '1' : '2',
                         deliverDate: detail.deliverDate,
                         oriDeliverDate: detail.deliverDate,
-                        remark: detail.remark,
+                        customizeRemark: detail.remark,
                         itemAttribute: detail.item.informationScope
                     };
                     detailInputs.push(AllotDetailInput);
