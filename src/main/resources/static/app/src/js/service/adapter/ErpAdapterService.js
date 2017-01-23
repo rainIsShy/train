@@ -5,11 +5,11 @@ angular.module('IOne-Production').service('ErpAdapterService', function ($http, 
 
     var adapterUrl = $rootScope.globals.adapterInfo.tiptopAdapterServerUrl;
 
-    this.transferErpAdapter = function (path, transferObj, serviceScope, callBack) {
+    this.transferErpAdapter = function (path, transferObj, serviceScope, successCallBack, errorCallBack) {
 
         $http.post(adapterUrl + '/adapter/tasks' + path, transferObj).success(function (response, status) {
             if (status == 201) {
-                callBack(response);
+                successCallBack(response);
             } else {
                 serviceScope.showError('抛转失败！');
             }
@@ -18,6 +18,9 @@ angular.module('IOne-Production').service('ErpAdapterService', function ($http, 
                 serviceScope.showError("[" + (status + '') + "]Connect Server Fail");
             } else {
                 serviceScope.showError("[" + (status + '') + "]" + response.message);
+            }
+            if (angular.isDefined(errorCallBack)) {
+                errorCallBack();
             }
         });
     };
