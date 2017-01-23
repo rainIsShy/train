@@ -154,7 +154,7 @@
                     </md-input-container>
                 </div>
 
-                <div flex="20" flex-sm="100">
+                <div flex="15" flex-sm="100">
                     <md-input-container flex>
                         <label>配送区域</label>
                         <input type="text" ng-model="allotMaster.area.name" ng-click="openAreaDlg();"
@@ -190,7 +190,7 @@
                 <div flex="8" flex-sm="100">
                     <md-button class="md-button" aria-label="More" style="padding:5px"
                                ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS"
-                               ng-click="editClickAction(data)" ng-disabled="allotMaster.confirm =='1'">
+                               ng-click="editClickAction(data)" ng-disabled="allotMaster.confirm =='2'">
                         <ng-md-icon icon="edit"></ng-md-icon>
                         <span>编辑</span>
                     </md-button>
