@@ -444,6 +444,11 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
             });
             */
         } else {
+            //先禁用抛转还原
+            if (item.transferFlag == '1') {
+                item.transferFlag = 1;
+                return;
+            }
             $scope.showConfirm('确认抛转还原吗？', '', function () {
                 alloMasterUpdateInput = {
                     uuid: item.uuid,
