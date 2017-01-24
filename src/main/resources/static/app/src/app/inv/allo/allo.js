@@ -6,7 +6,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
 }]);
 
 
-angular.module('IOne-Production').controller('AlloController', function ($scope, $q, $mdDialog, $timeout, Constant, AlloMasterService, AlloDetailService, AllotExtendDetailService, AllotExtendDetail2Service, OrderItemCustomDetail, OrderCustomScope) {
+angular.module('IOne-Production').controller('AlloController', function ($scope, $q, $mdDialog, $timeout, Constant, AlloMasterService, AlloDetailService, AllotExtendDetailService, AllotExtendDetail2Service, OrderItemCustomDetail, OrderCustomScope, ErpAdapterService) {
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
@@ -33,7 +33,8 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         '201-batchConfirm': {display: true, name: '批量审核', uuid: '30227911-a5e7-4381-b852-13ab981a556f'},
         '202-batchCancelConfirm': {display: true, name: '批量取消审核', uuid: 'dde1cd28-8882-4b80-83b6-fa79bdcd5bbb'},
         '203-batchEnableStatus': {display: true, name: '批量启用', uuid: '4a17aa8d-9bfb-49a9-aea4-c3d61ddd73ab'},
-        '204-batchDisableStatus': {display: true, name: '批量取消启用', uuid: '0f79bcb1-69b6-4247-9a9a-22c1736268d8'}
+        '204-batchDisableStatus': {display: true, name: '批量取消启用', uuid: '0f79bcb1-69b6-4247-9a9a-22c1736268d8'},
+        '205-batchTransfer': {display: true, name: '批量抛转', uuid: '09922192-5ab4-4475-bf41-610d00afabee'}
     };
 
     $scope.getMenuAuthData($scope.RES_UUID_MAP.INV.ALLO.RES_UUID).success(function (data) {
@@ -54,6 +55,10 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         return false;
     };
 
+    $scope.showAdvancedSearchAction = function () {
+        $scope.displayAdvancedSearPanel = !$scope.displayAdvancedSearPanel;
+        $scope.selectedItem = null;
+    };
 
     $scope.disableConfirmMenuItem = function (item) {
         if (item !== null && item !== undefined) {
@@ -83,7 +88,7 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
 
     $scope.showCancelConfirmMenuItem = function (item) {
         if (item !== null && item !== undefined) {
-            return item.confirm == 2 && $scope.isAuthorized('102-cancelConfirm');
+            return item.confirm == 2 && item.transferFlag == 1 && $scope.isAuthorized('102-cancelConfirm');
         }
         return false;
     };
@@ -134,7 +139,7 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
     $scope.canBatchCancelConfirm = function () {
         if ($scope.selected.length > 0) {
             for (var i = 0; i < $scope.selected.length; i++) {
-                if ($scope.selected[i].confirm == Constant.CONFIRM[1].value) {
+                if ($scope.selected[i].confirm == Constant.CONFIRM[1].value || $scope.selected[i].transferFlag == Constant.TRANSFER_PSO_FLAG[1].value) {
                     return false;
                 }
             }
@@ -167,13 +172,28 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         return false;
     };
 
+    $scope.canBatchTransfer = function () {
+        if ($scope.selected.length > 0) {
+            for (var i = 0; i < $scope.selected.length; i++) {
+                if ($scope.selected[i].confirm == Constant.CONFIRM[1].value || $scope.selected[i].transferFlag == Constant.TRANSFER_PSO_FLAG[1].value) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    };
+
 
     $scope.listFilterOption = {
-        status: Constant.STATUS[0].value,
-        confirm: Constant.CONFIRM[0].value,
-        transferFlag: Constant.CONFIRM[0].value,
-        release: Constant.RELEASE[0].value,
+        select: {
+            status: Constant.STATUS[0].value,
+            confirm: Constant.CONFIRM[0].value,
+            transferFlag: Constant.CONFIRM[0].value,
+            release: Constant.RELEASE[0].value
+        },
         no: '',
+        psoOrderMstNo: '',
         applyDateStart: '',
         applyDateEnd: ''
     };
@@ -183,12 +203,28 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         $scope.sortType = '';
     };
 
-    $scope.$watch('listFilterOption', function () {
+    $scope.sortByField = '-no';
+
+    $scope.$watch('listFilterOption.select', function () {
         $scope.pageOption.currentPage = 0;
         $scope.pageOption.totalPage = 0;
         $scope.pageOption.totalElements = 0;
         $scope.refreshList();
     }, true);
+
+    $scope.queryEnter = function (e) {
+        if (e.keyCode === 13) {
+            $scope.pageOption.currentPage = 0;
+            $scope.pageOption.totalPage = 0;
+            $scope.pageOption.totalElements = 0;
+            $scope.refreshList();
+        }
+    };
+
+    $scope.queryAction = function (event) {
+        $scope.stopEventPropagation(event);
+        $scope.refreshList();
+    };
 
     $scope.clickCustom = function (extends2) {
         console.log($scope.selectedSubTab);
@@ -225,7 +261,8 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
             applyDateEnd = $scope.queryDateFormat($scope.listFilterOption.applyDateEnd);
         }
 
-        AlloMasterService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption.confirm, $scope.listFilterOption.status, $scope.listFilterOption.transferFlag, $scope.listFilterOption.no, applyDateStart, applyDateEnd, RES_UUID_MAP.INV.ALLO.RES_UUID).success(function (data) {
+        AlloMasterService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption.select.confirm, $scope.listFilterOption.select.status, $scope.listFilterOption.select.transferFlag,
+            $scope.listFilterOption.no, applyDateStart, applyDateEnd, $scope.listFilterOption.psoOrderMstNo, RES_UUID_MAP.INV.ALLO.RES_UUID).success(function (data) {
             $scope.itemList = data.content;
             $scope.pageOption.totalPage = data.totalPages;
             $scope.pageOption.totalElements = data.totalElements;
@@ -235,6 +272,8 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
 
             });
         });
+        $scope.selected = [];
+        $scope.selectItemCount = 0;
     };
 
     $scope.refreshDetailList = function (item, showExtend) {
@@ -389,6 +428,24 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
             if (item.confirm != 2) {
                 return;
             }
+
+            $scope.showConfirm('确认抛转吗？', '', function () {
+                var transferData = {
+                    'INV_ALLOT_MST_UUID': item.uuid,
+                    'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
+                };
+                ErpAdapterService.transferErpAdapter('/invAllotToRvqTask', transferData, $scope, function (response) {
+                    item.transferFlag = '1';
+                    $scope.showInfo(item.no + '抛转成功!' + '<br>' + ' RVQ_FILE: ' + response.insertRvqCount + ' 笔' + '<br>' + ' TC_RVR_FILE: ' + response.insertTcRvrCount + ' 笔' + '<br>' + ' RVR_FILE: ' + response.insertRvrCount + ' 笔');
+                    $scope.refreshList();
+                    $scope.refreshDetailList(item, true);
+                }, function () {
+                    item.transferFlag = '2';
+                });
+            }, function () {
+                item.transferFlag = '2';
+            });
+           /*
             $scope.showConfirm('确认抛转吗？', '', function () {
                 alloMasterUpdateInput = {
                     uuid: item.uuid,
@@ -403,7 +460,13 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
             }, function () {
                 item.transferFlag = '2';
             });
+            */
         } else {
+            //先禁用抛转还原
+            if (item.transferFlag == '1') {
+                item.transferFlag = 1;
+                return;
+            }
             $scope.showConfirm('确认抛转还原吗？', '', function () {
                 alloMasterUpdateInput = {
                     uuid: item.uuid,
@@ -434,9 +497,19 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
 
             $scope.showConfirm(BATCH_DATA.QUESTION_MSG, '', function () {
                 AlloMasterService.batchUpdate(uuids, BATCH_DATA.INPUT).success(function (data) {
-                    $scope.refreshList();
+                    //$scope.refreshList();
                     $scope.showInfo(BATCH_DATA.SUCCESS_MSG);
-                    $scope.selected = [];
+                    //$scope.selected = [];
+                    if (angular.isDefined(BATCH_DATA.INPUT.confirm)) {
+                        angular.forEach($scope.selected, function (item) {
+                            item.confirm = BATCH_DATA.INPUT.confirm
+                        });
+                    }
+                    if (angular.isDefined(BATCH_DATA.INPUT.status)) {
+                        angular.forEach($scope.selected, function (item) {
+                            item.status = BATCH_DATA.INPUT.status
+                        });
+                    }
                 });
             });
         }
@@ -626,6 +699,33 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         });
     };
 
+    $scope.transferAllClickAction = function (event) {
+        $scope.stopEventPropagation(event);
+        if ($scope.selectedItemSize == 0) {
+            $scope.showWarn('请先选择记录！');
+            return;
+        }
+        $scope.showConfirm('确认抛转吗?', '', function () {
+            var uuids = "";
+            angular.forEach($scope.itemList, function (item) {
+                if (item.selected) {
+                    uuids = uuids + item.uuid + ',';
+                }
+            });
+            var transferData = {
+                'INV_ALLOT_MST_UUID': uuids,
+                'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
+            };
+            if (uuids.length) {
+                ErpAdapterService.transferErpAdapter('/invAllotToRvqTask', transferData, $scope, function (response) {
+                    $scope.showInfo('抛转成功!' + '<br>' + ' RVQ_FILE: ' + response.insertRvqCount + ' 笔' + '<br>' + ' TC_RVR_FILE: ' + response.insertTcRvrCount + ' 笔' + '<br>' + ' RVR_FILE: ' + response.insertRvrCount + ' 笔');
+                    $scope.refreshList();
+                });
+            } else {
+                $scope.showWarn("请选择需要抛转的调拨单！");
+            }
+        });
+    };
 
 });
 

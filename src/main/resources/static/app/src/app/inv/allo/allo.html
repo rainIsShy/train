@@ -90,6 +90,13 @@
                                 批量作废
                             </md-button>
                         </md-menu-item>
+                        <md-menu-item ng-if="isAuthorized('205-batchTransfer')">
+                            <md-button class="md-button" aria-label="More" ng-disabled="!canBatchTransfer()"
+                                       ng-click="transferAllClickAction($event)">
+                                <ng-md-icon icon="send"></ng-md-icon>
+                                批量抛转
+                            </md-button>
+                        </md-menu-item>
                     </md-menu-content>
                 </md-menu>
             </div>
@@ -187,13 +194,13 @@
                     </span>
                     <md-input-container flex="15" style="margin-left: 50px;" ng-show="selectedItem == null">
                         <label>启用状态</label>
-                        <md-select ng-model="listFilterOption.status">
+                        <md-select ng-model="listFilterOption.select.status">
                             <md-option ng-repeat="(key, value) in STATUS" ng-value="key">{{value.name}}</md-option>
                         </md-select>
                     </md-input-container>
                     <md-input-container flex="15" ng-show="selectedItem == null">
                         <label>审核状态</label>
-                        <md-select ng-model="listFilterOption.confirm">
+                        <md-select ng-model="listFilterOption.select.confirm">
                             <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
                         </md-select>
                     </md-input-container>
@@ -205,18 +212,29 @@
                         <label>申请截止日期</label>
                         <input type="date" ng-model="listFilterOption.applyDateEnd"/>
                     </md-input-container>
+                    <md-input-container flex="15" ng-show="selectedItem == null">
+                        <label>来源订单：</label>
+                        <input type="text" ng-model="listFilterOption.psoOrderMstNo" ng-keypress="queryEnter($event)">
+                    </md-input-container>
                     <md-button flex="10" class="md-raised" ng-disabled="listForm.$invalid"
                                ng-if="isAuthorized('106-query')"
                                style="margin-top: 22px;height: 20px;"
                                ng-click="queryAction($event)">查询
                     </md-button>
+                    <span flex style="padding-top: 10px;" align="right">
+                        <md-button class="md-icon-button" aria-label="Eat cake" ng-click="showAdvancedSearchAction()">
+                            <ng-md-icon icon="expand_more" ng-show="!displayAdvancedSearPanel"></ng-md-icon>
+                            <ng-md-icon icon="expand_less" ng-show="displayAdvancedSearPanel"></ng-md-icon>
+                        </md-button>
+                    </span>
+
                 </div>
                 <!-- advanced search-->
-                <div layout="row" ng-show="displayAdvancedSearPanel">
-                    <!-- fill more searching here.-->
-                    <div flex>
-                        Have you stuff here...
-                    </div>
+                <div class="search-bar" layout="row" ng-show="displayAdvancedSearPanel" layout-align="start center">
+                    <md-input-container flex="15" flex="20" style="margin-left: 50px;" ng-show="selectedItem == null" ng-keypress="queryEnter($event)">
+                        <label>调拨单号：</label>
+                        <input type="text" ng-model="listFilterOption.no">
+                    </md-input-container>
                 </div>
                 <!-- status panel-->
                 <div layout="row" layout-warp layout-padding layout-margin ng-show="!selectedItem"
@@ -236,8 +254,8 @@
                                     <ng-md-icon ng-show="sortByField == 'applyDate'" icon="play_arrow"></ng-md-icon>
                                     按申请日期
                                 </md-button>
-                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('no')">
-                                    <ng-md-icon ng-show="sortByField == 'no'" icon="play_arrow"></ng-md-icon>
+                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('-no')">
+                                    <ng-md-icon ng-show="sortByField == '-no'" icon="play_arrow"></ng-md-icon>
                                     按编号
                                 </md-button>
                             </md-menu-item>
@@ -285,6 +303,7 @@
 
                                     <md-switch ng-model="item.transferFlag" aria-label="Switch 1" class="md-block"
                                                ng-if="isAuthorized('107-transfer') || isAuthorized('108-unTransfer')"
+                                               ng-true-value="'1'" ng-false-value="'2'"
                                                ng-disabled="disableTransferMenuItem(item)"
                                                ng-click="transferClickAction($event, item)">
                                         抛转
@@ -292,7 +311,7 @@
                                     <md-button class="md-button close-btn" aria-label="More"
                                                ng-click="toggleMorePanelAction(item)"
                                                style="position: relative;left: 15px;">
-                                        查看更多...
+                                        查看更多
                                     </md-button>
                                 </div>
                             </div>
