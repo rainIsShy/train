@@ -495,9 +495,19 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
 
             $scope.showConfirm(BATCH_DATA.QUESTION_MSG, '', function () {
                 AlloMasterService.batchUpdate(uuids, BATCH_DATA.INPUT).success(function (data) {
-                    $scope.refreshList();
+                    //$scope.refreshList();
                     $scope.showInfo(BATCH_DATA.SUCCESS_MSG);
-                    $scope.selected = [];
+                    //$scope.selected = [];
+                    if (angular.isDefined(BATCH_DATA.INPUT.confirm)) {
+                        angular.forEach($scope.selected, function (item) {
+                            item.confirm = BATCH_DATA.INPUT.confirm
+                        });
+                    }
+                    if (angular.isDefined(BATCH_DATA.INPUT.status)) {
+                        angular.forEach($scope.selected, function (item) {
+                            item.status = BATCH_DATA.INPUT.status
+                        });
+                    }
                 });
             });
         }
