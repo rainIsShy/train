@@ -272,6 +272,8 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
 
             });
         });
+        $scope.selected = [];
+        $scope.selectItemCount = 0;
     };
 
     $scope.refreshDetailList = function (item, showExtend) {
