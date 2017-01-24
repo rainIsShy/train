@@ -80,7 +80,6 @@ angular.module('IOne-Production').service('AlloMasterService', function ($http, 
             url = url + '&allotTypeNo=' + allotTypeNo;
         }
         url = url + '&sort=-no';
-        console.log(url);
         return $http.get(Constant.BACKEND_BASE + url);
     };
 

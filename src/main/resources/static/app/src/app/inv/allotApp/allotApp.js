@@ -102,8 +102,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
     $scope.changeSelectField = function (condition) {
         $scope.queryPageOption.currentPage = 0;
         $scope.refreshList(condition)
-    };;;;;;;;;
-
+    };
     //要删除的商品
     $scope.deleteDetailUuids = [];
 
@@ -386,7 +385,11 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
         $scope.status = $scope.allotMaster.no != null ? 'edit' : 'add';
     };
 
-
+    $scope.clickBackAction = function () {
+        $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
+        $scope.status = '';
+        $scope.allotMaster = null;
+    };
     $scope.cancelEditClickAction = function () {
         $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
     };

@@ -189,7 +189,7 @@
                     </md-input-container>
                 </div>
 
-                <div flex="35" flex-sm="100">
+                <div flex="30" flex-sm="100">
                     <md-input-container flex>
                         <label>备注</label>
                         <input name="no" type="text" ng-model="allotMaster.remark"
@@ -197,8 +197,8 @@
                     </md-input-container>
                 </div>
 
-                <div flex="8" flex-sm="100">
-                    <md-button class="md-button" aria-label="More" style="padding:5px"
+                <div flex-sm="100">
+                    <md-button class="md-button" aria-label="More" style="padding:5px; margin-left: -6px;"
                                ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS"
                                ng-click="editClickAction(data)" ng-disabled="allotMaster.confirm =='2'">
                         <ng-md-icon icon="edit"></ng-md-icon>
@@ -207,7 +207,7 @@
                 </div>
 
                 <div flex-sm="100">
-                    <md-button class="md-button" aria-label="More" style="padding:5px"
+                    <md-button class="md-button" aria-label="More" style="padding:5px;    margin-left: -6px;"
                                ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS"
                                ng-disabled="status =='add'"
                                ng-click="cancelEditClickAction(data)">
@@ -217,11 +217,19 @@
                 </div>
 
                 <div flex-sm="100">
-                    <md-button class="md-button" aria-label="More" style="padding:5px"
+                    <md-button class="md-button" aria-label="More" style="padding:5px;    margin-left: -6px;"
                                ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
                                ng-click="saveClickAction(data)">
                         <ng-md-icon icon="save"></ng-md-icon>
                         <span>确认</span>
+                    </md-button>
+                </div>
+
+                <div flex-sm="100" ng-show="fromAppWork == appWork.QUERY">
+                    <md-button class="md-button" aria-label="More" style="padding:5px;margin-left: -6px;"
+                               ng-click="clickBackAction()">
+                        <i class="fa fa-times"></i>
+                        <span>返回清单</span>
                     </md-button>
                 </div>
 
@@ -260,7 +268,7 @@
                         <md-input-container flex="90">
                             <label>定制备注</label>
                             <textarea ng-model="data.customizeRemark"
-                                      ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || detail.item.customizationFlag == 'N'"></textarea>
+                                      ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || detail.customizeFlag != '1'"></textarea>
                         </md-input-container>
                     </div>
                 </div>
