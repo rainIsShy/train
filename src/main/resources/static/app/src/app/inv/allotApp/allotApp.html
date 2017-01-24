@@ -10,47 +10,48 @@
                             ng-class="listFilterOption.currentQueryMode == QUERY_MODE['ALL'].value ? 'query-active' : 'md-raised'"
                             style="margin-top: 22px;height: 20px;"
                             ng-click="refreshList(QUERY_MODE['ALL']);">
-                        <span>{{QUERY_MODE["ALL"].name}} <span
+                        <span class="query-btnStyle">{{QUERY_MODE["ALL"].name}} <span
                                 class="query-count">{{QUERY_MODE["ALL"].count}}</span></span>
                     </md-button>
                 </div>
-                <div>
+                <div class="query-toolbar">
                     <md-button
                             ng-class="listFilterOption.currentQueryMode == QUERY_MODE['WEEK'].value ? 'query-active' : 'md-raised'"
                             style="margin-top: 22px;height: 20px;"
                             ng-click="refreshList(QUERY_MODE['WEEK']);">
-                        <span>{{QUERY_MODE["WEEK"].name}}  <span class="query-count">{{QUERY_MODE["WEEK"].count}}</span></span>
+                        <span class="query-btnStyle">{{QUERY_MODE["WEEK"].name}}  <span class="query-count">{{QUERY_MODE["WEEK"].count}}</span></span>
                     </md-button>
                 </div>
-                <div>
+                <div class="query-toolbar">
                     <md-button
                             ng-class="listFilterOption.currentQueryMode == QUERY_MODE['LAST_MONTH'].value ? 'query-active' : 'md-raised'"
                             style="margin-top: 22px;height: 20px;"
                             ng-click="refreshList(QUERY_MODE['LAST_MONTH']);">
-                        <span>{{QUERY_MODE["LAST_MONTH"].name}}  <span class="query-count">{{QUERY_MODE["LAST_MONTH"].count}}</span></span>
+                        <span class="query-btnStyle">{{QUERY_MODE["LAST_MONTH"].name}}  <span class="query-count">{{QUERY_MODE["LAST_MONTH"].count}}</span></span>
                     </md-button>
                 </div>
 
-                <div>
+                <div class="query-toolbar">
                     <md-button
                             ng-class="listFilterOption.currentQueryMode == QUERY_MODE['LAST_THREE_MONTH'].value ? 'query-active' : 'md-raised'"
                             style="margin-top: 22px;height: 20px;"
                             ng-click="refreshList(QUERY_MODE['LAST_THREE_MONTH']);">
-                        <span>{{QUERY_MODE["LAST_THREE_MONTH"].name}} <span class="query-count">{{QUERY_MODE["LAST_THREE_MONTH"].count}}</span></span>
+                        <span class="query-btnStyle">{{QUERY_MODE["LAST_THREE_MONTH"].name}} <span class="query-count">{{QUERY_MODE["LAST_THREE_MONTH"].count}}</span></span>
                     </md-button>
                 </div>
 
-                <md-input-container flex="15">
-                    <label>审核状态</label>
-                    <md-select ng-model="listFilterOption.confirm"
-                               ng-change="refreshList(listFilterOption.currentQueryType);">
-                        <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
-                    </md-select>
-                </md-input-container>
-
-                <div flex="20" flex-sm="100">
+                <div flex="15" class="query-toolbar">
+                    <md-input-container>
+                        <label>审核状态</label>
+                        <md-select ng-model="listFilterOption.confirm"
+                                   ng-change="refreshList(listFilterOption.currentQueryType);">
+                            <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div flex="15" flex-sm="100" class="query-toolbar">
                     <md-input-container flex="15">
-                        <label>类型</label>
+                        <label>调拨类型</label>
                         <md-select ng-model="listFilterOption.allotType"
                                    ng-change="refreshList(listFilterOption.currentQueryType);">
                             <md-option ng-repeat="(key, value) in QUERY_ALLOTTYPE" ng-value="key">{{value.name}}
@@ -59,9 +60,9 @@
                     </md-input-container>
                 </div>
 
-                <div>
+                <div class="query-toolbar">
                     <md-button class="md-raised" style="margin-top: 22px;height: 20px;" ng-click="initCreateData()">
-                        <span>新增</span>
+                        <span class="query-btnStyle">新增</span>
                     </md-button>
                 </div>
             </div>
@@ -71,7 +72,7 @@
 
                 <div flex="100" layout="row">
                     <div flex="35">申请单号：&nbsp;{{data.no}}</div>
-                    <div flex="35">类型:&nbsp;{{data.allotType.name}}</div>
+                    <div flex="35">调拨类型:&nbsp;{{data.allotType.name}}</div>
                     <div flex="30">审核状态: {{CONFIRM[data.confirm].name}}</div>
                 </div>
                 <md-divider style="margin: 7px 7px 7px 7px;    border-style: groove;"></md-divider>
@@ -98,7 +99,7 @@
                     <div flex="10">
                         <md-button class="md-raised" aria-label="More" style="margin-left: -20px;"
                                    ng-click="editItem(data)">
-                            <span>调拨详情</span>
+                            <span class="query-btnStyle">调拨详情</span>
                         </md-button>
                     </div>
                 </div>
@@ -173,7 +174,7 @@
 
                 <div flex="20" flex-sm="100">
                     <md-input-container flex="15">
-                        <label>类型</label>
+                        <label>调拨类型</label>
                         <md-select ng-model="allotMaster.allotTypeNo" ng-disabled="!canAllotTypeEditAble()"
                                    ng-change="changeAllotType()">
                             <md-option ng-repeat="(key, value) in ALLOTTYPE" ng-value="key">{{value.name}}</md-option>
@@ -223,6 +224,7 @@
                         <span>确认</span>
                     </md-button>
                 </div>
+
             </div>
             <div flex="100" layout="row" class="prod-item" ng-repeat="data in itemList"
                  style="background-color: #F3F3F3;font-size:small;">
@@ -298,7 +300,7 @@
     }
 
     .query-count {
-        font-size: large;
+        font-size: small;
         font-weight: bold;
         padding-left: 10px;
     }
@@ -306,6 +308,14 @@
     .prod-sm-img {
         max-width: 100%;
         max-height: 100%;
+    }
+
+    .query-toolbar {
+        margin-left: 20px
+    }
+
+    .query-btnStyle {
+        font-size: small;
     }
 </style>
 

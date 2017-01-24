@@ -49,6 +49,8 @@ angular.module('IOne-Production').service('AlloMasterService', function ($http, 
         if (psoOrderMstNo != null && psoOrderMstNo != '') {
             url = url + '&psoOrderMstNo=' + psoOrderMstNo;
         }
+
+
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
@@ -77,7 +79,7 @@ angular.module('IOne-Production').service('AlloMasterService', function ($http, 
         if (allotTypeNo != null && allotTypeNo != '' && allotTypeNo != 0) {
             url = url + '&allotTypeNo=' + allotTypeNo;
         }
-
+        url = url + '&sort=-no';;
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
