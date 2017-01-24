@@ -39,28 +39,6 @@ angular.module('IOne-Production').service('ChannelService', function ($http, Con
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
-    this.getNotLowerChannel = function (sizePerPage, page, confirm, status, searchKeyword, resUuid, $scope.addItem.channelUuid) {
-            confirm = confirm == 0 ? '' : confirm;
-            status = status == 0 ? '' : status;
-
-            var url = '/channels?size=' + sizePerPage
-                + '&page=' + page
-                + '&confirm=' + confirm
-                + '&status=' + status;
-            if (searchKeyword !== undefined && searchKeyword !== null) {
-                url = url + '&keyWord=' + searchKeyword;
-            }
-
-            if (resUuid !== undefined && resUuid !== null) {
-                url = url + '&resUuid=' + resUuid;
-            }
-
-            if (resUuid !== undefined && resUuid !== null) {
-                url = url + '&resUuid=' + resUuid;
-            }
-            return $http.get(Constant.BACKEND_BASE + url + '&action=lower');
-        };
-
     this.get = function (uuid) {
         return $http.get(Constant.BACKEND_BASE + '/channels/' + uuid);
     };
@@ -90,7 +68,9 @@ angular.module('IOne-Production').service('ChannelService', function ($http, Con
     this.modify = function (channelUuid, channelUpdateInput) {
             return $http.patch(Constant.BACKEND_BASE + '/channels/' + channelUuid, channelUpdateInput);
         };
-
+    this.getNotLowerChannel = function (uuid) {
+            return $http.get(Constant.BACKEND_BASE + '/channels/' + uuid + '?action=lower');
+    };
 });
 
 angular.module('IOne-Production').service('ChannelPriceService', function ($http, Constant) {

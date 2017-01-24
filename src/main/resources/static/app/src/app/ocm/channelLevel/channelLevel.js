@@ -500,36 +500,24 @@ angular.module('IOne-Production').controller('ParentChannelSelectController', fu
     $scope.itemList = itemList;
     console.log($scope.itemList);
 
-//    $scope.refreshChannel = function () {
-//        ChannelService.getAllGlobalQuery($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, $scope.searchKeyword).success(function (data) {
-//            $scope.allChannel = data.content;
-//            $scope.pageOption.totalElements = data.totalElements;
-//            $scope.pageOption.totalPage = data.totalPages;
-//            ChannelLevelService.getLowerChannel($scope.addItem.channelUuid).success(function (data_2){
-//                $scope.allLowerChannel = data_2;
-//                var parentChannel=$scope.allChannel;
-//                angular.forEach($scope.allLowerChannel,function(allLowerChannelItem){
-//                    for(var i=0;i<parentChannel.length;i++){
-//                        if($scope.allChannel[i].uuid == allLowerChannelItem.uuid){
-//                            parentChannel.splice(i,1);
-//                        }
-//                    }
-//                });
-//                $scope.someParentChannel=parentChannel;
-//                $scope.pageOption.totalElements = data.totalElements;
-//                $scope.pageOption.totalPage = data.totalPages;
-//            });
-//
-//        });
-//    };
-    $scope.refreshChannel = function () {
-        ChannelService.getNotLowerChannel($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, $scope.searchKeyword ,, $scope.addItem.channelUuid).success(function (data) {
-            $scope.allChannel = data.content;
+
+    $scope.notLowerChannel = function () {
+        ChannelService.getNotLowerChannel($scope.addItem.channelUuid).success(function (data) {
+            $scope.allChannel = data;
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
         });
     };
-    $scope.refreshChannel();
+    $scope.notLowerChannel();
+
+//    $scope.refreshChannel = function () {
+//            ChannelService.getAllGlobalQuery($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, $scope.searchKeyword).success(function (data) {
+//                $scope.allChannel = data.content;
+//                $scope.pageOption.totalElements = data.totalElements;
+//                $scope.pageOption.totalPage = data.totalPages;
+//            });
+//        };
+//    $scope.refreshChannel();
 
 
     $scope.selectChannel = function (channel) {
