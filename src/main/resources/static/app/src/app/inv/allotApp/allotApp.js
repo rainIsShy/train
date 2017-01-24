@@ -134,7 +134,12 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             $scope.itemList = data.content;
             angular.forEach($scope.itemList, function (detail) {
                 detail.deliverDate = new Date(detail.deliverDate);
+                Production.getDeliveryDate(detail.item.uuid, $scope.allotQuery.channelUuid).success(function (data) {
+                    detail.minDeliverDate = new Date(data.deliverDate);
+                });
             });
+
+
             $scope.pageOption.totalPage = data.totalPages;
             $scope.pageOption.totalElements = data.totalElements;
         });
@@ -426,6 +431,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             validation = false;
         }
 
+
         angular.forEach($scope.itemList, function (detail) {
             if (detail.allotQty == 0) {
                 $scope.showError('请填写商品数量!');
@@ -435,8 +441,10 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             if (detail.deliverDate == null) {
                 $scope.showError('请填写配送日期!');
                 validation = false;
+
+            } else {
                 if (detail.deliverDate < detail.minDeliverDate) {
-                    $scope.showError('配送日期不可小於 ' + moment(new Date()).format('YYYY-MM-DD') + ' !');
+                    $scope.showError('配送日期不可小於 ' + moment(detail.minDeliverDate).format('YYYY-MM-DD') + ' !');
                     validation = false;
                 }
             }

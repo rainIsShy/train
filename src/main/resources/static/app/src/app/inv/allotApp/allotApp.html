@@ -202,7 +202,7 @@
                                ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS"
                                ng-click="editClickAction(data)" ng-disabled="allotMaster.confirm =='2'">
                         <ng-md-icon icon="edit"></ng-md-icon>
-                        <span>编辑</span>
+                        <span class="query-btnStyle">编辑</span>
                     </md-button>
                 </div>
 
@@ -212,7 +212,7 @@
                                ng-disabled="status =='add'"
                                ng-click="cancelEditClickAction(data)">
                         <ng-md-icon icon="edit"></ng-md-icon>
-                        <span>取消编辑</span>
+                        <span class="query-btnStyle">取消编辑</span>
                     </md-button>
                 </div>
 
@@ -221,7 +221,7 @@
                                ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
                                ng-click="saveClickAction(data)">
                         <ng-md-icon icon="save"></ng-md-icon>
-                        <span>确认</span>
+                        <span class="query-btnStyle">确认</span>
                     </md-button>
                 </div>
 
@@ -229,7 +229,7 @@
                     <md-button class="md-button" aria-label="More" style="padding:5px;margin-left: -6px;"
                                ng-click="clickBackAction()">
                         <i class="fa fa-times"></i>
-                        <span>返回清单</span>
+                        <span class="query-btnStyle">返回清单</span>
                     </md-button>
                 </div>
 
