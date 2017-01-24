@@ -186,10 +186,12 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
 
 
     $scope.listFilterOption = {
-        status: Constant.STATUS[0].value,
-        confirm: Constant.CONFIRM[0].value,
-        transferFlag: Constant.CONFIRM[0].value,
-        release: Constant.RELEASE[0].value,
+        select: {
+            status: Constant.STATUS[0].value,
+            confirm: Constant.CONFIRM[0].value,
+            transferFlag: Constant.CONFIRM[0].value,
+            release: Constant.RELEASE[0].value
+        },
         no: '',
         psoOrderMstNo: '',
         applyDateStart: '',
@@ -203,12 +205,26 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
 
     $scope.sortByField = '-no';
 
-    $scope.$watch('listFilterOption', function () {
+    $scope.$watch('listFilterOption.select', function () {
         $scope.pageOption.currentPage = 0;
         $scope.pageOption.totalPage = 0;
         $scope.pageOption.totalElements = 0;
         $scope.refreshList();
     }, true);
+
+    $scope.queryEnter = function (e) {
+        if (e.keyCode === 13) {
+            $scope.pageOption.currentPage = 0;
+            $scope.pageOption.totalPage = 0;
+            $scope.pageOption.totalElements = 0;
+            $scope.refreshList();
+        }
+    };
+
+    $scope.queryAction = function (event) {
+        $scope.stopEventPropagation(event);
+        $scope.refreshList();
+    };
 
     $scope.clickCustom = function (extends2) {
         console.log($scope.selectedSubTab);
@@ -245,7 +261,7 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
             applyDateEnd = $scope.queryDateFormat($scope.listFilterOption.applyDateEnd);
         }
 
-        AlloMasterService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption.confirm, $scope.listFilterOption.status, $scope.listFilterOption.transferFlag,
+        AlloMasterService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption.select.confirm, $scope.listFilterOption.select.status, $scope.listFilterOption.select.transferFlag,
             $scope.listFilterOption.no, applyDateStart, applyDateEnd, $scope.listFilterOption.psoOrderMstNo, RES_UUID_MAP.INV.ALLO.RES_UUID).success(function (data) {
             $scope.itemList = data.content;
             $scope.pageOption.totalPage = data.totalPages;
