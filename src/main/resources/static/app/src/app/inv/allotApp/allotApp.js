@@ -620,8 +620,12 @@ angular.module('IOne-Production').controller('AllotAreaSelectController', functi
         Area.getGradeAndParentUuid(grade, parentUuid).success(function (data) {
             if (grade == '4') {
                 $scope.areaGrade4List = data.content
-            } else {
-                $scope.areaGrade5List = data.content
+            } else if (grade == '5') {
+                if (data.content && data.totalElements == 1) {
+                    $scope.selectArea(data.content[0]);
+                } else {
+                    $scope.areaGrade5List = data.content;
+                }
             }
         });
     };
@@ -635,7 +639,7 @@ angular.module('IOne-Production').controller('AllotAreaSelectController', functi
         } else if (grade == '5') {
             $scope.selectedIndex = 2;
         }
-    };;;;;;;;;
+    };
 
     $scope.selectArea = function (item) {
         $scope.selectedItem = item;
