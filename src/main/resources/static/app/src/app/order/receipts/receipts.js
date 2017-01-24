@@ -243,7 +243,6 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
                     item.confirm = Constant.CONFIRM[1].value;
                     $scope.showInfo('取消审核成功！');
                 }).error(function (response) {
-                    //$scope.showError($scope.getError(response.message));
                     $scope.showError(response.message);
                 });
             });
@@ -292,7 +291,6 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
                     $scope.showInfo('审核成功！');
                     $scope.getReceiptOrderMasterCount();
                 }).error(function (response) {
-                    //$scope.showError($scope.getError(response.message));
                     $scope.showError(response.message);
                 });
             });
@@ -308,11 +306,8 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
                     receiptOrderConversion: 'true'
                 };
                 Receipts.modify(detail.orderMaster.uuid, UpdateInput).success(function () {
-                    //console.info("重新抛转成功返回：");
-                    //console.info(data);
                     $scope.showInfo('重新抛转成功！');
                 }).error(function (response) {
-                    //$scope.showError($scope.getError(response.message));
                     $scope.showError(response.message);
                 });
             });
@@ -325,11 +320,8 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
                 };
                 Receipts.modify(detail.orderMaster.uuid, UpdateInput).success(function () {
                     detail.transferFlag = '2';
-                    //console.info("抛转成功返回：");
-                    //console.info(data);
                     $scope.showInfo('抛转成功！');
                 }).error(function (response) {
-                    //$scope.showError($scope.getError(response.message));
                     $scope.showError(response.message);
                 });
             });
@@ -365,24 +357,6 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
             });
         });
     };
-
-    // $scope.statusClickAction = function (event, item) {
-    //     $scope.stopEventPropagation(event);
-    //     console.info('status...');
-    //     //TODO ...
-    // };
-
-    // $scope.releaseClickAction = function (event, item) {
-    //     $scope.stopEventPropagation(event);
-    //     console.info('release...');
-    //     //TODO ...
-    // };
-
-    // $scope.deleteClickAction = function (event, item) {
-    //     $scope.stopEventPropagation(event);
-    //     console.info('delete...');
-    //     //TODO ...
-    // };
 
     //批量审核
     $scope.confirmAllClickAction = function (event) {
@@ -504,7 +478,7 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
         angular.forEach($scope.itemList, function (item) {
             if (item.selected) {
                 angular.forEach(item.detailList, function (detail) {
-                    if (detail.status == '2' && detail.transferFlag == '2') {
+                    if ($scope.isReTransferable(detail)) {
                         updateInput.uuid.push(detail.uuid);
                     } else {
                         ignoredNos += item.no + '-' + detail.no + '<br>';
@@ -518,7 +492,7 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
             return;
         }
         if (ignoredNos) {
-            $scope.showWarn('如下未审核或未抛转的收退银单将不执行重新抛转：' + '<br>' + ignoredNos);
+            $scope.showWarn('如下未审核,未抛转或是销退退款的收退银单将不执行重新抛转：' + '<br>' + ignoredNos);
         }
         Receipts.modify('_batch', updateInput).success(function () {
             $scope.refreshList();
@@ -587,6 +561,13 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
         Receipts.getReceiptOrderMasterCount(Constant.CONFIRM[1].value, RES_UUID_MAP.PSO.ORDER_RECEIPT.RES_UUID).success(function (data) {
             $scope.menuList[1].subList[9].suffix = data;
         });
+    }
+
+    $scope.isReTransferable = function (receiptOrderDetail) {
+        return receiptOrderDetail.transferFlag == Constant.TRANSFER_FLAG[2].value &&
+            receiptOrderDetail.paidType != Constant.PAID_TYPE[4].value &&
+            $scope.menuDisplayOption['reTransfer1'].display &&
+            ( $scope.menuAuthDataMap[$scope.menuDisplayOption['reTransfer1'].uuid] || $scope.isAdmin() || !$scope.menuDisplayOption['reTransfer1'].uuid);
     }
 });
 
