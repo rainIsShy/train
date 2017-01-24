@@ -121,7 +121,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                         orderDetail.allotPrice = data.content[0].standardPrice;
                         Production.getDeliveryDate(data.content[0].item.uuid, $scope.allotQuery.channelUuid).success(function (data) {
                             orderDetail.deliverDate = new Date(data.deliverDate);
-                            orderDetail.minDeliverDate = new Date(data.deliverDate);
+                            orderDetail.minDeliverDate = new Date(data.minDeliverDate);
                         });
                     }
                 });
@@ -135,7 +135,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             angular.forEach($scope.itemList, function (detail) {
                 detail.deliverDate = new Date(detail.deliverDate);
                 Production.getDeliveryDate(detail.item.uuid, $scope.allotQuery.channelUuid).success(function (data) {
-                    detail.minDeliverDate = new Date(data.deliverDate);
+                    detail.minDeliverDate = new Date(data.minDeliverDate);
                 });
             });
 
@@ -377,7 +377,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                     //取得最小配送天数
                     Production.getDeliveryDate(data.content[0].item.uuid, $scope.allotQuery.channelUuid).success(function (data) {
                         orderDetail.deliverDate = new Date(data.deliverDate);
-                        orderDetail.minDeliverDate = new Date(data.deliverDate);
+                        orderDetail.minDeliverDate = new Date(data.minDeliverDate);
                     });
                 }
                 $scope.itemList.push(orderDetail);
@@ -431,8 +431,8 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             validation = false;
         }
 
-
         angular.forEach($scope.itemList, function (detail) {
+            console.log(detail);
             if (detail.allotQty == 0) {
                 $scope.showError('请填写商品数量!');
                 validation = false;
@@ -443,8 +443,10 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                 validation = false;
 
             } else {
+                var formatMinDeliverDate = moment(detail.minDeliverDate).format('YYYY-MM-DD');
+
                 if (detail.deliverDate < detail.minDeliverDate) {
-                    $scope.showError('配送日期不可小於 ' + moment(detail.minDeliverDate).format('YYYY-MM-DD') + ' !');
+                    $scope.showError('配送日期不可小於' + formatMinDeliverDate + '!');
                     validation = false;
                 }
             }
@@ -564,6 +566,10 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             return Constant.BACKEND_BASE + '/app/assets/IMAGE/' + path;
         }
     };
+
+    $scope.getBackImage = function () {
+        return Constant.BACKEND_BASE + '/app/img/back.png';
+    }
 
 
 });
