@@ -79,7 +79,8 @@ angular.module('IOne-Production').service('AlloMasterService', function ($http, 
         if (allotTypeNo != null && allotTypeNo != '' && allotTypeNo != 0) {
             url = url + '&allotTypeNo=' + allotTypeNo;
         }
-        url = url + '&sort=-no';;
+        url = url + '&sort=-no';
+        console.log(url);
         return $http.get(Constant.BACKEND_BASE + url);
     };
 

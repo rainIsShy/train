@@ -99,6 +99,11 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
 
     };
 
+    $scope.changeSelectField = function (condition) {
+        $scope.queryPageOption.currentPage = 0;
+        $scope.refreshList(condition)
+    };;;;;;;;;
+
     //要删除的商品
     $scope.deleteDetailUuids = [];
 
@@ -427,9 +432,8 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
             if (detail.deliverDate == null) {
                 $scope.showError('请填写配送日期!');
                 validation = false;
-            } else {
                 if (detail.deliverDate < detail.minDeliverDate) {
-                    $scope.showError('配送日期不可小於 ' + detail.minDeliverDate + ' !');
+                    $scope.showError('配送日期不可小於 ' + moment(new Date()).format('YYYY-MM-DD') + ' !');
                     validation = false;
                 }
             }
@@ -608,7 +612,7 @@ angular.module('IOne-Production').controller('AllotAreaSelectController', functi
         });
     };
 
-
+    $scope.selectedIndex = 0;
     $scope.refreshSubArea = function (grade, parentUuid) {
         Area.getGradeAndParentUuid(grade, parentUuid).success(function (data) {
             if (grade == '4') {
@@ -620,6 +624,15 @@ angular.module('IOne-Production').controller('AllotAreaSelectController', functi
     };
 
     $scope.refreshArea();
+
+    $scope.listTabSelected = function (grade, parentUuid) {
+        $scope.refreshSubArea(grade, parentUuid);
+        if (grade == '4') {
+            $scope.selectedIndex = 1;
+        } else if (grade == '5') {
+            $scope.selectedIndex = 2;
+        }
+    };;;;;;;;;
 
     $scope.selectArea = function (item) {
         $scope.selectedItem = item;

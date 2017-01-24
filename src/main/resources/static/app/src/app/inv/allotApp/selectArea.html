@@ -1,37 +1,95 @@
-<md-dialog style="padding:10px;min-width: 500px;max-height: 500px; overflow-y:scroll">
-    <md-content layout="column">
+<md-dialog style="min-width: 700px;max-height: 500px; overflow-y:scroll">
+    <!--<md-content layout="column">-->
         <div>
-            <form name="searchChannel" novalidate="">
-                <div layout="row">
-                    <div flex="100" flex-sm="100">
-                        <md-input-container>
-                            <label>地区1</label>
-                            <md-select ng-model="area3" ng-change="refreshSubArea('4', area3.uuid)">
-                                <md-option ng-repeat="area in areaGrade3List" ng-value="area">{{area.name}}</md-option>
-                            </md-select>
-                        </md-input-container>
+            <md-tabs md-selected="selectedIndex" md-dynamic-height md-center-tabs="false">
+                <md-tab label="省份">
+                    <md-tab-body>
+                        <md-content>
+                            <div layout="row" layout-wrap style="margin-top: 20px;">
+                                <div flex="20" ng-model="area3" ng-repeat="area in areaGrade3List"
+                                     ng-click="listTabSelected('4', area.uuid)" class="prod-item"
+                                     style="">
+                                    <md-button class="md-button" aria-label="More" ng-click="">
+                                        {{area.name}} {{$parent.selectedTabIndex}}
+                                    </md-button>
+                                </div>
+                            </div>
+                        </md-content>
+                    </md-tab-body>
+                </md-tab>
 
-                        <md-input-container>
-                            <label>地区2</label>
-                            <md-select ng-model="area4" ng-change="refreshSubArea('5', area4.uuid)">
-                                <md-option ng-repeat="area in areaGrade4List" ng-value="area">{{area.name}}</md-option>
-                            </md-select>
+                <md-tab>
+                    <md-tab-label>城市</md-tab-label>
+                    <md-tab-body>
+                        <md-content>
+                            <div layout="row" layout-wrap style="margin-top: 20px;">
+                                <div flex="20" ng-model="area4" ng-repeat="area in areaGrade4List"
+                                     ng-click="listTabSelected('5', area.uuid)" class="prod-item"
+                                     style="">
+                                    <md-button class="md-button" aria-label="More" ng-click="">
+                                        {{area.name}}
+                                    </md-button>
+                                </div>
+                            </div>
+                        </md-content>
+                    </md-tab-body>
+                </md-tab>
 
-                        </md-input-container>
+                <md-tab>
+                    <md-tab-label>县区</md-tab-label>
+                    <md-tab-body>
+                        <md-content>
+                            <div layout="row" layout-wrap style="margin-top: 20px;"> {{area5}}
+                                <div flex="20" ng-model="area5" ng-repeat="area in areaGrade5List" class="prod-item">
+                                    <md-button class="md-button" aria-label="More" ng-click="selectArea(area)">
+                                        {{area.name}}
+                                    </md-button>
+                                </div>
+                            </div>
+                        </md-content>
+                    </md-tab-body>
+                </md-tab>
 
-                        <md-input-container>
-                            <label>地区3</label>
-                            <md-select ng-model="area5">
-                                <md-option ng-repeat="area in areaGrade5List" ng-value="area">{{area.name}}</md-option>
-                            </md-select>
+                <!--</md-tab>-->
 
-                        </md-input-container>
-                    </div>
+                <!--<md-tab label="县区">-->
 
-                </div>
 
-            </form>
+                <!--</md-tab>-->
+            </md-tabs>
+
+            <!--<form name="searchChannel" novalidate="">-->
+            <!--<div layout="row">-->
+            <!--<div flex="100" flex-sm="100">-->
+            <!--<md-input-container>-->
+            <!--<label>地区1</label>-->
+            <!--<md-select ng-model="area3" ng-change="refreshSubArea('4', area3.uuid)">-->
+            <!--<md-option ng-repeat="area in areaGrade3List" ng-value="area">{{area.name}}</md-option>-->
+            <!--</md-select>-->
+            <!--</md-input-container>-->
+
+            <!--<md-input-container>-->
+            <!--<label>地区2</label>-->
+            <!--<md-select ng-model="area4" ng-change="refreshSubArea('5', area4.uuid)">-->
+            <!--<md-option ng-repeat="area in areaGrade4List" ng-value="area">{{area.name}}</md-option>-->
+            <!--</md-select>-->
+
+            <!--</md-input-container>-->
+
+            <!--<md-input-container>-->
+            <!--<label>地区3</label>-->
+            <!--<md-select ng-model="area5">-->
+            <!--<md-option ng-repeat="area in areaGrade5List" ng-value="area">{{area.name}}</md-option>-->
+            <!--</md-select>-->
+
+            <!--</md-input-container>-->
+            <!--</div>-->
+
+            <!--</div>-->
+
+            <!--</form>-->
         </div>
+    <md-divider style="margin: 7px 7px 7px 7px;"></md-divider>
         <div layout="row">
             <md-button ng-click="hideDlg(area5)">
                 <i class="fa fa-check"></i>&nbsp;确定
@@ -39,5 +97,13 @@
             <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
         </div>
 
-    </md-content>
+    <!--</md-content>-->
 </md-dialog>
+
+
+<style>
+    md-tab-item {
+        max-width: 150px !important;
+    }
+
+</style>

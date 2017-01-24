@@ -44,7 +44,7 @@
                     <md-input-container>
                         <label>审核状态</label>
                         <md-select ng-model="listFilterOption.confirm"
-                                   ng-change="refreshList(listFilterOption.currentQueryType);">
+                                   ng-change="changeSelectField(listFilterOption.currentQueryType);">
                             <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
                         </md-select>
                     </md-input-container>
@@ -53,7 +53,7 @@
                     <md-input-container flex="15">
                         <label>调拨类型</label>
                         <md-select ng-model="listFilterOption.allotType"
-                                   ng-change="refreshList(listFilterOption.currentQueryType);">
+                                   ng-change="changeSelectField(listFilterOption.currentQueryType);">
                             <md-option ng-repeat="(key, value) in QUERY_ALLOTTYPE" ng-value="key">{{value.name}}
                             </md-option>
                         </md-select>
