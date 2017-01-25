@@ -1,1 +1,85 @@
-miscellaneousType type
+<div layout-fill class="right-container auth">
+    <md-content>
+        <md-tabs md-selected="$parent.selectedTabIndex" md-border-bottom md-dynamic-height md-center-tabs="false">
+            <md-tab md-on-select="clickListTab()">
+                <md-tab-label>{{listTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <div flex layout="column" class="menu">
+                            <div layout="row" layout-md="column" layout-sm="column">
+                                <span layout-padding class="md-title" layout-align="start center">列表</span>
+                                <span flex></span>
+                                <md-button class="md-raised" layout-align="end center" ng-click="preAddMenuAction()"
+                                           aria-label="取消发布"> &nbsp;新建
+                                </md-button>
+                            </div>
+                        </div>
+                        <md-divider style="margin-bottom:5px;"></md-divider>
+                        <md-data-table-container>
+                            <table md-data-table md-row-select="selected" md-progress="deferred">
+                                <thead>
+                                <tr>
+                                    <th><span class="md-subhead">杂项类型编号</span></th>
+                                    <th><span class="md-subhead">杂项类型名称</span></th>
+                                    <th><span class="md-subhead">操作</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="obj in list">
+                                    <td><span class="md-body-1">{{obj.no}}</span></td>
+                                    <td><span class="md-body-1">{{obj.name}}</span></td>
+                                    <td>
+                                        <md-button class="md-raised" ng-click="enterEditMode(obj)">编辑</md-button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </md-data-table-container>
+
+                        <div pagination option="pageOption" callback="fetchList()"></div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+            <md-tab md-on-select="clickFormTab()">
+                <md-tab-label>{{formTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content layout-margin>
+                        <form name="mainForm" novalidate>
+                            <div class="panel">
+                                <div form-menu></div>
+
+                                <div layout-margin layout-padding class="md-whiteframe-z1"
+                                     ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                                    <p style="color: red;">请从列表中选择一笔资料。</p>
+                                </div>
+
+                                <div class="panel" ng-if="selectedItem">
+                                    <div class="header">
+                                        <span>基本信息</span>
+                                    </div>
+                                    <div layout="row" layout-wrap>
+                                        <div flex="25" flex-sm="100">
+                                            <md-input-container>
+                                                <label>编号:</label>
+                                                <input type="text" required ng-model="selectedItem.no"
+                                                       ng-disabled="!isEditing">
+                                            </md-input-container>
+                                        </div>
+                                        <div flex="25" flex-sm="100">
+                                            <md-input-container>
+                                                <label>名称:</label>
+                                                <input type="text" required ng-model="selectedItem.name"
+                                                       ng-disabled="!isEditing">
+                                            </md-input-container>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>
