@@ -4,7 +4,7 @@
             <div flex="70" hide-sm hide-md class="left-title" ng-show="selectedItem" style="position: relative;">
                 <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
                            ng-if="formMenuDisplayOption['105-edit'].display && (menuAuthDataMap[formMenuDisplayOption['105-edit'].uuid] || isAdmin() || !formMenuDisplayOption['105-edit'].uuid)"
-                           ng-click="editItemAction(selectedItem)">
+                           ng-click="editItemAction(selectedItem,'维护上层渠道')">
                     <ng-md-icon icon="edit"></ng-md-icon>
                 </md-button>
                 <md-menu>
@@ -99,7 +99,7 @@
                                     <md-divider style="margin-top: 5px"></md-divider>
                                 </div>
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
-                                     ng-click="preAddItemAction({}, 'ChannelLevelDetail', '新增渠道层级')"
+                                     ng-click="preAddItemAction({}, 'ChannelLevelDetail', '新增下级渠道')"
                                      ng-if="formMenuDisplayOption['107-detailAdd'].display && (menuAuthDataMap[formMenuDisplayOption['107-detailAdd'].uuid] || isAdmin() || !formMenuDisplayOption['107-detailAdd'].uuid)">
                                     <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
                                 </div>

@@ -178,8 +178,9 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
     /**
      * Set stauts to 'edit' to edit an object. The panel will be generated automatically.
      */
-    $scope.editItemAction = function (source) {
+    $scope.editItemAction = function (source, desc) {
         $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS);
+        $scope.desc = desc;
         $scope.status = 'edit';
         $scope.addItem = {
             channelUuid: source.uuid,
