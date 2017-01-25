@@ -1,0 +1,93 @@
+<md-dialog style="padding:10px;min-width: 850px;max-height: 800px;overflow-y:scroll">
+    <md-content layout="column">
+        <form name="addItemForm" ng-if="!showCustomTab" novalidate>
+            <div layout="row" flex="40">
+                <md-input-container flex="25">
+                    <label>商品编号{{searchItemNo}}</label>
+                    <input name="no" type="text" ng-model="searchItemNo">
+                </md-input-container>
+                <md-input-container flex="25">
+                    <label>商品名称</label>
+                    <input name="name" type="text" ng-model="searchItemName" md-maxlength="20">
+                </md-input-container>
+                <md-input-container flex="25">
+                    <label>商品規格</label>
+                    <input name="name" type="text" ng-model="searchStandard" md-maxlength="20">
+                </md-input-container>
+                <div flex="20">
+                    <md-button ng-click="refreshProduction(searchItemNo, searchItemName, searchStandard)"
+                               ng-disabled="searchData.$invalid" style="padding:5px">
+                        <i class="fa fa-search"></i>
+                    </md-button>
+                    <md-button class="md-icon-button" ng-click="cancelDlg()" style="padding:5px">
+                        <ng-md-icon icon="close"></ng-md-icon>
+                    </md-button>
+                </div>
+            </div>
+            <div layout="row" layout-wrap>
+                <div flex="30" flex-md="50" flex-sm="100" ng-repeat="production in allProductionsData"
+                     class="prod-item" style="padding: 5px;font-size: small">
+                    <div layout="row" class="content">
+                        <div flex="100" ng-class="centre">
+                            <img class="prod-sm-img" ng-click="selectItem(production.item)"
+                                 src="{{getImageFullPath(production.item.path)}}">
+                            <div class="centre">
+                                <div class="value">{{production.item.no}}</div>
+
+                                <div class="value">{{production.item.name}}</div>
+
+                                <div class="value">{{production.item.standard}}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div pagination option="pageOption" callback="refreshProduction(searchItemNo, searchItemName)"></div>
+        </form>
+
+        <form name="addCustomForm" ng-if="showCustomTab" novalidate>
+            <div layout="row">
+                <div flex="50" layout="column">
+                    <div flex="100" ng-class="centre">
+                        <img class="prod-sm-img" src="{{getImageFullPath(selectedItem.path)}}">
+                    </div>
+                </div>
+                <div flex="50" layout="column">
+                    <label>属性值:</label>
+                    <md-checkbox ng-model="value.checked" ng-repeat="value in informationList"
+                                 ng-change="checkBoxChangeHandler(value, value.checked)">
+                        {{value.name}}
+                    </md-checkbox>
+                </div>
+            </div>
+            <div layout="column">
+                <md-radio-group ng-model="selectedCustom.informationScope">
+                    <md-radio-button ng-repeat="item in itemRelationList" ng-value="item.informationScope"
+                                     aria-label="{{item.reference}} {{item.referenceName}} {{item.explain}}">
+                        {{item.reference}} {{item.referenceName}} {{item.explain}}
+                    </md-radio-button>
+                </md-radio-group>
+            </div>
+            <div layout="row">
+                <md-button ng-click="hideDlg()"
+                           ng-disabled="addCustomForm.$invalid || !selectedCustom.informationScope">
+                    <i class="fa fa-check"></i>&nbsp;确定
+                </md-button>
+                <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+            </div>
+        </form>
+    </md-content>
+</md-dialog>
+
+
+<style>
+    .prod-sm-img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+</style>
+
+
+
+

@@ -114,8 +114,6 @@ angular.module('IOne-Production').service('Catalogue', function($http, Constant)
        return $http.get(Constant.BACKEND_BASE + url);
     };
 
-//    this.get = function(templateDetailUuid, parentUuid) {
-//        return $http.get(Constant.BACKEND_BASE + '/catalogues?templateDetailUuid=' + templateDetailUuid + '&parentUuid=' + parentUuid);
 
     this.get = function(templateDetailUuid, parentUuid, resUuid) {
         if(resUuid == undefined) resUuid = '';

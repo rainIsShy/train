@@ -96,8 +96,8 @@ angular.module('IOne-Production').service('ChannelPriceService', function ($http
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
-    this.getByItemUuid = function (channelUuid, itemUuid) {
-        var url = '/channelPrices?channelUuid=' + channelUuid + "&itemUuid=" + itemUuid;
+    this.getByChannelUuidAndItemUuid = function (channelUuid, itemUuid) {
+        var url = '/channelPrices?channelUuid=' + channelUuid + "&itemUuid=" + itemUuid + "&action=getValidateChannel";
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
@@ -507,6 +507,14 @@ angular.module('IOne-Production').service('ChannelLevelService', function ($http
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
+
+    this.getByChannelUuid = function (channelUuid) {
+        return $http.get(Constant.BACKEND_BASE + '/channelLevels?channelUuid=' + channelUuid);
+    };
+
+    this.getByParentOcmBaseChanUuid = function (parentOcmBaseChanUuid) {
+        return $http.get(Constant.BACKEND_BASE + '/channelLevels?parentOcmBaseChanUuid=' + parentOcmBaseChanUuid);
+    };
 
     this.add = function (ChannelLevelInput) {
         return $http.post(Constant.BACKEND_BASE + '/channelLevels/', ChannelLevelInput);

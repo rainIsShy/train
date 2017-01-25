@@ -17,6 +17,10 @@ angular.module('IOne-Production').service('Area', function ($http, Constant) {
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
+    this.getGradeAndParentUuid = function (grade, parentUuid) {
+        return $http.get(Constant.BACKEND_BASE + '/areas?parentUuid=' + parentUuid + '&grade=' + grade);
+    };
+
     this.getForChannelRelation = function () {
         var url = '/areas?type=channelRelation';
         return $http.get(Constant.BACKEND_BASE + url);
