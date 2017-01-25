@@ -502,12 +502,12 @@ angular.module('IOne-Production').controller('ParentChannelSelectController', fu
 
 
     $scope.notLowerChannel = function () {
-        ChannelService.getNotLowerChannel($scope.addItem.channelUuid).success(function (data) {
-            $scope.allChannel = data;
-            $scope.pageOption.totalElements = data.totalElements;
-            $scope.pageOption.totalPage = data.totalPages;
-        });
-    };
+            ChannelService.getNotLowerChannel($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, $scope.searchKeyword ,'',$scope.addItem.channelUuid).success(function (data) {
+                $scope.allChannel = data.content;
+                $scope.pageOption.totalElements = data.totalElements;
+                $scope.pageOption.totalPage = data.totalPages;
+            });
+        };
     $scope.notLowerChannel();
 
 //    $scope.refreshChannel = function () {
