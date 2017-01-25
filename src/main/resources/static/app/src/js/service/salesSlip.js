@@ -131,6 +131,14 @@ angular.module('IOne-Production').service('OrderDetail', function ($http, Consta
         var url = '/orders/' + orderMasterUuids + '/count/';
         return $http.get(Constant.BACKEND_BASE + url);
     };
+
+    this.getAllBySalesSampleType = function (sizePerPage, page, masterUuid) {
+        var url = Constant.BACKEND_BASE + '/orders/' + masterUuid + '/details?size=' + sizePerPage
+            + '&page=' + page
+            + '&saleSample=Y';
+
+        return $http.get(url);
+    };
 });
 
 

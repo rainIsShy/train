@@ -568,6 +568,10 @@ RES_UUID_MAP = {
             RES_UUID: '62e761f5-1bca-4b40-a5d6-87064b4431b1',
             TITLE: '库存明细查询APP'
         },
+        ALLOT_APP: {
+            RES_UUID: '45188954-8e15-4deb-b60a-089da30e877f',
+            TITLE: '调拨单维护APP'
+        },
         MISCELLANEOUS_TYPE: {
             RES_UUID: 'f4f911e1-5210-493c-96b3-6e56a3ac2c47',
             TITLE: '杂项类型基础资料'
@@ -755,6 +759,12 @@ angular.module('IOne-Constant').constant('Constant', {
                     name: '库存明细查询APP',
                     link: '/inventoryDetailApp',
                     uuid: RES_UUID_MAP.INV.INVENTORY_DETAIL_APP.RES_UUID
+                },
+                {
+                    id: '/allotApp',
+                    name: '调拨单维护APP',
+                    link: '/allotApp',
+                    uuid: RES_UUID_MAP.INV.ALLOT_APP.RES_UUID
                 },
                 {
                     id: '/inv/miscellaneousType',

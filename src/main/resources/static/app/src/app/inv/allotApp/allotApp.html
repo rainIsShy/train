@@ -1,0 +1,330 @@
+<!--調撥單查詢-->
+<div class="main-panel" ng-show="allotMaster == null">
+    <div layout="row" layout-md="column" layout-sm="column" class="menu"
+         style="margin: 0px 0px; font-size: small">
+        <!--畫面 start -->
+        <div flex="100">
+            <div flex="100" layout="row" layout-wrap layout-margin>
+                <div>
+                    <md-button
+                            ng-class="listFilterOption.currentQueryMode == QUERY_MODE['ALL'].value ? 'query-active' : 'md-raised'"
+                            style="margin-top: 22px;height: 20px;"
+                            ng-click="refreshList(QUERY_MODE['ALL']);">
+                        <span class="query-btnStyle">{{QUERY_MODE["ALL"].name}} <span
+                                class="query-count">{{QUERY_MODE["ALL"].count}}</span></span>
+                    </md-button>
+                </div>
+                <div class="query-toolbar">
+                    <md-button
+                            ng-class="listFilterOption.currentQueryMode == QUERY_MODE['WEEK'].value ? 'query-active' : 'md-raised'"
+                            style="margin-top: 22px;height: 20px;"
+                            ng-click="refreshList(QUERY_MODE['WEEK']);">
+                        <span class="query-btnStyle">{{QUERY_MODE["WEEK"].name}}  <span class="query-count">{{QUERY_MODE["WEEK"].count}}</span></span>
+                    </md-button>
+                </div>
+                <div class="query-toolbar">
+                    <md-button
+                            ng-class="listFilterOption.currentQueryMode == QUERY_MODE['LAST_MONTH'].value ? 'query-active' : 'md-raised'"
+                            style="margin-top: 22px;height: 20px;"
+                            ng-click="refreshList(QUERY_MODE['LAST_MONTH']);">
+                        <span class="query-btnStyle">{{QUERY_MODE["LAST_MONTH"].name}}  <span class="query-count">{{QUERY_MODE["LAST_MONTH"].count}}</span></span>
+                    </md-button>
+                </div>
+
+                <div class="query-toolbar">
+                    <md-button
+                            ng-class="listFilterOption.currentQueryMode == QUERY_MODE['LAST_THREE_MONTH'].value ? 'query-active' : 'md-raised'"
+                            style="margin-top: 22px;height: 20px;"
+                            ng-click="refreshList(QUERY_MODE['LAST_THREE_MONTH']);">
+                        <span class="query-btnStyle">{{QUERY_MODE["LAST_THREE_MONTH"].name}} <span class="query-count">{{QUERY_MODE["LAST_THREE_MONTH"].count}}</span></span>
+                    </md-button>
+                </div>
+
+                <div flex="15" class="query-toolbar">
+                    <md-input-container>
+                        <label>审核状态</label>
+                        <md-select ng-model="listFilterOption.confirm"
+                                   ng-change="changeSelectField(listFilterOption.currentQueryType);">
+                            <md-option ng-repeat="(key, value) in CONFIRM" ng-value="key">{{value.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div flex="15" flex-sm="100" class="query-toolbar">
+                    <md-input-container flex="15">
+                        <label>调拨类型</label>
+                        <md-select ng-model="listFilterOption.allotType"
+                                   ng-change="changeSelectField(listFilterOption.currentQueryType);">
+                            <md-option ng-repeat="(key, value) in QUERY_ALLOTTYPE" ng-value="key">{{value.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div class="query-toolbar">
+                    <md-button class="md-raised" style="margin-top: 22px;height: 20px;" ng-click="initCreateData()">
+                        <span class="query-btnStyle">新增</span>
+                    </md-button>
+                </div>
+            </div>
+
+            <div flex="100" class="prod-item" ng-repeat="data in allotMasterList" style="background-color: #F3F3F3;"
+                 layout-wrap layout-margin>
+
+                <div flex="100" layout="row">
+                    <div flex="35">申请单号：&nbsp;{{data.no}}</div>
+                    <div flex="35">调拨类型:&nbsp;{{data.allotType.name}}</div>
+                    <div flex="30">审核状态: {{CONFIRM[data.confirm].name}}</div>
+                </div>
+                <md-divider style="margin: 7px 7px 7px 7px;    border-style: groove;"></md-divider>
+                <div flex="100" layout="row">
+                    <div flex="30" flex-sm="100" ng-repeat="detail in data.detailList"
+                         style="background-color: #F3F3F3;font-size:small;" layout-wrap layout-margin>
+                        <div layout="row" style="padding: 2px">
+                            <div flex="50">
+                                <img class="prod-sm-img" src="{{getImageFullPath(detail.item.path)}}">
+                            </div>
+                            <div flex="50" layout-wrap layout-margin>
+                                <div>商品型号: {{detail.item.name}}</div>
+                                <div>商品规格: {{detail.item.standard}}</div>
+                                <div>调拨数量: {{detail.allotQty}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div flex="100" layout="row">
+                    <div flex="30">拨出门店：&nbsp;{{data.outChannel.name}}</div>
+                    <div flex="30">拨入门店:&nbsp;{{data.inChannel.name}}</div>
+                    <div flex="30">配送区域: {{data.area.name}}</div>
+
+                    <div flex="10">
+                        <md-button class="md-raised" aria-label="More" style="margin-left: -20px;"
+                                   ng-click="editItem(data)">
+                            <span class="query-btnStyle">调拨详情</span>
+                        </md-button>
+                    </div>
+                </div>
+                <md-divider style="margin: 10px 0px 30px 0px;"></md-divider>
+
+            </div>
+            <div pagination option="queryPageOption" callback="refreshList(listFilterOption.currentQueryType)"></div>
+        </div>
+    </div>
+
+</div>
+
+<!--調撥單維護-->
+<div ng-show="allotMaster != null" class="main-panel">
+    <div layout="row" layout-md="column" layout-sm="column" class="menu"
+         style="margin: 0px 0px;  font-size: small">
+        <!--畫面 start -->
+        <div flex="100">
+            <div flex="100" layout="row" layout-wrap layout-margin>
+                <div flex="20" flex-sm="100">
+                    <md-input-container flex>
+                        <label>调拨单号</label>
+                        <input name="no" type="text" ng-model="allotMaster.no" ng-disabled="true">
+                    </md-input-container>
+                </div>
+                <div flex="20" flex-sm="100">
+                    <md-input-container flex>
+                        <label>申请日期</label>
+                        <input name="no" type="text" ng-model="allotMaster.applyDate" ng-disabled="true">
+                    </md-input-container>
+                </div>
+                <div flex="20" flex-sm="100">
+                    <md-input-container flex>
+                        <label class="label">拨出门店</label>
+                        <input type="text" ng-model="allotMaster.outChannel.name" ng-disabled="true">
+                        <md-button class="md-icon-button close-btn float-right"
+                                   style="margin-top: 10px;" aria-label="More"
+                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
+                                   ng-click="openChannelDlg('out');">
+                            <ng-md-icon icon="search"></ng-md-icon>
+                        </md-button>
+                    </md-input-container>
+                </div>
+
+                <div flex="20" flex-sm="100">
+                    <md-input-container flex>
+                        <label class="label">拨入门店</label>
+                        <input type="text" ng-model="allotMaster.inChannel.name" ng-disabled="true"
+                               ng-click="openChannelDlg('in');">
+                        <md-button class="md-icon-button close-btn float-right"
+                                   style="margin-top: 10px;" aria-label="More"
+                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
+                                   ng-click="openChannelDlg('in');">
+                            <ng-md-icon icon="search"></ng-md-icon>
+                        </md-button>
+                    </md-input-container>
+                </div>
+
+                <div flex="15" flex-sm="100">
+                    <md-input-container flex>
+                        <label>配送区域</label>
+                        <input type="text" ng-model="allotMaster.area.name"
+                               ng-disabled="true">
+                        <md-button class="md-icon-button close-btn float-right"
+                                   style="margin-top: 10px;" aria-label="More"
+                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
+                                   ng-click="openAreaDlg();">
+                            <ng-md-icon icon="search"></ng-md-icon>
+                        </md-button>
+                    </md-input-container>
+                </div>
+
+                <div flex="20" flex-sm="100">
+                    <md-input-container flex="15">
+                        <label>调拨类型</label>
+                        <md-select ng-model="allotMaster.allotTypeNo" ng-disabled="!canAllotTypeEditAble()"
+                                   ng-change="changeAllotType()">
+                            <md-option ng-repeat="(key, value) in ALLOTTYPE" ng-value="key">{{value.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div flex="20" flex-sm="100">
+                    <md-input-container flex>
+                        <label>配送日期</label>
+                        <input type="date" ng-model="allotMaster.deliverDate" ng-change="changeDeliverDate();"
+                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"/>
+                    </md-input-container>
+                </div>
+
+                <div flex="30" flex-sm="100">
+                    <md-input-container flex>
+                        <label>备注</label>
+                        <input name="no" type="text" ng-model="allotMaster.remark"
+                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                    </md-input-container>
+                </div>
+
+                <div flex-sm="100">
+                    <md-button class="md-button" aria-label="More" style="padding:5px; margin-left: -6px;"
+                               ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS"
+                               ng-click="editClickAction(data)" ng-disabled="allotMaster.confirm =='2'">
+                        <ng-md-icon icon="edit"></ng-md-icon>
+                        <span class="query-btnStyle">编辑</span>
+                    </md-button>
+                </div>
+
+                <div flex-sm="100">
+                    <md-button class="md-button" aria-label="More" style="padding:5px;    margin-left: -6px;"
+                               ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS"
+                               ng-disabled="status =='add'"
+                               ng-click="cancelEditClickAction(data)">
+                        <ng-md-icon icon="edit"></ng-md-icon>
+                        <span class="query-btnStyle">取消编辑</span>
+                    </md-button>
+                </div>
+
+                <div flex-sm="100">
+                    <md-button class="md-button" aria-label="More" style="padding:5px;    margin-left: -6px;"
+                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
+                               ng-click="saveClickAction(data)">
+                        <ng-md-icon icon="save"></ng-md-icon>
+                        <span class="query-btnStyle">确认</span>
+                    </md-button>
+                </div>
+
+                <div flex-sm="100" ng-show="fromAppWork == appWork.QUERY">
+                    <md-button class="md-button" aria-label="More" style="padding:5px;margin-left: -6px;"
+                               ng-click="clickBackAction()">
+                        <!--<i class="fa fa-history "></i>-->
+                        <ng-md-icon icon="replay"></ng-md-icon>
+                        <span class="query-btnStyle">返回清单</span>
+                    </md-button>
+                </div>
+
+            </div>
+            <div flex="100" layout="row" class="prod-item" ng-repeat="data in itemList"
+                 style="background-color: #F3F3F3;font-size:small;">
+                <div flex="20" layout-wrap layout-margin>
+                    <div style="padding: 2px">
+                        <img class="prod-sm-img" src="{{getImageFullPath(data.item.path)}}">
+                    </div>
+                </div>
+                <div flex="20" layout="column" flex-sm="100" layout-wrap layout-margin>
+                    <div>型号: {{data.item.name}}</div>
+                    <div>规格: {{data.item.standard}}</div>
+                    <div>单位: {{data.item.unit}}</div>
+                    <div>颜色: {{data.item.color}}</div>
+                </div>
+                <div flex="5" layout="column" flex-sm="100" layout-wrap layout-margin>
+                    <md-input-container flex="100">
+                        <label>数量</label>
+                        <input type="number" ng-model="data.allotQty"
+                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS" style="margin-top:inherit">
+                    </md-input-container>
+                </div>
+                <div flex="15" layout="column" flex-sm="100" layout-wrap layout-margin>
+                    <div>
+                        <md-input-container flex="80">
+                            <label>配送日期</label>
+                            <input type="date" ng-model="data.deliverDate"
+                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                        </md-input-container>
+                    </div>
+                </div>
+                <div flex="20" layout="column" flex-sm="100" layout-wrap layout-margin>
+                    <div>
+                        <md-input-container flex="90">
+                            <label>定制备注</label>
+                            <textarea ng-model="data.customizeRemark"
+                                      ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || detail.customizeFlag != '1'"></textarea>
+                        </md-input-container>
+                    </div>
+                </div>
+                <div flex="5" layout="column" flex-sm="100" ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS" layout-wrap
+                     layout-margin>
+                    <md-button class="md-button" aria-label="More" style="margin-right:-30px;min-width:60px;"
+                               ng-click="deleteClickAction(data)">
+                        <ng-md-icon icon="delete"></ng-md-icon>
+                    </md-button>
+                </div>
+                <md-divider></md-divider>
+            </div>
+            <div pagination option="pageOption" callback="refreshList()"></div>
+
+            <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
+                 ng-if="ui_status !=  UI_STATUS.VIEW_UI_STATUS && ((fromAppWork == appWork.QUERY) || (fromAppWork == appWork.MAINTAIN && allotMaster.allotTypeNo !='6404'))"
+                 ng-click="openItemDlg();">
+                <i class="fa fa-plus"></i>&nbsp;&nbsp;新增商品...</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .confirm-div {
+        text-align: center;
+        padding: 30px;
+        background-color: #9E9E9E;
+        font-size: 20px;
+        cursor: pointer;
+        margin: 8px;
+    }
+
+    .query-active {
+        background-color: red !important;
+        color: white;
+    }
+
+    .query-count {
+        font-size: small;
+        font-weight: bold;
+        padding-left: 10px;
+    }
+
+    .prod-sm-img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .query-toolbar {
+        margin-left: 20px
+    }
+
+    .query-btnStyle {
+        font-size: small;
+    }
+</style>
+
