@@ -480,7 +480,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                 };
                 detailInputs.push(AllotDetailInput);
             });
-            console.log;;
+            console.log;
             var AllotMasterInput = {
                 allotTypeUuid: $scope.allotMaster.allotTypeUuid,
                 applyDate: $scope.allotMaster.applyDate,
@@ -594,7 +594,7 @@ angular.module('IOne-Production').controller('AllotChannelSelectController', fun
         ChannelLevelService.getByChannelUuid($scope.channelUuid).success(function (data) {
             $scope.channelLevelList = data.content;
             angular.forEach($scope.channelLevelList, function (channel) {
-                ChannelLevelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, '', '', '', '', channel.parentOcmBaseChanUuid, $scope.channelUuid, '').success(function (data) {
+                ChannelLevelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, '', '', '', '', channel.parentOcmBaseChanUuid, '', '').success(function (data) {
                     $scope.allChannel = data.content;
                     $scope.pageOption.totalElements = data.totalElements;
                     $scope.pageOption.totalPage = data.totalPages;
