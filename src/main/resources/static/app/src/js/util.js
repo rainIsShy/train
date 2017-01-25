@@ -568,6 +568,14 @@ RES_UUID_MAP = {
             RES_UUID: '62e761f5-1bca-4b40-a5d6-87064b4431b1',
             TITLE: '库存明细查询APP'
         },
+        MISCELLANEOUS_TYPE: {
+            RES_UUID: 'f4f911e1-5210-493c-96b3-6e56a3ac2c47',
+            TITLE: '杂项类型基础资料'
+        },
+        ALLOT_TYPE: {
+            RES_UUID: '35152a9b-477b-4d65-9441-8b058020dc3b',
+            TITLE: '调拨类型基础资料'
+        }
     }
 };
 
@@ -748,6 +756,18 @@ angular.module('IOne-Constant').constant('Constant', {
                     link: '/inventoryDetailApp',
                     uuid: RES_UUID_MAP.INV.INVENTORY_DETAIL_APP.RES_UUID
                 },
+                {
+                    id: '/inv/miscellaneousType',
+                    name: RES_UUID_MAP.INV.MISCELLANEOUS_TYPE.TITLE,
+                    link: '/inv/miscellaneousType',
+                    uuid: RES_UUID_MAP.INV.MISCELLANEOUS_TYPE.RES_UUID
+                },
+                {
+                    id: '/inv/allotType',
+                    name: RES_UUID_MAP.INV.ALLOT_TYPE.TITLE,
+                    link: '/inv/allotType',
+                    uuid: RES_UUID_MAP.INV.ALLOT_TYPE.RES_UUID
+                }
             ]
         },
         {
