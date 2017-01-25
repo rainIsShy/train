@@ -97,7 +97,7 @@ angular.module('IOne-Production').service('ChannelPriceService', function ($http
     };
 
     this.getByChannelUuidAndItemUuid = function (channelUuid, itemUuid) {
-        var url = '/channelPrices?channelUuid=' + channelUuid + "&itemUuid=" + itemUuid;
+        var url = '/channelPrices?channelUuid=' + channelUuid + "&itemUuid=" + itemUuid + "&action=getValidateChannel";
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
