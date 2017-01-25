@@ -1,4 +1,4 @@
-<md-dialog style="padding:10px;min-width: 500px;max-height: 500px; overflow-y:scroll">
+<md-dialog style="padding:10px;min-width: 500px;max-height: 650px; overflow-y:scroll">
     <md-content layout="column">
         <div>
             <form name="searchChannel" novalidate="">
@@ -23,10 +23,10 @@
             <div pagination option="pageOption" callback="refreshChannel()"></div>
         </div>
         <div layout="row">
-            <md-button ng-click="hideDlg()">
-                <i class="fa fa-check"></i>&nbsp;确定
-            </md-button>
-            <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+            <!--<md-button ng-click="hideDlg()">-->
+            <!--<i class="fa fa-check"></i>&nbsp;确定-->
+            <!--</md-button>-->
+            <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;关闭</md-button>
         </div>
 
     </md-content>
