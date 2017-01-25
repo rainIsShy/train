@@ -370,15 +370,16 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                 allotQty: 1
             };
             orderDetail.allotQty = 1;
+            Production.getDeliveryDate(orderDetail.item.uuid, $scope.allotQuery.channelUuid).success(function (data) {
+                orderDetail.deliverDate = new Date(data.deliverDate);
+                orderDetail.minDeliverDate = new Date(data.minDeliverDate);
+            });
 
             ChannelPriceService.getByChannelUuidAndItemUuid($scope.allotQuery.channelUuid, data.uuid).success(function (data) {
                 if (data.totalElements > 0) {
                     orderDetail.allotPrice = data.content[0].standardPrice;
                     //取得最小配送天数
-                    Production.getDeliveryDate(data.content[0].item.uuid, $scope.allotQuery.channelUuid).success(function (data) {
-                        orderDetail.deliverDate = new Date(data.deliverDate);
-                        orderDetail.minDeliverDate = new Date(data.minDeliverDate);
-                    });
+
                 }
                 $scope.itemList.push(orderDetail);
             });
