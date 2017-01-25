@@ -221,7 +221,9 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
 
 
     $scope.getAllotType = function (no) {
+        console.log(no);
         AllotTypeService.getByNo(no).success(function (data) {
+            console.log(data);
             if (data.content[0]) {
                 $scope.allotMaster.allotTypeUuid = data.content[0].uuid;
             }
@@ -478,7 +480,7 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
                 };
                 detailInputs.push(AllotDetailInput);
             });
-
+            console.log;;
             var AllotMasterInput = {
                 allotTypeUuid: $scope.allotMaster.allotTypeUuid,
                 applyDate: $scope.allotMaster.applyDate,
@@ -576,23 +578,26 @@ angular.module('IOne-Production').controller('AllotAppController', function ($md
 });
 
 angular.module('IOne-Production').controller('AllotChannelSelectController', function ($scope, $mdDialog, ChannelLevelService, domain, channelType, channelUuid) {
+    $scope.domain = domain;
+    $scope.channelUuid = channelUuid;
+
     $scope.pageOption = {
         sizePerPage: 5,
         currentPage: 0,
         totalPage: 0,
-        totalElements: 0,
-        displayModel: 0  //0 : image + text //1 : image
+        totalElements: 0
+
     };
 
-    $scope.domain = domain;
-    $scope.channelUuid = channelUuid;
-
+    console.log($scope.pageOption);
     $scope.refreshChannel = function () {
         ChannelLevelService.getByChannelUuid($scope.channelUuid).success(function (data) {
             $scope.channelLevelList = data.content;
             angular.forEach($scope.channelLevelList, function (channel) {
                 ChannelLevelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, '', '', '', '', channel.parentOcmBaseChanUuid, $scope.channelUuid, '').success(function (data) {
                     $scope.allChannel = data.content;
+                    $scope.pageOption.totalElements = data.totalElements;
+                    $scope.pageOption.totalPage = data.totalPages;
                 });
             });
         });
