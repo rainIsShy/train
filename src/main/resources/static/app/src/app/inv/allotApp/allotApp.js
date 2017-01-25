@@ -589,12 +589,13 @@ angular.module('IOne-Production').controller('AllotChannelSelectController', fun
 
     };
 
-    console.log($scope.pageOption);
     $scope.refreshChannel = function () {
         ChannelLevelService.getByChannelUuid($scope.channelUuid).success(function (data) {
+            console.log(data);
             $scope.channelLevelList = data.content;
             angular.forEach($scope.channelLevelList, function (channel) {
                 ChannelLevelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, '', '', '', '', channel.parentOcmBaseChanUuid, '', '').success(function (data) {
+                    console.log(data);
                     $scope.allChannel = data.content;
                     $scope.pageOption.totalElements = data.totalElements;
                     $scope.pageOption.totalPage = data.totalPages;
