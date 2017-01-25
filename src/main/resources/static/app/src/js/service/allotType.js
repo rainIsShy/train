@@ -23,4 +23,8 @@ angular.module('IOne-Production').service('AllotTypeService', function ($http, $
         };
         return $http.get(requestUrl, config);
     };
+
+    this.get = function (uuid) {
+        return $http.get(requestUrl + uuid);
+    };
 });
