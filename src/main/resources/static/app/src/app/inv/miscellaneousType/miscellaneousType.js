@@ -5,102 +5,211 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('MiscellaneousTypeController', function ($scope, Constant, $mdDialog, MiscellaneousTypeService) {
-
-    $scope.queryConditions = {};
-    $scope.selectedItem = {};
-
+angular.module('IOne-Production').controller('MiscellaneousTypeController', function ($scope, MiscellaneousTypeService, Constant) {
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
-        totalPage: 0,
-        totalElements: 0
+        totalPage: 100,
+        totalElements: 100
     };
 
-    $scope.formMenuDisplayOption = {
-        '100-add': {display: true, name: '新增', uuid: ''},
-        '101-delete': {display: true, name: '删除', uuid: ''},
-        '102-edit': {display: true, name: '编辑', uuid: ''},
-
-        '200-cancel': {display: true, name: '取消新增', uuid: ''},
-        '201-save': {display: true, name: '保存', uuid: ''},
-
-        '302-save': {display: true, name: '保存', uuid: ''},
-        '303-cancel': {display: true, name: '取消修改', uuid: ''},
-        '304-quit': {display: true, name: '退出编辑', uuid: ''}
+    $scope.listFilterOption = {
+        status: Constant.STATUS[0].value,
+        confirm: Constant.CONFIRM[0].value,
+        release: Constant.RELEASE[0].value
     };
 
-    // add mode
-    $scope.preAddMenuAction = function () {
-        $scope.selectedItem = {};
-        $scope.changeViewStatus($scope.UI_STATUS.EDIT_UI_STATUS_ADD, 1);
-
-    };
-    $scope.addMenuAction = function () {
-        MiscellaneousTypeService.add($scope.selectedItem).then(function (response) {
-            $scope.selectedItem = response.data;
-            $scope.showInfo('新增数据成功。');
-            $scope.changeViewStatus($scope.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
-        }, errorHandle);
-    };
-    $scope.cancelAddMenuAction = function () {
-        $scope.changeViewStatus($scope.UI_STATUS.EDIT_UI_STATUS_DELETE, 0);
+    $scope.sortByAction = function (field) {
+        $scope.sortByField = field;
+        $scope.sortType = '';
     };
 
-    // modify mode
-    $scope.enterEditMode = function (item) {
-        $scope.selectedItem = item;
-        $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
-    };
-    $scope.modifyMenuAction = function () {
-        MiscellaneousTypeService.modify($scope.selectedItem.uuid, $scope.selectedItem).then(function (response) {
-            $scope.showInfo('修改数据成功。');
-        }, errorHandle);
-    };
-    $scope.cancelModifyMenuAction = function () {
-        MiscellaneousTypeService.get($scope.selectedItem.uuid).then(function (response) {
-            $scope.selectedItem = response.data;
-        }, errorHandle);
-    }
-    $scope.exitModifyMenuAction = function () {
-        MiscellaneousTypeService.get($scope.selectedItem.uuid).then(function (response) {
-            $scope.selectedItem = response.data;
-            $scope.changeViewStatus($scope.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
-        }, errorHandle);
-    };
-
-    // delete
-    $scope.deleteMenuAction = function () {
-        $scope.showConfirm('确认删除吗？', '删除後不可恢复。', function () {
-            MiscellaneousTypeService.delete($scope.selectedItem.uuid).then(function (response) {
-                $scope.showInfo('删除数据成功。');
-                $scope.changeViewStatus($scope.UI_STATUS.EDIT_UI_STATUS_DELETE, 0);
-            }, errorHandle);
+    $scope.refreshList = function () {
+        OrderMaster.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, '', '', '', '', '', '', '', '').success(function (data) {
+            $scope.itemList = data.content;
+            $scope.pageOption.totalPage = data.totalPages;
+            $scope.pageOption.totalElements = data.totalElements;
         });
     };
 
-    // query
-    $scope.fetchList = function () {
-        MiscellaneousTypeService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.queryConditions).then(function (response) {
-            $scope.pageOption.totalPage = response.data.totalPages;
-            $scope.pageOption.totalElements = response.data.totalElements;
-            $scope.list = response.data.content;
-        }, errorHandle);
-    }
+    $scope.$watch('listFilterOption', function () {
+        $scope.pageOption.currentPage = 0;
+        $scope.pageOption.totalPage = 0;
+        $scope.pageOption.totalElements = 0;
+        $scope.refreshList();
+    }, true);
 
-    function errorHandle(response) {
-        var errorMsg = "服務存取失敗";
-        if (response.data.code === "Duplicated") errorMsg = "类型编号已重複";
-        $scope.showError(errorMsg);
-    }
+    $scope.itemList = [
+        {no: '1111111', name: 'name1', orderAmount: '100', confirm: '1', release: '1', status: '2'},
+        {no: '2222222', name: 'name2', orderAmount: '200', confirm: '2', release: '1', status: '1'},
+        {no: '4444444', name: 'name0', orderAmount: '400', confirm: '1', release: '1', status: '1'},
+        {no: '3333333', name: 'name3', orderAmount: '300', confirm: '1', release: '2', status: '2'}
+    ];
 
-    $scope.clickFormTab = function () {
+    $scope.subItemList = [
+        {no: '1111111', name: 'name1', orderAmount: '100', confirm: '1', release: '1', status: '2'},
+        {no: '2222222', name: 'name2', orderAmount: '200', confirm: '2', release: '1', status: '1'},
+        {no: '3333333', name: 'name3', orderAmount: '300', confirm: '1', release: '2', status: '2'}
+    ];
 
+    $scope.selectAllFlag = false;
+
+    /**
+     * Show left detail panel when clicking the title
+     */
+    $scope.showDetailPanelAction = function (item) {
+        $scope.selectedItem = item;
+        //OrderDetail.get($scope.selectedItem.uuid).success(function(data) {
+        //    $scope.orderDetailList = data.content;
+        //});
+        item.detailList = $scope.subItemList;
     };
-    $scope.clickListTab = function () {
+
+    /**
+     * Show advanced search panel which you can add more search condition
+     */
+    $scope.showAdvancedSearchAction = function () {
+        $scope.displayAdvancedSearPanel = !$scope.displayAdvancedSearPanel;
         $scope.selectedItem = null;
-        $scope.fetchList();
-        $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS, 0);
     };
 
+    /**
+     * Show more panel when clicking the 'show more' on every item
+     */
+    $scope.toggleMorePanelAction = function (item) {
+        item.showMorePanel = !item.showMorePanel;
+
+        if (item.showMorePanel) {
+            item.detailList = $scope.subItemList;
+        }
+    };
+
+    /**
+     * Toggle the advanced panel for detail item in the list
+     */
+    $scope.toggleDetailMorePanelAction = function (detail) {
+        detail.showMorePanel = !detail.showMorePanel;
+    };
+
+    /**
+     * Change status to list all items
+     */
+    $scope.listItemAction = function () {
+        $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
+    };
+
+    /**
+     * Set stauts to 'edit' to edit an object. The panel will be generated automatically.
+     */
+    $scope.editItemAction = function (source, domain, desc) {
+        $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS);
+        $scope.status = 'edit';
+        $scope.desc = desc;
+        $scope.source = source;
+        $scope.domain = domain;
+    };
+
+    /**
+     * Add new item which will take the ui to the edit page.
+     */
+    $scope.preAddItemAction = function (source, domain, desc) {
+        $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS);
+        $scope.status = 'add';
+        $scope.desc = desc;
+        $scope.source = source;
+        $scope.domain = domain;
+    };
+
+    /**
+     * Save object according current status and domain.
+     */
+    $scope.saveItemAction = function () {
+        if ($scope.status == 'add') {
+            if ($scope.domain == 'PSO_ORDER_MST') {
+                //TODO add order mst
+                console.info('add order mst...');
+            } else if ($scope.domain == 'PSO_ORDER_DTL') {
+                //TODO add order dtl
+                console.info('add order dtl...');
+            }
+        } else if ($scope.status == 'edit') {
+            if ($scope.domain == 'PSO_ORDER_MST') {
+                //TODO edit order mst
+                console.info('edit order mst...');
+            } else if ($scope.domain == 'PSO_ORDER_DTL') {
+                //TODO edit order dtl
+                console.info('edit order dtl...');
+            }
+        }
+    };
+
+    /**
+     * Delete detail item
+     */
+    $scope.deleteDetailAction = function (detail) {
+        //TODO ...
+    };
+
+    $scope.selectItemAction = function (event, item) {
+        $scope.stopEventPropagation(event);
+        //TODO ...
+    };
+
+    $scope.confirmClickAction = function (event, item) {
+        $scope.stopEventPropagation(event);
+        console.info('confirm...');
+        //TODO ...
+    };
+
+    $scope.statusClickAction = function (event, item) {
+        $scope.stopEventPropagation(event);
+        console.info('status...');
+        //TODO ...
+    };
+
+    $scope.releaseClickAction = function (event, item) {
+        $scope.stopEventPropagation(event);
+        console.info('release...');
+        //TODO ...
+    };
+
+    $scope.deleteClickAction = function (event, item) {
+        $scope.stopEventPropagation(event);
+        console.info('delete...');
+        //TODO ...
+    };
+
+    $scope.confirmAllClickAction = function (event) {
+        $scope.stopEventPropagation(event);
+        console.info('confirm all...');
+        //TODO ...
+    };
+
+    $scope.statusAllClickAction = function (event) {
+        $scope.stopEventPropagation(event);
+        console.info('status all...');
+        //TODO ...
+    };
+
+    $scope.releaseAllClickAction = function (event) {
+        $scope.stopEventPropagation(event);
+        console.info('release all...');
+        //TODO ...
+    };
+
+    $scope.deleteAllClickAction = function (event) {
+        $scope.stopEventPropagation(event);
+        console.info('delete all...');
+        //TODO ...
+    };
+
+    $scope.selectAllAction = function () {
+        angular.forEach($scope.itemList, function (item) {
+            if ($scope.selectAllFlag) {
+                item.selected = true;
+            } else {
+                item.selected = false;
+            }
+        })
+    };
 });
