@@ -14,13 +14,6 @@
                     <md-menu-content width="2">
                         <md-menu-item>
                             <md-button class="md-button" aria-label="More"
-                                       ng-click="confirmClickAction($event, selectedItem)">
-                                <ng-md-icon icon="lock"></ng-md-icon>
-                                审核
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button class="md-button" aria-label="More"
                                        ng-click="statusClickAction($event, selectedItem)">
                                 <ng-md-icon icon="lock_open"></ng-md-icon>
                                 启用
@@ -29,8 +22,8 @@
                         <md-menu-item>
                             <md-button class="md-button" aria-label="More"
                                        ng-click="releaseClickAction($event, selectedItem)">
-                                <ng-md-icon icon="send"></ng-md-icon>
-                                发布
+                                <ng-md-icon icon="lock_outline"></ng-md-icon>
+                                禁用
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
@@ -42,18 +35,19 @@
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>
-                <span>订单详细信息</span>
+                <span>杂项类型详细信息</span>
                 <md-button class="md-icon-button close-btn float-right" aria-label="More"
                            ng-click="selectedItem = null">
                     <ng-md-icon icon="chevron_left"></ng-md-icon>
                 </md-button>
             </div>
+
             <div flex class="right-title">
                 <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
                            ng-click="preAddItemAction({}, 'PSO_ORDER_MST')">
                     <ng-md-icon icon="add"></ng-md-icon>
                 </md-button>
-                <span>订单列表</span>
+                <span>杂项类型列表</span>
                 <md-menu>
                     <md-button class="md-icon-button close-btn float-right" aria-label="More"
                                ng-click="$mdOpenMenu($event)">
@@ -61,25 +55,19 @@
                     </md-button>
                     <md-menu-content width="2">
                         <md-menu-item>
-                            <md-button class="md-button" aria-label="More" ng-click="confirmAllClickAction($event)">
-                                <ng-md-icon icon="lock"></ng-md-icon>
-                                批量审核
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button class="md-button" aria-label="More" ng-click="statusAllClickAction($event)">
+                            <md-button class="md-button" aria-label="More" ng-click="batchEnable($event)">
                                 <ng-md-icon icon="lock_open"></ng-md-icon>
                                 批量启用
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button class="md-button" aria-label="More" ng-click="releaseAllClickAction($event)">
-                                <ng-md-icon icon="send"></ng-md-icon>
-                                批量发布
+                            <md-button class="md-button" aria-label="More" ng-click="batchDisable($event)">
+                                <ng-md-icon icon="lock_outline"></ng-md-icon>
+                                批量禁用
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button class="md-button" aria-label="More" ng-click="deleteAllClickAction($event)">
+                            <md-button class="md-button" aria-label="More" ng-click="batchDelete($event)">
                                 <ng-md-icon icon="delete"></ng-md-icon>
                                 批量删除
                             </md-button>
@@ -93,7 +81,7 @@
             <div flex="70" hide-sm hide-md layout="column" class="left-body" ng-show="selectedItem">
                 <div flex="100" layout-padding>
                     <div layout="row" layout-padding style="font-size: 20px;padding-top: 2px; font-weight: bold;">
-                        <span flex>订单编号: {{selectedItem.no}}</span>
+                        <span flex>杂项类型编号: {{selectedItem.no}}</span>
                         <span flex class="right-align">￥:{{selectedItem.orderAmount}}</span>
                     </div>
                     <md-divider></md-divider>
@@ -171,62 +159,6 @@
                             <span class="item-content">{{selectedItem.remark}}</span>
                         </span>
                     </div>
-
-                    <md-tabs md-dynamic-height md-border-bottom style="padding-top: 30px;">
-                        <md-tab label="产品信息">
-                            <div layout="row" layout-wrap style="margin-top: 20px;">
-                                <div flex="100" ng-repeat="detail in selectedItem.detailList" ng-click=""
-                                     class="prod-item"
-                                     style="position: relative;padding-bottom: 0px; min-height: 200px;margin-top: 20px;">
-                                    <div layout="row" class="height: 100%;">
-                                        <div flex="33">
-                                            <img style="max-height: 180px;" ng-src="app/img/item.jpeg">
-                                        </div>
-                                        <div flex="33">
-                                            <div layout-padding>商品名称 : <span>{{detail.item.name}}</span></div>
-                                            <div layout-padding>商品编号 : <span>{{detail.item.no}}</span></div>
-                                            <div layout-padding>商品品牌 : <span>{{detail.item.brand.name}}</span></div>
-                                        </div>
-                                        <div flex="33" style="margin-bottom: 45px;">
-                                            <div layout-padding>是否定制 : <span>{{CUSTOMIZE_FLAG[detail.customizeFlag].name}}</span>
-                                            </div>
-                                            <div layout-padding>商品属性 : <span>{{detail.itemAttribute}}</span></div>
-                                            <div layout-padding>销售类型 : <span>{{detail.saleType.name}}</span></div>
-                                            <div layout-padding>订单数量 : <span>{{detail.orderQuantity}}</span></div>
-                                        </div>
-                                        <div style="position: absolute; right: -10px; bottom: 10px;">
-                                            <md-button class="md-button close-btn" aria-label="More"
-                                                       ng-click="toggleDetailMorePanelAction(detail)">
-                                                查看更多...
-                                            </md-button>
-                                            <md-button class="md-button close-btn" aria-label="More"
-                                                       ng-click="deleteDetailAction(detail)">
-                                                <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>
-                                                删除
-                                            </md-button>
-                                            <md-button class="md-button close-btn" aria-label="More"
-                                                       ng-click="editItemAction(detail, 'PSO_ORDER_DTL', '订单: ' + selectedItem.no + ' / ' + '产品信息: ' + detail.no)">
-                                                <ng-md-icon icon="edit" size="20"></ng-md-icon>
-                                                编辑
-                                            </md-button>
-                                        </div>
-                                    </div>
-                                    <!-- detail panel -->
-                                    <div layout="row" ng-show="detail.showMorePanel">
-                                        <div layout-margin>Have more stuff here....</div>
-                                    </div>
-                                    <md-divider style="margin-top: 5px"></md-divider>
-                                </div>
-                                <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
-                                     ng-click="preAddItemAction({}, 'PSO_ORDER_DTL', '新增订单')">
-                                    <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
-                                </div>
-                            </div>
-                        </md-tab>
-                        <md-tab label="出货">
-                            ...
-                        </md-tab>
-                    </md-tabs>
                 </div>
             </div>
             <div flex class="right-body">

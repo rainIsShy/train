@@ -46,24 +46,8 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
         {no: '3333333', name: 'name3', orderAmount: '300', confirm: '1', release: '2', status: '2'}
     ];
 
-    $scope.subItemList = [
-        {no: '1111111', name: 'name1', orderAmount: '100', confirm: '1', release: '1', status: '2'},
-        {no: '2222222', name: 'name2', orderAmount: '200', confirm: '2', release: '1', status: '1'},
-        {no: '3333333', name: 'name3', orderAmount: '300', confirm: '1', release: '2', status: '2'}
-    ];
 
     $scope.selectAllFlag = false;
-
-    /**
-     * Show left detail panel when clicking the title
-     */
-    $scope.showDetailPanelAction = function (item) {
-        $scope.selectedItem = item;
-        //OrderDetail.get($scope.selectedItem.uuid).success(function(data) {
-        //    $scope.orderDetailList = data.content;
-        //});
-        item.detailList = $scope.subItemList;
-    };
 
     /**
      * Show advanced search panel which you can add more search condition
@@ -150,10 +134,7 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
         //TODO ...
     };
 
-    $scope.selectItemAction = function (event, item) {
-        $scope.stopEventPropagation(event);
-        //TODO ...
-    };
+
 
     $scope.confirmClickAction = function (event, item) {
         $scope.stopEventPropagation(event);
@@ -176,33 +157,22 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
     $scope.deleteClickAction = function (event, item) {
         $scope.stopEventPropagation(event);
         console.info('delete...');
-        //TODO ...
+        $scope.showConfirm('确认删除吗？', '删除後不可恢复。', function () {
+            MiscellaneousTypeService.delete(item.uuid).then(function (response) {
+                $scope.showInfo('删除数据成功。');
+            }, errorHandle);
+        });
     };
 
-    $scope.confirmAllClickAction = function (event) {
+    function errorHandle(response) {
+        var errorMsg = "服務存取失敗";
+        if (response.data.code === "Duplicated") errorMsg = "类型编号已重複";
+        $scope.showError(errorMsg);
+    }
+
+    $scope.selectItemAction = function (event, item) {
         $scope.stopEventPropagation(event);
-        console.info('confirm all...');
-        //TODO ...
     };
-
-    $scope.statusAllClickAction = function (event) {
-        $scope.stopEventPropagation(event);
-        console.info('status all...');
-        //TODO ...
-    };
-
-    $scope.releaseAllClickAction = function (event) {
-        $scope.stopEventPropagation(event);
-        console.info('release all...');
-        //TODO ...
-    };
-
-    $scope.deleteAllClickAction = function (event) {
-        $scope.stopEventPropagation(event);
-        console.info('delete all...');
-        //TODO ...
-    };
-
     $scope.selectAllAction = function () {
         angular.forEach($scope.itemList, function (item) {
             if ($scope.selectAllFlag) {
