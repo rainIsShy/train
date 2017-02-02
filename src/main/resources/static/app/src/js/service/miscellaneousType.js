@@ -9,8 +9,16 @@ angular.module('IOne-Production').service('MiscellaneousTypeService', function (
         return $http.patch(requestUrl + uuid, updateInput);
     };
 
+    this.batchModify = function (list) {
+        return $http.patch(requestUrl, list);
+    };
+
     this.delete = function (uuid) {
         return $http.delete(requestUrl + uuid);
+    };
+
+    this.batchDelete = function (list) {
+        return $http.patch(requestUrl + "batch/delete", list);
     };
 
     this.getAll = function (sizePerPage, currentPage, queryConditions) {

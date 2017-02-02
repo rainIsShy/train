@@ -5,88 +5,115 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('MiscellaneousTypeController', function ($scope, Constant, $mdDialog, MiscellaneousTypeService) {
-
-    $scope.queryConditions = {};
-    $scope.selectedItem = {};
+angular.module('IOne-Production').controller('MiscellaneousTypeController', function ($scope, MiscellaneousTypeService, Constant) {
 
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
-        totalPage: 0,
-        totalElements: 0
+        totalPage: 100,
+        totalElements: 100
     };
 
-    $scope.formMenuDisplayOption = {
-        '100-add': {display: true, name: '新增', uuid: ''},
-        '101-delete': {display: true, name: '删除', uuid: ''},
-        '102-edit': {display: true, name: '编辑', uuid: ''},
-
-        '200-cancel': {display: true, name: '取消新增', uuid: ''},
-        '201-save': {display: true, name: '保存', uuid: ''},
-
-        '302-save': {display: true, name: '保存', uuid: ''},
-        '303-cancel': {display: true, name: '取消修改', uuid: ''},
-        '304-quit': {display: true, name: '退出编辑', uuid: ''}
+    $scope.listFilterOption = {
+        status: "",
+        keyWord: "",
+        sort: ""
     };
 
-    // add mode
-    $scope.preAddMenuAction = function () {
-        $scope.selectedItem = {};
-        $scope.changeViewStatus($scope.UI_STATUS.EDIT_UI_STATUS_ADD, 1);
+    $scope.selectAllFlag = false;
 
-    };
-    $scope.addMenuAction = function () {
-        MiscellaneousTypeService.add($scope.selectedItem).then(function (response) {
-            $scope.selectedItem = response.data;
-            $scope.showInfo('新增数据成功。');
-            $scope.changeViewStatus($scope.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
-        }, errorHandle);
-    };
-    $scope.cancelAddMenuAction = function () {
-        $scope.changeViewStatus($scope.UI_STATUS.EDIT_UI_STATUS_DELETE, 0);
+    $scope.sortByAction = function (field) {
+        $scope.listFilterOption.sort = field;
     };
 
-    // modify mode
-    $scope.enterEditMode = function (item) {
-        $scope.selectedItem = item;
-        $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
-    };
-    $scope.modifyMenuAction = function () {
-        MiscellaneousTypeService.modify($scope.selectedItem.uuid, $scope.selectedItem).then(function (response) {
-            $scope.showInfo('修改数据成功。');
-        }, errorHandle);
-    };
-    $scope.cancelModifyMenuAction = function () {
-        MiscellaneousTypeService.get($scope.selectedItem.uuid).then(function (response) {
-            $scope.selectedItem = response.data;
-        }, errorHandle);
-    }
-    $scope.exitModifyMenuAction = function () {
-        MiscellaneousTypeService.get($scope.selectedItem.uuid).then(function (response) {
-            $scope.selectedItem = response.data;
-            $scope.changeViewStatus($scope.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
+    $scope.$watch('listFilterOption', function () {
+        $scope.pageOption.currentPage = 0;
+        $scope.pageOption.totalPage = 0;
+        $scope.pageOption.totalElements = 0;
+        $scope.refreshList();
+    }, true);
+
+    $scope.refreshList = function () {
+        $scope.listFilterOption.status = $scope.listFilterOption.status === Constant.STATUS[0].value ? "" : $scope.listFilterOption.status;
+        MiscellaneousTypeService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption).then(function (response) {
+            $scope.pageOption.totalPage = response.data.totalPages;
+            $scope.pageOption.totalElements = response.data.totalElements;
+            $scope.itemList = response.data.content;
         }, errorHandle);
     };
 
-    // delete
-    $scope.deleteMenuAction = function () {
+    /**
+     * Change status to list all items
+     */
+    $scope.listItemAction = function () {
+        $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
+    };
+
+    /**
+     * Set stauts to 'edit' to edit an object. The panel will be generated automatically.
+     */
+    $scope.editItemAction = function (source, domain, desc) {
+        $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS);
+        $scope.status = 'edit';
+        $scope.desc = desc;
+        $scope.source = source;
+        $scope.domain = domain;
+    };
+
+    /**
+     * Add new item which will take the ui to the edit page.
+     */
+    $scope.preAddItemAction = function (source, domain, desc) {
+        $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS);
+        $scope.status = 'add';
+        $scope.desc = desc;
+        $scope.source = source;
+        $scope.domain = domain;
+    };
+
+    /**
+     * Save object according current status and domain.
+     */
+    $scope.saveItemAction = function () {
+        if ($scope.status == 'add') {
+            MiscellaneousTypeService.add($scope.source).then(function (response) {
+                $scope.source = response.data;
+                $scope.showInfo('新增数据成功。');
+                $scope.refreshList();
+            }, errorHandle);
+        } else if ($scope.status == 'edit') {
+            MiscellaneousTypeService.modify($scope.source.uuid, $scope.source).then(function (response) {
+                $scope.showInfo('数据变更成功。');
+                $scope.refreshList();
+            }, errorHandle);
+        }
+    };
+
+    /**
+     * Show left detail panel when clicking the title
+     */
+    $scope.showDetailPanelAction = function (item) {
+        $scope.selectedItem = angular.copy(item);
+    };
+
+    $scope.statusToggleAction = function (event, item) {
+        $scope.stopEventPropagation(event);
+        console.info('status...');
+        MiscellaneousTypeService.modify(item.uuid, item).then(function (response) {
+            $scope.showInfo('启用状态变更成功。');
+        }, errorHandle);
+    };
+
+    $scope.deleteClickAction = function (event, item) {
+        $scope.stopEventPropagation(event);
+        console.info('delete...');
         $scope.showConfirm('确认删除吗？', '删除後不可恢复。', function () {
-            MiscellaneousTypeService.delete($scope.selectedItem.uuid).then(function (response) {
+            MiscellaneousTypeService.delete(item.uuid).then(function (response) {
                 $scope.showInfo('删除数据成功。');
-                $scope.changeViewStatus($scope.UI_STATUS.EDIT_UI_STATUS_DELETE, 0);
+                $scope.refreshList();
             }, errorHandle);
         });
     };
-
-    // query
-    $scope.fetchList = function () {
-        MiscellaneousTypeService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.queryConditions).then(function (response) {
-            $scope.pageOption.totalPage = response.data.totalPages;
-            $scope.pageOption.totalElements = response.data.totalElements;
-            $scope.list = response.data.content;
-        }, errorHandle);
-    }
 
     function errorHandle(response) {
         var errorMsg = "服務存取失敗";
@@ -94,13 +121,76 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
         $scope.showError(errorMsg);
     }
 
-    $scope.clickFormTab = function () {
+    /**
+     *  selectable checkbox
+     */
+    $scope.selectItemAction = function (event, item) {
+        $scope.stopEventPropagation(event);
+    }
 
-    };
-    $scope.clickListTab = function () {
-        $scope.selectedItem = null;
-        $scope.fetchList();
-        $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS, 0);
+    $scope.selectAllAction = function () {
+        angular.forEach($scope.itemList, function (item) {
+            if ($scope.selectAllFlag) {
+                item.selected = true;
+            } else {
+                item.selected = false;
+            }
+        })
+    }
+
+    /**
+     * batch operator
+     */
+    $scope.batchEnable = function (event) {
+        $scope.stopEventPropagation(event);
+        console.info('batchEnable...');
+        var checkedItemList = fetchCheckedItemList();
+        angular.forEach(checkedItemList, function (item) {
+            item.status = Constant.STATUS[1].value;
+        });
+
+        MiscellaneousTypeService.batchModify(checkedItemList).then(function (response) {
+            $scope.showInfo('批量启用成功。');
+            $scope.selectAllFlag = false;
+            $scope.refreshList();
+        }, errorHandle);
+
+    }
+
+    $scope.batchDisable = function (event) {
+        $scope.stopEventPropagation(event);
+        console.info('batchDisable...');
+        var checkedItemList = fetchCheckedItemList();
+        angular.forEach(checkedItemList, function (item) {
+            item.status = Constant.STATUS[2].value;
+        });
+
+        MiscellaneousTypeService.batchModify(checkedItemList).then(function (response) {
+            $scope.showInfo('批量禁用成功。');
+            $scope.selectAllFlag = false;
+            $scope.refreshList();
+        }, errorHandle);
     };
 
+    $scope.batchDelete = function (event) {
+        $scope.stopEventPropagation(event);
+        console.info('batchDelete...');
+        var checkedItemList = fetchCheckedItemList();
+        $scope.showConfirm('确认执行批量删除吗？', '删除後不可恢复。', function () {
+            MiscellaneousTypeService.batchDelete(checkedItemList).then(function (response) {
+                $scope.showInfo('批量删除数据成功。');
+                $scope.refreshList();
+            }, errorHandle);
+        });
+    };
+
+    function fetchCheckedItemList() {
+        var checkedItemList = [];
+        angular.forEach($scope.itemList, function (item) {
+            if (item.selected) {
+                checkedItemList.push(angular.copy(item));
+            }
+        });
+        return checkedItemList;
+    }
 });
