@@ -6,6 +6,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
 }]);
 
 angular.module('IOne-Production').controller('MiscellaneousTypeController', function ($scope, MiscellaneousTypeService, Constant) {
+
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
@@ -18,6 +19,8 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
         keyWord: "",
         sort: ""
     };
+
+    $scope.selectAllFlag = false;
 
     $scope.sortByAction = function (field) {
         $scope.listFilterOption.sort = field;
@@ -38,32 +41,6 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
         $scope.pageOption.totalElements = 0;
         $scope.refreshList();
     }, true);
-
-
-
-    $scope.selectAllFlag = false;
-
-    /**
-     * Show advanced search panel which you can add more search condition
-     */
-    $scope.showAdvancedSearchAction = function () {
-        $scope.displayAdvancedSearPanel = !$scope.displayAdvancedSearPanel;
-        $scope.selectedItem = null;
-    };
-
-    /**
-     * Show more panel when clicking the 'show more' on every item
-     */
-    $scope.toggleMorePanelAction = function (item) {
-        item.showMorePanel = !item.showMorePanel;
-    };
-
-    /**
-     * Toggle the advanced panel for detail item in the list
-     */
-    $scope.toggleDetailMorePanelAction = function (detail) {
-        detail.showMorePanel = !detail.showMorePanel;
-    };
 
     /**
      * Change status to list all items
@@ -99,36 +76,30 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
      */
     $scope.saveItemAction = function () {
         if ($scope.status == 'add') {
-            if ($scope.domain == 'PSO_ORDER_MST') {
-                //TODO add order mst
-                console.info('add order mst...');
-            } else if ($scope.domain == 'PSO_ORDER_DTL') {
-                //TODO add order dtl
-                console.info('add order dtl...');
-            }
+            MiscellaneousTypeService.add($scope.source).then(function (response) {
+                $scope.source = response.data;
+                $scope.showInfo('新增数据成功。');
+                $scope.refreshList();
+            }, errorHandle);
         } else if ($scope.status == 'edit') {
-            if ($scope.domain == 'PSO_ORDER_MST') {
-                //TODO edit order mst
-                console.info('edit order mst...');
-            } else if ($scope.domain == 'PSO_ORDER_DTL') {
-                //TODO edit order dtl
-                console.info('edit order dtl...');
-            }
+            MiscellaneousTypeService.modify($scope.source.uuid, $scope.source).then(function (response) {
+                $scope.showInfo('数据变更成功。');
+                $scope.refreshList();
+            }, errorHandle);
         }
+    };
+
+    /**
+     * Show left detail panel when clicking the title
+     */
+    $scope.showDetailPanelAction = function (item) {
+        $scope.selectedItem = angular.copy(item);
     };
 
     /**
      * Delete detail item
      */
     $scope.deleteDetailAction = function (detail) {
-        //TODO ...
-    };
-
-
-
-    $scope.confirmClickAction = function (event, item) {
-        $scope.stopEventPropagation(event);
-        console.info('confirm...');
         //TODO ...
     };
 
@@ -152,6 +123,7 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
         $scope.showConfirm('确认删除吗？', '删除後不可恢复。', function () {
             MiscellaneousTypeService.delete(item.uuid).then(function (response) {
                 $scope.showInfo('删除数据成功。');
+                $scope.refreshList();
             }, errorHandle);
         });
     };

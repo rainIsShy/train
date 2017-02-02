@@ -3,7 +3,7 @@
         <div layout="row" class="top-title">
             <div flex="70" hide-sm hide-md class="left-title" ng-show="selectedItem" style="position: relative;">
                 <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
-                           ng-click="editItemAction(selectedItem, 'PSO_ORDER_MST', '订单: ' + selectedItem.no)">
+                           ng-click="editItemAction(selectedItem, 'INV_BASE_MISCELLANEOUS_TYPE', '杂项类型编号: ' + selectedItem.no)">
                     <ng-md-icon icon="edit"></ng-md-icon>
                 </md-button>
                 <md-menu>
@@ -44,7 +44,7 @@
 
             <div flex class="right-title">
                 <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
-                           ng-click="preAddItemAction({}, 'PSO_ORDER_MST')">
+                           ng-click="preAddItemAction({}, 'INV_BASE_MISCELLANEOUS_TYPE')">
                     <ng-md-icon icon="add"></ng-md-icon>
                 </md-button>
                 <span>杂项类型列表</span>
@@ -82,81 +82,12 @@
                 <div flex="100" layout-padding>
                     <div layout="row" layout-padding style="font-size: 20px;padding-top: 2px; font-weight: bold;">
                         <span flex>杂项类型编号: {{selectedItem.no}}</span>
-                        <span flex class="right-align">￥:{{selectedItem.orderAmount}}</span>
                     </div>
                     <md-divider></md-divider>
                     <div layout="row" layout-wrap layout-margin>
-                        <span flex="50" flex-sm="100" layout-padding>
-                            <span class="item-name">客户编号</span>
-                            <span class="item-content">{{selectedItem.customer.no}}</span>
-                        </span>
                         <span flex=50" flex-sm="100" layout-padding>
-                            <span class="item-name">导购名称</span>
-                            <span class="item-content">{{selectedItem.employee.name}}</span>
-                        </span>
-                        <span flex="50" flex-sm="100" layout-padding>
-                            <span class="item-name">预计送货日期</span>
-                            <span class="item-content">{{selectedItem.predictDeliverDate}}</span>
-                        </span>
-                        <span flex="50" flex-sm="100" layout-padding>
-                            <span class="item-name">送货日期</span>
-                            <span class="item-content">{{selectedItem.deliverDate}}</span>
-                        </span>
-                        <span flex="50" flex-sm="100" layout-padding>
-                            <span class="item-name">送货方式</span>
-                            <span class="item-content">{{selectedItem.deliverWay.name}}</span>
-                        </span>
-                        <span flex="50" flex-sm="100" layout-padding>
-                            <span class="item-name">收货人地址</span>
-                            <span class="item-content">{{selectedItem.receiveAddress}}</span>
-                        </span>
-                        <span flex="50" flex-sm="100" layout-padding>
-                            <span class="item-name">客户名称</span>
-                            <span class="item-content">{{selectedItem.customer.name}}</span>
-                        </span>
-                        <span flex="50" flex-sm="100" layout-padding>
-                            <span class="item-name">部门</span>
-                            <span class="item-content">{{selectedItem.employee.department.name}}</span>
-                        </span>
-                        <span flex="50" flex-sm="100" layout-padding>
-                            <span class="item-name">已付金额</span>
-                            <span class="item-content">￥:{{selectedItem.paidAmount}}</span>
-                        </span>
-                        <span flex="50" flex-sm="100" layout-padding>
-                            <span class="item-name">折扣金额</span>
-                            <span class="item-content">￥:{{selectedItem.discountAmount}}</span>
-                        </span>
-                        <span flex="50" flex-sm="100" layout-padding>
-                            <span class="item-name">折后金额</span>
-                            <span class="item-content">￥:{{selectedItem.orderAmount}}</span>
-                        </span>
-                        <span flex="50" flex-sm="100" layout-padding>
-                            <span class="item-name">折扣率</span>
-                            <span class="item-content">￥:{{selectedItem.discountRate}}</span>
-                        </span>
-                        <span flex="50" flex-sm="100" layout-padding>
-                            <span class="item-name">整单折扣率</span>
-                            <span class="item-content">￥:{{selectedItem.orderDiscountRate}}</span>
-                        </span>
-                        <span flex="50" flex-sm="100" layout-padding>
-                            <span class="item-name">打印次数</span>
-                            <span class="item-content">{{selectedItem.printTimes}}</span>
-                        </span>
-                        <span flex="50" flex-sm="100" layout-padding>
-                            <span class="item-name">应收定金</span>
-                            <span class="item-content">￥:{{selectedItem.paidAmount}}</span>
-                        </span>
-                        <span flex="50" flex-sm="100" layout-padding>
-                            <span class="item-name">已收款比例</span>
-                            <span class="item-content">￥:{{selectedItem.paidRate}}</span>
-                        </span>
-                        <span flex="50" flex-sm="100" layout-padding>
-                            <span class="item-name">应收余额</span>
-                            <span class="item-content">￥:{{selectedItem.unpaidAmount}}</span>
-                        </span>
-                        <span flex="100" layout-padding>
-                            <span class="item-name">备注</span>
-                            <span class="item-content">{{selectedItem.remark}}</span>
+                            <span class="item-name">名称</span>
+                            <span class="item-content">{{selectedItem.name}}</span>
                         </span>
                     </div>
                 </div>
@@ -216,13 +147,12 @@
                             <div flex="100" layout="row"
                                  style="padding-left: 50px;padding-top: 10px; font-weight: bold;">
                                 <span flex ng-click="showDetailPanelAction(item)" class="summary-item__title">{{item.no}}</span>
-                                <span flex class="right-align">￥:{{item.orderAmount}}</span>
                             </div>
                             <div flex="100" layout="row" style="padding-left: 50px;padding-top: 10px;font-size: 14px;"
                                  layout-align="space-between center" ng-hide="selectedItem">
                                 <div flex layout="row" style="color:#7f8fa4">
                                     <span>名称: <span
-                                            style="font-style: italic">{{item.name}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                            style="font-style: italic">{{item.name}}&nbsp;&nbsp;&nbsp;&nbsp;</span></span>
                                 </div>
                                 <div layout="row" layout-align="end center">
                                     <md-switch ng-model="item.status" aria-label="Switch 1" class="md-block"
@@ -230,12 +160,6 @@
                                                ng-click="statusToggleAction($event, item)">
                                         启用
                                     </md-switch>
-
-                                    <md-button class="md-button close-btn" aria-label="More"
-                                               ng-click="toggleMorePanelAction(item)"
-                                               style="position: relative;left: 15px;">
-                                        查看更多...
-                                    </md-button>
                                 </div>
                             </div>
                         </div>
