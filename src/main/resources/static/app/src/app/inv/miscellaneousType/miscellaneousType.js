@@ -14,22 +14,22 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
     };
 
     $scope.listFilterOption = {
-        status: Constant.STATUS[0].value,
-        confirm: Constant.CONFIRM[0].value,
-        release: Constant.RELEASE[0].value
+        status: "",
+        keyWord: "",
+        sort: ""
     };
 
     $scope.sortByAction = function (field) {
-        $scope.sortByField = field;
-        $scope.sortType = '';
+        $scope.listFilterOption.sort = field;
     };
 
     $scope.refreshList = function () {
-        OrderMaster.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, '', '', '', '', '', '', '', '').success(function (data) {
-            $scope.itemList = data.content;
-            $scope.pageOption.totalPage = data.totalPages;
-            $scope.pageOption.totalElements = data.totalElements;
-        });
+        $scope.listFilterOption.status = $scope.listFilterOption.status === Constant.STATUS[0].value ? "" : $scope.listFilterOption.status;
+        MiscellaneousTypeService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption).then(function (response) {
+            $scope.pageOption.totalPage = response.data.totalPages;
+            $scope.pageOption.totalElements = response.data.totalElements;
+            $scope.itemList = response.data.content;
+        }, errorHandle);
     };
 
     $scope.$watch('listFilterOption', function () {
@@ -39,12 +39,6 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
         $scope.refreshList();
     }, true);
 
-    $scope.itemList = [
-        {no: '1111111', name: 'name1', orderAmount: '100', confirm: '1', release: '1', status: '2'},
-        {no: '2222222', name: 'name2', orderAmount: '200', confirm: '2', release: '1', status: '1'},
-        {no: '4444444', name: 'name0', orderAmount: '400', confirm: '1', release: '1', status: '1'},
-        {no: '3333333', name: 'name3', orderAmount: '300', confirm: '1', release: '2', status: '2'}
-    ];
 
 
     $scope.selectAllFlag = false;
@@ -62,10 +56,6 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
      */
     $scope.toggleMorePanelAction = function (item) {
         item.showMorePanel = !item.showMorePanel;
-
-        if (item.showMorePanel) {
-            item.detailList = $scope.subItemList;
-        }
     };
 
     /**
