@@ -132,10 +132,12 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
         //TODO ...
     };
 
-    $scope.statusClickAction = function (event, item) {
+    $scope.statusToggleAction = function (event, item) {
         $scope.stopEventPropagation(event);
         console.info('status...');
-        //TODO ...
+        MiscellaneousTypeService.modify(item.uuid, item).then(function (response) {
+            $scope.showInfo('启用状态变更成功。');
+        }, errorHandle);
     };
 
     $scope.releaseClickAction = function (event, item) {
