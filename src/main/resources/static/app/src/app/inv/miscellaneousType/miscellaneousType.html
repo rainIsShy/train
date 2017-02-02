@@ -150,32 +150,6 @@
                             </div>
                         </div>
                     </div>
-                    <div layout="row" layout-wrap ng-show="item.showMorePanel && !selectedItem"
-                         style="font-size: 14px;">
-                        <div flex="100" ng-repeat="detail in item.detailList" style="padding: 10px 20px 0px 20px;">
-                            <md-divider></md-divider>
-                            <div layout="row" style="height: 100%;">
-                                <div flex="20">
-                                    <img style="max-height: 150px;padding-top: 10px;" ng-src="app/img/item.jpeg">
-                                </div>
-                                <div flex="40">
-                                    <div layout-padding>商品名称 : <span>{{detail.item.name}}</span></div>
-                                    <div layout-padding>商品编号 : <span>{{detail.item.no}}</span></div>
-                                    <div layout-padding>商品品牌 : <span>{{detail.item.brand.name}}</span></div>
-                                </div>
-                                <div flex="40">
-                                    <div layout-padding>是否定制 :
-                                        <span>{{CUSTOMIZE_FLAG[orderDetail.customizeFlag].name}}</span></div>
-                                    <div layout-padding>商品属性 : <span>{{detail.itemAttribute}}</span></div>
-                                    <div layout-padding>销售类型 : <span>{{detail.saleType.name}}</span></div>
-                                    <div layout-padding>销售类型 : <span>{{detail.saleType.name}}</span></div>
-                                    <div layout-padding>销售类型 : <span>{{detail.saleType.name}}</span></div>
-                                    <div layout-padding>销售类型 : <span>{{detail.saleType.name}}</span></div>
-                                    <div layout-padding>销售类型 : <span>{{detail.saleType.name}}</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <md-divider></md-divider>
                 </div>
                 <div pagination option="pageOption" callback="refreshList()"></div>
