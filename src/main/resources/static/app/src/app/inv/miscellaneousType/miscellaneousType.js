@@ -97,7 +97,6 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
     };
 
     $scope.statusToggleAction = function (event, item) {
-        $scope.stopEventPropagation(event);
         console.info('status...');
         MiscellaneousTypeService.modify(item.uuid, item).then(function (response) {
             $scope.showInfo('启用状态变更成功。');
