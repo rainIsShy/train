@@ -97,7 +97,6 @@ angular.module('IOne-Production').controller('AllotTypeController', function ($s
     };
 
     $scope.statusToggleAction = function (event, item) {
-        $scope.stopEventPropagation(event);
         console.info('status...');
         AllotTypeService.modify(item.uuid, item).then(function (response) {
             $scope.showInfo('启用状态变更成功。');
