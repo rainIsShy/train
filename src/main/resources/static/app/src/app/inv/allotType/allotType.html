@@ -1,85 +1,177 @@
-<div layout-fill class="right-container auth">
-    <md-content>
-        <md-tabs md-selected="$parent.selectedTabIndex" md-border-bottom md-dynamic-height md-center-tabs="false">
-            <md-tab md-on-select="clickListTab()">
-                <md-tab-label>{{listTabName}}</md-tab-label>
-                <md-tab-body>
-                    <md-content>
-                        <div flex layout="column" class="menu">
-                            <div layout="row" layout-md="column" layout-sm="column">
-                                <span layout-padding class="md-title" layout-align="start center">列表</span>
-                                <span flex></span>
-                                <md-button class="md-raised" layout-align="end center" ng-click="preAddMenuAction()"
-                                           aria-label="取消发布"> &nbsp;新建
+<div class="main-panel">
+    <div ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS">
+        <div layout="row" class="top-title">
+            <div flex="70" hide-sm hide-md class="left-title" ng-show="selectedItem" style="position: relative;">
+                <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
+                           ng-click="editItemAction(selectedItem, 'INV_BASE_ALLOT_TYPE', '调拨类型编号: ' + selectedItem.no)">
+                    <ng-md-icon icon="edit"></ng-md-icon>
+                </md-button>
+                <md-menu>
+                    <md-button class="md-icon-button close-btn" aria-label="More" style="float: left;"
+                               ng-click="$mdOpenMenu($event)">
+                        <ng-md-icon icon="menu"></ng-md-icon>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="deleteClickAction($event, selectedItem)">
+                                <ng-md-icon icon="delete"></ng-md-icon>
+                                删除
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+                <span>调拨类型详细信息</span>
+                <md-button class="md-icon-button close-btn float-right" aria-label="More"
+                           ng-click="selectedItem = null">
+                    <ng-md-icon icon="chevron_left"></ng-md-icon>
+                </md-button>
+            </div>
+
+            <div flex class="right-title">
+                <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
+                           ng-click="preAddItemAction({}, 'INV_BASE_ALLOT_TYPE')">
+                    <ng-md-icon icon="add"></ng-md-icon>
+                </md-button>
+                <span>调拨类型列表</span>
+                <md-menu>
+                    <md-button class="md-icon-button close-btn float-right" aria-label="More"
+                               ng-click="$mdOpenMenu($event)">
+                        <ng-md-icon icon="menu"></ng-md-icon>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More" ng-click="batchEnable($event)">
+                                <ng-md-icon icon="lock_open"></ng-md-icon>
+                                批量启用
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More" ng-click="batchDisable($event)">
+                                <ng-md-icon icon="lock_outline"></ng-md-icon>
+                                批量禁用
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More" ng-click="batchDelete($event)">
+                                <ng-md-icon icon="delete"></ng-md-icon>
+                                批量删除
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+        </div>
+
+        <div layout="row" class="main-body border">
+            <div flex="70" hide-sm hide-md layout="column" class="left-body" ng-show="selectedItem">
+                <div flex="100" layout-padding>
+                    <div layout="row" layout-padding style="font-size: 20px;padding-top: 2px; font-weight: bold;">
+                        <span flex>调拨类型编号: {{selectedItem.no}}</span>
+                    </div>
+                    <md-divider></md-divider>
+                    <div layout="row" layout-wrap layout-margin>
+                        <span flex=50" flex-sm="100" layout-padding>
+                            <span class="item-name">名称</span>
+                            <span class="item-content">{{selectedItem.name}}</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div flex class="right-body">
+                <!-- basic search-->
+                <div class="search-bar" layout="row" style="position: relative">
+                    <span style="position: absolute; top: 15px; left: 10px;">
+                        <md-checkbox ng-model="selectAllFlag" aria-label="Checkbox"
+                                     ng-change="selectAllAction()"></md-checkbox>
+                    </span>
+                    <md-input-container flex="15" style="margin-left: 50px;" ng-show="selectedItem == null">
+                        <label>启用状态</label>
+                        <md-select ng-model="listFilterOption.status">
+                            <md-option ng-repeat="(key, value) in STATUS" ng-value="key">{{value.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex style="margin-left: 50px;">
+                        <label>输入关键字查询</label>
+                        <input ng-model="listFilterOption.keyWord">
+                    </md-input-container>
+                </div>
+                <!-- status panel-->
+                <div layout="row" layout-warp layout-padding layout-margin ng-show="!selectedItem"
+                     style="margin: 20px 0px 20px 0px; padding-left: 60px;background-color: whitesmoke;position: relative;height: 50px;padding-top: 15px;">
+                    <span flex="20">总记录数: {{pageOption.totalElements}}</span>
+
+                    <md-menu>
+                        <md-button class="md-button close-btn" aria-label="More" ng-click="$mdOpenMenu($event)"
+                                   style="position: absolute;right: 0px;top: 0px;">
+                            <ng-md-icon icon="sort"></ng-md-icon>
+                            排序
+                        </md-button>
+                        <md-menu-content width="2">
+                            <md-menu-item>
+                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('name')">
+                                    <ng-md-icon ng-show="listFilterOption.sort == 'name'"
+                                                icon="play_arrow"></ng-md-icon>
+                                    按名称
                                 </md-button>
+                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('no')">
+                                    <ng-md-icon ng-show="listFilterOption.sort == 'no'" icon="play_arrow"></ng-md-icon>
+                                    按编号
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </div>
+                <div ng-repeat="item in itemList"
+                     ng-class="selectedItem.no == item.no ? 'selected-item':''">
+                    <div class="summary-item">
+                        <div layout="row" layout-wrap>
+                            <span style="position: absolute">
+                                <md-checkbox ng-model="item.selected" aria-label="Checkbox"
+                                             ng-click="selectItemAction($event, item)"></md-checkbox>
+                            </span>
+                            <div flex="100" layout="row"
+                                 style="padding-left: 50px;padding-top: 10px; font-weight: bold;">
+                                <span flex ng-click="showDetailPanelAction(item)" class="summary-item__title">{{item.no}}</span>
+                            </div>
+                            <div flex="100" layout="row" style="padding-left: 50px;padding-top: 10px;font-size: 14px;"
+                                 layout-align="space-between center" ng-hide="selectedItem">
+                                <div flex layout="row" style="color:#7f8fa4">
+                                    <span>名称: <span
+                                            style="font-style: italic">{{item.name}}&nbsp;&nbsp;&nbsp;&nbsp;</span></span>
+                                </div>
+                                <div layout="row" layout-align="end center">
+                                    <md-switch ng-model="item.status" aria-label="Switch 1" class="md-block"
+                                               ng-true-value="'1'" ng-false-value="'2'"
+                                               ng-click="statusToggleAction($event, item)">
+                                        启用
+                                    </md-switch>
+                                </div>
                             </div>
                         </div>
-                        <md-divider style="margin-bottom:5px;"></md-divider>
-                        <md-data-table-container>
-                            <table md-data-table md-row-select="selected" md-progress="deferred">
-                                <thead>
-                                <tr>
-                                    <th><span class="md-subhead">调拨类型编号</span></th>
-                                    <th><span class="md-subhead">调拨类型名称</span></th>
-                                    <th><span class="md-subhead">操作</span></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="obj in list">
-                                    <td><span class="md-body-1">{{obj.no}}</span></td>
-                                    <td><span class="md-body-1">{{obj.name}}</span></td>
-                                    <td>
-                                        <md-button class="md-raised" ng-click="enterEditMode(obj)">编辑</md-button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </md-data-table-container>
+                    </div>
+                    <md-divider></md-divider>
+                </div>
+                <div pagination option="pageOption" callback="refreshList()"></div>
+            </div>
+        </div>
+    </div>
 
-                        <div pagination option="pageOption" callback="fetchList()"></div>
-                    </md-content>
-                </md-tab-body>
-            </md-tab>
-            <md-tab md-on-select="clickFormTab()">
-                <md-tab-label>{{formTabName}}</md-tab-label>
-                <md-tab-body>
-                    <md-content layout-margin>
-                        <form name="mainForm" novalidate>
-                            <div class="panel">
-                                <div form-menu></div>
+    <div ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS">
+        <div layout="row" class="top-title">
+            <div flex="100" class="left-title">
+                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="listItemAction()"
+                           style="float: left; margin-left: 36px;">
+                    <ng-md-icon icon="chevron_left"></ng-md-icon>
+                </md-button>
+                <span>{{desc}}</span>
+                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="saveItemAction()">
+                    <ng-md-icon icon="save"></ng-md-icon>
+                </md-button>
+            </div>
+        </div>
 
-                                <div layout-margin layout-padding class="md-whiteframe-z1"
-                                     ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS">
-                                    <p style="color: red;">请从列表中选择一笔资料。</p>
-                                </div>
+        <object-editor class="object-editor" status="status" source="source" domain="domain"></object-editor>
+    </div>
 
-                                <div class="panel" ng-if="selectedItem">
-                                    <div class="header">
-                                        <span>基本信息</span>
-                                    </div>
-                                    <div layout="row" layout-wrap>
-                                        <div flex="25" flex-sm="100">
-                                            <md-input-container>
-                                                <label>调拨类型编号:</label>
-                                                <input type="text" required ng-model="selectedItem.no"
-                                                       ng-disabled="!isEditing">
-                                            </md-input-container>
-                                        </div>
-                                        <div flex="25" flex-sm="100">
-                                            <md-input-container>
-                                                <label>调拨类型名称:</label>
-                                                <input type="text" required ng-model="selectedItem.name"
-                                                       ng-disabled="!isEditing">
-                                            </md-input-container>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </md-content>
-                </md-tab-body>
-            </md-tab>
-        </md-tabs>
-    </md-content>
 </div>
