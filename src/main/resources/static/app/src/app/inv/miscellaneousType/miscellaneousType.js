@@ -26,6 +26,13 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
         $scope.listFilterOption.sort = field;
     };
 
+    $scope.$watch('listFilterOption', function () {
+        $scope.pageOption.currentPage = 0;
+        $scope.pageOption.totalPage = 0;
+        $scope.pageOption.totalElements = 0;
+        $scope.refreshList();
+    }, true);
+
     $scope.refreshList = function () {
         $scope.listFilterOption.status = $scope.listFilterOption.status === Constant.STATUS[0].value ? "" : $scope.listFilterOption.status;
         MiscellaneousTypeService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption).then(function (response) {
@@ -34,13 +41,6 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
             $scope.itemList = response.data.content;
         }, errorHandle);
     };
-
-    $scope.$watch('listFilterOption', function () {
-        $scope.pageOption.currentPage = 0;
-        $scope.pageOption.totalPage = 0;
-        $scope.pageOption.totalElements = 0;
-        $scope.refreshList();
-    }, true);
 
     /**
      * Change status to list all items
@@ -96,25 +96,12 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
         $scope.selectedItem = angular.copy(item);
     };
 
-    /**
-     * Delete detail item
-     */
-    $scope.deleteDetailAction = function (detail) {
-        //TODO ...
-    };
-
     $scope.statusToggleAction = function (event, item) {
         $scope.stopEventPropagation(event);
         console.info('status...');
         MiscellaneousTypeService.modify(item.uuid, item).then(function (response) {
             $scope.showInfo('启用状态变更成功。');
         }, errorHandle);
-    };
-
-    $scope.releaseClickAction = function (event, item) {
-        $scope.stopEventPropagation(event);
-        console.info('release...');
-        //TODO ...
     };
 
     $scope.deleteClickAction = function (event, item) {
@@ -134,9 +121,13 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
         $scope.showError(errorMsg);
     }
 
+    /**
+     *  selectable checkbox
+     */
     $scope.selectItemAction = function (event, item) {
         $scope.stopEventPropagation(event);
-    };
+    }
+
     $scope.selectAllAction = function () {
         angular.forEach($scope.itemList, function (item) {
             if ($scope.selectAllFlag) {
@@ -145,5 +136,61 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
                 item.selected = false;
             }
         })
+    }
+
+    /**
+     * batch operator
+     */
+    $scope.batchEnable = function (event) {
+        $scope.stopEventPropagation(event);
+        console.info('batchEnable...');
+        var checkedItemList = fetchCheckedItemList();
+        angular.forEach(checkedItemList, function (item) {
+            item.status = Constant.STATUS[1].value;
+        });
+
+        MiscellaneousTypeService.batchModify(checkedItemList).then(function (response) {
+            $scope.showInfo('批量启用成功。');
+            $scope.selectAllFlag = false;
+            $scope.refreshList();
+        }, errorHandle);
+
+    }
+
+    $scope.batchDisable = function (event) {
+        $scope.stopEventPropagation(event);
+        console.info('batchDisable...');
+        var checkedItemList = fetchCheckedItemList();
+        angular.forEach(checkedItemList, function (item) {
+            item.status = Constant.STATUS[2].value;
+        });
+
+        MiscellaneousTypeService.batchModify(checkedItemList).then(function (response) {
+            $scope.showInfo('批量禁用成功。');
+            $scope.selectAllFlag = false;
+            $scope.refreshList();
+        }, errorHandle);
     };
+
+    $scope.batchDelete = function (event) {
+        $scope.stopEventPropagation(event);
+        console.info('batchDelete...');
+        var checkedItemList = fetchCheckedItemList();
+        $scope.showConfirm('确认执行批量删除吗？', '删除後不可恢复。', function () {
+            MiscellaneousTypeService.batchDelete(checkedItemList).then(function (response) {
+                $scope.showInfo('批量删除数据成功。');
+                $scope.refreshList();
+            }, errorHandle);
+        });
+    };
+
+    function fetchCheckedItemList() {
+        var checkedItemList = [];
+        angular.forEach($scope.itemList, function (item) {
+            if (item.selected) {
+                checkedItemList.push(angular.copy(item));
+            }
+        });
+        return checkedItemList;
+    }
 });

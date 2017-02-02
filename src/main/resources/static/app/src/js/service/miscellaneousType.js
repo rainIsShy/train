@@ -18,7 +18,7 @@ angular.module('IOne-Production').service('MiscellaneousTypeService', function (
     };
 
     this.batchDelete = function (list) {
-        return $http.delete(requestUrl, list);
+        return $http.patch(requestUrl + "batch/delete", list);
     };
 
     this.getAll = function (sizePerPage, currentPage, queryConditions) {
