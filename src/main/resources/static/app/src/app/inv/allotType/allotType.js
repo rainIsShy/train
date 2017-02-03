@@ -15,9 +15,9 @@ angular.module('IOne-Production').controller('AllotTypeController', function ($s
     };
 
     $scope.listFilterOption = {
-        status: "",
+        status: Constant.STATUS[0].value,
         keyWord: "",
-        sort: ""
+        sort: "no"
     };
 
     $scope.selectAllFlag = false;
@@ -26,16 +26,10 @@ angular.module('IOne-Production').controller('AllotTypeController', function ($s
         $scope.listFilterOption.sort = field;
     };
 
-    $scope.$watch('listFilterOption', function () {
-        $scope.pageOption.currentPage = 0;
-        $scope.pageOption.totalPage = 0;
-        $scope.pageOption.totalElements = 0;
-        $scope.refreshList();
-    }, true);
-
     $scope.refreshList = function () {
-        $scope.listFilterOption.status = $scope.listFilterOption.status === Constant.STATUS[0].value ? "" : $scope.listFilterOption.status;
-        AllotTypeService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption).then(function (response) {
+        var queryConditions = angular.copy($scope.listFilterOption);
+        queryConditions.status = $scope.listFilterOption.status === Constant.STATUS[0].value ? "" : $scope.listFilterOption.status;
+        AllotTypeService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, queryConditions).then(function (response) {
             $scope.pageOption.totalPage = response.data.totalPages;
             $scope.pageOption.totalElements = response.data.totalElements;
             $scope.itemList = response.data.content;
@@ -80,11 +74,13 @@ angular.module('IOne-Production').controller('AllotTypeController', function ($s
                 $scope.source = response.data;
                 $scope.showInfo('新增数据成功。');
                 $scope.refreshList();
+                $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
             }, errorHandle);
         } else if ($scope.status == 'edit') {
             AllotTypeService.modify($scope.source.uuid, $scope.source).then(function (response) {
                 $scope.showInfo('数据变更成功。');
                 $scope.refreshList();
+                $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
             }, errorHandle);
         }
     };
@@ -192,4 +188,13 @@ angular.module('IOne-Production').controller('AllotTypeController', function ($s
         });
         return checkedItemList;
     }
+
+    /**
+     * init
+     */
+    function init() {
+        $scope.refreshList();
+    }
+
+    init();
 });
