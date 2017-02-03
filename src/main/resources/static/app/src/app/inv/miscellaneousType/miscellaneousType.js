@@ -15,7 +15,7 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
     };
 
     $scope.listFilterOption = {
-        status: "",
+        status: Constant.STATUS[0].value,
         keyWord: "",
         sort: "no"
     };
@@ -34,8 +34,9 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
     }, true);
 
     $scope.refreshList = function () {
-        $scope.listFilterOption.status = $scope.listFilterOption.status === Constant.STATUS[0].value ? "" : $scope.listFilterOption.status;
-        MiscellaneousTypeService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption).then(function (response) {
+        var queryConditions = angular.copy($scope.listFilterOption);
+        queryConditions.status = $scope.listFilterOption.status === Constant.STATUS[0].value ? "" : $scope.listFilterOption.status;
+        MiscellaneousTypeService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, queryConditions).then(function (response) {
             $scope.pageOption.totalPage = response.data.totalPages;
             $scope.pageOption.totalElements = response.data.totalElements;
             $scope.itemList = response.data.content;
