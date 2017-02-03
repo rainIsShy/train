@@ -96,7 +96,7 @@ angular.module('IOne-Production').controller('ShipGoodsManagementController', fu
                         $scope.isNotCloseable = false;
                         $scope.handleMessage = messages.done;
                         $scope.queryAll();
-                    })error(function(){
+                    }).error(function () {
                         $scope.isNotCloseable = false;
                         $scope.showError("服務存取失敗!");
                     });

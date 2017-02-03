@@ -157,4 +157,24 @@ angular.module('IOne-Production').service('TaoBaoAdapterService', function ($htt
         }
         return $http.get(url);
     };
+
+    //執行發貨
+    this.executeLogistics = function (controllerScope, successCallBack) {
+        var logisticsUrl = ecAdapterUrl + '/api/taobao/logistics'
+
+        return $http.patch(logisticsUrl).success(function (response, status) {
+            if (status == 200) {
+                successCallBack(response);
+            } else {
+                controllerScope.showError('執行失敗');
+            }
+        }).error(function (response) {
+            if (response == null) {
+                controllerScope.showError("[" + (status + '') + "]Connect Server Fail");
+            } else {
+                controllerScope.showError("[" + (status + '') + "]" + response.message);
+            }
+        });
+    };
+
 });
