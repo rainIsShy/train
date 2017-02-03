@@ -17,7 +17,7 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
     $scope.listFilterOption = {
         status: "",
         keyWord: "",
-        sort: ""
+        sort: "no"
     };
 
     $scope.selectAllFlag = false;
