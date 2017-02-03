@@ -22,7 +22,8 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
         PLM_ITEM_BOM: {value: 'PLM_ITEM_ITEM_FILE', name: '品牌信息同步'},
         PLM_ITEM_R: {value: 'PLM_ITEM_COL_FILE', name: '商品批号同步'},
         INV_INVENTORY_DTL: {value: 'INV_INVENTORY_DTL', name: '库存数据同步'},
-        PSO_DELIVER_ORDER_EXT_DTL: {value: 'PSO_DELIVER_ORDER_EXT_DTL', name: '出货同步'}
+        PSO_DELIVER_ORDER_EXT_DTL: {value: 'PSO_DELIVER_ORDER_EXT_DTL', name: '出货同步'},
+        EPS_DELIVER_ORDER_EXT_DTL: {value: 'EPS_DELIVER_ORDER_EXT_DTL', name: '电商出货单同步'}
     };
 
     $scope.selected = [];
@@ -171,7 +172,18 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
                 IoneAdapterService.transferIoneAdapter("/psoDeliverOrderSyncTask", param, $scope, function (response) {
                     var tmpCount = addResponse(response.updateOgbCount, response.insertOgbCount);
                     var orderExtCount = addResponse(response.updatePsoOrderExtDtlCount, response.insertPsoOrderExtDtlCount);
-                    $scope.showInfo('ERP同步到 TIPTOP_OGB_FILE，共 ' + tmpCount + '笔数据同步成功!\n TIPTOP_OGB_FILE，共 ' + response.updateStatusCount + '笔数据失效!\n TIPTOP_OGB_FILE 同步到 INV_INVENTORY_DTL，共 ' + orderExtCount + '笔数据同步成功!');
+                    $scope.showInfo('ERP同步到 TIPTOP_OGB_FILE，共 ' + tmpCount + '笔数据同步成功!\n TIPTOP_OGB_FILE，共 ' + response.updateStatusCount + '笔数据失效!\n TIPTOP_OGB_FILE 同步到 PSO_DELIVER_ORDER_EXT_DTL，共 ' + orderExtCount + '笔数据同步成功!');
+                    $scope.logining = false;
+                }).error(function (errResp) {
+                    $scope.logining = false;
+                    $scope.showError(errResp.message);
+                });
+            } else if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.EPS_DELIVER_ORDER_EXT_DTL.name) {
+                // 电商出货单同步
+                IoneAdapterService.transferIoneAdapter("/epsOgbTask", param, $scope, function (response) {
+                    var totalEpsOgbCount = addResponse(response.updateEpsOgbCount, response.insertEpsOgbCount);
+                    var totalEpsLogisticsDtlRCount = addResponse(response.updateEpsLogisticsDtlRCount, response.insertEpsLogisticsDtlRCount);
+                    $scope.showInfo('ERP同步到 TIPTOP_EPS_OGB_FILE，共 ' + totalEpsOgbCount + '笔数据同步成功!\n TIPTOP_EPS_OGB_FILE 同步到 EPS_LOGISTICS_DTL_R，共 ' + totalEpsLogisticsDtlRCount + '笔数据同步成功!');
                     $scope.logining = false;
                 }).error(function (errResp) {
                     $scope.logining = false;

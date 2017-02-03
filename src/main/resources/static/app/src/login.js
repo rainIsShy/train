@@ -27,7 +27,7 @@ angular.module('IOne-login').controller('LoginController', function ($scope, $ht
 
             $scope.logining = false;
 
-            AuthenticationService.SetCredentials($scope.username, $scope.password, result);
+            AuthenticationService.SetCredentials($scope.username, $scope.password, result.userUuid, result);
 
             $window.location.href = '/';
         }, function () {

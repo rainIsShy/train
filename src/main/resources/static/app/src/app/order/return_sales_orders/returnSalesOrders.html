@@ -33,9 +33,9 @@
                                 ng-if="menuDisplayOption['detailTransfer'].display && (menuAuthDataMap[menuDisplayOption['detailTransfer'].uuid] || isAdmin() || !menuDisplayOption['detailTransfer'].uuid)">
                             <md-button class="md-button" aria-label="More"
                                        ng-click="transferClickAction($event, selectedItem, false)"
-                                       ng-disabled="disabledDetailTransfer">
+                                       ng-disabled="selectedItem.confirm != '2' || selectedItem.transferPsoFlag == '1'">
                                 <ng-md-icon icon="send"></ng-md-icon>
-                                抛转已选产品
+                                抛转退货
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>
@@ -137,18 +137,15 @@
                     </div>
 
                     <md-tabs md-dynamic-height md-border-bottom style="padding-top: 30px;">
-                        <md-tab label="产品信息">
+                        <md-tab label="退货">
                             <div layout="row" style="background-color: whitesmoke;height: 40px;">
-                            <span style="position: absolute; left: 10px;">
-                                <md-checkbox ng-model="selectedItem.selectAllDetails"
-                                             ng-change="selectAllDetails(selectedItem)"
-                                             aria-label="Checkbox"></md-checkbox>
-                            </span>
+                                <span style="position: absolute; left: 10px;">
+                                    <md-checkbox ng-model="selectedItem.selectAllDetails"
+                                                 ng-change="selectAllDetails(selectedItem)"
+                                                 aria-label="Checkbox"></md-checkbox>
+                                </span>
                                 <span flex="20" style="margin-left: 50px;margin-top:10px;">选择所有产品</span>
                             </div>
-                            <div ng-include=" 'app/src/app/order/return_sales_orders/detailTab.html' "></div>
-                        </md-tab>
-                        <md-tab label="退货">
                             <div ng-include=" 'app/src/app/order/return_sales_orders/extendDetailTab.html' "></div>
                         </md-tab>
                     </md-tabs>
@@ -160,19 +157,13 @@
                 <div layout="row" layout-align="start center">
                     <md-input-container flex="20" ng-show="selectedItem == null" style="margin-left: 50px;">
                         <label>审核状态</label>
-                        <md-select ng-model="listFilterOption.select.returnSalesOrderDetailConfirm">
+                        <md-select ng-model="listFilterOption.select.returnSalesOrderExtendDetailConfirm">
                             <md-option ng-repeat="(key, value) in AUDIT" ng-value="key">{{value.name}}</md-option>
                         </md-select>
                     </md-input-container>
                     <md-input-container flex="20" ng-show="selectedItem == null">
-                        <label>生效状态</label>
-                        <md-select ng-model="listFilterOption.select.returnSalesOrderDetailStatus">
-                            <md-option ng-repeat="(key, value) in STATUS" ng-value="key">{{value.name}}</md-option>
-                        </md-select>
-                    </md-input-container>
-                    <md-input-container flex="20" ng-show="selectedItem == null">
                         <label>抛转状态</label>
-                        <md-select ng-model="listFilterOption.select.returnSalesOrderDetailTransfer">
+                        <md-select ng-model="listFilterOption.select.returnSalesOrderExtendDetailTransferFlag">
                             <md-option ng-repeat="(key, value) in TRANSFER_PSO_FLAG" ng-value="key">{{value.name}}
                             </md-option>
                         </md-select>
@@ -339,9 +330,9 @@
                                 </div>
                                 <!--<div flex="10"><img style="max-height: 100px;margin-top:5px;" ng-src="app/img/item.jpeg"></div>-->
                                 <div flex="25">
-                                    <div layout-padding>商品名称: <span>{{detail.salesOrderDetail.item.name}}</span></div>
-                                    <div layout-padding>规格: <span>{{detail.salesOrderDetail.item.standard}}</span></div>
-                                    <div layout-padding>销退原因: <span>{{detail.returnReason.name}}</span></div>
+                                    <div layout-padding>套件商品名称: <span>{{detail.parentItem.name}}</span></div>
+                                    <div layout-padding>商品名称: <span>{{detail.item.name}}</span></div>
+                                    <div layout-padding>规格: <span>{{detail.item.standard}}</span></div>
                                 </div>
                                 <div flex="25">
                                     <div layout-padding>销退数量: <span>{{detail.returnQuantity}}</span></div>
@@ -349,9 +340,9 @@
                                     <div layout-padding>含税退货金额: <span>{{detail.originalReturnOrderAmountTax | currency:"￥":2}}</span></div>
                                 </div>
                                 <div flex="25">
-                                    <div layout-padding>生效状态: <span>{{STATUS[detail.status].name}}</span></div>
                                     <div layout-padding>审核状态: <span>{{AUDIT[detail.confirm].name}}</span></div>
-                                    <div layout-padding>抛转状态: <span>{{TRANSFER_PSO_FLAG[detail.transferReturnFlag].name}}</span></div>
+                                    <div layout-padding>抛转状态: <span>{{TRANSFER_PSO_FLAG[detail.transferFlag].name}}</span></div>
+                                    <div layout-padding>销退原因: <span>{{detail.returnReason.name}}</span></div>
                                 </div>
                             </div>
                         </div>
@@ -361,22 +352,6 @@
                 <div pagination option="pageOption" callback="refreshList()"></div>
             </div>
         </div>
-    </div>
-
-    <div ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS">
-        <div layout="row" class="top-title">
-            <div flex="100" class="left-title">
-                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="listItemAction()"
-                           style="float: left; margin-left: 36px;">
-                    <ng-md-icon icon="chevron_left"></ng-md-icon>
-                </md-button>
-                <span>{{desc}}</span>
-                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="saveItemAction()">
-                    <ng-md-icon icon="save"></ng-md-icon>
-                </md-button>
-            </div>
-        </div>
-        <object-editor class="object-editor" status="status" source="source" domain="domain"></object-editor>
     </div>
 
 </div>

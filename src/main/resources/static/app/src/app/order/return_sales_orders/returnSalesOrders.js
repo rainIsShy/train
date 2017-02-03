@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', function ($scope, PSOReturnSalesOrdersMasterService, PSOReturnSalesOrdersDetailsService, PSOReturnSalesOrdersExtendsService, Constant, $mdDialog, $q) {
+angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', function ($scope, PSOReturnSalesOrdersMasterService, PSOReturnSalesOrdersExtends2Service, Constant, ErpAdapterService) {
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
@@ -18,9 +18,10 @@ angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', f
             status: Constant.STATUS[0].value,
             confirm: Constant.AUDIT[0].value,
             transferPsoFlag: Constant.TRANSFER_PSO_FLAG[0].value,
-            returnSalesOrderDetailStatus: Constant.STATUS[0].value,
-            returnSalesOrderDetailConfirm: Constant.AUDIT[0].value,
-            returnSalesOrderDetailTransfer: Constant.TRANSFER_PSO_FLAG[0].value,
+            returnSalesOrderExtendDetailConfirm: Constant.AUDIT[0].value,
+            returnSalesOrderExtendDetailTransferFlag: Constant.TRANSFER_PSO_FLAG[0].value,
+            startOrderDate: '',
+            endOrderDate: '',
             channelUuid: ''
         },
         no: '',
@@ -49,28 +50,35 @@ angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', f
     };
 
     $scope.refreshList = function () {
-        PSOReturnSalesOrdersMasterService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption.select.confirm, $scope.listFilterOption.select.status, $scope.listFilterOption.select.transferPsoFlag,
-            $scope.listFilterOption.no, $scope.listFilterOption.select.startOrderDate, $scope.listFilterOption.select.endOrderDate, $scope.listFilterOption.select.channelUuid, $scope.listFilterOption.customerName, '1',
-            $scope.listFilterOption.select.returnSalesOrderDetailConfirm, $scope.listFilterOption.select.returnSalesOrderDetailStatus, $scope.listFilterOption.select.returnSalesOrderDetailTransfer, $scope.RES_UUID_MAP.PSO.SO_RETURN.RES_UUID)
-            .success(function (data) {
-                $scope.itemList = data.content;
-                $scope.pageOption.totalPage = data.totalPages;
-                $scope.pageOption.totalElements = data.totalElements;
-                $scope.selectAllFlag = false;
-                $scope.selectedItemSize = 0;
-                $scope.selectedItemAmount = 0;
-                $scope.selectedItemReturnAmount = 0;
-                //get details
-                angular.forEach($scope.itemList, function (item) {
-                    PSOReturnSalesOrdersDetailsService.getAll(item.uuid).success(function (data) {
-                        item.detailList = data.content;
-                        item.selectAllDetails = false;
-                        $scope.updateMasterStateByReturnDetails(item);
-                    }).error(function (response) {
-                        $scope.showError(response.message);
-                    });
+        var filterOptions = {
+            orderMasterNo: $scope.listFilterOption.no,
+            returnSalesOrderExtendDetailConfirm: $scope.listFilterOption.select.returnSalesOrderExtendDetailConfirm,
+            returnSalesOrderExtendDetailTransferFlag: $scope.listFilterOption.select.returnSalesOrderExtendDetailTransferFlag,
+            orderDateBegin: $scope.listFilterOption.select.startOrderDate,
+            orderDateEnd: $scope.listFilterOption.select.endOrderDate,
+            channelUuid: $scope.listFilterOption.select.channelUuid,
+            allNames: $scope.listFilterOption.customerName,
+            onlyReturn: '1'
+        };
+        PSOReturnSalesOrdersMasterService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, filterOptions, $scope.RES_UUID_MAP.PSO.SO_RETURN.RES_UUID).success(function (data) {
+            $scope.itemList = data.content;
+            $scope.pageOption.totalPage = data.totalPages;
+            $scope.pageOption.totalElements = data.totalElements;
+            $scope.selectAllFlag = false;
+            $scope.selectedItemSize = 0;
+            $scope.selectedItemAmount = 0;
+            $scope.selectedItemReturnAmount = 0;
+            //get details
+            angular.forEach($scope.itemList, function (item) {
+                PSOReturnSalesOrdersExtends2Service.getAll(item.uuid).success(function (data) {
+                    item.detailList = data.content;
+                    item.selectAllDetails = false;
+                    $scope.updateMasterStateByReturnDetails(item);
+                }).error(function (response) {
+                    $scope.showError(response.message);
                 });
-            }).error(function (response) {
+            });
+        }).error(function (response) {
             $scope.showError(response.message);
         });
     };
@@ -113,29 +121,7 @@ angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', f
         $scope.selectedItem = item;
         $scope.selectedItem.extendDetailList = [];
         $scope.selectedItem.selectAllDetails = false;
-        //PSOReturnSalesOrdersDetailsService.getAll(item.uuid).success(function (data) {
-        //    //$scope.subItemList = data.content;
-        //    $scope.selectedItem.detailList = data.content;
-        //    $scope.setDetailsBgColor(item.detailList);
-        //    angular.forEach(item.detailList, function (returnDetail) {
-        //        PSOReturnSalesOrdersExtendsService.getAll(returnDetail.salesOrderMaster.uuid, returnDetail.uuid).success(function (data) {
-        //            if (data.totalElements > 0) {
-        //                item.extendDetailList = item.extendDetailList.concat(data.content);
-        //            }
-        //        }).error(function (response) {
-        //            $scope.showError(response.message);
-        //        });
-        //    });
-        //});
-        angular.forEach(item.detailList, function (returnDetail) {
-            PSOReturnSalesOrdersExtendsService.getAll(returnDetail.salesOrderMaster.uuid, returnDetail.uuid).success(function (data) {
-                if (data.totalElements > 0) {
-                    item.extendDetailList = item.extendDetailList.concat(data.content);
-                }
-            }).error(function (response) {
-                $scope.showError(response.message);
-            });
-        });
+
         $scope.displayAdvancedSearPanel = false;
     };
 
@@ -152,27 +138,11 @@ angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', f
      */
     $scope.toggleMorePanelAction = function (item) {
         item.showMorePanel = !item.showMorePanel;
-        //console.info($scope.itemList);
-        //if (item.showMorePanel) {
-        //    PSOReturnSalesOrdersDetailsService.getAll(item.uuid).success(function (data) {
-        //        $scope.subItemList = data.content;
-        //        item.detailList = $scope.subItemList;
-        //        $scope.setDetailsBgColor(item.detailList);
-        //    });
-        //}
     };
 
     $scope.setDetailsBgColor = function (detailList) {
         angular.forEach(detailList, function (detail) {
-            //    if (detail.paidType == '1') {
-            //        detail.bgColor = {'background-color': '#76EEC6'};//green
-            //    } else if (detail.paidType == '2') {
-            //        detail.bgColor = {'background-color': '#76EEC6;'};//green
-            //    } else if (detail.paidType == '3') {
-            //        detail.bgColor = {'background-color': '#FFEC8B;'};//yellow
-            //    } else if (detail.paidType == '4') {
             detail.bgColor = {'background-color': '#FFAEB9;'};//red
-            //    }
         });
     };
     /**
@@ -216,30 +186,6 @@ angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', f
     };
 
     /**
-     * Save object according current status and domain.
-     */
-    $scope.saveItemAction = function () {
-        if ($scope.status == 'add') {
-            if ($scope.domain == 'CBI_BASE_ORDER_TYPE') {
-                SalesOrderMaster.add($scope.source).success(function (data) {
-                    $scope.showInfo('新增数据成功。');
-                }).error(function (data) {
-                    $scope.showError('新增失败:' + '<br>' + data.message);
-                });
-
-            }
-        } else if ($scope.status == 'edit') {
-            if ($scope.domain == 'CBI_BASE_ORDER_TYPE') {
-                SalesOrderMaster.modify($scope.source.uuid, $scope.source).success(function (data) {
-                    $scope.showInfo('修改数据成功。');
-                }).error(function (data) {
-                    $scope.showError('修改失败:' + '<br>' + data.message);
-                });
-            }
-        }
-    };
-
-    /**
      * Delete detail item
      */
     $scope.deleteDetailAction = function (detail) {
@@ -266,61 +212,20 @@ angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', f
         $scope.disableBatchMenuButtons();
     };
 
-    //$scope.confirmClickAction = function (event, item) {
-    //    $scope.stopEventPropagation(event);
-    //    if (item.confirm == Constant.CONFIRM[2].value) {
-    //        $scope.showConfirm('确认取消审核吗？', '', function () {
-    //            var UpdateInput = {
-    //                uuid: item.uuid,
-    //                confirm: Constant.CONFIRM[1].value
-    //            };
-    //            SalesOrderMaster.modify(item.uuid, UpdateInput).success(function () {
-    //                item.confirm = Constant.CONFIRM[1].value;
-    //                $scope.showInfo('取消审核成功！');
-    //            }).error(function (response) {
-    //                //$scope.showError($scope.getError(response.message));
-    //                $scope.showError(response.message);
-    //            });
-    //        });
-    //    } else {
-    //        $scope.showConfirm('确认审核吗？', '', function () {
-    //            var UpdateInput = {
-    //                uuid: item.uuid,
-    //                confirm: Constant.CONFIRM[2].value
-    //            };
-    //            SalesOrderMaster.modify(item.uuid, UpdateInput).success(function () {
-    //                item.confirm = Constant.CONFIRM[2].value;
-    //                $scope.showInfo('审核成功！');
-    //            }).error(function (response) {
-    //                //$scope.showError($scope.getError(response.message));
-    //                $scope.showError(response.message);
-    //            });
-    //        });
-    //    }
-    //};
-
     $scope.confirmClickAction = function (event, item, confirmVal, bApplyAll) {
         $scope.stopEventPropagation(event);
-        var action = "审核";
-        if (confirmVal == 1) {
-            action = "取消审核";
-        }
+
+        var action = confirmVal != 1 ? "审核" : "取消审核";
         $scope.showConfirm('确认' + action + '吗？', '', function () {
-            var detailUuids = "";
+            var detailUuids = [];
             angular.forEach(item.detailList, function (detail) {
-                if (bApplyAll === true) {
-                    if (detail.confirm != confirmVal) {
-                        detailUuids += detail.uuid + ",";
-                    }
-                } else {
-                    if (detail.confirm != confirmVal && detail.selected == true) {
-                        detailUuids += detail.uuid + ",";
-                    }
+                if (detail.confirm != confirmVal && (bApplyAll || detail.selected)) {
+                    detailUuids.push(detail.uuid);
                 }
             });
             //console.info(detailUuids);
-            if (detailUuids != "") {
-                PSOReturnSalesOrdersDetailsService.confirm(item.uuid, detailUuids, confirmVal).success(function (data) {
+            if (detailUuids.length) {
+                PSOReturnSalesOrdersExtends2Service.confirm(item.uuid, detailUuids, confirmVal).success(function (data) {
                     $scope.updateDetailsConfirmState(item.detailList, data);
                     $scope.updateMasterStateByReturnDetails(item);
                     $scope.showInfo('预订单退货单' + action + '成功！');
@@ -336,180 +241,6 @@ angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', f
         });
     };
 
-    $scope.transferClickAction = function (event, item, bApplyAll) {
-        $scope.stopEventPropagation(event);
-
-        $scope.showConfirm('确认抛转吗？', '', function () {
-            var detailUuids = "";
-            angular.forEach(item.detailList, function (detail) {
-                if (bApplyAll === true) {
-                    if (detail.transferReturnFlag != '1') {
-                        detailUuids += detail.uuid + ",";
-                    }
-                } else {
-                    if (detail.transferReturnFlag != '1' && detail.selected == true) {
-                        detailUuids += detail.uuid + ",";
-                    }
-                }
-            });
-            if (detailUuids != "") {
-                detailUuids = detailUuids.substring(0, detailUuids.length - 1);
-            }
-
-            if (detailUuids != "") {
-                PSOReturnSalesOrdersDetailsService.transfer(item.uuid, detailUuids).success(function (response) {
-                    if (response.status == 'COMPLETED') {
-                        $scope.updateDetailsTransferState(item.detailList, detailUuids);
-                        $scope.updateMasterStateByReturnDetails(item);
-                        $scope.disableBatchMenuButtons();
-                        $scope.disableDetailMenuButtons();
-                        $scope.showInfo('预订单退货单抛转成功！');
-                        $scope.getReturnOrderMasterCount();
-                    } else {
-                        if (response.message != undefined) {
-                            $scope.showError('预订单退货单抛转失败,状态:' + response.status + '<br>' + response.message);
-                        } else {
-                            $scope.showError('预订单退货单抛转失败,状态:' + response.status);
-                        }
-                    }
-                }).error(function (response) {
-                    $scope.showError('预订单退货单抛转失败,状态:' + response.status + '<br>' + response.message);
-                });
-            } else {
-                $scope.showWarn("请选择需要抛转的商品！");
-            }
-        });
-    };
-
-
-    $scope.statusClickAction = function (event, item) {
-        $scope.stopEventPropagation(event);
-        if (item.status == Constant.STATUS[1].value) {
-            $scope.showConfirm('确认改为失效吗？', '', function () {
-                var UpdateInput = {
-                    uuid: item.uuid,
-                    status: Constant.STATUS[2].value
-                };
-                SalesOrderMaster.modify(item.uuid, UpdateInput).success(function () {
-                    item.status = Constant.STATUS[2].value;
-                    $scope.showInfo('修改为失效成功！');
-                    $scope.getReturnOrderMasterCount();
-                }).error(function (response) {
-                    //$scope.showError($scope.getError(response.message));
-                    $scope.showError(response.message);
-                });
-            });
-        } else {
-            $scope.showConfirm('确认改为生效吗？', '', function () {
-                var UpdateInput = {
-                    uuid: item.uuid,
-                    status: Constant.STATUS[1].value
-                };
-                SalesOrderMaster.modify(item.uuid, UpdateInput).success(function () {
-                    item.status = Constant.STATUS[1].value;
-                    $scope.showInfo('修改为生效成功！');
-                    $scope.getReturnOrderMasterCount();
-                }).error(function (response) {
-                    //$scope.showError($scope.getError(response.message));
-                    $scope.showError(response.message);
-                });
-            });
-        }
-    };
-
-    $scope.deleteClickAction = function (event, item) {
-        $scope.stopEventPropagation(event);
-        if (item.status != '1' || item.confirm != '1') {
-            $scope.showWarn('仅当预订单类型的状态是有效且未审核时才允许删除!');
-            return;
-        }
-        $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
-            SalesOrderMaster.delete(item.uuid).success(function () {
-                $scope.selectedItem = null;
-                $scope.refreshList();
-                $scope.showInfo('删除数据成功。');
-                $scope.getReturnOrderMasterCount();
-            });
-        });
-    };
-
-    $scope.deleteAllClickAction = function (event) {
-        $scope.stopEventPropagation(event);
-        var promises = [];
-        var noDeleteNos = '';
-        var count = 0;
-        angular.forEach($scope.itemList, function (item) {
-            if (item.selected === true) {
-                if (item.status == '1' && item.confirm == '1') {
-                    var response = SalesOrderMaster.delete(item.uuid).success(function () {
-                    });
-                    promises.push(response);
-                    count++;
-                } else {
-                    noDeleteNos = noDeleteNos + item.no + '<br>';
-                }
-            }
-        });
-        if (count == 0) {
-            $scope.showWarn('没有选择任何状态是有效且未审核的可删除项目，请选择！');
-            return;
-        }
-        $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
-            if (noDeleteNos !== '') {
-                $scope.showWarn('以下状态是失效或已审核的的项目将不会删除：' + '<br>' + noDeleteNos);
-            }
-            $q.all(promises).then(function (data) {
-                //console.info(data);
-                $scope.refreshList();
-                $scope.showInfo('删除成功！');
-                $scope.getReturnOrderMasterCount();
-            }, function (data) {
-                $scope.showError(data.message);
-                $scope.showError(data.data.message);
-            });
-        });
-    };
-
-    //批量审核
-    //$scope.confirmAllClickAction = function (event) {
-    //    $scope.stopEventPropagation(event);
-    //    var promises = [];
-    //    var confirmedNos = '';
-    //    var count = 0;
-    //    angular.forEach($scope.itemList, function (item) {
-    //        if (item.selected === true) {
-    //            if (item.confirm != Constant.CONFIRM[2].value) {
-    //                var UpdateInput = {
-    //                    uuid: item.uuid,
-    //                    confirm: Constant.CONFIRM[2].value
-    //                };
-    //                var response = SalesOrderMaster.modify(item.uuid, UpdateInput).success(function () {
-    //                });
-    //                promises.push(response);
-    //                count++;
-    //            } else {
-    //                confirmedNos = confirmedNos + item.no + '<br>';
-    //            }
-    //        }
-    //    });
-    //    if (count == 0) {
-    //        $scope.showWarn('没有选择任何未审核的项目，请先选择！');
-    //        return;
-    //    }
-    //    if (confirmedNos !== '') {
-    //        //confirmedNos = confirmedNos.substr(0, confirmedNos.length - 1);
-    //        $scope.showWarn('以下已审核过的项目将不再次审核：' + '<br>' + confirmedNos);
-    //    }
-    //    $q.all(promises).then(function (data) {
-    //        //console.info(data);
-    //        $scope.refreshList();
-    //        $scope.showInfo('审核成功！');
-    //    }, function (data) {
-    //        $scope.showError(data.message);
-    //        $scope.showError(data.data.message);
-    //    });
-    //};
-
     $scope.confirmAllClickAction = function (event, confirmVal) {
         $scope.stopEventPropagation(event);
 
@@ -518,43 +249,76 @@ angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', f
             return;
         }
 
-        var action = "审核";
-        if (confirmVal == 1) {
-            action = "取消审核";
-        }
+        var action = confirmVal != 1 ? "审核" : "取消审核";
         $scope.showConfirm('确认' + action + '吗', '', function () {
-            var promises = [];
-            var bError = false;
+            var detailUuids = [];
             angular.forEach($scope.itemList, function (item) {
                 if (item.selected) {
-                    var detailUuids = "";
                     angular.forEach(item.detailList, function (detail) {
                         if (detail.confirm != confirmVal) {
-                            detailUuids += detail.uuid + ",";
+                            detailUuids.push(detail.uuid);
                         }
                     });
 
-                    if (detailUuids != "") {
-                        var response = PSOReturnSalesOrdersDetailsService.confirm(item.uuid, detailUuids, confirmVal).success(function (data) {
+                }
+            });
+            if (detailUuids.length) {
+                PSOReturnSalesOrdersExtends2Service.confirm('_batch', detailUuids, confirmVal).success(function (data) {
+                    angular.forEach($scope.itemList, function (item) {
+                        if (item.selected) {
                             $scope.updateDetailsConfirmState(item.detailList, data);
                             $scope.updateMasterStateByReturnDetails(item);
-                        }).error(function (response) {
-                            bError = true;
-                            $scope.showError('预订单退货单' + item.no + action + '失败：' + response.message);
-                        });
-                        promises.push(response);
-                    } else {
-                        $scope.showWarn("请选择需要" + action + "的预订单退货单！");
-                    }
-                }
-            });
-            $q.all(promises).then(function (data) {
-                if (!bError) {
-                    $scope.showInfo('预订单退货单' + action + '成功！');
+                        }
+                    });
+
                     $scope.getReturnOrderMasterCount();
-                }
+                    $scope.disableBatchMenuButtons();
+                    $scope.showInfo('预订单退货单' + action + '成功！');
+                }).error(function (response) {
+                    $scope.showError('预订单退货单' + item.no + action + '失败：' + response.message);
+                });
+            } else {
+                $scope.showWarn("请选择需要" + action + "的预订单退货单！");
+            }
+        });
+    };
+
+    $scope.confirmDetailClickAction = function (event, item, confirmVal, detail) {
+        $scope.stopEventPropagation(event);
+        var action = confirmVal != 1 ? "审核" : "取消审核";
+
+        $scope.showConfirm('确认' + action + '吗？', '', function () {
+            PSOReturnSalesOrdersExtends2Service.confirm(item.uuid, [ detail.uuid ], confirmVal).success(function () {
+                detail.confirm = confirmVal;
+                $scope.updateMasterStateByReturnDetails(item);
                 $scope.disableBatchMenuButtons();
+                $scope.disableDetailMenuButtons();
+                $scope.showInfo('预订单退货单' + action + '成功！');
+                $scope.getReturnOrderMasterCount();
+            }).error(function (response) {
+                $scope.showError(response.message);
             });
+        });
+    };
+
+    $scope.transferClickAction = function (event, item, bApplyAll) {
+        $scope.stopEventPropagation(event);
+
+        $scope.showConfirm('确认抛转吗？', '', function () {
+            var transferData = {
+                'PSO_SO_MST_UUID': item.uuid,
+                'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
+            };
+
+            ErpAdapterService.transferErpAdapter('/returnSalesOrderToOhaTask', transferData, $scope, function (resp) {
+                $scope.showInfo('预订单退货单抛转成功');
+                $scope.refreshList();
+                $scope.getReturnOrderMasterCount();
+                if ($scope.selectedItem) {
+                    $scope.showDetailPanelAction($scope.selectedItem);
+                }
+            });
+
         });
     };
 
@@ -566,65 +330,52 @@ angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', f
             return;
         }
 
-        var action = "抛转";
-        $scope.showConfirm('确认' + action + '吗', '', function () {
-            var promises = [];
-            var bError = false;
+        $scope.showConfirm('确认抛转吗?', '', function () {
+            var uuids = "";
             angular.forEach($scope.itemList, function (item) {
                 if (item.selected) {
-                    var detailUuids = "";
-                    angular.forEach(item.detailList, function (detail) {
-                        if (detail.transferReturnFlag != '1') {
-                            detailUuids += detail.uuid + ",";
-                        }
-                    });
-                    if (detailUuids != "") {
-                        detailUuids = detailUuids.substring(0, detailUuids.length - 1);
-                    }
-
-                    if (detailUuids != "") {
-                        var response = PSOReturnSalesOrdersDetailsService.transfer(item.uuid, detailUuids).success(function (response) {
-                            if (response.status == 'COMPLETED') {
-                                $scope.updateDetailsTransferState(item.detailList, detailUuids);
-                                $scope.updateMasterStateByReturnDetails(item);
-                                $scope.showInfo('预订单退货单抛转成功！');
-                            } else {
-                                bError = true;
-                                if (response.message != undefined) {
-                                    $scope.showError('预订单退货单' + item.no + '抛转失败,状态:' + response.status + '<br>' + response.message);
-                                }
-                                else {
-                                    $scope.showError('预订单退货单' + item.no + '抛转失败,状态:' + response.status);
-                                }
-                            }
-                        }).error(function (response) {
-                            bError = true;
-                            $scope.showError('预订单退货单' + item.no + action + '失败,状态:' + response.status + '<br>' + response.message);
-                        });
-                        promises.push(response);
-                    } else {
-                        $scope.showWarn("请选择需要" + action + "的预订单退货单！");
-                    }
+                    uuids = uuids + item.uuid + ',';
                 }
             });
-            $q.all(promises).then(function (data) {
-                if (!bError) {
-                    $scope.showInfo('预订单退货单' + action + '成功！');
+
+            var transferData = {
+                'PSO_SO_MST_UUID': uuids,
+                'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
+            };
+
+            if (uuids.length) {
+                ErpAdapterService.transferErpAdapter('/returnSalesOrderToOhaTask', transferData, $scope, function (response) {
+                    $scope.showInfo('预订单退货单抛转成功');
+                    $scope.refreshList();
                     $scope.getReturnOrderMasterCount();
-                }
+                });
+            } else {
+                $scope.showWarn("请选择需要抛转的预订单退货单！");
+            }
+
+        });
+    };
+
+    $scope.transferDetailClickAction = function (event, item, detail) {
+        $scope.stopEventPropagation(event);
+
+        $scope.showConfirm('确认抛转吗？', '', function () {
+            PSOReturnSalesOrdersExtends2Service.transfer(item.uuid, [ detail.uuid ]).success(function () {
+                detail.transferFlag = '1';
+                $scope.updateMasterStateByReturnDetails(item);
                 $scope.disableBatchMenuButtons();
+                $scope.disableDetailMenuButtons();
+                $scope.showInfo('预订单退货单抛转成功！');
+                $scope.getReturnOrderMasterCount();
+            }).error(function () {
+                $scope.showError('预订单退货单抛转失败');
             });
         });
     };
 
-
     $scope.selectAllAction = function () {
         angular.forEach($scope.itemList, function (item) {
-            if ($scope.selectAllFlag) {
-                item.selected = true;
-            } else {
-                item.selected = false;
-            }
+            item.selected = $scope.selectAllFlag;
             item.selectedRef = item.selected;
         });
         //ADD...
@@ -641,175 +392,23 @@ angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', f
         $scope.disableBatchMenuButtons();
     };
 
-    $scope.confirmDetailClickAction = function (event, item, confirmVal, detail) {
-        $scope.stopEventPropagation(event);
-        var action = "审核";
-        if (confirmVal == 1) {
-            action = "取消审核";
-        }
-
-        $scope.showConfirm('确认' + action + '吗？', '', function () {
-            PSOReturnSalesOrdersDetailsService.confirm(item.uuid, detail.uuid, confirmVal).success(function (data) {
-                detail.confirm = confirmVal;
-                $scope.updateMasterStateByReturnDetails(item);
-                $scope.disableBatchMenuButtons();
-                $scope.disableDetailMenuButtons();
-                $scope.showInfo('预订单退货单' + action + '成功！');
-                $scope.getReturnOrderMasterCount();
-            }).error(function (response) {
-                $scope.showError(response.message);
-            });
-        });
-    };
-
-    $scope.transferDetailClickAction = function (event, item, detail) {
-        $scope.stopEventPropagation(event);
-
-        $scope.showConfirm('确认抛转吗？', '', function () {
-            PSOReturnSalesOrdersDetailsService.transfer(item.uuid, detail.uuid).success(function (response) {
-                if (response.status == 'COMPLETED') {
-                    detail.transferReturnFlag = '1';
-                    $scope.updateMasterStateByReturnDetails(item);
-                    $scope.disableBatchMenuButtons();
-                    $scope.disableDetailMenuButtons();
-                    $scope.showInfo('预订单退货单抛转成功！');
-                    $scope.getReturnOrderMasterCount();
-                } else {
-                    if (response.message != undefined) {
-                        $scope.showError('预订单退货单抛转失败,状态:' + response.status + '<br>' + response.message);
-                    }
-                    else {
-                        $scope.showError('预订单退货单抛转失败,状态:' + response.status);
-                    }
-                }
-            }).error(function (response) {
-                $scope.showError(response.message);
-            });
-        });
-    };
-
-    $scope.detailConfirmClickAction = function (event, detail) {
-        $scope.stopEventPropagation(event);
-        if (detail.confirm == 2) {
-            $scope.showConfirm('确认取消审核退货单身吗？', '', function () {
-                var UpdateInput = {
-                    uuid: detail.uuid,
-                    confirm: '1'
-                };
-                PSOReturnSalesOrdersDetailsService.modify(detail.salesOrderMaster.uuid, UpdateInput).success(function (data) {
-                    detail.confirm = '1';
-                    //console.info("取消审核成功返回：");
-                    //console.info(data);
-                    $scope.showInfo('取消审核成功！');
-                    $scope.getReturnOrderMasterCount();
-                }).error(function (response) {
-                    //$scope.showError($scope.getError(response.message));
-                    $scope.showError(response.message);
-                });
-            });
-        } else {
-            $scope.showConfirm('确认审核退货单身吗？', '', function () {
-                var UpdateInput = {
-                    uuid: detail.uuid,
-                    confirm: '2'
-                };
-                PSOReturnSalesOrdersDetailsService.modify(detail.salesOrderMaster.uuid, UpdateInput).success(function (data) {
-                    detail.confirm = '2';
-                    //console.info("审核成功返回：");
-                    //console.info(data);
-                    $scope.showInfo('审核成功！');
-                    $scope.getReturnOrderMasterCount();
-                }).error(function (response) {
-                    //$scope.showError($scope.getError(response.message));
-                    $scope.showError(response.message);
-                });
-            });
-        }
-    };
-
-    $scope.detailStatusClickAction = function (event, detail) {
-        $scope.stopEventPropagation(event);
-        if (detail.status == 1) {
-            $scope.showConfirm('确认将退货单身改为失效吗？', '', function () {
-                var UpdateInput = {
-                    uuid: detail.uuid,
-                    status: '2'
-                };
-                PSOReturnSalesOrdersDetailsService.modify(detail.salesOrderMaster.uuid, UpdateInput).success(function (data) {
-                    detail.status = '2';
-                    $scope.showInfo('设置失效成功！');
-                    $scope.getReturnOrderMasterCount();
-                }).error(function (response) {
-                    $scope.showError(response.message);
-                });
-            });
-        } else {
-            $scope.showConfirm('确认将退货单身改为生效吗？', '', function () {
-                var UpdateInput = {
-                    uuid: detail.uuid,
-                    status: '1'
-                };
-                PSOReturnSalesOrdersDetailsService.modify(detail.salesOrderMaster.uuid, UpdateInput).success(function (data) {
-                    detail.status = '1';
-                    $scope.showInfo('设置生效成功成功！');
-                    $scope.getReturnOrderMasterCount();
-                }).error(function (response) {
-                    $scope.showError(response.message);
-                });
-            });
-        }
-    };
-
-
-    //$scope.detailTransferClickAction = function (event, detail) {
-    //    $scope.stopEventPropagation(event);
-    //    if (detail.transferReturnFlag == 1) {
-    //        $scope.showConfirm('确认重新抛转退货单身吗？', '', function () {
-    //            var UpdateInput = {
-    //                uuid: detail.uuid
-    //            };
-    //            PSOReturnSalesOrdersDetailsService.modify(detail.salesOrderMaster.uuid, UpdateInput).success(function (data) {
-    //                //console.info("重新抛转成功返回：");
-    //                //console.info(data);
-    //                $scope.showInfo('重新抛转成功！');
-    //            }).error(function (response) {
-    //                //$scope.showError($scope.getError(response.message));
-    //                $scope.showError(response.message);
-    //            });
-    //        });
-    //    } else {
-    //        $scope.showConfirm('确认抛转退货单身吗？', '', function () {
-    //            var UpdateInput = {
-    //                uuid: detail.uuid,
-    //                transferReturnFlag: '1'
-    //            };
-    //            PSOReturnSalesOrdersDetailsService.modify(detail.salesOrderMaster.uuid, UpdateInput).success(function (data) {
-    //                detail.transferReturnFlag = '1';
-    //                $scope.showInfo('抛转成功！');
-    //            }).error(function (response) {
-    //                $scope.showError(response.message);
-    //            });
-    //        });
-    //    }
-    //};
-
     $scope.updateDetailsConfirmState = function (details, responseDetails) {
         angular.forEach(details, function (detail) {
             angular.forEach(responseDetails, function (responseDetail) {
                 if (detail.uuid == responseDetail.uuid) {
                     detail.confirm = responseDetail.confirm;
-                    detail.transferReturnFlag = responseDetail.transferReturnFlag;
+                    detail.transferFlag = responseDetail.transferFlag;
                 }
             });
         });
     };
 
     $scope.updateDetailsTransferState = function (details, transferredDetailUuids) {
-        if (details != null && transferredDetailUuids != null) {
+        if (details && transferredDetailUuids) {
             angular.forEach(details, function (detail) {
-                angular.forEach(transferredDetailUuids.split(','), function (detailUuid) {
+                angular.forEach(transferredDetailUuids, function (detailUuid) {
                     if (detail.uuid == detailUuid) {
-                        detail.transferReturnFlag = Constant.TRANSFER_PSO_FLAG[1].value;
+                        detail.transferFlag = Constant.TRANSFER_PSO_FLAG[1].value;
                     }
                 });
             });
@@ -826,8 +425,8 @@ angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', f
                 confirm = detail.confirm;
             }
             //1:抛转;单身有未抛转的,整单单头就为未抛转
-            if (detail.transferReturnFlag == Constant.TRANSFER_PSO_FLAG[2].value || detail.transferReturnFlag == '') {
-                transferPsoFlag = detail.transferReturnFlag;
+            if (detail.transferFlag == Constant.TRANSFER_PSO_FLAG[2].value || detail.transferFlag == '') {
+                transferPsoFlag = detail.transferFlag;
             }
             returnAmount += detail.originalReturnOrderAmount;
             returnAmountTax += detail.originalReturnOrderAmountTax;
@@ -840,11 +439,7 @@ angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', f
 
     $scope.selectAllDetails = function (item) {
         angular.forEach(item.detailList, function (detail) {
-            if (item.selectAllDetails) {
-                detail.selected = true;
-            } else {
-                detail.selected = false;
-            }
+            detail.selected = item.selectAllDetails;
             detail.selectedRef = detail.selected;
         });
         $scope.disableDetailMenuButtons();
@@ -862,7 +457,7 @@ angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', f
         var transfer = '';
         var diffConfirm = false;
         var diffTransfer = false;
-        angular.forEach($scope.itemList, function (item, index) {
+        angular.forEach($scope.itemList, function (item) {
             if (item.selectedRef) {
                 selectedCount++;
                 if (confirm == '') {
@@ -900,11 +495,7 @@ angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', f
 
             if (diffTransfer == true || diffConfirm == true) {
                 $scope.disabledBatchTransfer = true;
-            } else if (transfer == '1' || confirm == '1') { //已抛转或未审核
-                $scope.disabledBatchTransfer = true;
-            } else {
-                $scope.disabledBatchTransfer = false;
-            }
+            } else $scope.disabledBatchTransfer = (transfer == '1' || confirm == '1');
         }
     };
 
@@ -915,7 +506,7 @@ angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', f
         var diffConfirm = false;
         var diffTransfer = false;
         if ($scope.selectedItem != null) {
-            angular.forEach($scope.selectedItem.detailList, function (detail, index) {
+            angular.forEach($scope.selectedItem.detailList, function (detail) {
                 //alert(detail.selectedRef);
                 if (detail.selectedRef) {
                     selectedCount++;
@@ -926,12 +517,10 @@ angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', f
                             diffConfirm = true;
                         }
                     }
-                    if (transfer == '') {
-                        transfer = detail.transferReturnFlag;
-                    } else {
-                        if (transfer != detail.transferReturnFlag) {
-                            diffTransfer = true;
-                        }
+                    if (!transfer) {
+                        transfer = detail.transferFlag;
+                    } else if (transfer != detail.transferFlag) {
+                        diffTransfer = true;
                     }
                 }
             });
@@ -955,11 +544,7 @@ angular.module('IOne-Production').controller('PSOReturnSalesOrdersController', f
 
             if (diffTransfer == true) {
                 $scope.disabledDetailTransfer = true;
-            } else if (transfer == '1' || confirm == '1') {
-                $scope.disabledDetailTransfer = true;
-            } else {
-                $scope.disabledDetailTransfer = false;
-            }
+            } else $scope.disabledDetailTransfer = (transfer == '1' || confirm == '1');
         }
     };
 

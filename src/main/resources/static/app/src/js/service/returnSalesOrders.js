@@ -1,8 +1,8 @@
 angular.module('IOne-Production').service('PSOReturnSalesOrdersMasterService', function ($http, Constant) {
-    this.getAll = function (sizePerPage, page, confirm, status, transferPsoFlag, orderMasterNo, orderDateBegin, orderDateEnd, channelUuid, allNames, onlyReturn, returnSalesOrderDetailConfirm, returnSalesOrderDetailStatus, returnSalesOrderDetailTransfer, resUuid) {
-        confirm = confirm == 0 ? '' : confirm;
-        status = status == 0 ? '' : status;
-        transferPsoFlag = transferPsoFlag == 0 ? '' : transferPsoFlag;
+    this.getAll = function (sizePerPage, page, filterOptions, resUuid) {
+        var confirm = !filterOptions.confirm ? '' : filterOptions.confirm;
+        var status = !filterOptions.status ? '' : filterOptions.status;
+        var transferPsoFlag = !filterOptions.transferPsoFlag ? '' : filterOptions.transferPsoFlag;
 
         var url = '/salesOrders?size=' + sizePerPage
             + '&page=' + page
@@ -10,39 +10,38 @@ angular.module('IOne-Production').service('PSOReturnSalesOrdersMasterService', f
             + '&status=' + status
             + '&transferPsoFlag=' + transferPsoFlag;
 
-        if (orderMasterNo !== null) {
-            url = url + '&no=' + orderMasterNo;
+        if (filterOptions.orderMasterNo) {
+            url += '&no=' + filterOptions.orderMasterNo;
         }
-        if (orderDateBegin !== null && orderDateBegin !== undefined) {
-            var orderDateBegin = new Date(orderDateBegin);
-            orderDateBegin = moment(orderDateBegin).format('YYYY-MM-DD 00:00:00');
-            url = url + '&orderDateBegin=' + orderDateBegin;
+        if (filterOptions.psoOrderMstNo) {
+            url += '&psoOrderMstNo=' + filterOptions.psoOrderMstNo;
         }
-        if (orderDateEnd !== null && orderDateEnd !== undefined) {
-            var orderDateEnd = new Date(orderDateEnd);
-            orderDateEnd = moment(orderDateEnd).format('YYYY-MM-DD 23:59:59');
-            url = url + '&orderDateEnd=' + orderDateEnd;
+        if (filterOptions.orderDateBegin) {
+            url += '&orderDateBegin=' + moment(new Date(filterOptions.orderDateBegin)).format('YYYY-MM-DD 00:00:00');
         }
-        if (allNames !== null && allNames !== undefined) {
-            url = url + '&allNames=' + allNames;
+        if (filterOptions.orderDateEnd) {
+            url += '&orderDateEnd=' + moment(new Date(filterOptions.orderDateEnd)).format('YYYY-MM-DD 23:59:59');
         }
-        if (channelUuid != null && channelUuid != undefined) {
-            url = url + '&channelUuid=' + channelUuid;
+        if (filterOptions.allNames) {
+            url += '&allNames=' + filterOptions.allNames;
         }
-        if (onlyReturn != null && onlyReturn != undefined) {
-            url = url + '&onlyReturn=' + onlyReturn;
+        if (filterOptions.channelUuid) {
+            url += '&channelUuid=' + filterOptions.channelUuid;
         }
-        if (returnSalesOrderDetailConfirm !== undefined && returnSalesOrderDetailConfirm !== null && returnSalesOrderDetailConfirm !=0) {
-            url = url + '&returnSalesOrderDetailConfirm=' + returnSalesOrderDetailConfirm;
+        if (filterOptions.onlyReturn) {
+            url += '&onlyReturn=' + filterOptions.onlyReturn;
         }
-        if (returnSalesOrderDetailStatus !== undefined && returnSalesOrderDetailStatus !== null  && returnSalesOrderDetailStatus !=0) {
-            url = url + '&returnSalesOrderDetailStatus=' + returnSalesOrderDetailStatus;
+        if (filterOptions.returnSalesOrderExtendDetailConfirm && filterOptions.returnSalesOrderExtendDetailConfirm !== '0') {
+            url += '&returnSalesOrderExtendDetailConfirm=' + filterOptions.returnSalesOrderExtendDetailConfirm;
         }
-        if (returnSalesOrderDetailTransfer !== undefined && returnSalesOrderDetailTransfer !== null  && returnSalesOrderDetailTransfer !=0) {
-            url = url + '&returnSalesOrderDetailTransferPsoFlag=' + returnSalesOrderDetailTransfer;
+        // if (returnSalesOrderDetailStatus) {
+        //     url = url + '&returnSalesOrderDetailStatus=' + returnSalesOrderDetailStatus;
+        // }
+        if (filterOptions.returnSalesOrderExtendDetailTransferFlag && filterOptions.returnSalesOrderExtendDetailTransferFlag !== '0') {
+            url += '&returnSalesOrderExtendDetailTransferFlag=' + filterOptions.returnSalesOrderExtendDetailTransferFlag;
         }
-        if (resUuid !== undefined && resUuid !== null) {
-            url = url + '&resUuid=' + resUuid;
+        if (resUuid) {
+            url += '&resUuid=' + resUuid;
         }
         return $http.get(Constant.BACKEND_BASE + url);
     };
@@ -95,5 +94,20 @@ angular.module('IOne-Production').service('PSOReturnSalesOrdersExtendsService', 
     };
     this.modify = function (masterUuid, detailUuid, extendUuid, extendUpdateInput) {
         return $http.patch(Constant.BACKEND_BASE + '/salesOrders/' + masterUuid + '/returnSalesOrders/' + detailUuid + '/extends/' + extendUuid, extendUpdateInput);
+    };
+});
+
+angular.module('IOne-Production').service('PSOReturnSalesOrdersExtends2Service', function ($http, Constant) {
+    this.getAll = function (masterUuid) {
+        var url = '/salesOrders/' + masterUuid + '/returnSalesOrdersExtends/';
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
+    this.confirm = function (masterUuid, uuids, val) {
+        return $http.patch(Constant.BACKEND_BASE + '/salesOrders/' + masterUuid + '/returnSalesOrdersExtends?action=confirm', { 'uuids': uuids, 'confirm': val });
+    };
+
+    this.transfer = function (masterUuid, uuids) {
+        return $http.patch(Constant.BACKEND_BASE + '/salesOrders/' + masterUuid + '/returnSalesOrdersExtends?action=transfer', { 'uuids': uuids });
     };
 });

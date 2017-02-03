@@ -157,6 +157,18 @@ RES_UUID_MAP = {
                 TITLE: '渠道商品信息维护-表单'
             }
         },
+        CHANNEL_WAREHOUSE: {
+            RES_UUID: 'E169A8AE-B8B9-4F55-90CA-35C235790BC2',
+            TITLE: '渠道仓库维护',
+            LIST_PAGE: {
+                RES_UUID: '',
+                TITLE: '渠道仓库维护-清单'
+            },
+            FORM_PAGE: {
+                RES_UUID: '',
+                TITLE: '渠道仓库维护-表单'
+            }
+        },
         CHANNEL_RELATION: {
             RES_UUID: '5D97BD7E-03DC-46DA-9E47-7E35C02012F3',
             TITLE: '渠道区域维护',
@@ -555,6 +567,14 @@ RES_UUID_MAP = {
         ALLO: {
             RES_UUID: '7c82a12b-7cf4-4fca-8fa5-20c98e5ec1aa',
             TITLE: '调拨单维护'
+        },
+        INVENTORY_DETAIL_APP: {
+            RES_UUID: '62e761f5-1bca-4b40-a5d6-87064b4431b1',
+            TITLE: '库存明细查询APP'
+        },
+        ALLOT_APP: {
+            RES_UUID: '45188954-8e15-4deb-b60a-089da30e877f',
+            TITLE: '调拨单维护APP'
         }
     }
 };
@@ -696,6 +716,12 @@ angular.module('IOne-Constant').constant('Constant', {
                     link: '/channelItemInfo',
                     uuid: RES_UUID_MAP.OCM.CHANNEL_INFO.RES_UUID
                 },
+                 {
+                    id: '/channelWarehouse',
+                    name: '渠道仓库维护',
+                    link: '/channelWarehouse',
+                    uuid: RES_UUID_MAP.OCM.CHANNEL_WAREHOUSE.RES_UUID
+                },
                 {
                     id: '/channelRelation',
                     name: '渠道区域维护',
@@ -723,7 +749,19 @@ angular.module('IOne-Constant').constant('Constant', {
                     link: '/inv/inventoryDetail',
                     uuid: RES_UUID_MAP.INV.INVENTORY_DETAIL.RES_UUID
                 },
-                {id: '/inv/allo', name: '调拨单维护', link: '/inv/allo', uuid: RES_UUID_MAP.INV.ALLO.RES_UUID}
+                {id: '/inv/allo', name: '调拨单维护', link: '/inv/allo', uuid: RES_UUID_MAP.INV.ALLO.RES_UUID},
+                {
+                    id: '/inventoryDetailApp',
+                    name: '库存明细查询APP',
+                    link: '/inventoryDetailApp',
+                    uuid: RES_UUID_MAP.INV.INVENTORY_DETAIL_APP.RES_UUID
+                },
+                {
+                    id: '/allotApp',
+                    name: '调拨单维护APP',
+                    link: '/allotApp',
+                    uuid: RES_UUID_MAP.INV.ALLOT_APP.RES_UUID
+                }
             ]
         },
         {
@@ -1355,5 +1393,10 @@ angular.module('IOne-Constant').constant('Constant', {
         1: {value: '1', name: '采购未发出'},
         2: {value: '2', name: '采购发出'},
         3: {value: '3', name: '采购退回'}
+    },
+    'DEFAULT_WAREHOUSE': {
+         0: {value: 'Y', name: '默认仓库'},
+         1: {value: 'N', name: '取消默认'},
+
     }
 });

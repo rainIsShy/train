@@ -4,6 +4,10 @@ angular.module('IOne-Production').service('Area', function ($http, Constant) {
         return $http.get(Constant.BACKEND_BASE + '/areas');
     };
 
+    this.getOne = function (areaUuid) {
+            return $http.get(Constant.BACKEND_BASE + '/areas/' + areaUuid);
+        };
+
     this.getForParent = function (parentUuid) {
         return $http.get(Constant.BACKEND_BASE + '/areas?parentUuid=' + parentUuid);
     };
@@ -11,6 +15,10 @@ angular.module('IOne-Production').service('Area', function ($http, Constant) {
     this.getForGrade = function (grade) {
         var url = '/areas?grade=' + grade;
         return $http.get(Constant.BACKEND_BASE + url);
+    };
+
+    this.getGradeAndParentUuid = function (grade, parentUuid) {
+        return $http.get(Constant.BACKEND_BASE + '/areas?parentUuid=' + parentUuid + '&grade=' + grade);
     };
 
     this.getForChannelRelation = function () {

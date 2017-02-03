@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('CBIAreaController', function ($scope, Area, Constant, $mdDialog) {
+angular.module('IOne-Production').controller('CBIAreaController', function ($scope, Area, MdmArea, Constant, $mdDialog) {
     $scope.editNodeDisabled = false;
     $scope.saveNodeDisabled = true;
     $scope.cancelModifyDisabled = true;
@@ -25,7 +25,19 @@ angular.module('IOne-Production').controller('CBIAreaController', function ($sco
             {"grade": 3, "name": "3级"},
             {"grade": 4, "name": "4级"},
             {"grade": 5, "name": "5级"},
-            {"grade": 6, "name": "6级"}];
+            {"grade": 6, "name": "6级"}
+            ];
+        $scope.secondHeaders = [
+            {"grade": 7, "name": "淘宝省"},
+            {"grade": 8, "name": "淘宝市"},
+            {"grade": 9, "name": "淘宝区"},
+            {"grade": 10, "name": "淘宝镇"},
+            {"grade": 11, "name": "京东省"},
+            {"grade": 12, "name": "京东市"},
+            {"grade": 13, "name": "京东区"},
+            {"grade": 14, "name": "城市类型"}
+            ];
+
         $scope.selectedTemplateData = {};
     };
     $scope.initData();
@@ -48,6 +60,22 @@ angular.module('IOne-Production').controller('CBIAreaController', function ($sco
             $scope.isRefreshing = false;
         });
         $scope.refreshAddNodeButtonDisplay();
+    };
+
+    $scope.selectTmallAndJdArea=function(selectedItem){
+        MdmArea.getAll().success(function (data) {
+            $scope.mdmAreaList=data.content;
+            var secondMdmAreaList=[];
+
+            angular.forEach($scope.mdmAreaList,function(data){
+                if(data.area.uuid==selectedItem.uuid){
+                    secondMdmAreaList.push(data);
+                }
+                $scope.secondMdmAreaList=secondMdmAreaList;
+            });
+        }).error(function () {
+             $scope.showError("查询不成功,信息可能不存在");
+        });
     };
 
     //Refresh the data of one template
@@ -141,6 +169,7 @@ angular.module('IOne-Production').controller('CBIAreaController', function ($sco
         });
     };
 
+
     //add node data
     $scope.addNodeData = function (grade) {
         var parentUuid = null;
@@ -220,4 +249,89 @@ angular.module('IOne-Production').controller('CBIAreaController', function ($sco
             }
         }
     }
+    $scope.maintenanceArea=function(selectedItem){
+            $mdDialog.show({
+            controller: 'MaintenanceController',
+            templateUrl: 'app/src/app/cbi/area/maintenanceArea.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            locals: {
+                parent: $scope,
+                selectedItem: $scope.selectedItem,
+            }
+            });
+        }
+
 });
+
+angular.module('IOne-Production').controller('MaintenanceController', function ($scope,$q,$mdToast,MdmArea,Area,$mdDialog, Constant, parent, selectedItem) {
+        $scope.cityType={
+            1: {value: '1', name: '直辖市'},
+            2: {value: '2', name: '普通城市'}
+        }
+
+
+        $scope.selectedItem=selectedItem;
+        listFilterOption = {
+           status: Constant.STATUS[1].value,
+           confirm: Constant.CONFIRM[2].value,
+        };
+
+        $scope.$watch('listFilterOption', function () {
+                $scope.selectTmallAndJdArea();
+        }, true);
+
+        $scope.selectTmallAndJdArea=function(){
+            MdmArea.getAll().success(function (data) {
+            $scope.mdmAreaList=data.content;
+            var secondMdmAreaList=[];
+
+            angular.forEach($scope.mdmAreaList,function(data){
+                if(data.area.uuid==selectedItem.uuid){
+                    secondMdmAreaList.push(data);
+                }
+                $scope.secondMdmAreaItem=secondMdmAreaList[0];
+            });
+            }).error(function(){
+                $scope.showError("电商地区信息加载失败,请重试");
+            });
+
+            Area.getOne(selectedItem.uuid).success(function (data){
+                    $scope.areaList=data;
+            }).error(function(){
+                $scope.showError("基础地区信息获取失败,请重试");
+            });
+        };
+
+        $scope.cancelDlg = function(){
+            $mdDialog.cancel();
+        }
+        $scope.updateArea = function(){
+         if ($scope.secondMdmAreaItem) {
+            MdmArea.modify($scope.secondMdmAreaItem.uuid,$scope.secondMdmAreaItem).success(function () {
+                toastr["success"]('修改节点数据成功。');
+            }).error(function () {
+                toastr["error"]('修改节点数据失败: ');
+            });
+        };
+            $mdDialog.hide();
+        }
+
+        $scope.addArea = function(){
+         if ($scope.secondMdmAreaItem) {
+            $scope.secondMdmAreaItem.areaUuid=$scope.areaList.uuid;
+            $scope.secondMdmAreaItem.cbiBaseAreaName=$scope.areaList.name;
+            $scope.secondMdmAreaItem.cbiBaseAreaParentUuid=$scope.areaList.parentUuid;
+            MdmArea.add($scope.secondMdmAreaItem).success(function () {
+               toastr["success"]('添加数据成功。');
+            }).error(function () {
+               toastr["error"]('添加数据失败: ');
+
+            });
+        };
+            $mdDialog.hide();
+        }
+
+});
+
+
