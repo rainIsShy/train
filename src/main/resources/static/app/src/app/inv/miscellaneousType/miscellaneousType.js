@@ -74,11 +74,13 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
                 $scope.source = response.data;
                 $scope.showInfo('新增数据成功。');
                 $scope.refreshList();
+                $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
             }, errorHandle);
         } else if ($scope.status == 'edit') {
             MiscellaneousTypeService.modify($scope.source.uuid, $scope.source).then(function (response) {
                 $scope.showInfo('数据变更成功。');
                 $scope.refreshList();
+                $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
             }, errorHandle);
         }
     };
