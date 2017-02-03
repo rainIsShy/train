@@ -10,8 +10,8 @@ angular.module('IOne-Production').controller('AllotTypeController', function ($s
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
-        totalPage: 100,
-        totalElements: 100
+        totalPage: 0,
+        totalElements: 0
     };
 
     $scope.listFilterOption = {
