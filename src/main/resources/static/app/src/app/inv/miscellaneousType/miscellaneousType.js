@@ -10,8 +10,8 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
-        totalPage: 100,
-        totalElements: 100
+        totalPage: 0,
+        totalElements: 0
     };
 
     $scope.listFilterOption = {
@@ -25,13 +25,6 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
     $scope.sortByAction = function (field) {
         $scope.listFilterOption.sort = field;
     };
-
-    $scope.$watch('listFilterOption', function () {
-        $scope.pageOption.currentPage = 0;
-        $scope.pageOption.totalPage = 0;
-        $scope.pageOption.totalElements = 0;
-        $scope.refreshList();
-    }, true);
 
     $scope.refreshList = function () {
         var queryConditions = angular.copy($scope.listFilterOption);
@@ -193,4 +186,13 @@ angular.module('IOne-Production').controller('MiscellaneousTypeController', func
         });
         return checkedItemList;
     }
+
+    /**
+     * init
+     */
+    function init() {
+        $scope.refreshList();
+    }
+
+    init();
 });
