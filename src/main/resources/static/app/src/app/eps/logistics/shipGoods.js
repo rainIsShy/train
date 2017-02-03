@@ -114,7 +114,7 @@ angular.module('IOne-Production').controller('ShipGoodsManagementController', fu
     $scope.shipGoods = function(){
         angular.forEach($scope.logisticsDetailRelations, function(dtl, key) {
             if(dtl.isSelected){
-                console.log("需要被發貨的單 ",dtl.orderId);
+                console.log("需要被發貨的單 ", dtl.orderId);
             }
         });
     }
