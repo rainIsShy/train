@@ -748,6 +748,18 @@ angular.module('IOne-Constant').constant('Constant', {
             icon: 'inv_icon',
             subList: [
                 {
+                    id: '/inv/allotType',
+                    name: RES_UUID_MAP.INV.ALLOT_TYPE.TITLE,
+                    link: '/inv/allotType',
+                    uuid: RES_UUID_MAP.INV.ALLOT_TYPE.RES_UUID
+                },
+                {
+                    id: '/inv/miscellaneousType',
+                    name: RES_UUID_MAP.INV.MISCELLANEOUS_TYPE.TITLE,
+                    link: '/inv/miscellaneousType',
+                    uuid: RES_UUID_MAP.INV.MISCELLANEOUS_TYPE.RES_UUID
+                },
+                {
                     id: '/inv/inventoryDetail',
                     name: '库存明细查询',
                     link: '/inv/inventoryDetail',
@@ -766,18 +778,7 @@ angular.module('IOne-Constant').constant('Constant', {
                     link: '/allotApp',
                     uuid: RES_UUID_MAP.INV.ALLOT_APP.RES_UUID
                 },
-                {
-                    id: '/inv/allotType',
-                    name: RES_UUID_MAP.INV.ALLOT_TYPE.TITLE,
-                    link: '/inv/allotType',
-                    uuid: RES_UUID_MAP.INV.ALLOT_TYPE.RES_UUID
-                },
-                {
-                    id: '/inv/miscellaneousType',
-                    name: RES_UUID_MAP.INV.MISCELLANEOUS_TYPE.TITLE,
-                    link: '/inv/miscellaneousType',
-                    uuid: RES_UUID_MAP.INV.MISCELLANEOUS_TYPE.RES_UUID
-                },
+
             ]
         },
         {
