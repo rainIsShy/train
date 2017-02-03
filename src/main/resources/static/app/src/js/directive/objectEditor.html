@@ -35,7 +35,8 @@
     <md-input-container flex-sm="100" flex="50" layout-padding ng-repeat="(key, value) in objectInfo"
                         ng-if="value.type == 'SELECT' && value.show">
         <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">{{value.desc}}</label>
-        <md-select ng-model="source[key]" ng-required="value.notBlank" ng-disabled="!value.editable">
+        <md-select ng-model="source[key] ? source[key] : value.defaultValue" ng-required="value.notBlank"
+                   ng-disabled="!value.editable">
             <md-option ng-repeat="(key1, value1) in value.options" value="{{key1}}">
                 {{value1}}
             </md-option>

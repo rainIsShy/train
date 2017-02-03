@@ -767,17 +767,17 @@ angular.module('IOne-Constant').constant('Constant', {
                     uuid: RES_UUID_MAP.INV.ALLOT_APP.RES_UUID
                 },
                 {
+                    id: '/inv/allotType',
+                    name: RES_UUID_MAP.INV.ALLOT_TYPE.TITLE,
+                    link: '/inv/allotType',
+                    uuid: RES_UUID_MAP.INV.ALLOT_TYPE.RES_UUID
+                },
+                {
                     id: '/inv/miscellaneousType',
                     name: RES_UUID_MAP.INV.MISCELLANEOUS_TYPE.TITLE,
                     link: '/inv/miscellaneousType',
                     uuid: RES_UUID_MAP.INV.MISCELLANEOUS_TYPE.RES_UUID
                 },
-                {
-                    id: '/inv/allotType',
-                    name: RES_UUID_MAP.INV.ALLOT_TYPE.TITLE,
-                    link: '/inv/allotType',
-                    uuid: RES_UUID_MAP.INV.ALLOT_TYPE.RES_UUID
-                }
             ]
         },
         {
