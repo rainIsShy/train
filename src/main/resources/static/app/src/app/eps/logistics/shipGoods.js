@@ -114,9 +114,18 @@ angular.module('IOne-Production').controller('ShipGoodsManagementController', fu
     $scope.shipGoods = function(){
         angular.forEach($scope.logisticsDetailRelations, function(dtl, key) {
             if(dtl.isSelected){
-                console.log("需要被發貨的單 ", dtl.orderId);
+                //物流公司代码.如"POST"就代表中国邮政,"ZJS"就代表宅急送.调用 taobao.logistics.companies.get 获取。
+                //company_code, 目前固定用 POST.
+                var sendData = {tid: dtl.orderId, out_sid: dtl.logisticsNo, company_code: "POST"};
+                TaoBaoAdapterService.executeLogistics(sendData, $scope, function (response) {
+                    $scope.showInfo("发货成功！");
+                });
+                // console.log("需要被發貨的單 ", dtl.orderId);
             }
         });
+
+        //重新查询。
+        $scope.queryAll();
     }
 
     function init(){

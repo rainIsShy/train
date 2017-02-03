@@ -159,10 +159,10 @@ angular.module('IOne-Production').service('TaoBaoAdapterService', function ($htt
     };
 
     //執行發貨
-    this.executeLogistics = function (controllerScope, successCallBack) {
+    this.executeLogistics = function (logisticsData, controllerScope, successCallBack) {
         var logisticsUrl = ecAdapterUrl + '/api/taobao/logistics'
 
-        return $http.patch(logisticsUrl).success(function (response, status) {
+        return $http.patch(logisticsUrl, logisticsData).success(function (response, status) {
             if (status == 200) {
                 successCallBack(response);
             } else {
