@@ -105,6 +105,7 @@ angular.module('IOne-Production').controller('AllotTypeController', function ($s
         $scope.showConfirm('确认删除吗？', '删除後不可恢复。', function () {
             AllotTypeService.delete(item.uuid).then(function (response) {
                 $scope.showInfo('删除数据成功。');
+                $scope.selectedItem = null;
                 $scope.refreshList();
             }, errorHandle);
         });
