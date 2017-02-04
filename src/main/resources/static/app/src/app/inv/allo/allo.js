@@ -29,12 +29,14 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         '106-query': {display: true, name: '查询', uuid: '5933629c-b62a-4195-b3c2-3dbd2d602e26'},
         '107-transfer': {display: true, name: '抛转', uuid: '9d7a83c8-2892-4bb0-aae9-31ee5a4ab7d8'},
         '108-unTransfer': {display: true, name: '抛转还原', uuid: 'bee84282-9e3f-43a1-b0c3-b999cc7939b9'},
+        '109-confirmTransfer': {display: true, name: '审核抛转', uuid: '61321f9e-eabd-11e6-b006-92361f002671'},
 
         '201-batchConfirm': {display: true, name: '批量审核', uuid: '30227911-a5e7-4381-b852-13ab981a556f'},
         '202-batchCancelConfirm': {display: true, name: '批量取消审核', uuid: 'dde1cd28-8882-4b80-83b6-fa79bdcd5bbb'},
         '203-batchEnableStatus': {display: true, name: '批量启用', uuid: '4a17aa8d-9bfb-49a9-aea4-c3d61ddd73ab'},
         '204-batchDisableStatus': {display: true, name: '批量取消启用', uuid: '0f79bcb1-69b6-4247-9a9a-22c1736268d8'},
-        '205-batchTransfer': {display: true, name: '批量抛转', uuid: '09922192-5ab4-4475-bf41-610d00afabee'}
+        '205-batchTransfer': {display: true, name: '批量抛转', uuid: '09922192-5ab4-4475-bf41-610d00afabee'},
+        '206-batchConfirmTransfer': {display: true, name: '批量审核抛转', uuid: '78d7268a-eabd-11e6-b006-92361f002671'}
     };
 
     $scope.getMenuAuthData($scope.RES_UUID_MAP.INV.ALLO.RES_UUID).success(function (data) {
@@ -725,6 +727,42 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
                 $scope.showWarn("请选择需要抛转的调拨单！");
             }
         });
+    };
+
+    $scope.confirmAndTransferClickAction = function (event, item) {
+        $scope.stopEventPropagation(event);
+        if (item.confirm == '1' && item.transferFlag == '2') {
+            $scope.showConfirm('确认审核并抛转吗？', '', function () {
+                var confirmData = {
+                    uuid: item.uuid,
+                    confirm: '2'
+                };
+                var unConfirmData = {
+                    uuid: item.uuid,
+                    confirm: '1'
+                };
+                var transferData = {
+                    'INV_ALLOT_MST_UUID': item.uuid,
+                    'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
+                };
+                AlloMasterService.modify(item.uuid, confirmData).success(function () {
+                    ErpAdapterService.transferErpAdapter('/invAllotToRvqTask', transferData, $scope, function (response) {
+                        $scope.showInfo(item.no + '抛转成功!' + '<br>' + ' RVQ_FILE: ' + response.insertRvqCount + ' 笔' + '<br>' + ' TC_RVR_FILE: ' + response.insertTcRvrCount + ' 笔' + '<br>' + ' RVR_FILE: ' + response.insertRvrCount + ' 笔');
+                        $scope.refreshList();
+                        $scope.refreshDetailList(item, true);
+                    }, function () {
+                        AlloMasterService.modify(item.uuid, unConfirmData).success(function () {
+                            $scope.showError("抛转失败!已还原为未审核！");
+                            $scope.refreshList();
+                            $scope.refreshDetailList(item, true);
+                        });
+                    });
+                });
+            }, function () {
+                item.confirm = '1';
+                item.transferFlag = '2';
+            });
+        }
     };
 
 });

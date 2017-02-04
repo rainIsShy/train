@@ -308,6 +308,15 @@
                                                ng-click="transferClickAction($event, item)">
                                         抛转
                                     </md-switch>
+
+                                    <md-switch ng-model="item.transferFlag" aria-label="Switch 1" class="md-block"
+                                               ng-if="isAuthorized('109-confirmTransfer')"
+                                               ng-true-value="'1'" ng-false-value="'2'"
+                                               ng-disabled="disableConfirmMenuItem(item)"
+                                               ng-click="confirmAndTransferClickAction($event, item)">
+                                        审抛
+                                    </md-switch>
+
                                     <md-button class="md-button close-btn" aria-label="More"
                                                ng-click="toggleMorePanelAction(item)"
                                                style="position: relative;left: 15px;">
