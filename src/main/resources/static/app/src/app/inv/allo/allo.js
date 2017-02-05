@@ -731,7 +731,7 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
 
     $scope.confirmAndTransferClickAction = function (event, item) {
         $scope.stopEventPropagation(event);
-        if (item.confirm == '1' && item.transferFlag == '2') {
+        if (item.transferFlag == '2') {
             $scope.showConfirm('确认审核并抛转吗？', '', function () {
                 var confirmData = {
                     uuid: item.uuid,
@@ -762,6 +762,9 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
                 item.confirm = '1';
                 item.transferFlag = '2';
             });
+        } else if (item.transferFlag == '1') {
+            item.transferFlag = 1;
+            return;
         }
     };
 
