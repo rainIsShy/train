@@ -97,6 +97,13 @@
                                 批量抛转
                             </md-button>
                         </md-menu-item>
+                        <md-menu-item ng-if="isAuthorized('206-batchConfirmTransfer')">
+                            <md-button class="md-button" aria-label="More" ng-disabled="!canBatchConfirm()"
+                                       ng-click="confirmAndTransferAllClickAction($event)">
+                                <ng-md-icon icon="send"></ng-md-icon>
+                                批量审核抛转
+                            </md-button>
+                        </md-menu-item>
                     </md-menu-content>
                 </md-menu>
             </div>
