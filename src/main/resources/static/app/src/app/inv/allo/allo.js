@@ -80,6 +80,12 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         }
         return false;
     };
+    $scope.disableConfirmTransferMenuItem = function (item) {
+        if (item !== null && item !== undefined) {
+            return item.confirm == '2' || item.transferFlag == '1';
+        }
+        return false;
+    };
     $scope.showConfirmMenuItem = function (item) {
         if (item !== null && item !== undefined) {
             return item.confirm == 1 && item.status == 1 && $scope.isAuthorized('101-confirm');
@@ -731,7 +737,7 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
 
     $scope.confirmAndTransferClickAction = function (event, item) {
         $scope.stopEventPropagation(event);
-        if (item.transferFlag == '2') {
+        if (item.transferFlag == '2' && item.confirm == '1') {
             $scope.showConfirm('确认审核并抛转吗？', '', function () {
                 var confirmData = {
                     uuid: item.uuid,
@@ -759,12 +765,14 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
                     });
                 });
             }, function () {
-                item.confirm = '1';
                 item.transferFlag = '2';
             });
         } else if (item.transferFlag == '1') {
             item.transferFlag = 1;
-            return;
+        } else if (item.transferFlag == '2' && item.confirm == '2') {
+            item.transferFlag = 2;
+            $scope.showWarn("已审核不能做审核抛转");
+            $scope.refreshList();
         }
     };
 
