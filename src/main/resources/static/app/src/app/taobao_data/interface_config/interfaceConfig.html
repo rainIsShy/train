@@ -181,6 +181,12 @@
                         </md-select>
                     </md-input-container>
                     <md-input-container flex="20" ng-show="selectedItem == null">
+                        <label>电商平台</label>
+                        <md-select ng-model="listFilterOption.select.platform">
+                            <md-option ng-repeat="(key, value) in PLATFORM" ng-value="key">{{value.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex="20" ng-show="selectedItem == null">
                         <label>编号：</label>
                         <input type="text" ng-model="listFilterOption.no" ng-keypress="queryEnter($event)">
                     </md-input-container>

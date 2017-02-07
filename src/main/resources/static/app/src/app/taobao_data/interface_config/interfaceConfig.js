@@ -13,10 +13,18 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
         totalElements: 100
     };
 
+    $scope.PLATFORM = {
+      0: {value: '0', name: '全部'},
+      1: {value: '1', name: '淘宝'},
+      2: {value: '2', name: '京东'},
+      3: {value: '3', name: 'VIP'}
+      };
+
     $scope.listFilterOption = {
         select: {
             status: Constant.STATUS[0].value,
-            confirm: Constant.CONFIRM[0].value
+            confirm: Constant.CONFIRM[0].value,
+            platform: Constant.PLATFORM[0].value
         },
         no: '',
         name: '',
