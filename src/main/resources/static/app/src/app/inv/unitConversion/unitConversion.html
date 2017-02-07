@@ -67,15 +67,32 @@
             <div flex="70" hide-sm hide-md layout="column" class="left-body" ng-show="selectedItem">
                 <div flex="100" layout-padding>
                     <div layout="row" layout-padding style="font-size: 20px;padding-top: 2px; font-weight: bold;">
-                        <span flex>来源计算单位: {{selectedItem.no}}</span>
+                        <span flex>来源计算单位: {{selectedItem.sourceUnit}}</span>
                     </div>
                     <md-divider></md-divider>
                     <div layout="row" layout-wrap layout-margin>
-                        <span flex=50" flex-sm="100" layout-padding>
-                            <span class="item-name">名称</span>
-                            <span class="item-content">{{selectedItem.name}}</span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">来源计算单位</span>
+                            <span class="item-content">{{selectedItem.sourceUnit}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">目标计算单位</span>
+                            <span class="item-content">{{selectedItem.targetUnit}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">来源单位兑换数量</span>
+                            <span class="item-content">{{selectedItem.sourceUnitQty}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">目标单位兑换数量</span>
+                            <span class="item-content">{{selectedItem.targetUnitQty}}</span>
+                        </span>
+                        <span flex="100" layout-padding>
+                            <span class="item-name">备注</span>
+                            <span class="item-content">{{selectedItem.remark}}</span>
                         </span>
                     </div>
+
                 </div>
             </div>
             <div flex class="right-body">
