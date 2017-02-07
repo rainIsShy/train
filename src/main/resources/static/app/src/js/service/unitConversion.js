@@ -1,4 +1,4 @@
-angular.module('IOne-Production').service('MiscellaneousTypeService', function ($http, $filter, Constant) {
+angular.module('IOne-Production').service('UnitConversionService', function ($http, $filter, Constant) {
     var requestUrl = Constant.BACKEND_BASE + '/unitConversions/';
 
     this.add = function (input) {
