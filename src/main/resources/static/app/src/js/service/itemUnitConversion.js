@@ -26,7 +26,7 @@ angular.module('IOne-Production').service('ItemUnitConversionService', function 
             params: angular.merge({}, {
                 size: sizePerPage,
                 page: currentPage,
-                resUuid: RES_UUID_MAP.INV.UNIT_CONVERSION.RES_UUID
+                resUuid: RES_UUID_MAP.INV.ITEM_UNIT_CONVERSION.RES_UUID
             }, queryConditions)
         };
         return $http.get(requestUrl, config);
