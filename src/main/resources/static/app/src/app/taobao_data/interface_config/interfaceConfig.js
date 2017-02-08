@@ -930,8 +930,6 @@ angular.module('IOne-Production').controller('interfaceSearchController', functi
             $scope.objectInfo.appSession.name = 'VENDORID';
             $scope.objectInfo.appSession.underscoreName = 'VENDORID';
         }
-
-
         $mdDialog.hide($scope.selectedObject);
     };
 
