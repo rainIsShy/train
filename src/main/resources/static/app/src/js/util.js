@@ -584,6 +584,10 @@ RES_UUID_MAP = {
             RES_UUID: 'f53ce013-cf8c-48be-8040-ebdc7544db3b',
             TITLE: '单位换算基础资料'
         },
+        ITEM_UNIT_CONVERSION: {
+            RES_UUID: '5e2c5da6-08d2-4b68-9572-a1ab9eb76744',
+            TITLE: '商品单位换算基础资料'
+        },
     }
 };
 
@@ -768,6 +772,12 @@ angular.module('IOne-Constant').constant('Constant', {
                     name: RES_UUID_MAP.INV.UNIT_CONVERSION.TITLE,
                     link: '/inv/unitConversion',
                     uuid: RES_UUID_MAP.INV.UNIT_CONVERSION.RES_UUID
+                },
+                {
+                    id: '/inv/itemUnitConversion',
+                    name: RES_UUID_MAP.INV.ITEM_UNIT_CONVERSION.TITLE,
+                    link: '/inv/itemUnitConversion',
+                    uuid: RES_UUID_MAP.INV.ITEM_UNIT_CONVERSION.RES_UUID
                 },
                 {
                     id: '/inv/inventoryDetail',
