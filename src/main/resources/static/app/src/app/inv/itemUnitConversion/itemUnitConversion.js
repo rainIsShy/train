@@ -1,7 +1,7 @@
 angular.module('IOne-Production').config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/inv/itemUnitConversion', {
         controller: 'ItemUnitConversionController',
-        templateUrl: 'app/src/app/inv/unitConversion/itemUnitConversion.html'
+        templateUrl: 'app/src/app/inv/itemUnitConversion/itemUnitConversion.html'
     })
 }]);
 
@@ -16,7 +16,7 @@ angular.module('IOne-Production').controller('ItemUnitConversionController', fun
 
     $scope.listFilterOption = {
         status: Constant.STATUS[0].value,
-        sort: "sourceUnit"
+        sort: "itemNo"
     };
 
     $scope.selectAllFlag = false;
@@ -28,7 +28,7 @@ angular.module('IOne-Production').controller('ItemUnitConversionController', fun
     $scope.refreshList = function () {
         var queryConditions = angular.copy($scope.listFilterOption);
         queryConditions.status = $scope.listFilterOption.status === Constant.STATUS[0].value ? "" : $scope.listFilterOption.status;
-        UnitConversionService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, queryConditions).then(function (response) {
+        ItemUnitConversionService.getAllGroupByItem($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, queryConditions).then(function (response) {
             $scope.pageOption.totalPage = response.data.totalPages;
             $scope.pageOption.totalElements = response.data.totalElements;
             $scope.itemList = response.data.content;
@@ -69,14 +69,14 @@ angular.module('IOne-Production').controller('ItemUnitConversionController', fun
      */
     $scope.saveItemAction = function () {
         if ($scope.status == 'add') {
-            UnitConversionService.add($scope.source).then(function (response) {
+            ItemUnitConversionService.add($scope.source).then(function (response) {
                 $scope.source = response.data;
                 $scope.showInfo('新增数据成功。');
                 $scope.refreshList();
                 $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
             }, errorHandle);
         } else if ($scope.status == 'edit') {
-            UnitConversionService.modify($scope.source.uuid, $scope.source).then(function (response) {
+            ItemUnitConversionService.modify($scope.source.uuid, $scope.source).then(function (response) {
                 $scope.showInfo('数据变更成功。');
                 $scope.refreshList();
                 $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
@@ -89,30 +89,33 @@ angular.module('IOne-Production').controller('ItemUnitConversionController', fun
      */
     $scope.showDetailPanelAction = function (item) {
         $scope.selectedItem = angular.copy(item);
+        queryByDetailByItem($scope.selectedItem);
     };
 
     $scope.statusToggleAction = function (event, item) {
         console.info('status...');
-        UnitConversionService.modify(item.uuid, item).then(function (response) {
+        ItemUnitConversionService.modify(item.uuid, item).then(function (response) {
             $scope.showInfo('启用状态变更成功。');
         }, errorHandle);
     };
 
-    $scope.deleteClickAction = function (event, item) {
-        $scope.stopEventPropagation(event);
+    $scope.deleteClickAction = function (detail) {
         console.info('delete...');
         $scope.showConfirm('确认删除吗？', '删除後不可恢复。', function () {
-            UnitConversionService.delete(item.uuid).then(function (response) {
-                $scope.showInfo('删除数据成功。');
-                $scope.selectedItem = null;
-                $scope.refreshList();
+            ItemUnitConversionService.delete(detail.uuid).then(function (response) {
+                ItemUnitConversionService.getAll(100, 0, {itemUuid: detail.item.uuid}).then(function (response) {
+                    $scope.selectedItem.detailList = response.data.content;
+                    $scope.showInfo('删除数据成功。');
+                    $scope.refreshList();
+                    if ($scope.selectedItem.detailList.length == 0) $scope.selectedItem = null;
+                }, errorHandle);
             }, errorHandle);
         });
     };
 
     function errorHandle(response) {
         var errorMsg = "服務存取失敗";
-        if (response.data.code === "Duplicated") errorMsg = "类型编号已重複";
+        if (response.data.code === "Duplicated") errorMsg = "商品或计算单位重複";
         $scope.showError(errorMsg);
     }
 
@@ -123,70 +126,21 @@ angular.module('IOne-Production').controller('ItemUnitConversionController', fun
         $scope.stopEventPropagation(event);
     }
 
-    $scope.selectAllAction = function () {
-        angular.forEach($scope.itemList, function (item) {
-            if ($scope.selectAllFlag) {
-                item.selected = true;
-            } else {
-                item.selected = false;
-            }
-        })
-    }
-
     /**
-     * batch operator
+     * Show more panel when clicking the 'show more' on every item
      */
-    $scope.batchEnable = function (event) {
-        $scope.stopEventPropagation(event);
-        console.info('batchEnable...');
-        var checkedItemList = fetchCheckedItemList();
-        angular.forEach(checkedItemList, function (item) {
-            item.status = Constant.STATUS[1].value;
-        });
+    $scope.toggleMorePanelAction = function (item) {
+        item.showMorePanel = !item.showMorePanel;
 
-        UnitConversionService.batchModify(checkedItemList).then(function (response) {
-            $scope.showInfo('批量启用成功。');
-            $scope.selectAllFlag = false;
-            $scope.refreshList();
-        }, errorHandle);
-
-    }
-
-    $scope.batchDisable = function (event) {
-        $scope.stopEventPropagation(event);
-        console.info('batchDisable...');
-        var checkedItemList = fetchCheckedItemList();
-        angular.forEach(checkedItemList, function (item) {
-            item.status = Constant.STATUS[2].value;
-        });
-
-        UnitConversionService.batchModify(checkedItemList).then(function (response) {
-            $scope.showInfo('批量禁用成功。');
-            $scope.selectAllFlag = false;
-            $scope.refreshList();
-        }, errorHandle);
+        if (item.showMorePanel) {
+            queryByDetailByItem(item);
+        }
     };
 
-    $scope.batchDelete = function (event) {
-        $scope.stopEventPropagation(event);
-        console.info('batchDelete...');
-        var checkedItemList = fetchCheckedItemList();
-        $scope.showConfirm('确认执行批量删除吗？', '删除後不可恢复。', function () {
-            UnitConversionService.batchDelete(checkedItemList).then(function (response) {
-                $scope.showInfo('批量删除数据成功。');
-                $scope.refreshList();
-            }, errorHandle);
-        });
-    };
-
-    function fetchCheckedItemList() {
-        var checkedItemList = [];
-        angular.forEach($scope.itemList, function (item) {
-            if (item.selected) {
-                checkedItemList.push(angular.copy(item));
-            }
-        });
-        return checkedItemList;
+    function queryByDetailByItem(item) {
+        ItemUnitConversionService.getAll(100, 0, {itemUuid: item.uuid}).then(function (response) {
+            item.detailList = response.data.content;
+        }, errorHandle);
     }
 
     /**
