@@ -144,11 +144,23 @@
                             <span class="item-content">{{selectedItem.appKey}}</span>
                         </span>
                         <span flex="100" flex-sm="100" layout-padding>
+                            <span class="item-name">secret</span>
+                            <span class="item-content">{{selectedItem.appKey}}</span>
+                        </span>
+                        <span flex="100" flex-sm="100" layout-padding>
+                            <span class="item-name">sessionKey</span>
+                            <span class="item-content">{{selectedItem.appSecret}}</span>
+                        </span>
+                        <span flex="100" flex-sm="100" layout-padding>
                             <span class="item-name">appSecret</span>
                             <span class="item-content">{{selectedItem.appSecret}}</span>
                         </span>
                         <span flex="100" flex-sm="100" layout-padding>
                             <span class="item-name">appSession</span>
+                            <span class="item-content">{{selectedItem.appSession}}</span>
+                        </span>
+                        <span flex="100" flex-sm="100" layout-padding>
+                            <span class="item-name">vendorId</span>
                             <span class="item-content">{{selectedItem.appSession}}</span>
                         </span>
                         <span flex="50" flex-sm="100" layout-padding>
@@ -183,7 +195,7 @@
                     <md-input-container flex="20" ng-show="selectedItem == null">
                         <label>电商平台</label>
                         <md-select ng-model="listFilterOption.select.platform">
-                            <md-option ng-repeat="(key, value) in PLATFORM" ng-value="key">{{value.name}}</md-option>
+                            <md-option ng-repeat="(key, value) in PLATFORM" ng-value="key">{{value}}</md-option>
                         </md-select>
                     </md-input-container>
                     <md-input-container flex="20" ng-show="selectedItem == null">
@@ -316,7 +328,7 @@
                 </md-button>
             </div>
         </div>
-        <object-editor class="object-editor" status="status" source="source" domain="domain"></object-editor>
+        <interface-editor class="object-editor" status="status" source="source" domain="domain"></interface-editor>
     </div>
 
 </div>

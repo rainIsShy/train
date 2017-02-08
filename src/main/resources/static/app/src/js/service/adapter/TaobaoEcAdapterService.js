@@ -136,13 +136,15 @@ angular.module('IOne-Production').service('TaoBaoAdapterService', function ($htt
         });
     };
 
-    this.queryConfig = function (sizePerPage, page, confirm, status, no, name, keyWord, resUuid) {
+    this.queryConfig = function (sizePerPage, page, confirm, status, platform, no, name, keyWord, resUuid) {
         confirm = confirm == 0 ? '' : confirm;
         status = status == 0 ? '' : status;
+        platform = platform == 0 ? '' : platform;
         var url = ecAdapterUrl + '/taobao/config/list?size=' + sizePerPage
             + '&page=' + page
             + '&confirm=' + confirm
-            + '&status=' + status;
+            + '&status=' + status
+            + '&platform='+ platform;
         if (no !== undefined && no !== null && no !== '') {
             url = url + '&no=' + no;
         }

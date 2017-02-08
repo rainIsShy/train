@@ -14,17 +14,17 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
     };
 
     $scope.PLATFORM = {
-      0: {value: '0', name: '全部'},
-      1: {value: '1', name: '淘宝'},
-      2: {value: '2', name: '京东'},
-      3: {value: '3', name: 'VIP'}
-      };
+       0:  '全部',
+       'TAOBAO': '淘宝',
+       'JD': '京东',
+       'VIP': '唯品会'
+    };
 
     $scope.listFilterOption = {
         select: {
             status: Constant.STATUS[0].value,
             confirm: Constant.CONFIRM[0].value,
-            platform: Constant.PLATFORM[0].value
+            platform: $scope.PLATFORM[0].value
         },
         no: '',
         name: '',
@@ -65,7 +65,7 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
     $scope.refreshList = function () {
         //EPSInterfaceConfigService.getAll
         TaoBaoAdapterService.queryConfig($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption.select.confirm, $scope.listFilterOption.select.status,
-            $scope.listFilterOption.no, $scope.listFilterOption.name, $scope.listFilterOption.keyWord, $scope.RES_UUID_MAP.EPS.INTERFACE_CONFIG.RES_UUID)
+            $scope.listFilterOption.select.platform, $scope.listFilterOption.no, $scope.listFilterOption.name, $scope.listFilterOption.keyWord, $scope.RES_UUID_MAP.EPS.INTERFACE_CONFIG.RES_UUID)
             .success(function (data) {
                 $scope.itemList = data;
                 $scope.pageOption.totalPage = 1;
@@ -788,4 +788,158 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
         }
     };
 
+     $scope.aa = function(){
+     if($scope.source[0].name != null){
+        console.log($scope.source[0]);
+     }
+    }
+
+});
+
+angular.module('IOne-Production').directive('interfaceEditor', function($http, Constant, $mdDialog) {
+    return {
+        scope: {
+            status: '=',
+            source: '=',
+            domain: "="
+        },
+        templateUrl: 'app/src/app/taobao_data/interface_config/interfaceEditor.html',
+        link: function($scope) {
+            $scope.$watch('source', function() {
+                if($scope.status == 'add') {
+
+                } else if($scope.status == 'edit') {
+
+                }
+                if($scope.source) {
+                    $http.get(Constant.BACKEND_BASE + '/objectInfo/' + $scope.domain).success(function(data) {
+                        $scope.objectInfo = data;
+
+                        angular.forEach(Object.keys($scope.objectInfo), function(key) {
+                            if($scope.objectInfo[key].type == 'DATE' && angular.isDefined($scope.source[key]) && $scope.source[key]!= null) {
+                                $scope.source[key] = new Date($scope.source[key]);
+                            }
+                        })
+                    });
+                }
+            });
+
+            $scope.openDlg = function(key, fieldInfo) {
+                $mdDialog.show({
+                    controller: 'interfaceSearchController',
+                    templateUrl: 'app/src/app/taobao_data/interface_config/search.html',
+                    parent: angular.element(document.body),
+                    targetEvent: event,
+                    locals: {
+                        source: $scope.source,
+                        key: key,
+                        objectInfo: $scope.objectInfo,
+                        fieldInfo: fieldInfo,
+                        queryInfo: $scope.source.queryInfo
+                    }
+                }).then(function(data) {
+                    $scope.source[key] = data;
+                    $scope.source[key + 'Uuid'] = data.uuid;
+                });
+            }
+        }
+    }
+
+});
+
+angular.module('IOne-Production').controller('interfaceSearchController', function ($scope, $http, $mdDialog, Constant, source, key, objectInfo, fieldInfo, queryInfo) {
+    $scope.source = source;
+    $scope.key = key;
+    $scope.objectInfo = objectInfo;
+    $scope.fieldInfo = fieldInfo;
+    $scope.queryInfo = queryInfo;
+
+    $scope.pageOption = {
+        sizePerPage: 10,
+        currentPage: 0,
+        totalPage: 100,
+        totalElements: 100
+    };
+
+    $scope.$watch('searchKeyword', function () {
+        $scope.pageOption.currentPage = 0;
+        $scope.pageOption.totalPage = 0;
+        $scope.pageOption.totalElements = 0;
+        $scope.searchInfo = {
+            keyWord: $scope.searchKeyword,
+            searchKeyWord: $scope.searchKeyword
+        };
+    }, true);
+    $scope.queryAction = function () {
+        if (!jQuery.isEmptyObject($scope.source.url)) {
+            $scope.fieldInfo.url = $scope.source.url[$scope.fieldInfo.name];
+        }
+        var param = '';
+        if (!jQuery.isEmptyObject($scope.queryInfo)) {
+            angular.forEach(Object.keys($scope.queryInfo), function (key) {
+                param += "&" + key + "=" + $scope.queryInfo[key];
+            })
+        }
+        if (!jQuery.isEmptyObject($scope.searchInfo) && !jQuery.isEmptyObject($scope.searchKeyword)) {
+            angular.forEach(Object.keys($scope.searchInfo), function (key) {
+                param += "&" + key + "=" + $scope.searchInfo[key];
+            })
+        }
+        var url = Constant.BACKEND_BASE + '/' + $scope.fieldInfo.url + '?page=' + $scope.pageOption.currentPage + '&size=' + $scope.pageOption.sizePerPage + param;
+        $http.get(url).success(function(data) {
+            if(data) {
+                if(data.content) {
+                    $scope.dataList = data.content;
+                    $scope.pageOption.totalPage = data.totalPages;
+                    $scope.pageOption.totalElements = data.totalElements;
+                } else {
+                    $scope.dataList = data;
+                }
+            }
+        })
+    };
+    $scope.queryAction();
+
+    $scope.select = function (selectedObject) {
+        $scope.selectedObject = selectedObject;
+        if($scope.selectedObject.no == 'TAOBAO'){
+            $scope.objectInfo.appSecret.column = 'SECRET';
+            $scope.objectInfo.appSecret.desc = 'SECRET';
+            $scope.objectInfo.appSecret.name = 'SECRET';
+            $scope.objectInfo.appSecret.underscoreName = 'SECRET';
+            $scope.objectInfo.appSession.column = 'SESSIONKEY';
+            $scope.objectInfo.appSession.desc = 'SESSIONKEY';
+            $scope.objectInfo.appSession.name = 'SESSIONKEY';
+            $scope.objectInfo.appSession.underscoreName = 'SESSIONKEY';
+        }
+
+        if($scope.selectedObject.no == 'JD'){
+            $scope.objectInfo.appSecret.column = 'SECRET';
+            $scope.objectInfo.appSecret.desc = 'SECRET';
+            $scope.objectInfo.appSecret.name = 'SECRET';
+            $scope.objectInfo.appSecret.underscoreName = 'SECRET';
+            $scope.objectInfo.appSession.column = 'SESSIONKEY';
+            $scope.objectInfo.appSession.desc = 'SESSIONKEY';
+            $scope.objectInfo.appSession.name = 'SESSIONKEY';
+            $scope.objectInfo.appSession.underscoreName = 'SESSIONKEY';
+        }
+
+        if($scope.selectedObject.no == 'VIP'){
+            $scope.objectInfo.appSession.column = 'VENDORID';
+            $scope.objectInfo.appSession.desc = 'VENDORID';
+            $scope.objectInfo.appSession.name = 'VENDORID';
+            $scope.objectInfo.appSession.underscoreName = 'VENDORID';
+        }
+
+
+        $mdDialog.hide($scope.selectedObject);
+    };
+
+    $scope.hideDlg = function () {
+        $mdDialog.hide($scope.selectedObject);
+    };
+
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
 });
