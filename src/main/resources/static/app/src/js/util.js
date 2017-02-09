@@ -579,7 +579,11 @@ RES_UUID_MAP = {
         ALLOT_TYPE: {
             RES_UUID: '35152a9b-477b-4d65-9441-8b058020dc3b',
             TITLE: '调拨类型基础资料'
-        }
+        },
+        UNIT_CONVERSION: {
+            RES_UUID: 'f53ce013-cf8c-48be-8040-ebdc7544db3b',
+            TITLE: '单位换算基础资料'
+        },
     }
 };
 
@@ -758,6 +762,12 @@ angular.module('IOne-Constant').constant('Constant', {
                     name: RES_UUID_MAP.INV.MISCELLANEOUS_TYPE.TITLE,
                     link: '/inv/miscellaneousType',
                     uuid: RES_UUID_MAP.INV.MISCELLANEOUS_TYPE.RES_UUID
+                },
+                {
+                    id: '/inv/unitConversion',
+                    name: RES_UUID_MAP.INV.UNIT_CONVERSION.TITLE,
+                    link: '/inv/unitConversion',
+                    uuid: RES_UUID_MAP.INV.UNIT_CONVERSION.RES_UUID
                 },
                 {
                     id: '/inv/inventoryDetail',
