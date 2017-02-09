@@ -97,6 +97,13 @@
                                 批量抛转
                             </md-button>
                         </md-menu-item>
+                        <md-menu-item ng-if="isAuthorized('206-batchConfirmTransfer')">
+                            <md-button class="md-button" aria-label="More" ng-disabled="!canBatchConfirm()"
+                                       ng-click="confirmAndTransferAllClickAction($event)">
+                                <ng-md-icon icon="send"></ng-md-icon>
+                                批量审核抛转
+                            </md-button>
+                        </md-menu-item>
                     </md-menu-content>
                 </md-menu>
             </div>
@@ -308,6 +315,25 @@
                                                ng-click="transferClickAction($event, item)">
                                         抛转
                                     </md-switch>
+
+                                    <div ng-if="!disableConfirmTransferMenuItem(item)">
+                                        <md-switch ng-model="item.transferFlag" aria-label="Switch 1" class="md-block"
+                                                   ng-if="isAuthorized('109-confirmTransfer')"
+                                                   ng-true-value="'1'" ng-false-value="'2'"
+                                                   ng-click="confirmAndTransferClickAction($event, item)">
+                                            审抛
+                                        </md-switch>
+                                    </div>
+
+                                    <div ng-if="disableConfirmTransferMenuItem(item)">
+                                        <md-switch ng-model="item.transferFlag" aria-label="Switch 1" class="md-block"
+                                                   ng-if="isAuthorized('109-confirmTransfer')"
+                                                   ng-true-value="'1'" ng-false-value="'2'"
+                                                   ng-disabled="true">
+                                            审抛
+                                        </md-switch>
+                                    </div>
+
                                     <md-button class="md-button close-btn" aria-label="More"
                                                ng-click="toggleMorePanelAction(item)"
                                                style="position: relative;left: 15px;">
