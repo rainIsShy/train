@@ -143,23 +143,21 @@
                             <span class="item-name">appKey</span>
                             <span class="item-content">{{selectedItem.appKey}}</span>
                         </span>
-                        <span flex="100" flex-sm="100" layout-padding>
+                        <span flex="100" flex-sm="100" layout-padding
+                              ng-show="selectedItem.mall.name == 'TAOBAO' || selectedItem.mall.no == 'JD'">
                             <span class="item-name">secret</span>
                             <span class="item-content">{{selectedItem.appKey}}</span>
                         </span>
-                        <span flex="100" flex-sm="100" layout-padding>
+                        <span flex="100" flex-sm="100" layout-padding
+                              ng-show="selectedItem.mall.name == 'TAOBAO' || selectedItem.mall.no == 'JD'">
                             <span class="item-name">sessionKey</span>
                             <span class="item-content">{{selectedItem.appSecret}}</span>
                         </span>
-                        <span flex="100" flex-sm="100" layout-padding>
+                        <span flex="100" flex-sm="100" layout-padding ng-show="selectedItem.mall.no == 'VIP'">
                             <span class="item-name">appSecret</span>
                             <span class="item-content">{{selectedItem.appSecret}}</span>
                         </span>
-                        <span flex="100" flex-sm="100" layout-padding>
-                            <span class="item-name">appSession</span>
-                            <span class="item-content">{{selectedItem.appSession}}</span>
-                        </span>
-                        <span flex="100" flex-sm="100" layout-padding>
+                        <span flex="100" flex-sm="100" layout-padding ng-show="selectedItem.mall.no == 'VIP'">
                             <span class="item-name">vendorId</span>
                             <span class="item-content">{{selectedItem.appSession}}</span>
                         </span>
