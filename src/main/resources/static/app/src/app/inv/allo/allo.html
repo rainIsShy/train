@@ -315,21 +315,22 @@
                                                ng-click="transferClickAction($event, item)">
                                         抛转
                                     </md-switch>
-
-                                    <div ng-if="!disableConfirmTransferMenuItem(item)">
+                                    <!--disableConfirmTransferMenuItem-->
+                                    <div ng-if="item.transferFlag != '1'">
                                         <md-switch ng-model="item.transferFlag" aria-label="Switch 1" class="md-block"
                                                    ng-if="isAuthorized('109-confirmTransfer')"
                                                    ng-true-value="'1'" ng-false-value="'2'"
+                                                   ng-disabled="item.confirm == '2'"
                                                    ng-click="confirmAndTransferClickAction($event, item)">
                                             审抛
                                         </md-switch>
                                     </div>
 
-                                    <div ng-if="disableConfirmTransferMenuItem(item)">
+                                    <div ng-if="item.transferFlag == '1'">
                                         <md-switch ng-model="item.transferFlag" aria-label="Switch 1" class="md-block"
                                                    ng-if="isAuthorized('109-confirmTransfer')"
                                                    ng-true-value="'1'" ng-false-value="'2'"
-                                                   ng-disabled="true">
+                                                   ng-click="confirmAndTransferClickAction($event, item)">
                                             审抛
                                         </md-switch>
                                     </div>

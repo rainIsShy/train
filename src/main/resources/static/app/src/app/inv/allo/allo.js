@@ -28,7 +28,6 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         '104-disableStatus': {display: true, name: '取消启用', uuid: '86b3d0c6-5c15-4711-8312-2b52e0d37b57'},
         '106-query': {display: true, name: '查询', uuid: '5933629c-b62a-4195-b3c2-3dbd2d602e26'},
         '107-transfer': {display: true, name: '抛转', uuid: '9d7a83c8-2892-4bb0-aae9-31ee5a4ab7d8'},
-        '108-unTransfer': {display: true, name: '抛转还原', uuid: 'bee84282-9e3f-43a1-b0c3-b999cc7939b9'},
         '109-confirmTransfer': {display: true, name: '审核抛转', uuid: '61321f9e-eabd-11e6-b006-92361f002671'},
 
         '201-batchConfirm': {display: true, name: '批量审核', uuid: '30227911-a5e7-4381-b852-13ab981a556f'},
@@ -453,38 +452,20 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
             }, function () {
                 item.transferFlag = '2';
             });
-           /*
-            $scope.showConfirm('确认抛转吗？', '', function () {
-                alloMasterUpdateInput = {
-                    uuid: item.uuid,
-                    transferFlag: '1'
-                };
-                AlloMasterService.modify(item.uuid, alloMasterUpdateInput).success(function (data) {
-                    item.transferFlag = '1';
-                    $scope.refreshList();
-                    $scope.refreshDetailList(item, true);
-                    $scope.showInfo("抛转成功!");
-                });
-            }, function () {
-                item.transferFlag = '2';
-            });
-            */
         } else {
-            //先禁用抛转还原
-            if (item.transferFlag == '1') {
-                item.transferFlag = 1;
-                return;
-            }
             $scope.showConfirm('确认抛转还原吗？', '', function () {
-                alloMasterUpdateInput = {
-                    uuid: item.uuid,
-                    transferFlag: '2'
+                var transferData = {
+                    'INV_ALLOT_MST_UUID': item.uuid,
+                    'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid,
+                    "ACTION": "REVERT"
                 };
-                AlloMasterService.modify(item.uuid, alloMasterUpdateInput).success(function (data) {
+                ErpAdapterService.transferErpAdapter('/invAllotToRvqTask', transferData, $scope, function (response) {
                     item.transferFlag = '2';
+                    $scope.showInfo(item.no + '抛转还原成功!' + '<br>' + ' RVQ_FILE删除 ' + response.deleteRvqCount + ' 笔' + '<br>' + ' TC_RVR_FILE删除 ' + response.deleteTcRvrCount + ' 笔' + '<br>' + ' RVR_FILE删除 ' + response.deleteRvrCount + ' 笔');
                     $scope.refreshList();
                     $scope.refreshDetailList(item, true);
-                    $scope.showInfo("抛转还原成功!");
+                }, function () {
+                    item.transferFlag = '1';
                 });
             }, function () {
                 item.transferFlag = '1';
@@ -767,12 +748,41 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
             }, function () {
                 item.transferFlag = '2';
             });
-        } else if (item.transferFlag == '1') {
-            item.transferFlag = 1;
+        } else if (item.transferFlag == '1' && item.confirm == '2') {
+            $scope.showConfirm('确认还原审核抛转吗？', '', function () {
+                var confirmData = {
+                    uuid: item.uuid,
+                    confirm: '2'
+                };
+                var unConfirmData = {
+                    uuid: item.uuid,
+                    confirm: '1'
+                };
+                var transferData = {
+                    'INV_ALLOT_MST_UUID': item.uuid,
+                    'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid,
+                    "ACTION": "REVERT"
+                };
+                AlloMasterService.modify(item.uuid, unConfirmData).success(function () {
+                    ErpAdapterService.transferErpAdapter('/invAllotToRvqTask', transferData, $scope, function (response) {
+                        $scope.showInfo(item.no + '审核抛转还原成功!' + '<br>' + ' RVQ_FILE删除: ' + response.deleteRvqCount + ' 笔' + '<br>' + ' TC_RVR_FILE删除 ' + response.deleteTcRvrCount + ' 笔' + '<br>' + ' RVR_FILE删除 ' + response.deleteRvrCount + ' 笔');
+                        $scope.refreshList();
+                        $scope.refreshDetailList(item, true);
+                    }, function () {
+                        AlloMasterService.modify(item.uuid, confirmData).success(function () {
+                            //$scope.showError("审核抛转还原失败!已还原为审核！");
+                            $scope.refreshList();
+                            $scope.refreshDetailList(item, true);
+                        });
+                    });
+                });
+            }, function () {
+                item.transferFlag = '1';
+            });
         } else if (item.transferFlag == '2' && item.confirm == '2') {
-            item.transferFlag = 2;
+            //item.transferFlag = 2;
             $scope.showWarn("已审核不能做审核抛转");
-            $scope.refreshList();
+            //$scope.refreshList();
         }
     };
 
