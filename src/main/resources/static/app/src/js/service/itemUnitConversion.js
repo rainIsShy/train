@@ -13,6 +13,10 @@ angular.module('IOne-Production').service('ItemUnitConversionService', function 
         return $http.delete(requestUrl + uuid);
     };
 
+    this.batchDelete = function (list) {
+        return $http.patch(requestUrl + "batch/delete", list);
+    };
+
     this.getAll = function (sizePerPage, currentPage, queryConditions) {
         var config = {
             params: angular.merge({}, {

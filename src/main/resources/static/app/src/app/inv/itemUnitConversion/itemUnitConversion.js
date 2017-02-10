@@ -34,7 +34,22 @@ angular.module('IOne-Production').controller('ItemUnitConversionController', fun
             $scope.itemList = response.data.content;
         }, errorHandle);
     };
+    /**
+     *  selectable checkbox
+     */
+    $scope.selectItemAction = function (event, item) {
+        $scope.stopEventPropagation(event);
+    }
 
+    $scope.selectAllAction = function () {
+        angular.forEach($scope.itemList, function (item) {
+            if ($scope.selectAllFlag) {
+                item.selected = true;
+            } else {
+                item.selected = false;
+            }
+        })
+    }
     /**
      * Change status to list all items
      */
@@ -142,6 +157,32 @@ angular.module('IOne-Production').controller('ItemUnitConversionController', fun
             item.detailList = response.data.content;
         }, errorHandle);
     }
+
+    /**
+     * batch operate
+     */
+    $scope.batchDelete = function (event) {
+        $scope.stopEventPropagation(event);
+        console.info('batchDelete...');
+        var checkedItemList = fetchCheckedItemList();
+        $scope.showConfirm('确认执行批量删除吗？', '删除後不可恢复。', function () {
+            ItemUnitConversionService.batchDelete(checkedItemList).then(function (response) {
+                $scope.showInfo('批量删除数据成功。');
+                $scope.refreshList();
+            }, errorHandle);
+        });
+    };
+
+    function fetchCheckedItemList() {
+        var checkedItemList = [];
+        angular.forEach($scope.itemList, function (item) {
+            if (item.selected) {
+                checkedItemList.push(angular.copy(item));
+            }
+        });
+        return checkedItemList;
+    }
+
 
     /**
      * init
