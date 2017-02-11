@@ -6,7 +6,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
 }]);
 
 angular.module('IOne-Production').controller('ItemUnitConversionController', function ($scope, ItemUnitConversionService, Constant) {
-
+    $scope.Constant = Constant;
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
@@ -111,6 +111,7 @@ angular.module('IOne-Production').controller('ItemUnitConversionController', fun
         console.info('status...');
         ItemUnitConversionService.modify(item.uuid, item).then(function (response) {
             $scope.showInfo('启用状态变更成功。');
+            $scope.refreshList();
         }, errorHandle);
     };
 
@@ -124,6 +125,18 @@ angular.module('IOne-Production').controller('ItemUnitConversionController', fun
                     $scope.refreshList();
                     if ($scope.selectedItem.detailList.length == 0) $scope.selectedItem = null;
                 }, errorHandle);
+            }, errorHandle);
+        });
+    };
+    $scope.deleteByItem = function (selectedItem) {
+        console.info('delete...');
+        var list = [];
+        list.push(selectedItem);
+        $scope.showConfirm('确认删除吗？', '删除後不可恢复。', function () {
+            ItemUnitConversionService.batchDelete(list).then(function (response) {
+                $scope.showInfo('删除数据成功。');
+                $scope.selectedItem = null;
+                $scope.refreshList();
             }, errorHandle);
         });
     };
@@ -166,6 +179,7 @@ angular.module('IOne-Production').controller('ItemUnitConversionController', fun
         console.info('batchDelete...');
         var checkedItemList = fetchCheckedItemList();
         $scope.showConfirm('确认执行批量删除吗？', '删除後不可恢复。', function () {
+            console.log("!!!!");
             ItemUnitConversionService.batchDelete(checkedItemList).then(function (response) {
                 $scope.showInfo('批量删除数据成功。');
                 $scope.refreshList();

@@ -7,6 +7,21 @@
                            ng-click="selectedItem = null">
                     <ng-md-icon icon="chevron_left"></ng-md-icon>
                 </md-button>
+                <md-menu>
+                    <md-button class="md-icon-button close-btn" aria-label="More" style="float: left;margin-left:20px;"
+                               ng-click="$mdOpenMenu($event)">
+                        <ng-md-icon icon="menu"></ng-md-icon>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="deleteByItem(selectedItem)">
+                                <ng-md-icon icon="delete"></ng-md-icon>
+                                删除
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
             </div>
 
             <div flex class="right-title">
@@ -20,12 +35,13 @@
                                ng-click="$mdOpenMenu($event)">
                         <ng-md-icon icon="menu"></ng-md-icon>
                     </md-button>
-                    <md-menu-item>
-                        <md-button class="md-button" aria-label="More" ng-click="batchDelete($event)">
-                            <ng-md-icon icon="delete"></ng-md-icon>
-                            批量删除
-                        </md-button>
-                    </md-menu-item>
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More" ng-click="batchDelete($event)">
+                                <ng-md-icon icon="delete"></ng-md-icon>
+                                批量删除
+                            </md-button>
+                        </md-menu-item>
                     </md-menu-content>
                 </md-menu>
             </div>
@@ -188,6 +204,7 @@
                                 </div>
                                 <div flex="20">
                                     <div layout-padding>备注 : <span>{{detail.remark}}</span></div>
+                                    <div layout-padding>启用状态：<span>{{Constant.STATUS[detail.status].name}}</span></div>
                                 </div>
                             </div>
                         </div>
