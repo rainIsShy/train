@@ -112,7 +112,7 @@
                             </md-button>
                         </md-menu-item>
                         <md-menu-item ng-if="isAuthorized('208-batchRevertConfirmTransfer')">
-                            <md-button class="md-button" aria-label="More" ng-disabled="!canBatchRevertConfirmTransfer()"
+                            <md-button class="md-button" aria-label="More" ng-disabled="!canBatchRevertTransfer()"
                                        ng-click="revertConfirmAndTransferAllClickAction($event)">
                                 <ng-md-icon icon="send"></ng-md-icon>
                                 批量还原审核抛转

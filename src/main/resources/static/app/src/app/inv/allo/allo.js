@@ -193,6 +193,17 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         return false;
     };
 
+    $scope.canBatchRevertTransfer = function () {
+        if ($scope.selected.length > 0) {
+            for (var i = 0; i < $scope.selected.length; i++) {
+                if ($scope.selected[i].confirm == Constant.CONFIRM[1].value || $scope.selected[i].transferFlag == Constant.TRANSFER_PSO_FLAG[2].value) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    };
 
     $scope.listFilterOption = {
         select: {
