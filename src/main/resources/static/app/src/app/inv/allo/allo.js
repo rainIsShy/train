@@ -699,7 +699,7 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
         $scope.showConfirm('确认抛转吗?', '', function () {
             var uuids = "";
             angular.forEach($scope.itemList, function (item) {
-                if (item.selected) {
+                if (item.selected && item.transferFlag == '2') {
                     uuids = uuids + item.uuid + ',';
                 }
             });
@@ -714,6 +714,35 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
                 });
             } else {
                 $scope.showWarn("请选择需要抛转的调拨单！");
+            }
+        });
+    };
+
+    $scope.revertTransferAllClickAction = function (event) {
+        $scope.stopEventPropagation(event);
+        if ($scope.selectedItemSize == 0) {
+            $scope.showWarn('请先选择记录！');
+            return;
+        }
+        $scope.showConfirm('确认抛转还原吗?', '', function () {
+            var uuids = "";
+            angular.forEach($scope.itemList, function (item) {
+                if (item.selected && item.transferFlag == '1') {
+                    uuids = uuids + item.uuid + ',';
+                }
+            });
+            var transferData = {
+                'INV_ALLOT_MST_UUID': uuids,
+                'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid,
+                'ACTION': 'REVERT'
+            };
+            if (uuids.length) {
+                ErpAdapterService.transferErpAdapter('/invAllotToRvqTask', transferData, $scope, function (response) {
+                    $scope.showInfo('抛转还原成功!' + '<br>' + ' RVQ_FILE: ' + response.deleteRvqCount + ' 笔' + '<br>' + ' TC_RVR_FILE: ' + response.deleteTcRvrCount + ' 笔' + '<br>' + ' RVR_FILE: ' + response.deleteRvrCount + ' 笔');
+                    $scope.refreshList();
+                });
+            } else {
+                $scope.showWarn("请选择需要抛转还原的调拨单！");
             }
         });
     };
@@ -822,6 +851,43 @@ angular.module('IOne-Production').controller('AlloController', function ($scope,
             }
         });
     };
+
+    $scope.revertConfirmAndTransferAllClickAction = function (event) {
+        $scope.stopEventPropagation(event);
+        if ($scope.selectedItemSize == 0) {
+            $scope.showWarn('请先选择记录！');
+            return;
+        }
+        $scope.showConfirm('确认还原审核抛转吗?', '', function () {
+            var uuids = "";
+            angular.forEach($scope.itemList, function (item) {
+                if (item.selected && item.confirm == '2' && item.transferFlag == '1') {
+                    uuids = item.uuid + ',' + uuids;
+                }
+            });
+            var transferData = {
+                'INV_ALLOT_MST_UUID': uuids,
+                'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid,
+                'ACTION': 'REVERT'
+            };
+            if (uuids.length) {
+                AlloMasterService.batchUpdate(uuids, {confirm: '1'}).success(function () {
+                    ErpAdapterService.transferErpAdapter('/invAllotToRvqTask', transferData, $scope, function (response) {
+                        $scope.showInfo('审核抛转还原成功!' + '<br>' + ' RVQ_FILE: ' + response.deleteRvqCount + ' 笔' + '<br>' + ' TC_RVR_FILE: ' + response.deleteTcRvrCount + ' 笔' + '<br>' + ' RVR_FILE: ' + response.deleteRvrCount + ' 笔');
+                        $scope.refreshList();
+                    }, function () {
+                        AlloMasterService.batchUpdate(uuids, {confirm: '2'}).success(function () {
+                            //$scope.showError("审核抛转还原失败!已还原为已审核！");
+                            $scope.refreshList();
+                        });
+                    });
+                });
+            } else {
+                $scope.showWarn("请选择需要审核抛转还原的调拨单！");
+            }
+        });
+    };
+
 
 });
 
