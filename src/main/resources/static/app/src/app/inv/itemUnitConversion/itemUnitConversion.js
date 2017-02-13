@@ -72,6 +72,8 @@ angular.module('IOne-Production').controller('ItemUnitConversionController', fun
      * Add new item which will take the ui to the edit page.
      */
     $scope.preAddItemAction = function (source, domain, desc) {
+        source.item = angular.copy($scope.selectedItem);
+        source.itemUuid = $scope.selectedItem.uuid;
         $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS);
         $scope.status = 'add';
         $scope.desc = desc;
@@ -88,6 +90,7 @@ angular.module('IOne-Production').controller('ItemUnitConversionController', fun
                 $scope.source = response.data;
                 $scope.showInfo('新增数据成功。');
                 $scope.refreshList();
+                queryByDetailByItem($scope.selectedItem);
                 $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
             }, errorHandle);
         } else if ($scope.status == 'edit') {
