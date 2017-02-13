@@ -411,12 +411,12 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
     $scope.selectAllAction = function () {
 
         if ($scope.selectAllFlag == true) {
-            angular.forEach($scope.itemList, function (item) {
+            angular.forEach($scope.itemParent, function (item) {
                 item.selected = true;
                 $scope.selected.push(item);
             });
         } else {
-            angular.forEach($scope.itemList, function (item) {
+            angular.forEach($scope.itemParent, function (item) {
                 item.selected = false;
             });
             $scope.selected = [];
