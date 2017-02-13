@@ -62,16 +62,23 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
         $scope.sortType = '';
     };
 
+    $scope.interfaceList = [{"interface" : 'jd'},{"interface" : 'taobao'},{"interface" : 'vip'}];
     $scope.refreshList = function () {
         //EPSInterfaceConfigService.getAll
+        angular.forEach($scope.interfaceList,function(interfaceItem){
+        $scope.interfaceItemList = [];
         TaoBaoAdapterService.queryConfig($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption.select.confirm, $scope.listFilterOption.select.status,
-            $scope.listFilterOption.select.platform, $scope.listFilterOption.no, $scope.listFilterOption.name, $scope.listFilterOption.keyWord, $scope.RES_UUID_MAP.EPS.INTERFACE_CONFIG.RES_UUID)
+            $scope.listFilterOption.select.platform, $scope.listFilterOption.no, $scope.listFilterOption.name, $scope.listFilterOption.keyWord, $scope.RES_UUID_MAP.EPS.INTERFACE_CONFIG.RES_UUID, interfaceItem.interface)
             .success(function (data) {
                 $scope.itemList = data;
                 $scope.pageOption.totalPage = 1;
                 $scope.pageOption.totalElements = data.length;
                 $scope.selectAllFlag = false;
                 $scope.selectedItemSize = 0;
+
+                angular.forEach($scope.itemList,function(itemPush){
+                    $scope.interfaceItemList.push(itemPush);
+                });
                 if (data.length > 0) {
                     angular.forEach(data, function (item) {
                         if (angular.isDefined(item.ocmBaseChanUuid) && item.ocmBaseChanUuid != null) {
@@ -87,11 +94,11 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                     });
                 }
             });
+        });
     };
 
     $scope.getMenuAuthData($scope.RES_UUID_MAP.EPS.INTERFACE_CONFIG.RES_UUID).success(function (data) {
         $scope.menuAuthDataMap = $scope.menuDataMap(data);
-        //console.info($scope.menuAuthDataMap);
     });
 
     $scope.$watch('listFilterOption.select', function () {
@@ -172,42 +179,7 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
         $scope.source = source;
         $scope.domain = domain;
         $scope.selectedItemBackUp = angular.copy($scope.selectedItem);
-        $scope.interfaceSelect(source);
     };
-
-    $scope.interfaceSelect = function (selectedObject) {
-            $scope.selectedObject = selectedObject;
-            if($scope.selectedObject.no == 'TAOBAO'){
-                $scope.objectInfo.appSecret.column = 'SECRET';
-                $scope.objectInfo.appSecret.desc = 'SECRET';
-                $scope.objectInfo.appSecret.name = 'SECRET';
-                $scope.objectInfo.appSecret.underscoreName = 'SECRET';
-                $scope.objectInfo.appSession.column = 'SESSIONKEY';
-                $scope.objectInfo.appSession.desc = 'SESSIONKEY';
-                $scope.objectInfo.appSession.name = 'SESSIONKEY';
-                $scope.objectInfo.appSession.underscoreName = 'SESSIONKEY';
-            }
-
-            if($scope.selectedObject.no == 'JD'){
-                $scope.objectInfo.appSecret.column = 'SECRET';
-                $scope.objectInfo.appSecret.desc = 'SECRET';
-                $scope.objectInfo.appSecret.name = 'SECRET';
-                $scope.objectInfo.appSecret.underscoreName = 'SECRET';
-                $scope.objectInfo.appSession.column = 'SESSIONKEY';
-                $scope.objectInfo.appSession.desc = 'SESSIONKEY';
-                $scope.objectInfo.appSession.name = 'SESSIONKEY';
-                $scope.objectInfo.appSession.underscoreName = 'SESSIONKEY';
-            }
-
-            if($scope.selectedObject.no == 'VIP'){
-                $scope.objectInfo.appSession.column = 'VENDORID';
-                $scope.objectInfo.appSession.desc = 'VENDORID';
-                $scope.objectInfo.appSession.name = 'VENDORID';
-                $scope.objectInfo.appSession.underscoreName = 'VENDORID';
-            }
-            $mdDialog.hide($scope.selectedObject);
-        };
-
 
     /**
      * Add new item which will take the ui to the edit page.
@@ -555,7 +527,6 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                 $scope.showWarn('以下状态是失效或已审核的的项目将不会删除：' + '<br>' + noDeleteNos);
             }
             $q.all(promises).then(function (data) {
-                //console.info(data);
                 $scope.refreshList();
                 $scope.showInfo('删除成功！');
             }, function (data) {
@@ -600,7 +571,6 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
             $scope.showWarn('以下已审核过的项目将不再次审核：' + '<br>' + confirmedNos);
         }
         $q.all(promises).then(function (data) {
-            //console.info(data);
             $scope.refreshList();
             $scope.disableBatchMenuButtons();
             $scope.showInfo('审核成功！');
@@ -644,11 +614,9 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
             $scope.showWarn('以下未审核过的项目将不执行取消审核：' + unConfirmedNos);
         }
         $q.all(promises).then(function (data) {
-            //console.info(data);
             $scope.refreshList();
             $scope.showInfo('取消审核成功！');
         }, function (data) {
-            //console.info(data);
             $scope.showError(data.data.message);
             $scope.showError(data.message);
         });
@@ -687,7 +655,6 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
             $scope.showWarn('以下已生效的项目将不再次修改：' + '<br>' + effectiveNos);
         }
         $q.all(promises).then(function (data) {
-            //console.info(data);
             $scope.refreshList();
             $scope.showInfo('生效成功！');
         }, function (data) {
@@ -729,11 +696,9 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
             $scope.showWarn('以下失效的项目将不再次修改：' + uneffectiveNos);
         }
         $q.all(promises).then(function (data) {
-            //console.info(data);
             $scope.refreshList();
             $scope.showInfo('失效成功！');
         }, function (data) {
-            //console.info(data);
             $scope.showError(data.data.message);
             $scope.showError(data.message);
         });
@@ -759,7 +724,6 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
     };
 
     $scope.disableBatchMenuButtons = function () {
-        //console.info("disableBatchMenuButtons");
         var selectedCount = 0;
         var confirm = '';
         var status = '';
@@ -823,12 +787,6 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
         }
     };
 
-     $scope.aa = function(){
-     if($scope.source[0].name != null){
-        console.log($scope.source[0]);
-     }
-    }
-
 });
 
 angular.module('IOne-Production').directive('interfaceEditor', function($http, Constant, $mdDialog) {
@@ -841,24 +799,17 @@ angular.module('IOne-Production').directive('interfaceEditor', function($http, C
         templateUrl: 'app/src/app/taobao_data/interface_config/interfaceEditor.html',
         link: function($scope) {
             $scope.$watch('source', function() {
-                if($scope.status == 'add') {
-
-                } else if($scope.status == 'edit') {
-
-                }
                 if($scope.source) {
                     $http.get(Constant.BACKEND_BASE + '/objectInfo/' + $scope.domain).success(function(data) {
                         $scope.objectInfo = data;
-
                         angular.forEach(Object.keys($scope.objectInfo), function(key) {
                             if($scope.objectInfo[key].type == 'DATE' && angular.isDefined($scope.source[key]) && $scope.source[key]!= null) {
                                 $scope.source[key] = new Date($scope.source[key]);
                             }
-                        })
+                        });
                     });
                 }
             });
-
             $scope.openDlg = function(key, fieldInfo) {
                 $mdDialog.show({
                     controller: 'interfaceSearchController',
@@ -934,37 +885,9 @@ angular.module('IOne-Production').controller('interfaceSearchController', functi
         })
     };
     $scope.queryAction();
-
     $scope.select = function (selectedObject) {
         $scope.selectedObject = selectedObject;
-        if($scope.selectedObject.no == 'TAOBAO'){
-            $scope.objectInfo.appSecret.column = 'SECRET';
-            $scope.objectInfo.appSecret.desc = 'SECRET';
-            $scope.objectInfo.appSecret.name = 'SECRET';
-            $scope.objectInfo.appSecret.underscoreName = 'SECRET';
-            $scope.objectInfo.appSession.column = 'SESSIONKEY';
-            $scope.objectInfo.appSession.desc = 'SESSIONKEY';
-            $scope.objectInfo.appSession.name = 'SESSIONKEY';
-            $scope.objectInfo.appSession.underscoreName = 'SESSIONKEY';
-        }
-
-        if($scope.selectedObject.no == 'JD'){
-            $scope.objectInfo.appSecret.column = 'SECRET';
-            $scope.objectInfo.appSecret.desc = 'SECRET';
-            $scope.objectInfo.appSecret.name = 'SECRET';
-            $scope.objectInfo.appSecret.underscoreName = 'SECRET';
-            $scope.objectInfo.appSession.column = 'SESSIONKEY';
-            $scope.objectInfo.appSession.desc = 'SESSIONKEY';
-            $scope.objectInfo.appSession.name = 'SESSIONKEY';
-            $scope.objectInfo.appSession.underscoreName = 'SESSIONKEY';
-        }
-
-        if($scope.selectedObject.no == 'VIP'){
-            $scope.objectInfo.appSession.column = 'VENDORID';
-            $scope.objectInfo.appSession.desc = 'VENDORID';
-            $scope.objectInfo.appSession.name = 'VENDORID';
-            $scope.objectInfo.appSession.underscoreName = 'VENDORID';
-        }
+        $scope.source.ecTypeNo=selectedObject.no;
         $mdDialog.hide($scope.selectedObject);
     };
 

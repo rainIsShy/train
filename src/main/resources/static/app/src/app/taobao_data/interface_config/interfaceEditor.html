@@ -1,9 +1,32 @@
 <h4 class="md-title" layout-padding>基本属性</h4>
 <div layout="row" layout-wrap>
     <md-input-container flex-sm="100" flex="50" layout-padding ng-repeat="(key, value) in objectInfo"
-                        ng-if="value.type == 'STRING' && value.show">
+                        ng-if="value.type == 'STRING' && value.show  && value.desc != 'APP_SESSION' && value.desc != 'APP_SECRET' && value.desc != 'APP_KEY'">
         <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">{{value.desc}}</label>
         <input type="text" ng-model="source[key]" ng-required="value.notBlank" ng-disabled="!value.editable">
+    </md-input-container>
+    <md-input-container flex-sm="100" flex="50" layout-padding
+                        ng-if="source.ecTypeNo == 'TAOBAO' || source.ecTypeNo == 'JD' || source.ecTypeNo == 'VIP'">
+        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">appKey</label>
+        <input type="text" ng-model="source.appKey" ng-required="value.notBlank" ng-disabled="!value.editable">
+    </md-input-container>
+    <md-input-container flex-sm="100" flex="50" layout-padding
+                        ng-if="source.ecTypeNo == 'TAOBAO' || source.ecTypeNo == 'JD'">
+        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">secret</label>
+        <input type="text" ng-model="source.secret" ng-required="value.notBlank" ng-disabled="!value.editable">
+    </md-input-container>
+    <md-input-container flex-sm="100" flex="50" layout-padding
+                        ng-if="source.ecTypeNo == 'TAOBAO' || source.ecTypeNo == 'JD'">
+        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">sessionKey</label>
+        <input type="text" ng-model="source.sessionKey" ng-required="value.notBlank" ng-disabled="!value.editable">
+    </md-input-container>
+    <md-input-container flex-sm="100" flex="50" layout-padding ng-if="source.ecTypeNo == 'VIP'">
+        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">appSecret</label>
+        <input type="text" ng-model="source['appSecret']" ng-required="value.notBlank" ng-disabled="!value.editable">
+    </md-input-container>
+    <md-input-container flex-sm="100" flex="50" layout-padding ng-if="source.ecTypeNo == 'VIP'">
+        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">vendorId</label>
+        <input type="text" ng-model="source['vendorId']" ng-required="value.notBlank" ng-disabled="!value.editable">
     </md-input-container>
 </div>
 
