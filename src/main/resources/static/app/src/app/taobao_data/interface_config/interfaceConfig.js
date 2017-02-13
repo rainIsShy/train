@@ -172,7 +172,42 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
         $scope.source = source;
         $scope.domain = domain;
         $scope.selectedItemBackUp = angular.copy($scope.selectedItem);
+        $scope.interfaceSelect(source);
     };
+
+    $scope.interfaceSelect = function (selectedObject) {
+            $scope.selectedObject = selectedObject;
+            if($scope.selectedObject.no == 'TAOBAO'){
+                $scope.objectInfo.appSecret.column = 'SECRET';
+                $scope.objectInfo.appSecret.desc = 'SECRET';
+                $scope.objectInfo.appSecret.name = 'SECRET';
+                $scope.objectInfo.appSecret.underscoreName = 'SECRET';
+                $scope.objectInfo.appSession.column = 'SESSIONKEY';
+                $scope.objectInfo.appSession.desc = 'SESSIONKEY';
+                $scope.objectInfo.appSession.name = 'SESSIONKEY';
+                $scope.objectInfo.appSession.underscoreName = 'SESSIONKEY';
+            }
+
+            if($scope.selectedObject.no == 'JD'){
+                $scope.objectInfo.appSecret.column = 'SECRET';
+                $scope.objectInfo.appSecret.desc = 'SECRET';
+                $scope.objectInfo.appSecret.name = 'SECRET';
+                $scope.objectInfo.appSecret.underscoreName = 'SECRET';
+                $scope.objectInfo.appSession.column = 'SESSIONKEY';
+                $scope.objectInfo.appSession.desc = 'SESSIONKEY';
+                $scope.objectInfo.appSession.name = 'SESSIONKEY';
+                $scope.objectInfo.appSession.underscoreName = 'SESSIONKEY';
+            }
+
+            if($scope.selectedObject.no == 'VIP'){
+                $scope.objectInfo.appSession.column = 'VENDORID';
+                $scope.objectInfo.appSession.desc = 'VENDORID';
+                $scope.objectInfo.appSession.name = 'VENDORID';
+                $scope.objectInfo.appSession.underscoreName = 'VENDORID';
+            }
+            $mdDialog.hide($scope.selectedObject);
+        };
+
 
     /**
      * Add new item which will take the ui to the edit page.
