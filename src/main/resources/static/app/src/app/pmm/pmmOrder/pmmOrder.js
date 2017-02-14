@@ -1151,8 +1151,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 $scope.editItemCustom(extend);
             }
         });
-    };;;;
-
+    };
     $scope.editItemCustom = function (orderExtendDetail) {
         $scope.selectedOrderExtendDetail = orderExtendDetail;
         $scope.changeSubTabIndexs(2);
@@ -1998,7 +1997,7 @@ angular.module('IOne-Production').controller('OrderPurchaseReturnController', fu
 });
 
 
-angular.module('IOne-Production').controller('SelectItemsController', function ($scope, $mdDialog, fieldName, channelUuid, OrderItems) {
+angular.module('IOne-Production').controller('SelectItemsController', function ($scope, $mdDialog, fieldName, channelUuid, OrderItems, ProductionCatalogueDetails) {
     $scope.pageOption = {
         sizePerPage: 5,
         currentPage: 0,
@@ -2012,14 +2011,25 @@ angular.module('IOne-Production').controller('SelectItemsController', function (
     };
 
     $scope.refreshList = function () {
-        OrderItems.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, channelUuid, $scope.searchNo, $scope.searchName).success(function (data) {
+        // OrderItems.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, channelUuid, $scope.searchNo, $scope.searchName).success(function (data) {
+        //     $scope.searchResult = data;
+        //     if ($scope.searchResult.content.length < 1) {
+        //         $scope.showError('当前经销商没有商品，请检查渠道定价是否设置。');
+        //     }
+        //     $scope.pageOption.totalElements = data.totalElements;
+        //     $scope.pageOption.totalPage = data.totalPages;
+        // });
+
+        var today = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+        ProductionCatalogueDetails.getAllByAppCatalogue($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, channelUuid, today, $scope.searchNo, $scope.searchName, '').success(function (data) {
             $scope.searchResult = data;
             if ($scope.searchResult.content.length < 1) {
                 $scope.showError('当前经销商没有商品，请检查渠道定价是否设置。');
             }
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
-        });
+            }
+        );
     };
 
     $scope.refreshList();
