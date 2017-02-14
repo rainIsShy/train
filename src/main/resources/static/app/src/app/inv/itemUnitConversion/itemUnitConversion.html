@@ -1,0 +1,240 @@
+<div class="main-panel">
+    <div ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS">
+        <div layout="row" class="top-title">
+            <div flex="70" hide-sm hide-md class="left-title" ng-show="selectedItem" style="position: relative;">
+                <span>商品单位换算详细信息</span>
+                <md-button class="md-icon-button close-btn float-right" aria-label="More"
+                           ng-click="selectedItem = null">
+                    <ng-md-icon icon="chevron_left"></ng-md-icon>
+                </md-button>
+                <md-menu>
+                    <md-button class="md-icon-button close-btn" aria-label="More" style="float: left;margin-left:20px;"
+                               ng-click="$mdOpenMenu($event)">
+                        <ng-md-icon icon="menu"></ng-md-icon>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="deleteByItem(selectedItem)">
+                                <ng-md-icon icon="delete"></ng-md-icon>
+                                删除
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+
+            <div flex class="right-title">
+                <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
+                           ng-click="preAddItemAction({}, 'INV_BASE_ITEM_UNIT_CONVERSION')">
+                    <ng-md-icon icon="add"></ng-md-icon>
+                </md-button>
+                <span>商品单位换算列表</span>
+                <md-menu>
+                    <md-button class="md-icon-button close-btn float-right" aria-label="More"
+                               ng-click="$mdOpenMenu($event)">
+                        <ng-md-icon icon="menu"></ng-md-icon>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More" ng-click="batchDelete($event)">
+                                <ng-md-icon icon="delete"></ng-md-icon>
+                                批量删除
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+        </div>
+
+        <div layout="row" class="main-body border">
+            <div flex="70" hide-sm hide-md layout="column" class="left-body" ng-show="selectedItem">
+                <div flex="100" layout-padding>
+                    <div layout="row" layout-padding style="font-size: 20px;padding-top: 2px; font-weight: bold;">
+                        <span flex>商品编号: {{selectedItem.no}}</span>
+                    </div>
+                    <md-divider></md-divider>
+                    <div layout="row" layout-wrap layout-margin>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">商品名称</span>
+                            <span class="item-content">{{selectedItem.name}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">规格</span>
+                            <span class="item-content">{{selectedItem.standard}}</span>
+                        </span>
+                    </div>
+                    <md-tabs md-dynamic-height md-border-bottom style="padding-top: 30px;">
+                        <md-tab label="单位换算">
+                            <div layout="row" layout-wrap>
+                                <div flex="100" ng-repeat="detail in selectedItem.detailList" ng-click=""
+                                     class="prod-item" style="position: relative;padding-bottom: 0px; margin-top: 5px;">
+                                    <div layout="row" class="height: 100%;">
+                                        <div flex="33">
+                                            <div layout-padding>来源计算单位 : <span>{{detail.sourceUnit}}</span></div>
+                                            <div layout-padding>目标计算单位 : <span>{{detail.targetUnit}}</span></div>
+                                        </div>
+                                        <div flex="33">
+                                            <div layout-padding>来源单位兑换数量 : <span>{{detail.sourceUnitQty}}</span></div>
+                                            <div layout-padding>目标单位兑换数量 : <span>{{detail.targetUnitQty}}</span></div>
+                                        </div>
+                                        <div flex="33">
+                                            <div layout-padding>备注 : <span>{{detail.remark}}</span></div>
+                                        </div>
+                                    </div>
+                                    <div layout="row">
+                                        <span flex></span>
+                                        <md-switch ng-model="detail.status" aria-label="Switch 1" class="md-block"
+                                                   layout-align="end center"
+                                                   ng-true-value="'1'" ng-false-value="'2'" style="font-size:80%"
+                                                   ng-change="statusToggleAction($event, detail)">
+                                            启用
+                                        </md-switch>
+                                        <md-button class="md-button" aria-label="More" layout-align="end center"
+                                                   ng-click="editItemAction(detail, 'INV_BASE_ITEM_UNIT_CONVERSION', '来源计算单位: ' + detail.no)">
+                                            <ng-md-icon icon="edit" size="20"></ng-md-icon>
+                                            编辑
+                                        </md-button>
+                                        <md-button class="md-button" aria-label="More"
+                                                   ng-click="deleteClickAction(detail)" layout-align="end center">
+                                            <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>
+                                            删除
+                                        </md-button>
+                                    </div>
+                                    <md-divider style="margin-top: 5px"></md-divider>
+                                </div>
+                                <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
+                                     ng-click="preAddItemAction({item:selectedItem}, 'INV_BASE_ITEM_UNIT_CONVERSION', '新增订单')">
+                                    <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
+                                </div>
+                            </div>
+                        </md-tab>
+                    </md-tabs>
+                </div>
+            </div>
+            <div flex class="right-body">
+                <!-- basic search-->
+                <div class="search-bar" layout="row" style="position: relative">
+                    <span style="position: absolute; top: 15px; left: 10px;">
+                        <md-checkbox ng-model="selectAllFlag" aria-label="Checkbox"
+                                     ng-change="selectAllAction()"></md-checkbox>
+                    </span>
+                    <md-input-container flex="15" style="margin-left: 50px;">
+                        <label>启用状态</label>
+                        <md-select ng-model="listFilterOption.status" ng-change="refreshList()">
+                            <md-option ng-repeat="(key, value) in STATUS" ng-value="key">{{value.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex style="margin-left: 10px;">
+                        <label>输入商品关键字查询</label>
+                        <input ng-model="listFilterOption.itemKeyWord" ng-keydown="$event.which == 13 && refreshList()">
+                    </md-input-container>
+                    <md-input-container flex style="margin-left: 10px;">
+                        <label>输入来源计算单位查询</label>
+                        <input ng-model="listFilterOption.sourceUnit" ng-keydown="$event.which == 13 && refreshList()">
+                    </md-input-container>
+                    <md-input-container flex style="margin-left: 10px;">
+                        <label>输入目标计算单位查询</label>
+                        <input ng-model="listFilterOption.targetUnit" ng-keydown="$event.which == 13 && refreshList()">
+                    </md-input-container>
+                    <md-button class="md-raised" style="margin-top: 22px;height: 20px;" layout-align="end center"
+                               ng-click="refreshList()"
+                               aria-label="查询"> &nbsp;查询
+                    </md-button>
+                </div>
+                <!-- status panel-->
+                <div layout="row" layout-warp layout-padding layout-margin ng-show="!selectedItem"
+                     style="margin: 20px 0px 20px 0px; padding-left: 60px;background-color: whitesmoke;position: relative;height: 50px;padding-top: 15px;">
+                    <span flex="20">总记录数: {{pageOption.totalElements}}</span>
+
+                    <md-menu>
+                        <md-button class="md-button close-btn" aria-label="More" ng-click="$mdOpenMenu($event)"
+                                   style="position: absolute;right: 0px;top: 0px;">
+                            <ng-md-icon icon="sort"></ng-md-icon>
+                            排序
+                        </md-button>
+                        <md-menu-content width="2">
+                            <md-menu-item>
+                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('sourceUnit')">
+                                    <ng-md-icon ng-show="listFilterOption.sort == 'itemNo'"
+                                                icon="play_arrow"></ng-md-icon>
+                                    按编号
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </div>
+                <div ng-repeat="item in itemList"
+                     ng-class="selectedItem.no == item.no ? 'selected-item':''">
+                    <div class="summary-item">
+                        <div layout="row" layout-wrap>
+                            <span style="position: absolute">
+                                <md-checkbox ng-model="item.selected" aria-label="Checkbox"
+                                             ng-click="selectItemAction($event, item)"></md-checkbox>
+                            </span>
+                            <div flex="100" layout="row"
+                                 style="padding-left: 50px;padding-top: 10px; font-weight: bold;">
+                                <span flex ng-click="showDetailPanelAction(item)" class="summary-item__title">{{item.no}}</span>
+                            </div>
+                            <div flex="100" layout="row" style="padding-left: 50px;padding-top: 10px;font-size: 14px;"
+                                 layout-align="space-between center" ng-hide="selectedItem">
+                                <div flex layout="row" style="color:#7f8fa4">
+                                    <span>商品名称: <span
+                                            style="font-style: italic">{{item.name}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                    <span>规格: <span style="font-style: italic">{{item.standard}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                </div>
+                                <md-button class="md-button close-btn" aria-label="More"
+                                           ng-click="toggleMorePanelAction(item)"
+                                           style="position: relative;left: 15px;">
+                                    查看更多...
+                                </md-button>
+                            </div>
+                        </div>
+                    </div>
+                    <div layout="row" layout-wrap ng-show="item.showMorePanel && !selectedItem"
+                         style="font-size: 14px;">
+                        <div flex="100" ng-repeat="detail in item.detailList" style="padding: 10px 20px 0px 20px;">
+                            <md-divider></md-divider>
+                            <div layout="row" style="height: 100%;">
+                                <div flex="20">
+                                    <div layout-padding>来源计算单位 : <span>{{detail.sourceUnit}}</span></div>
+                                    <div layout-padding>目标计算单位 : <span>{{detail.targetUnit}}</span></div>
+                                </div>
+                                <div flex="20">
+                                </div>
+                                <div flex="20">
+                                    <div layout-padding>来源单位兑换数量 : <span>{{detail.sourceUnitQty}}</span></div>
+                                    <div layout-padding>目标单位兑换数量 : <span>{{detail.targetUnitQty}}</span></div>
+                                </div>
+                                <div flex="20">
+                                    <div layout-padding>备注 : <span>{{detail.remark}}</span></div>
+                                    <div layout-padding>启用状态：<span>{{Constant.STATUS[detail.status].name}}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <md-divider></md-divider>
+                </div>
+                <div pagination option="pageOption" callback="refreshList()"></div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS">
+        <div layout="row" class="top-title">
+            <div flex="100" class="left-title">
+                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="listItemAction()"
+                           style="float: left; margin-left: 36px;">
+                    <ng-md-icon icon="chevron_left"></ng-md-icon>
+                </md-button>
+                <span>{{desc}}</span>
+                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="saveItemAction()">
+                    <ng-md-icon icon="save"></ng-md-icon>
+                </md-button>
+            </div>
+        </div>
+
+        <object-editor class="object-editor" status="status" source="source" domain="domain"></object-editor>
+    </div>
+
+</div>
