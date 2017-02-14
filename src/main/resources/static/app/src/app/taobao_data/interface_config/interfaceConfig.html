@@ -129,11 +129,11 @@
                         </span>
                         <span flex="50" flex-sm="100" layout-padding>
                             <span class="item-name">电商渠道</span>
-                            <span class="item-content">{{selectedItem.ecTypeName}}</span>
+                            <span class="item-content">{{selectedItem.chanName}}</span>
                         </span>
                         <span flex="50" flex-sm="100" layout-padding>
                             <span class="item-name">电商平台</span>
-                            <span class="item-content">{{selectedItem.name}}</span>
+                            <span class="item-content">{{selectedItem.ecTypeName}}</span>
                         </span>
                          <span flex="50" flex-sm="100" layout-padding>
                             <span class="item-name">备注</span>
@@ -216,16 +216,6 @@
                         </md-button>
                     </span>
                 </div>
-                <!-- advanced search-->
-                <!--<div class="search-bar" layout="row" ng-show="displayAdvancedSearPanel" layout-align="start center">-->
-                    <!--<md-input-container flex="20" style="margin-left: 55px;" ng-show="selectedItem == null">-->
-                        <!--<label>:</label>-->
-                        <!--<md-select ng-model="listFilterOption.select.prodType">-->
-                            <!--<md-option ng-repeat="(key, value) in PROD_TYPE" ng-value="key">{{value.name}}</md-option>-->
-                        <!--</md-select>-->
-                    <!--</md-input-container>-->
-                <!--</div>-->
-                <!-- status panel-->
                 <div layout="row" layout-warp layout-padding layout-margin ng-show="!selectedItem"
                      style="margin: 20px 0px 20px 0px; padding-left: 60px;background-color: whitesmoke;position: relative;height: 50px;padding-top: 15px;">
 
@@ -264,8 +254,8 @@
                             <div flex="100" layout="row" style="padding-left: 50px;padding-top: 10px;font-size: 14px;" layout-align="space-between center" ng-hide="selectedItem">
                                 <div flex layout="row" style="color:#7f8fa4">
                                     <span>电商平台接口配置: <span style="font-style: italic">{{item.name}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
-                                    <span>电商渠道: <span style="font-style: italic">{{item.channel.name}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
-                                    <span>电商平台: <span style="font-style: italic">{{item.mall.name}}</span></span>
+                                    <span>电商渠道: <span style="font-style: italic">{{item.chanName}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
+                                    <span>电商平台: <span style="font-style: italic">{{item.ecTypeName}}</span></span>
                                 </div>
                                 <div layout="row" layout-align="end center">
                                     <md-switch ng-model="item.confirm" aria-label="Switch 1" class="md-block"
@@ -280,26 +270,6 @@
                                                ng-if="menuDisplayOption['switchStatus'].display && (menuAuthDataMap[menuDisplayOption['switchStatus'].uuid] || isAdmin() || !menuDisplayOption['switchStatus'].uuid)">
                                         启用
                                     </md-switch>
-                                    <!--<div ng-if="item.confirm != CONFIRM[2].value">
-                                        <md-button class="md-fab md-mini" ng-click="confirmClickAction($event, item)">
-                                            <span>审核</span>
-                                        </md-button>
-                                    </div>
-                                    <div ng-if="item.confirm == CONFIRM[2].value">
-                                        <md-button class="md-fab md-primary md-mini" ng-click="confirmClickAction($event, item)">
-                                            <span>取审</span>
-                                        </md-button>
-                                    </div>
-                                    <div ng-if="item.status != STATUS[1].value">
-                                        <md-button class="md-fab md-mini" ng-click="statusClickAction($event, item)">
-                                            <span>有效</span>
-                                        </md-button>
-                                    </div>
-                                    <div ng-if="item.status == STATUS[1].value">
-                                        <md-button class="md-fab md-primary md-mini" ng-click="statusClickAction($event, item)">
-                                            <span>失效</span>
-                                        </md-button>
-                                    </div>-->
                                 </div>
                             </div>
                             <div flex="100" style="padding-left: 50px;padding-top: 30px;font-size: 14px;color:#7f8fa4" ng-show="selectedItem">

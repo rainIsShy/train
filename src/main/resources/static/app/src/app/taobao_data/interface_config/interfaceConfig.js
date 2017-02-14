@@ -204,48 +204,35 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
             if ($scope.domain == 'EPS_BASE_INTERFACE_CONF') {
                 if (angular.isDefined($scope.source.channel)) {
                     $scope.source.ocmBaseChanUuid = $scope.source.channel.uuid;
+                    $scope.source.ocmChanUuid = $scope.source.channel.uuid;
                 }
                 if (angular.isDefined($scope.source.mall)) {
                     $scope.source.ocmBaseMallUuid = $scope.source.mall.uuid;
                 }
                 var itemList = [];
+                $scope.source.status= 2;
+                $scope.source.confirm= 1;
                 itemList.push($scope.source);
-                TaoBaoAdapterService.insertConfig(itemList, $scope, function (response) {
+                $scope.ecTypeNo = $scope.source.mall.no.toLocaleLowerCase();
+                TaoBaoAdapterService.insertConfig(itemList[0], $scope, $scope.ecTypeNo, function (response) {
                     $scope.showInfo("新增成功");
                 });
-                /*
-                 EPSInterfaceConfigService.add($scope.source).success(function (data) {
-                 $scope.showInfo('新增数据成功。');
-                 }).error(function (data) {
-                 $scope.showError('新增失败:' + '<br>' + data.message);
-                 });
-                 */
             }
         } else if ($scope.status == 'edit') {
             if ($scope.domain == 'EPS_BASE_INTERFACE_CONF') {
                 if (angular.isDefined($scope.source.channel)) {
                     $scope.source.ocmBaseChanUuid = $scope.source.channel.uuid;
+                    $scope.source.ocmChanUuid = $scope.source.channel.uuid;
                 }
                 if (angular.isDefined($scope.source.mall)) {
                     $scope.source.ocmBaseMallUuid = $scope.source.mall.uuid;
                 }
                 var itemList = [];
                 itemList.push($scope.source);
-                TaoBaoAdapterService.updateConfig(itemList, $scope, function (data) {
+                $scope.updateEcTypeNo = $scope.source.ecTypeNo.toLocaleLowerCase();
+                TaoBaoAdapterService.updateConfig(itemList[0], $scope, $scope.updateEcTypeNo, $scope.source.uuid, function (data) {
                     $scope.showInfo("修改成功");
                 });
-                /*
-                 EPSInterfaceConfigService.modify($scope.source.uuid, $scope.source).success(function (data) {
-                 $scope.showInfo('修改数据成功。');
-                 $scope.source = data;
-                 $scope.selectedItem = data;
-                 $scope.selectedItemBackUp = angular.copy($scope.selectedItem);
-                 }).error(function (data) {
-                 $scope.showError('修改失败:' + '<br>' + data.message);
-                 $scope.source = angular.copy($scope.selectedItemBackUp);
-                 $scope.selectedItem = angular.copy($scope.selectedItemBackUp);
-                 });
-                 */
             }
         }
     };
@@ -285,16 +272,6 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                     $scope.disableBatchMenuButtons();
                     $scope.showInfo("取消审核成功");
                 });
-                /*
-                 EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
-                 item.confirm = Constant.CONFIRM[1].value;
-                 $scope.disableBatchMenuButtons();
-                 $scope.showInfo('取消审核成功！');
-                 }).error(function (response) {
-                 //$scope.showError($scope.getError(response.message));
-                 $scope.showError(response.message);
-                 });
-                 */
             });
         } else {
             $scope.showConfirm('确认审核吗？', '', function () {
@@ -307,16 +284,6 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                     $scope.disableBatchMenuButtons();
                     $scope.showInfo("审核成功");
                 });
-                /*
-                 EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
-                 item.confirm = Constant.CONFIRM[2].value;
-                 $scope.disableBatchMenuButtons();
-                 $scope.showInfo('审核成功！');
-                 }).error(function (response) {
-                 //$scope.showError($scope.getError(response.message));
-                 $scope.showError(response.message);
-                 });
-                 */
             });
         }
     };
@@ -329,16 +296,11 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                 item.confirm = Constant.CONFIRM[1].value;
                 var itemList = [];
                 itemList.push(UpdateInput);
-                TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
+                $scope.cancelConfirmEcTypeNo = UpdateInput.ecTypeNo.toLocaleLowerCase();
+                TaoBaoAdapterService.updateConfig(itemList, $scope, $scope.cancelConfirmEcTypeNo, UpdateInput.uuid, function (response) {
                     $scope.disableBatchMenuButtons();
                     $scope.showInfo("取消审核成功");
                 });
-                /*
-                 EPSInterfaceConfigService.modify(UpdateInput.uuid, UpdateInput).success(function () {
-                 $scope.disableBatchMenuButtons();
-                 $scope.showInfo('修改数据成功。');
-                 });
-                 */
             }, function () {
                 item.confirm = Constant.CONFIRM[2].value
             });
@@ -353,16 +315,11 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                 item.confirm = Constant.CONFIRM[2].value;
                 var itemList = [];
                 itemList.push(UpdateInput);
-                TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
+                $scope.confirmEcTypeNo = UpdateInput.ecTypeNo.toLocaleLowerCase();
+                TaoBaoAdapterService.updateConfig(itemList, $scope, $scope.confirmEcTypeNo, UpdateInput.uuid, function (response) {
                     $scope.disableBatchMenuButtons();
                     $scope.showInfo("审核成功");
                 });
-                /*
-                 EPSInterfaceConfigService.modify(UpdateInput.uuid, UpdateInput).success(function () {
-                 $scope.disableBatchMenuButtons();
-                 $scope.showInfo('修改数据成功。');
-                 });
-                 */
             }, function () {
                 item.confirm = Constant.CONFIRM[1].value;
             });
@@ -385,17 +342,6 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                     $scope.disableBatchMenuButtons();
                     $scope.showInfo("修改为失效成功");
                 });
-                /*
-                 EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
-                 item.status = Constant.STATUS[2].value;
-                 item.confirm = Constant.CONFIRM[1].value;
-                 $scope.disableBatchMenuButtons();
-                 $scope.showInfo('修改为失效成功！');
-                 }).error(function (response) {
-                 //$scope.showError($scope.getError(response.message));
-                 $scope.showError(response.message);
-                 });
-                 */
             });
         } else {
             $scope.showConfirm('确认改为生效吗？', '', function () {
@@ -408,17 +354,6 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                     $scope.disableBatchMenuButtons();
                     $scope.showInfo('修改为生效成功！');
                 });
-
-                /*
-                 EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
-                 item.status = Constant.STATUS[1].value;
-                 $scope.disableBatchMenuButtons();
-                 $scope.showInfo('修改为生效成功！');
-                 }).error(function (response) {
-                 //$scope.showError($scope.getError(response.message));
-                 $scope.showError(response.message);
-                 });
-                 */
             });
         }
     };
@@ -431,17 +366,11 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                 item.status = Constant.STATUS[1].value;
                 var itemList = [];
                 itemList.push(UpdateInput);
-                TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
+                $scope.statusEcTypeNo = UpdateInput.ecTypeNo.toLocaleLowerCase();
+                TaoBaoAdapterService.updateConfig(itemList, $scope, $scope.statusEcTypeNo, UpdateInput.uuid, function (response) {
                     $scope.disableBatchMenuButtons();
                     $scope.showInfo("修改为有效成功");
                 });
-
-                /*
-                 EPSInterfaceConfigService.modify(UpdateInput.uuid, UpdateInput).success(function () {
-                 $scope.disableBatchMenuButtons();
-                 $scope.showInfo('修改数据成功。');
-                 });
-                 */
             }, function () {
                 item.status = Constant.STATUS[2].value;
             });
@@ -452,18 +381,12 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                 item.confirm = Constant.CONFIRM[1].value;
                 var itemList = [];
                 itemList.push(UpdateInput);
-                TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
+                $scope.cancelStatusEcTypeNo = UpdateInput.ecTypeNo.toLocaleLowerCase();
+                TaoBaoAdapterService.updateConfig(itemList, $scope, cancelStatusEcTypeNo, UpdateInput.uuid, function (response) {
                     item.confirm = Constant.CONFIRM[1].value;
                     $scope.disableBatchMenuButtons();
                     $scope.showInfo("修改为无效成功");
                 });
-                /*
-                 EPSInterfaceConfigService.modify(UpdateInput.uuid, UpdateInput).success(function () {
-                 item.confirm = Constant.CONFIRM[1].value;
-                 $scope.disableBatchMenuButtons();
-                 $scope.showInfo('修改数据成功。');
-                 });
-                 */
             }, function () {
                 item.status = Constant.STATUS[1].value;
             });
@@ -480,18 +403,12 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
         $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
             var itemList = [];
             itemList.push(item);
-            TaoBaoAdapterService.deleteConfig(itemList, $scope, function (response) {
+            $scope.deleteEcTypeNo = item.ecTypeNo.toLocaleLowerCase();
+            TaoBaoAdapterService.deleteConfig(itemList, event, $scope.deleteEcTypeNo, item.uuid, function (response) {
                 $scope.selectedItem = null;
                 $scope.refreshList();
                 $scope.showInfo('删除成功。');
             });
-            /*
-             EPSInterfaceConfigService.delete(item.uuid).success(function () {
-             $scope.selectedItem = null;
-             $scope.refreshList();
-             $scope.showInfo('删除数据成功。');
-             });
-             */
         });
     };
 
@@ -507,10 +424,6 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                     itemList.push(item);
                     var response = TaoBaoAdapterService.deleteConfig(itemList, $scope, function (response) {
                     });
-                    /*
-                     var response = EPSInterfaceConfigService.delete(item.uuid).success(function () {
-                     });
-                     */
                     promises.push(response);
                     count++;
                 } else {
@@ -551,10 +464,6 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                     itemList.push(UpdateInput);
                     var response = TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
                     });
-                    /*
-                     var response = EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
-                     });
-                     */
                     promises.push(response);
                     count++;
                 } else {
@@ -567,7 +476,6 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
             return;
         }
         if (confirmedNos !== '') {
-            //confirmedNos = confirmedNos.substr(0, confirmedNos.length - 1);
             $scope.showWarn('以下已审核过的项目将不再次审核：' + '<br>' + confirmedNos);
         }
         $q.all(promises).then(function (data) {
@@ -610,7 +518,6 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
             return;
         }
         if (unConfirmedNos !== '') {
-            //unConfirmedNos = unConfirmedNos.substr(0, unConfirmedNos.length - 1);
             $scope.showWarn('以下未审核过的项目将不执行取消审核：' + unConfirmedNos);
         }
         $q.all(promises).then(function (data) {
@@ -636,10 +543,6 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                     itemList.push(UpdateInput);
                     var response = TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
                     });
-                    /*
-                     var response = EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
-                     });
-                     */
                     promises.push(response);
                     count++;
                 } else {
@@ -677,10 +580,6 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                     itemList.push(UpdateInput);
                     var response = TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
                     });
-                    /*
-                     var response = EPSInterfaceConfigService.modify(item.uuid, UpdateInput).success(function () {
-                     });
-                     */
                     promises.push(response);
                     count++;
                 } else {
@@ -887,7 +786,9 @@ angular.module('IOne-Production').controller('interfaceSearchController', functi
     $scope.queryAction();
     $scope.select = function (selectedObject) {
         $scope.selectedObject = selectedObject;
-        $scope.source.ecTypeNo=selectedObject.no;
+        if(selectedObject.mallFlag != null){
+            $scope.source.ecTypeNo=selectedObject.no;
+        }
         $mdDialog.hide($scope.selectedObject);
     };
 
