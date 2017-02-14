@@ -72,8 +72,8 @@ angular.module('IOne-Production').controller('ItemUnitConversionController', fun
      * Add new item which will take the ui to the edit page.
      */
     $scope.preAddItemAction = function (source, domain, desc) {
-        if (source.selectedItem) {
-            source.itemUuid = $scope.selectedItem.uuid;
+        if (source.item) {
+            source.itemUuid = source.item.uuid;
         }
 
         $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS);
@@ -147,8 +147,9 @@ angular.module('IOne-Production').controller('ItemUnitConversionController', fun
     };
 
     function errorHandle(response) {
-        var errorMsg = "服務存取失敗";
+        var errorMsg = "服务存取失败";
         if (response.data.code === "Duplicated") errorMsg = "商品或计算单位重複";
+        if (response.data.code === "BindingException") errorMsg = "请确认商品或计算单位已确实填入";
         $scope.showError(errorMsg);
     }
 

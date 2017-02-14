@@ -125,15 +125,15 @@
                             <md-option ng-repeat="(key, value) in STATUS" ng-value="key">{{value.name}}</md-option>
                         </md-select>
                     </md-input-container>
-                    <md-input-container flex style="margin-left: 50px;">
+                    <md-input-container flex style="margin-left: 10px;">
                         <label>输入商品关键字查询</label>
                         <input ng-model="listFilterOption.itemKeyWord" ng-keydown="$event.which == 13 && refreshList()">
                     </md-input-container>
-                    <md-input-container flex style="margin-left: 50px;">
+                    <md-input-container flex style="margin-left: 10px;">
                         <label>输入来源计算单位查询</label>
                         <input ng-model="listFilterOption.sourceUnit" ng-keydown="$event.which == 13 && refreshList()">
                     </md-input-container>
-                    <md-input-container flex style="margin-left: 50px;">
+                    <md-input-container flex style="margin-left: 10px;">
                         <label>输入目标计算单位查询</label>
                         <input ng-model="listFilterOption.targetUnit" ng-keydown="$event.which == 13 && refreshList()">
                     </md-input-container>
