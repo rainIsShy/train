@@ -41,11 +41,21 @@
 <h4 class="md-title" layout-padding>对象类属性</h4>
 <div layout="row" layout-wrap>
     <md-input-container flex-sm="100" flex="50" layout-padding ng-repeat="(key, value) in objectInfo"
-                        ng-if="value.type == 'OBJECT' && value.show">
+                        ng-if="value.type == 'OBJECT' && value.show && value.desc == '电商平台'">
         <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">{{value.desc}}</label>
-        <input type="text" ng-model="source[key].name" disabled ng-required="value.notBlank"
+        <input type="text" ng-model="source['ecTypeName']" ng-required="value.notBlank"
                ng-disabled="!value.editable">
+        <md-button class="md-icon-button close-btn float-right" style="color: gray;" aria-label="More"
+                   ng-click="openDlg(key, value)" ng-disabled="!value.editable">
+            <ng-md-icon icon="search"></ng-md-icon>
+        </md-button>
+    </md-input-container>
 
+    <md-input-container flex-sm="100" flex="50" layout-padding ng-repeat="(key, value) in objectInfo"
+                        ng-if="value.type == 'OBJECT' && value.show && value.desc == '电商渠道'">
+        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">{{value.desc}}</label>
+        <input type="text" ng-model="source[key].name" ng-required="value.notBlank"
+               ng-disabled="!value.editable">
         <md-button class="md-icon-button close-btn float-right" style="color: gray;" aria-label="More"
                    ng-click="openDlg(key, value)" ng-disabled="!value.editable">
             <ng-md-icon icon="search"></ng-md-icon>

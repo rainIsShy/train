@@ -159,4 +159,10 @@ angular.module('IOne-Production').service('TaoBaoAdapterService', function ($htt
         }
         return $http.get(url);
     };
+
+    this.queryChannel = function(){
+        var url = ecAdapterUrl + '/ec/config/common/list';
+        return $http.get(url);
+    };
+
 });

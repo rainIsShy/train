@@ -3,7 +3,7 @@
         <div layout="row" class="top-title">
             <div flex="70" hide-sm hide-md class="left-title" ng-show="selectedItem" style="position: relative;">
                 <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
-                           ng-disabled="selectedItem.confirm == '2' || selectedItem.status != '1'"
+                           ng-disabled="selectedItem.confirm == '2'"
                            ng-click="editItemAction(selectedItem, 'EPS_BASE_INTERFACE_CONF', '电商平台接口配置: ' + selectedItem.no)">
                     <ng-md-icon icon="edit"></ng-md-icon>
                 </md-button>
@@ -14,15 +14,17 @@
                     <md-menu-content width="2">
                         <md-menu-item
                                 ng-if="menuDisplayOption['detailConfirm'].display && (menuAuthDataMap[menuDisplayOption['detailConfirm'].uuid] || isAdmin() || !menuDisplayOption['detailConfirm'].uuid)">
-                            <md-button class="md-button" aria-label="More" ng-click="confirmClickAction($event, selectedItem)"
-                                       ng-disabled="selectedItem.confirm == '2' || selectedItem.status != '1'">
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="confirmSwitchAction($event, selectedItem)"
+                                       ng-disabled="selectedItem.confirm == '2'">
                                 <ng-md-icon icon="lock"></ng-md-icon>
                                 审核
                             </md-button>
                         </md-menu-item>
                         <md-menu-item
                                 ng-if="menuDisplayOption['detailRevertConfirm'].display && (menuAuthDataMap[menuDisplayOption['detailRevertConfirm'].uuid] || isAdmin() || !menuDisplayOption['detailRevertConfirm'].uuid)">
-                            <md-button class="md-button" aria-label="More" ng-click="confirmClickAction($event, selectedItem)"
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="confirmSwitchAction($event, selectedItem)"
                                        ng-disabled="selectedItem.confirm != '2'">
                                 <ng-md-icon icon="lock_open"></ng-md-icon>
                                 取审
@@ -30,7 +32,8 @@
                         </md-menu-item>
                         <md-menu-item
                                 ng-if="menuDisplayOption['detailStatus'].display && (menuAuthDataMap[menuDisplayOption['detailStatus'].uuid] || isAdmin() || !menuDisplayOption['detailStatus'].uuid)">
-                            <md-button class="md-button" aria-label="More" ng-click="statusClickAction($event, selectedItem)"
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="statusSwitchAction($event, selectedItem)"
                                        ng-disabled="selectedItem.status == '1'">
                                 <ng-md-icon icon="lock"></ng-md-icon>
                                 启用
@@ -39,7 +42,7 @@
                         <md-menu-item
                                 ng-if="menuDisplayOption['detailRevertStatus'].display && (menuAuthDataMap[menuDisplayOption['detailRevertStatus'].uuid] || isAdmin() || !menuDisplayOption['detailRevertStatus'].uuid)">
                             <md-button class="md-button" aria-label="More" ng-click="statusClickAction($event, selectedItem)"
-                                       ng-disabled="selectedItem.status != '1'">
+                                       ng-disabled="selectedItem.status == '2' ">
                                 <ng-md-icon icon="lock_open"></ng-md-icon>
                                 禁用
                             </md-button>
@@ -47,7 +50,7 @@
                         <md-menu-item
                                 ng-if="menuDisplayOption['detailDelete'].display && (menuAuthDataMap[menuDisplayOption['detailDelete'].uuid] || isAdmin() || !menuDisplayOption['detailDelete'].uuid)">
                             <md-button class="md-button" aria-label="More" ng-click="deleteClickAction($event, selectedItem)"
-                                       ng-disabled="selectedItem.confirm == '2' || selectedItem.status == '2'">
+                                       ng-disabled="selectedItem.confirm == '2' || selectedItem.status == '1'">
                                 <ng-md-icon icon="delete"></ng-md-icon>
                                 删除
                             </md-button>

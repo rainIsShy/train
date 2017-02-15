@@ -76,9 +76,20 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                 $scope.selectAllFlag = false;
                 $scope.selectedItemSize = 0;
 
-                angular.forEach($scope.itemList,function(itemPush){
-                    $scope.interfaceItemList.push(itemPush);
-                });
+                if((!angular.isDefined($scope.listFilterOption.select.platform) || $scope.listFilterOption.select.platform == 0)){
+                    angular.forEach($scope.itemList,function(itemPush){
+                        $scope.interfaceItemList.push(itemPush);
+                    });
+                }
+
+                if(angular.isDefined($scope.listFilterOption.select.platform)){
+                    angular.forEach($scope.itemList,function(itemPush){
+                        if($scope.listFilterOption.select.platform == itemPush.ecTypeNo){
+                            $scope.interfaceItemList.push(itemPush);
+                        }
+                    });
+                }
+
                 if (data.length > 0) {
                     angular.forEach(data, function (item) {
                         if (angular.isDefined(item.ocmBaseChanUuid) && item.ocmBaseChanUuid != null) {
@@ -95,6 +106,10 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                 }
             });
         });
+        $scope.pageOption.totalPage = 1;
+        $scope.pageOption.totalElements = $scope.interfaceItemList.length;
+        $scope.selectAllFlag = false;
+        $scope.selectedItemSize = 0;
     };
 
     $scope.getMenuAuthData($scope.RES_UUID_MAP.EPS.INTERFACE_CONFIG.RES_UUID).success(function (data) {
@@ -204,7 +219,6 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
             if ($scope.domain == 'EPS_BASE_INTERFACE_CONF') {
                 if (angular.isDefined($scope.source.channel)) {
                     $scope.source.ocmBaseChanUuid = $scope.source.channel.uuid;
-                    $scope.source.ocmChanUuid = $scope.source.channel.uuid;
                 }
                 if (angular.isDefined($scope.source.mall)) {
                     $scope.source.ocmBaseMallUuid = $scope.source.mall.uuid;
@@ -216,13 +230,13 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                 $scope.ecTypeNo = $scope.source.mall.no.toLocaleLowerCase();
                 TaoBaoAdapterService.insertConfig(itemList[0], $scope, $scope.ecTypeNo, function (response) {
                     $scope.showInfo("新增成功");
+                    $scope.listItemAction();
                 });
             }
         } else if ($scope.status == 'edit') {
             if ($scope.domain == 'EPS_BASE_INTERFACE_CONF') {
                 if (angular.isDefined($scope.source.channel)) {
                     $scope.source.ocmBaseChanUuid = $scope.source.channel.uuid;
-                    $scope.source.ocmChanUuid = $scope.source.channel.uuid;
                 }
                 if (angular.isDefined($scope.source.mall)) {
                     $scope.source.ocmBaseMallUuid = $scope.source.mall.uuid;
@@ -232,6 +246,7 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                 $scope.updateEcTypeNo = $scope.source.ecTypeNo.toLocaleLowerCase();
                 TaoBaoAdapterService.updateConfig(itemList[0], $scope, $scope.updateEcTypeNo, $scope.source.uuid, function (data) {
                     $scope.showInfo("修改成功");
+                    $scope.listItemAction();
                 });
             }
         }
@@ -294,10 +309,11 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
             $scope.showConfirm('确认取消审核吗？', '', function () {
                 var UpdateInput = item;
                 item.confirm = Constant.CONFIRM[1].value;
+                item.status = Constant.STATUS[2].value;
                 var itemList = [];
                 itemList.push(UpdateInput);
                 $scope.cancelConfirmEcTypeNo = UpdateInput.ecTypeNo.toLocaleLowerCase();
-                TaoBaoAdapterService.updateConfig(itemList, $scope, $scope.cancelConfirmEcTypeNo, UpdateInput.uuid, function (response) {
+                TaoBaoAdapterService.updateConfig(itemList[0], $scope, $scope.cancelConfirmEcTypeNo, UpdateInput.uuid, function (response) {
                     $scope.disableBatchMenuButtons();
                     $scope.showInfo("取消审核成功");
                 });
@@ -305,18 +321,13 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                 item.confirm = Constant.CONFIRM[2].value
             });
         } else {
-            if (item.status == Constant.STATUS[2].value) {
-                $scope.showWarn("项目是失效状态,请先启用后再审核");
-                item.confirm = Constant.CONFIRM[2].value;
-                return;
-            }
             $scope.showConfirm('确认审核吗？', '', function () {
                 var UpdateInput = item;
                 item.confirm = Constant.CONFIRM[2].value;
                 var itemList = [];
                 itemList.push(UpdateInput);
                 $scope.confirmEcTypeNo = UpdateInput.ecTypeNo.toLocaleLowerCase();
-                TaoBaoAdapterService.updateConfig(itemList, $scope, $scope.confirmEcTypeNo, UpdateInput.uuid, function (response) {
+                TaoBaoAdapterService.updateConfig(itemList[0], $scope, $scope.confirmEcTypeNo, UpdateInput.uuid, function (response) {
                     $scope.disableBatchMenuButtons();
                     $scope.showInfo("审核成功");
                 });
@@ -328,6 +339,11 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
     };
 
     $scope.statusClickAction = function (event, item) {
+        if (item.confirm == Constant.CONFIRM[1].value) {
+            item.status = Constant.STATUS[2].value;
+            $scope.showWarn("项目是未审核状态,请先审核后再操作");
+            return;
+        }
         $scope.stopEventPropagation(event);
         if (item.status == Constant.STATUS[1].value) {
             $scope.showConfirm('确认改为失效吗？', '', function () {
@@ -336,7 +352,8 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                 item.confirm = Constant.CONFIRM[1].value;
                 var itemList = [];
                 itemList.push(UpdateInput);
-                TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
+                $scope.statusEcTypeNo = UpdateInput.ecTypeNo.toLocaleLowerCase();
+                TaoBaoAdapterService.updateConfig(itemList[0], $scope, $scope.statusEcTypeNo, UpdateInput.uuid, function (response) {
                     item.status = Constant.STATUS[2].value;
                     item.confirm = Constant.CONFIRM[1].value;
                     $scope.disableBatchMenuButtons();
@@ -349,7 +366,8 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                 item.status = Constant.STATUS[1].value;
                 var itemList = [];
                 itemList.push(UpdateInput);
-                TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
+                $scope.statusEcTypeNo = UpdateInput.ecTypeNo.toLocaleLowerCase();
+                TaoBaoAdapterService.updateConfig(itemList[0], $scope, $scope.statusEcTypeNo, UpdateInput.uuid, function (response) {
                     item.status = Constant.STATUS[1].value;
                     $scope.disableBatchMenuButtons();
                     $scope.showInfo('修改为生效成功！');
@@ -359,6 +377,11 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
     };
 
     $scope.statusSwitchAction = function (event, item) {
+        if (item.confirm == Constant.CONFIRM[1].value) {
+            item.status = Constant.STATUS[1].value;
+            $scope.showWarn("项目是未审核状态,请先审核后再操作");
+            return;
+        }
         $scope.stopEventPropagation(event);
         if (item.status == Constant.STATUS[2].value) {
             $scope.showConfirm('确认修改启用状态为有效吗？', '', function () {
@@ -367,7 +390,7 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                 var itemList = [];
                 itemList.push(UpdateInput);
                 $scope.statusEcTypeNo = UpdateInput.ecTypeNo.toLocaleLowerCase();
-                TaoBaoAdapterService.updateConfig(itemList, $scope, $scope.statusEcTypeNo, UpdateInput.uuid, function (response) {
+                TaoBaoAdapterService.updateConfig(itemList[0], $scope, $scope.statusEcTypeNo, UpdateInput.uuid, function (response) {
                     $scope.disableBatchMenuButtons();
                     $scope.showInfo("修改为有效成功");
                 });
@@ -378,12 +401,10 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
             $scope.showConfirm('确认修改启用状态为无效吗？', '', function () {
                 var UpdateInput = item;
                 item.status = Constant.STATUS[2].value;
-                item.confirm = Constant.CONFIRM[1].value;
                 var itemList = [];
                 itemList.push(UpdateInput);
                 $scope.cancelStatusEcTypeNo = UpdateInput.ecTypeNo.toLocaleLowerCase();
-                TaoBaoAdapterService.updateConfig(itemList, $scope, cancelStatusEcTypeNo, UpdateInput.uuid, function (response) {
-                    item.confirm = Constant.CONFIRM[1].value;
+                TaoBaoAdapterService.updateConfig(itemList[0], $scope, $scope.cancelStatusEcTypeNo, UpdateInput.uuid, function (response) {
                     $scope.disableBatchMenuButtons();
                     $scope.showInfo("修改为无效成功");
                 });
@@ -396,7 +417,7 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
 
     $scope.deleteClickAction = function (event, item) {
         $scope.stopEventPropagation(event);
-        if (item.status != '1' || item.confirm != '1') {
+        if (item.status != '2' || item.confirm != '1') {
             $scope.showWarn('仅当电商平台接口配置的状态是有效且未审核时才允许删除!');
             return;
         }
@@ -459,10 +480,9 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
         angular.forEach($scope.itemList, function (item) {
             if (item.selected === true) {
                 if (item.confirm != Constant.CONFIRM[2].value) {
-                    var UpdateInput = item;
                     item.confirm = Constant.CONFIRM[2].value;
-                    itemList.push(UpdateInput);
-                    var response = TaoBaoAdapterService.updateConfig(itemList, $scope, function (response) {
+                    $scope.allConfirmEcTypeNo = item.ecTypeNo.toLocaleLowerCase();
+                    var response = TaoBaoAdapterService.updateConfig(item,$scope.allConfirmEcTypeNo, item.uuid, $scope, function (response) {
                     });
                     promises.push(response);
                     count++;
@@ -604,7 +624,7 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
     };
 
     $scope.selectAllAction = function () {
-        angular.forEach($scope.itemList, function (item) {
+        angular.forEach($scope.interfaceItemList, function (item) {
             if ($scope.selectAllFlag) {
                 item.selected = true;
             } else {
@@ -615,7 +635,7 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
         $scope.selectedItemSize = 0;
         $scope.selectedItemAmount = 0;
         if ($scope.selectAllFlag) {
-            angular.forEach($scope.itemList, function () {
+            angular.forEach($scope.interfaceItemList, function () {
                 $scope.selectedItemSize++;
             })
         }
@@ -628,7 +648,7 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
         var status = '';
         var diffConfirm = false;
         var diffStatus = false;
-        angular.forEach($scope.itemList, function (item, index) {
+        angular.forEach($scope.interfaceItemList, function (item, index) {
             if (item.selectedRef) {
                 selectedCount++;
                 if (confirm == '') {
@@ -732,7 +752,7 @@ angular.module('IOne-Production').directive('interfaceEditor', function($http, C
 
 });
 
-angular.module('IOne-Production').controller('interfaceSearchController', function ($scope, $http, $mdDialog, Constant, source, key, objectInfo, fieldInfo, queryInfo) {
+angular.module('IOne-Production').controller('interfaceSearchController', function ($scope, $http, $mdDialog, Constant, source, key, objectInfo, fieldInfo, queryInfo, TaoBaoAdapterService, $rootScope) {
     $scope.source = source;
     $scope.key = key;
     $scope.objectInfo = objectInfo;
@@ -770,7 +790,24 @@ angular.module('IOne-Production').controller('interfaceSearchController', functi
                 param += "&" + key + "=" + $scope.searchInfo[key];
             })
         }
-        var url = Constant.BACKEND_BASE + '/' + $scope.fieldInfo.url + '?page=' + $scope.pageOption.currentPage + '&size=' + $scope.pageOption.sizePerPage + param;
+        if($scope.fieldInfo.url == "malls"){
+            var url = Constant.BACKEND_BASE + '/' + $scope.fieldInfo.url + '?page=' + $scope.pageOption.currentPage + '&size=' + $scope.pageOption.sizePerPage + param;
+        }
+        if($scope.fieldInfo.url == "channels"){
+//            var url = $rootScope.globals.adapterInfo.ecAdapterServerUrl + '/ec/config/common/list';
+            TaoBaoAdapterService.queryChannel().success(function(data) {
+                if(data) {
+                    if(data.content) {
+                        $scope.dataList = data.content;
+                        $scope.pageOption.totalPage = data.totalPages;
+                        $scope.pageOption.totalElements = data.totalElements;
+                    } else {
+                        $scope.dataList = data;
+                    }
+                }
+            })
+        }
+
         $http.get(url).success(function(data) {
             if(data) {
                 if(data.content) {
@@ -788,6 +825,7 @@ angular.module('IOne-Production').controller('interfaceSearchController', functi
         $scope.selectedObject = selectedObject;
         if(selectedObject.mallFlag != null){
             $scope.source.ecTypeNo=selectedObject.no;
+            $scope.source.ecTypeName=selectedObject.name;
         }
         $mdDialog.hide($scope.selectedObject);
     };
