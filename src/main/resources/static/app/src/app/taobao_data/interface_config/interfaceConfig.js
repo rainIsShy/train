@@ -760,10 +760,10 @@ angular.module('IOne-Production').controller('interfaceSearchController', functi
     $scope.queryInfo = queryInfo;
 
     $scope.pageOption = {
-        sizePerPage: 10,
-        currentPage: 0,
-        totalPage: 100,
-        totalElements: 100
+        sizePerPage: 10,//每页数据大小
+        currentPage: 0,//从第一页开始访问
+        totalPage: 100,//总页数
+        totalElements: 100//总条数
     };
 
     $scope.$watch('searchKeyword', function () {
@@ -791,42 +791,62 @@ angular.module('IOne-Production').controller('interfaceSearchController', functi
             })
         }
         if($scope.fieldInfo.url == "malls"){
-            var url = Constant.BACKEND_BASE + '/' + $scope.fieldInfo.url + '?page=' + $scope.pageOption.currentPage + '&size=' + $scope.pageOption.sizePerPage + param;
+            $scope.dataInterface="mall";
         }
         if($scope.fieldInfo.url == "channels"){
-//            var url = $rootScope.globals.adapterInfo.ecAdapterServerUrl + '/ec/config/common/list';
-            TaoBaoAdapterService.queryChannel().success(function(data) {
-                if(data) {
-                    if(data.content) {
-                        $scope.dataList = data.content;
-                        $scope.pageOption.totalPage = data.totalPages;
-                        $scope.pageOption.totalElements = data.totalElements;
-                    } else {
-                        $scope.dataList = data;
-                    }
-                }
-            })
+            $scope.dataInterface="chan";
         }
-
-        $http.get(url).success(function(data) {
+        TaoBaoAdapterService.queryChannel($scope.dataInterface).success(function(data) {
             if(data) {
                 if(data.content) {
                     $scope.dataList = data.content;
                     $scope.pageOption.totalPage = data.totalPages;
                     $scope.pageOption.totalElements = data.totalElements;
                 } else {
+                    $scope.tempData = data;
                     $scope.dataList = data;
+                    $scope.pageOption.totalPage = Math.floor(data.length/$scope.pageOption.sizePerPage)+1;
+                    $scope.pageOption.totalElements = data.length;
+
+                    var startCurrentPageTotal=$scope.pageOption.currentPage*$scope.pageOption.sizePerPage;
+                    var endCurrentPageTotal=$scope.pageOption.currentPage+1*$scope.pageOption.sizePerPage;
+                    var tempDataList=[];
+                    for(var i=startCurrentPageTotal;i<endCurrentPageTotal;i++){
+                        tempDataList.push(data[i]);
+                    }
+                    $scope.dataList = tempDataList;
                 }
             }
-        })
+        });
     };
     $scope.queryAction();
+
+    $scope.pageQueryAction = function(){
+        var startCurrentPageTotal=$scope.pageOption.currentPage+1*$scope.pageOption.sizePerPage;
+        var endCurrentPageTotal=$scope.pageOption.currentPage+2*$scope.pageOption.sizePerPage;
+        var tempDataList=[];
+        for(var i=startCurrentPageTotal;i<endCurrentPageTotal;i++){
+            tempDataList.push($scope.tempData[i]);
+        }
+        $scope.dataList = tempDataList;
+    }
+//    $scope.pageQueryAction();
+
     $scope.select = function (selectedObject) {
         $scope.selectedObject = selectedObject;
-        if(selectedObject.mallFlag != null){
-            $scope.source.ecTypeNo=selectedObject.no;
-            $scope.source.ecTypeName=selectedObject.name;
-        }
+        var platform = [
+           {no : 'TAOBAO',name : 'TAOBAO'},
+           {no : 'JD',name : '京东'},
+           {no : 'VIP',name : '唯品会'}
+        ]
+        angular.forEach(platform, function(item){
+            if(item.no.indexOf(selectedObject.no)>-1){
+                $scope.source.ecTypeNo=selectedObject.no;
+                $scope.source.ecTypeName=selectedObject.name;
+            }
+        });
+
+
         $mdDialog.hide($scope.selectedObject);
     };
 
