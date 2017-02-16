@@ -33,7 +33,7 @@
                         <md-menu-item
                                 ng-if="menuDisplayOption['detailStatus'].display && (menuAuthDataMap[menuDisplayOption['detailStatus'].uuid] || isAdmin() || !menuDisplayOption['detailStatus'].uuid)">
                             <md-button class="md-button" aria-label="More"
-                                       ng-click="statusSwitchAction($event, selectedItem)"
+                                       ng-click="statusClickAction($event, selectedItem)"
                                        ng-disabled="selectedItem.status == '1'">
                                 <ng-md-icon icon="lock"></ng-md-icon>
                                 启用

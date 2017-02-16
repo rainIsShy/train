@@ -160,8 +160,13 @@ angular.module('IOne-Production').service('TaoBaoAdapterService', function ($htt
         return $http.get(url);
     };
 
-    this.queryChannel = function(dataInterface){
-        var url = ecAdapterUrl + '/ec/config/common/list/ocm/'+dataInterface;
+    this.queryChannel = function(){
+        var url = ecAdapterUrl + '/ec/config/common/list/ocm/chan';
+        return $http.get(url);
+    };
+
+    this.queryMall = function(){
+        var url = ecAdapterUrl + '/ec/config/common/list/ocm/mall';
         return $http.get(url);
     };
 

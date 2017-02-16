@@ -43,12 +43,11 @@
     <md-input-container flex-sm="100" flex="50" layout-padding ng-repeat="(key, value) in objectInfo"
                         ng-if="value.type == 'OBJECT' && value.show && value.desc == '电商平台'">
         <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">{{value.desc}}</label>
-        <input type="text" ng-model="source['ecTypeName']" ng-required="value.notBlank"
-               ng-disabled="!value.editable">
-        <md-button class="md-icon-button close-btn float-right" style="color: gray;" aria-label="More"
-                   ng-click="openDlg(key, value)" ng-disabled="!value.editable">
-            <ng-md-icon icon="search"></ng-md-icon>
-        </md-button>
+        <md-select ng-model="platformName">
+            <md-option ng-repeat="value in platformData" ng-value="value.name" ng-click="selectClick(value)">
+                {{value.name}}
+            </md-option>
+        </md-select>
     </md-input-container>
 
     <md-input-container flex-sm="100" flex="50" layout-padding ng-repeat="(key, value) in objectInfo"

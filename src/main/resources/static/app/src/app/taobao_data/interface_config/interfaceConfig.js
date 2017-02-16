@@ -227,7 +227,7 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                 $scope.source.status= 2;
                 $scope.source.confirm= 1;
                 itemList.push($scope.source);
-                $scope.ecTypeNo = $scope.source.mall.no.toLocaleLowerCase();
+                $scope.ecTypeNo = $scope.source.ecTypeNo.toLocaleLowerCase();
                 TaoBaoAdapterService.insertConfig(itemList[0], $scope, $scope.ecTypeNo, function (response) {
                     $scope.showInfo("新增成功");
                     $scope.listItemAction();
@@ -708,7 +708,7 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
 
 });
 
-angular.module('IOne-Production').directive('interfaceEditor', function($http, Constant, $mdDialog) {
+angular.module('IOne-Production').directive('interfaceEditor', function($http, Constant, $mdDialog, TaoBaoAdapterService) {
     return {
         scope: {
             status: '=',
@@ -717,6 +717,7 @@ angular.module('IOne-Production').directive('interfaceEditor', function($http, C
         },
         templateUrl: 'app/src/app/taobao_data/interface_config/interfaceEditor.html',
         link: function($scope) {
+            $scope.selectPlatform = {};
             $scope.$watch('source', function() {
                 if($scope.source) {
                     $http.get(Constant.BACKEND_BASE + '/objectInfo/' + $scope.domain).success(function(data) {
@@ -728,7 +729,20 @@ angular.module('IOne-Production').directive('interfaceEditor', function($http, C
                         });
                     });
                 }
+                var interface = 'mall';
+                TaoBaoAdapterService.queryMall().success(function(data){
+                    $scope.platformData = data;
+                });
+                if($scope.source.uuid != null){
+                    $scope.platformName = $scope.source.ecTypeName;
+                    console.log($scope.platformName);
+                }
             });
+            $scope.selectClick = function(selectedObject){
+                $scope.source.ecTypeNo=selectedObject.no;
+                $scope.source.ecTypeName=selectedObject.name;
+            }
+
             $scope.openDlg = function(key, fieldInfo) {
                 $mdDialog.show({
                     controller: 'interfaceSearchController',
@@ -752,7 +766,7 @@ angular.module('IOne-Production').directive('interfaceEditor', function($http, C
 
 });
 
-angular.module('IOne-Production').controller('interfaceSearchController', function ($scope, $http, $mdDialog, Constant, source, key, objectInfo, fieldInfo, queryInfo, TaoBaoAdapterService, $rootScope) {
+angular.module('IOne-Production').controller('interfaceSearchController', function ($scope, $http, $mdDialog, Constant, source, key, objectInfo, fieldInfo, queryInfo, TaoBaoAdapterService) {
     $scope.source = source;
     $scope.key = key;
     $scope.objectInfo = objectInfo;
@@ -790,13 +804,8 @@ angular.module('IOne-Production').controller('interfaceSearchController', functi
                 param += "&" + key + "=" + $scope.searchInfo[key];
             })
         }
-        if($scope.fieldInfo.url == "malls"){
-            $scope.dataInterface="mall";
-        }
-        if($scope.fieldInfo.url == "channels"){
-            $scope.dataInterface="chan";
-        }
-        TaoBaoAdapterService.queryChannel($scope.dataInterface).success(function(data) {
+
+        TaoBaoAdapterService.queryChannel().success(function(data) {
             if(data) {
                 if(data.content) {
                     $scope.dataList = data.content;
@@ -830,23 +839,8 @@ angular.module('IOne-Production').controller('interfaceSearchController', functi
         }
         $scope.dataList = tempDataList;
     }
-//    $scope.pageQueryAction();
-
     $scope.select = function (selectedObject) {
         $scope.selectedObject = selectedObject;
-        var platform = [
-           {no : 'TAOBAO',name : 'TAOBAO'},
-           {no : 'JD',name : '京东'},
-           {no : 'VIP',name : '唯品会'}
-        ]
-        angular.forEach(platform, function(item){
-            if(item.no.indexOf(selectedObject.no)>-1){
-                $scope.source.ecTypeNo=selectedObject.no;
-                $scope.source.ecTypeName=selectedObject.name;
-            }
-        });
-
-
         $mdDialog.hide($scope.selectedObject);
     };
 
