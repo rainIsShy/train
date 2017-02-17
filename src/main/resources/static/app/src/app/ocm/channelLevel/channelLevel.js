@@ -431,7 +431,9 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
             parent: angular.element(document.body),
             targetEvent: event,
             locals: {
-                domain: $scope.domain
+                domain: $scope.domain,
+                addItem: $scope.addItem,
+                itemList:$scope.itemList
             }
         }).then(function (data) {
             $scope.addItem.channelUuid = data.uuid;
@@ -460,7 +462,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
 
 });
 
-angular.module('IOne-Production').controller('ChannelLevelSelectController', function ($scope, $mdDialog, ChannelService, domain) {
+angular.module('IOne-Production').controller('ChannelLevelSelectController', function ($scope, $mdDialog, ChannelService, domain, addItem, itemList) {
     $scope.pageOption = {
         sizePerPage: 5,
         currentPage: 0,
@@ -469,9 +471,11 @@ angular.module('IOne-Production').controller('ChannelLevelSelectController', fun
         displayModel: 0  //0 : image + text //1 : image
     };
     $scope.domain = domain;
+    $scope.addItem = addItem;
+    $scope.itemList = itemList;
     console.log($scope.domain);
     $scope.refreshChannel = function () {
-        ChannelService.getWithNoChannelLevel($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, $scope.searchKeyword).success(function (data) {
+        ChannelService.getWithNoChannelLevel($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, $scope.searchKeyword, $scope.addItem.parentOcmBaseChanUuid).success(function (data) {
             $scope.allChannel = data;
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
