@@ -159,7 +159,7 @@ angular.module('IOne-Production').controller('TipTopController', function ($scop
          $scope.addItem.dbType = $scope.listFilterOption.dbType;
          $scope.addItem.status = Constant.STATUS[1].value;
          $scope.addItem.confirm = Constant.CONFIRM[1].value;
-         if($scope.domain == 'ChannelLevelDetail' || $scope.domain == 'ChannelLevelMaster'){
+         if($scope.status != 'edit'){
              SynchronizationService.add($scope.addItem).success(function(){
                  $scope.showInfo("新增成功!");
              });
@@ -302,112 +302,6 @@ angular.module('IOne-Production').controller('TipTopController', function ($scop
         }
     };
 
-
-    $scope.openChannelDlg = function () {
-        $mdDialog.show({
-            controller: 'ChannelLevelSelectController',
-            templateUrl: 'app/src/app/ocm/channelLevel/selectChannel.html',
-            parent: angular.element(document.body),
-            targetEvent: event,
-            locals: {
-                domain: $scope.domain
-            }
-        }).then(function (data) {
-            $scope.addItem.channelUuid = data.uuid;
-            $scope.addItem.channelName = data.name;
-
-        });
-    };
-
-    $scope.openParentChannelDlg = function () {
-        $mdDialog.show({
-            controller: 'ParentChannelSelectController',
-            templateUrl: 'app/src/app/ocm/channelLevel/selectParentChannel.html',
-            parent: angular.element(document.body),
-            targetEvent: event,
-            locals: {
-                addItem: $scope.addItem,
-                itemList:$scope.itemList
-            }
-        }).then(function (data) {
-            $scope.addItem.parentOcmBaseChanUuid = data.uuid;
-            $scope.addItem.parentChannelName = data.name;
-
-        });
-
-    };
-
 });
 
-angular.module('IOne-Production').controller('ChannelLevelSelectController', function ($scope, $mdDialog, ChannelService, domain) {
-    $scope.pageOption = {
-        sizePerPage: 5,
-        currentPage: 0,
-        totalPage: 0,
-        totalElements: 0,
-        displayModel: 0  //0 : image + text //1 : image
-    };
-    $scope.domain = domain;
-    console.log($scope.domain);
-    $scope.refreshChannel = function () {
-        ChannelService.getWithNoChannelLevel($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, $scope.searchKeyword).success(function (data) {
-            $scope.allChannel = data;
-            $scope.pageOption.totalElements = data.totalElements;
-            $scope.pageOption.totalPage = data.totalPages;
-        });
-    };
-    $scope.refreshChannel();
-    $scope.selectChannel = function (channel) {
-        $scope.channel = channel;
-        $mdDialog.hide($scope.channel);
-    };
-    $scope.hideDlg = function () {
-        $mdDialog.hide($scope.channel);
-    };
-    $scope.cancelDlg = function () {
-        $mdDialog.cancel();
-    };
-});
 
-angular.module('IOne-Production').controller('ParentChannelSelectController', function ($scope, $mdDialog, ChannelService, ChannelLevelService ,addItem, itemList) {
-    $scope.pageOption = {
-        sizePerPage: 5,
-        currentPage: 0,
-        totalPage: 0,
-        totalElements: 0
-    };
-    $scope.addItem = addItem;
-    $scope.itemList = itemList;
-    console.log($scope.itemList);
-
-
-    $scope.notLowerChannel = function () {
-            ChannelService.getNotLowerChannel($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, $scope.searchKeyword ,'',$scope.addItem.channelUuid).success(function (data) {
-                $scope.allChannel = data.content;
-                $scope.pageOption.totalElements = data.totalElements;
-                $scope.pageOption.totalPage = data.totalPages;
-            });
-        };
-    $scope.notLowerChannel();
-
-//    $scope.refreshChannel = function () {
-//            ChannelService.getAllGlobalQuery($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, $scope.searchKeyword).success(function (data) {
-//                $scope.allChannel = data.content;
-//                $scope.pageOption.totalElements = data.totalElements;
-//                $scope.pageOption.totalPage = data.totalPages;
-//            });
-//        };
-//    $scope.refreshChannel();
-
-
-    $scope.selectChannel = function (channel) {
-        $scope.channel = channel;
-        $mdDialog.hide($scope.channel);
-    };
-    $scope.hideDlg = function () {
-        $mdDialog.hide($scope.channel);
-    };
-    $scope.cancelDlg = function () {
-        $mdDialog.cancel();
-    };
-});
