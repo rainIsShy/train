@@ -43,7 +43,7 @@ angular.module('IOne-Production').service('ChannelService', function ($http, Con
         return $http.get(Constant.BACKEND_BASE + '/channels/' + uuid);
     };
 
-    this.getWithNoChannelLevel = function (sizePerPage, page, confirm, status, searchKeyword) {
+    this.getWithNoChannelLevel = function (sizePerPage, page, confirm, status, searchKeyword, parentOcmBaseChanUuid) {
         confirm = confirm == 0 ? '' : confirm;
         status = status == 0 ? '' : status;
 
@@ -56,8 +56,11 @@ angular.module('IOne-Production').service('ChannelService', function ($http, Con
         if (searchKeyword !== undefined && searchKeyword !== null) {
             url = url + '&keyWord=' + searchKeyword;
         }
-        console.log(url);
 
+        if (parentOcmBaseChanUuid !== undefined && parentOcmBaseChanUuid !== null) {
+            url = url + '&parentOcmBaseChanUuid=' + parentOcmBaseChanUuid;
+            return $http.get(Constant.BACKEND_BASE + url + '&action=lower')
+        }
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
