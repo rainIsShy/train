@@ -3,9 +3,7 @@
         <div layout="row" class="top-title">
             <div flex="70" hide-sm hide-md class="left-title" ng-show="selectedItem" style="position: relative;">
                 <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
-                           ng-if="formMenuDisplayOption['105-edit'].display && (menuAuthDataMap[formMenuDisplayOption['105-edit'].uuid] || isAdmin() || !formMenuDisplayOption['105-edit'].uuid)"
-                           ng-click="editItemAction(selectedItem,'维护上层渠道')">
-                    <ng-md-icon icon="edit"></ng-md-icon>
+                           ng-if="formMenuDisplayOption['105-edit'].display && (menuAuthDataMap[formMenuDisplayOption['105-edit'].uuid] || isAdmin() || !formMenuDisplayOption['105-edit'].uuid)">
                 </md-button>
                 <md-menu>
                     <md-button class="md-icon-button close-btn" aria-label="More" style="float: left;"
@@ -23,7 +21,7 @@
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>
-                <span>渠道层级详细信息</span>
+                <span>易拓数据同步数据详细信息</span>
                 <md-button class="md-icon-button close-btn float-right" aria-label="More"
                            ng-click="selectedItem = null">
                     <ng-md-icon icon="chevron_left"></ng-md-icon>
@@ -31,10 +29,10 @@
             </div>
             <div flex class="right-title">
                 <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
-                           ng-click="preAddItemAction({}, 'ChannelLevelMaster', '新增渠道层级')">
+                           ng-click="preAddItemAction(selectedItem, 'ChannelLevelMaster', '新增同步数据')">
                     <ng-md-icon icon="add"></ng-md-icon>
                 </md-button>
-                <span>渠道层级列表</span>
+                <span>易拓数据同步数据</span>
                 <md-menu>
                     <md-button class="md-icon-button close-btn float-right" aria-label="More"
                                ng-click="$mdOpenMenu($event)">
@@ -57,16 +55,9 @@
             <div flex="70" hide-sm hide-md layout="column" class="left-body" ng-show="selectedItem">
                 <div flex="100" layout-padding>
                     <div layout="row" layout-padding style="font-size: 20px;padding-top: 2px; font-weight: bold;">
-                        <span flex>同步类型: {{selectedItem.syncType+11}}&nbsp;&nbsp;{{selectedItem.remark}}</span>
+                        <span flex>同步类型: {{selectedItem.syncType}}&nbsp;&nbsp;{{selectedItem.remark}}</span>
                     </div>
                     <md-divider></md-divider>
-                    <div layout="row" layout-wrap layout-margin>
-                        <span flex=100" flex-sm="100" layout-padding>
-                            <span class="item-name">DB类型</span>
-                            <span class="item-content">{{DB_TYPE[selectedItem.dbType].name}}</span>
-                        </span>
-                    </div>
-
                     <md-tabs md-dynamic-height md-border-bottom style="padding-top: 30px;">
                         <md-tab label="同步详细信息">
                             <div layout="row" layout-wrap style="margin-top: 20px;">
@@ -74,20 +65,28 @@
                                      class="prod-item" style="position: relative;">
                                     <div layout="row" class="height: 100%;">
                                         <div flex="50">
-                                            <div layout-padding>易拓客户编号 : <span>{{detail.tiptopClientNo}}&nbsp;&nbsp;&nbsp;&nbsp;易拓客户编号 : <span>{{detail.tiptopClientName}}</span></span>
+                                            <div layout-padding>易拓客户编号 :
+                                                <span>{{detail.tiptopClientNo}}</span>&nbsp;&nbsp;&nbsp;&nbsp;易拓客户名称 :
+                                                <span>{{detail.tiptopClientName}}</span>
                                             </div>
-                                            <div layout-padding>易拓DB : <span>{{detail.tiptopDb}}</span>&nbsp;&nbsp;&nbsp;&nbsp;DB类型
-                                                : <span>{{detail.tiptopDb}}</span></div>
+                                            <div layout-padding>易拓DB :
+                                                <span>{{detail.tiptopDb}}</span>&nbsp;&nbsp;&nbsp;&nbsp;DB类型 : <span>{{DB_TYPE[detail.dbType].name}}</span>
+                                            </div>
                                         </div>
 
                                         <div style="position: absolute; right: -10px; bottom: 10px;">
+                                            <md-button class="md-icon-button close-btn" aria-label="More"
+                                                       style="float: left; margin-left: 36px;"
+                                                       ng-if="formMenuDisplayOption['105-edit'].display && (menuAuthDataMap[formMenuDisplayOption['105-edit'].uuid] || isAdmin() || !formMenuDisplayOption['105-edit'].uuid)"
+                                                       ng-click="editItemAction(detail,'编辑易拓同步数据')">
+                                                <ng-md-icon icon="edit"></ng-md-icon>
+                                            </md-button>
                                             <md-button class="md-button close-btn" aria-label="More"
                                                        ng-click="deleteDetailAction(detail)"
                                                        ng-if="formMenuDisplayOption['106-detailDelete'].display && (menuAuthDataMap[formMenuDisplayOption['106-detailDelete'].uuid] || isAdmin() || !formMenuDisplayOption['106-detailDelete'].uuid)">
                                                 <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>
                                                 删除
                                             </md-button>
-
                                         </div>
                                     </div>
                                     <!-- detail panel -->
@@ -97,7 +96,7 @@
                                     <md-divider style="margin-top: 5px"></md-divider>
                                 </div>
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
-                                     ng-click="preAddItemAction({}, 'ChannelLevelDetail', '新增下级渠道')"
+                                     ng-click="preAddItemAction({}, 'ChannelLevelDetail', '新增数据')"
                                      ng-if="formMenuDisplayOption['107-detailAdd'].display && (menuAuthDataMap[formMenuDisplayOption['107-detailAdd'].uuid] || isAdmin() || !formMenuDisplayOption['107-detailAdd'].uuid)">
                                     <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
                                 </div>
@@ -114,12 +113,12 @@
                                      ng-change="selectAllAction()"></md-checkbox>
                     </span>
                     <md-input-container flex style="margin-left: 50px;">
-                        <label>渠道</label>
-                        <input ng-model="keyword" ng-keypress="queryEnter($event)">
+                        <label>同步类型</label>
+                        <input ng-model="dbTypeKeyWord" ng-keypress="queryEnter($event)">
                     </md-input-container>
                     <md-input-container flex style="margin-left: 50px;">
-                        <label>上层渠道</label>
-                        <input ng-model="parentKeyword" ng-keypress="queryEnter($event)">
+                        <label>易拓客户</label>
+                        <input ng-model="keyWord" ng-keypress="queryEnter($event)">
                     </md-input-container>
                     <md-button class="md-raised" style="margin-top: 20px;height: 20px;"
                                ng-if="formMenuDisplayOption['100-query'].display && (menuAuthDataMap[formMenuDisplayOption['100-query'].uuid] || isAdmin() || !formMenuDisplayOption['100-query'].uuid)"
@@ -226,22 +225,42 @@
         </div>
         <div flex="100" layout="column" layout-padding>
             <md-input-container>
-                <label class="label">渠道：</label>
-                <input type="text" aria-label="..." ng-model="addItem.channelName"
-                       ng-disabled="status == 'edit'"
-                       ng-click="openChannelDlg()">
+                <label class="label">同步类型：</label>
+                <input type="text" aria-label="..." ng-model="addItem.syncType"
+                       ng-disabled="status == 'edit' || status == 'add'">
             </md-input-container>
         </div>
-
         <div flex="100" layout="column" layout-padding>
             <md-input-container>
-                <label class="label">上层渠道：</label>
-                <input type="text" aria-label="..." ng-model="addItem.parentChannelName"
-                       ng-disabled="status == 'add'"
-                       ng-click="openParentChannelDlg()">
+                <label class="label">DB类型：</label>
+                <md-select ng-model="listFilterOption.dbType">
+                    <md-option ng-repeat="(key, value) in DB_TYPE" ng-value="key">{{value.name}}</md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div flex="100" layout="column" layout-padding>
+            <md-input-container>
+                <label class="label">易拓DB：</label>
+                <input type="text" aria-label="..." ng-model="addItem.tiptopDb">
+            </md-input-container>
+        </div>
+        <div flex="100" layout="column" layout-padding>
+            <md-input-container>
+                <label class="label">易拓客户编号：</label>
+                <input type="text" aria-label="..." ng-model="addItem.tiptopClientNo">
+            </md-input-container>
+        </div>
+        <div flex="100" layout="column" layout-padding>
+            <md-input-container>
+                <label class="label">易拓客户名称：</label>
+                <input type="text" aria-label="..." ng-model="addItem.tiptopClientName">
+            </md-input-container>
+        </div>
+        <div flex="100" layout="column" layout-padding>
+            <md-input-container>
+                <label class="label">备注：</label>
+                <input type="text" aria-label="..." ng-model="addItem.remark">
             </md-input-container>
         </div>
     </div>
-
-
 </div>

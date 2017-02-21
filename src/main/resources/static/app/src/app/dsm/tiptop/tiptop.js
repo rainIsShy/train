@@ -34,7 +34,8 @@ angular.module('IOne-Production').controller('TipTopController', function ($scop
     $scope.listFilterOption = {
         status: Constant.STATUS[0].value,
         confirm: Constant.CONFIRM[0].value,
-        release: Constant.RELEASE[0].value
+        release: Constant.RELEASE[0].value,
+        dbType: $scope.DB_TYPE[1].value
     };
 
     $scope.sortByAction = function (field) {
@@ -47,7 +48,7 @@ angular.module('IOne-Production').controller('TipTopController', function ($scop
     };
 
     $scope.refreshList = function () {
-        SynchronizationService.getAllParameter($scope.pageOption.sizePerPage, $scope.pageOption.currentPage).success(function (data) {
+        SynchronizationService.getAllParameter($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.dbTypeKeyWord,$scope.keyWord).success(function (data) {
             $scope.itemList = data.content;
             $scope.pageOption.totalPage = data.totalPages;
             $scope.pageOption.totalElements = data.totalElements;
@@ -130,136 +131,67 @@ angular.module('IOne-Production').controller('TipTopController', function ($scop
         $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS);
         $scope.desc = desc;
         $scope.status = 'edit';
-        $scope.addItem = {
-            channelUuid: source.uuid,
-            channelName: source.name,
-            parentChannelUuid: source.parentOcmBaseChanUuid,
-            parentChannelName: source.parentOcmBaseChanName
-        };
-        if($scope.status = 'edit'){
-            $scope.addItem.parentChannelName = $scope.parentOcmBaseChanName;
-        }
+        $scope.addItem = source;
     };
 
     /**
      * Add new item which will take the ui to the edit page.
      */
     $scope.preAddItemAction = function (source, domain, desc) {
-
         $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS);
         $scope.desc = desc;
         $scope.source = source;
         $scope.domain = domain;
         $scope.addItem = {};
-        $scope.tempParentChannelUuid=$scope.parentOcmBaseChanUuid;
         if ($scope.domain == 'ChannelLevelDetail') {
             $scope.status = 'add';
-            $scope.addItem.parentOcmBaseChanUuid = $scope.selectedItem.uuid;
-            $scope.addItem.parentChannelName = $scope.selectedItem.name;
+            $scope.addItem.syncType = $scope.selectedItem.syncType;
         }
         if ($scope.domain == 'ChannelLevelMaster') {
-            $scope.status = 'addParent';
-            $scope.addItem.parentOcmBaseChanUuid = $scope.selectedItem.uuid;
-            $scope.addItem.parentChannelName = $scope.selectedItem.name;
+            $scope.status = 'addNew';
         }
     };
 
     /**
      * Save object according current status and domain.
      */
-    $scope.saveItemAction = function () {
-        if ($scope.addItem.channelUuid == $scope.addItem.parentChannelUuid) {
-            $scope.showError('此上层渠道己存在层级中，无法新增!');
-            return;
-        }
-
-        if ($scope.status == 'add' || $scope.status=='addParent') {
-            ChannelLevelService.validLoop($scope.addItem.channelUuid, $scope.addItem.parentOcmBaseChanUuid).success(function (data) {
-                if (data) {
-                    if ($scope.domain == 'ChannelLevelMaster') {
-                        if($scope.addItem.channelUuid == $scope.addItem.parentOcmBaseChanUuid){
-                            $scope.showError('不可新增此上下级渠道!');
-                            return;
-                        }
-                        ChannelLevelService.add($scope.addItem).success(function () {
-                            $scope.showInfo("新增渠道成功!");
-                            $scope.refreshList();
-                            $scope.listItemAction();
-                        });
-                    } else if ($scope.domain == 'ChannelLevelDetail') {
-                        console.log($scope.addItem);
-                        if($scope.addItem.channelUuid == $scope.tempParentChannelUuid){
-                            $scope.showError("此渠道己是上级渠道，无法新增!");
-                            return;
-                        }
-                        ChannelLevelService.add($scope.addItem).success(function () {
-                            $scope.showInfo("新增下层渠道成功!");
-                            $scope.refreshSubList($scope.selectedItem);
-                            $scope.refreshList();
-                            $scope.listItemAction();
-                        });
-                    }
-
-                } else {
-                    $scope.showError("此上层渠道己存在层级中，无法新增!");
-                }
+     $scope.saveItemAction = function () {
+         $scope.addItem.dbType = $scope.listFilterOption.dbType;
+         $scope.addItem.status = Constant.STATUS[1].value;
+         $scope.addItem.confirm = Constant.CONFIRM[1].value;
+         if($scope.domain == 'ChannelLevelDetail' || $scope.domain == 'ChannelLevelMaster'){
+             SynchronizationService.add($scope.addItem).success(function(){
+                 $scope.showInfo("新增成功!");
+             });
+             if($scope.domain == 'ChannelLevelDetail'){
+                 $scope.refreshSubList($scope.selectedItem);
+                 $scope.listItemAction();
+                 $scope.showDetailPanelAction($scope.selectedItem);
+                return;
+             }
+             if($scope.domain == 'ChannelLevelMaster'){
+                 $scope.refreshList();
+                 $scope.listItemAction();
+                 return;
+             }
+         }
+         if($scope.status = 'edit'){
+            SynchronizationService.modify($scope.addItem.uuid,$scope.addItem).success(function () {
+                $scope.showInfo("修改成功!");
+                $scope.refreshSubList($scope.selectedItem);
+                $scope.refreshList();
+                $scope.listItemAction();
             });
-        } else if ($scope.status == 'edit') {
-            ChannelLevelUpdateInput = {
-                parentOcmBaseChanUuid: $scope.addItem.parentOcmBaseChanUuid
-            };
-            ChannelLevelService.validLoop($scope.addItem.channelUuid, $scope.addItem.parentOcmBaseChanUuid).success(function (data) {
-                if (data) {
-                    angular.forEach($scope.itemList,function(listItem){
-                        if(listItem.channel.uuid == $scope.addItem.channelUuid){
-                           $scope.tempModifyChannelLevel=true;
-                           $scope.tempListItemUuid=listItem.uuid;
-                           return;
-                        }
-                    });
-                    if($scope.tempModifyChannelLevel){
-                        ChannelLevelService.modify($scope.tempListItemUuid, ChannelLevelUpdateInput).success(function () {
-                            $scope.showInfo("修改成功!");
-                            $scope.refreshSubList($scope.selectedItem);
-                            $scope.refreshList();
-                            $scope.listItemAction();
-                            $scope.parentOcmBaseChanName=$scope.addItem.parentChannelName;
-                        });
-                        return;
-                    }
-                    $scope.tempChannelLevel=false;
-                    angular.forEach($scope.itemList,function(item){
-                        if(item.parentOcmBaseChanUuid == $scope.addItem.channelUuid && item.channel.uuid == $scope.addItem.parentOcmBaseChanUuid){
-                            $scope.tempAddChannelLevel=true;
-                            return;
-                        }
-                    });
-                    if($scope.tempAddChannelLevel){
-                        $scope.showError("不可新增此上层渠道!");
-                        return;
-                    }
-                    ChannelLevelService.add($scope.addItem).success(function () {
-                        $scope.showInfo("维护上层渠道成功!");
-                        $scope.showDetailPanelAction($scope.selectedItem);
-                        $scope.refreshList();
-                        $scope.listItemAction();
-                        $scope.parentOcmBaseChanName=$scope.addItem.parentChannelName;
-                        return;
-                    });
-                } else {
-                    $scope.showError("不可设置此上层渠道!");
-                }
-            });
+         }
 
-        }
-    };
+     }
 
     /**
      * Delete detail item
      */
     $scope.deleteDetailAction = function (detail) {
         $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
-            ChannelLevelService.delete(detail.uuid).success(function (data) {
+            SynchronizationService.delete(detail.uuid).success(function (data) {
                 $scope.showInfo("删除成功!");
                 $scope.refreshSubList($scope.selectedItem);
                 $scope.refreshList();
@@ -300,9 +232,9 @@ angular.module('IOne-Production').controller('TipTopController', function ($scop
      $scope.deleteClickAction = function (event, item) {
         $scope.stopEventPropagation(event);
         $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
-            angular.forEach($scope.itemList,function(listItem){
-                if(item.uuid == listItem.parentOcmBaseChanUuid){
-                    ChannelLevelService.delete(listItem.uuid).success(function (data) {
+            angular.forEach($scope.subItemList,function(listItem){
+                if(item.syncType == listItem.syncType){
+                    SynchronizationService.delete(listItem.uuid).success(function (data) {
                          $scope.showInfo("删除成功!");
                          $scope.refreshList();
                          $scope.selectedItem=null;
@@ -339,8 +271,8 @@ angular.module('IOne-Production').controller('TipTopController', function ($scop
                 var promises = [];
                 angular.forEach($scope.selected, function (item) {
                     angular.forEach($scope.itemList,function(listItem){
-                        if(item.uuid == listItem.parentOcmBaseChanUuid){
-                            var response = ChannelLevelService.delete(listItem.uuid).success(function (data) {
+                        if(item.syncType == listItem.syncType){
+                            var response = SynchronizationService.delete(listItem.uuid).success(function (data) {
                             })
                         };
                         promises.push(response);
@@ -357,7 +289,6 @@ angular.module('IOne-Production').controller('TipTopController', function ($scop
     };
 
     $scope.selectAllAction = function () {
-
         if ($scope.selectAllFlag == true) {
             angular.forEach($scope.itemList, function (item) {
                 item.selected = true;
