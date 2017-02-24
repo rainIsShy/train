@@ -2,8 +2,7 @@
     <div ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS">
         <div layout="row" class="top-title">
             <div flex="70" hide-sm hide-md class="left-title" ng-show="selectedItem" style="position: relative;">
-                <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
-                           ng-if="formMenuDisplayOption['105-edit'].display && (menuAuthDataMap[formMenuDisplayOption['105-edit'].uuid] || isAdmin() || !formMenuDisplayOption['105-edit'].uuid)">
+                <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;">
                 </md-button>
                 <md-menu>
                     <md-button class="md-icon-button close-btn" aria-label="More" style="float: left;"
@@ -13,8 +12,7 @@
                     <md-menu-content width="2">
                         <md-menu-item>
                             <md-button class="md-button" aria-label="More"
-                                       ng-click="deleteClickAction($event, selectedItem)"
-                                       ng-if="formMenuDisplayOption['103-delete'].display && (menuAuthDataMap[formMenuDisplayOption['103-delete'].uuid] || isAdmin() || !formMenuDisplayOption['105-edit'].uuid)">
+                                       ng-click="deleteClickAction($event, selectedItem)">
                                 <ng-md-icon icon="delete"></ng-md-icon>
                                 删除
                             </md-button>
@@ -40,8 +38,7 @@
                     </md-button>
                     <md-menu-content width="2">
                         <md-menu-item>
-                            <md-button class="md-button" aria-label="More" ng-click="deleteAllClickAction($event)"
-                                       ng-if="formMenuDisplayOption['104-batchDelete'].display && (menuAuthDataMap[formMenuDisplayOption['104-batchDelete'].uuid] || isAdmin() || !formMenuDisplayOption['104-batchDelete'].uuid)">
+                            <md-button class="md-button" aria-label="More" ng-click="deleteAllClickAction($event)">
                                 <ng-md-icon icon="delete"></ng-md-icon>
                                 批量删除
                             </md-button>
@@ -77,13 +74,11 @@
                                         <div style="position: absolute; right: -10px; bottom: 10px;">
                                             <md-button class="md-icon-button close-btn" aria-label="More"
                                                        style="float: left; margin-left: 36px;"
-                                                       ng-if="formMenuDisplayOption['105-edit'].display && (menuAuthDataMap[formMenuDisplayOption['105-edit'].uuid] || isAdmin() || !formMenuDisplayOption['105-edit'].uuid)"
                                                        ng-click="editItemAction(detail,'编辑易拓同步数据')">
                                                 <ng-md-icon icon="edit"></ng-md-icon>
                                             </md-button>
                                             <md-button class="md-button close-btn" aria-label="More"
-                                                       ng-click="deleteDetailAction(detail)"
-                                                       ng-if="formMenuDisplayOption['106-detailDelete'].display && (menuAuthDataMap[formMenuDisplayOption['106-detailDelete'].uuid] || isAdmin() || !formMenuDisplayOption['106-detailDelete'].uuid)">
+                                                       ng-click="deleteDetailAction(detail)">
                                                 <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>
                                                 删除
                                             </md-button>
@@ -96,8 +91,7 @@
                                     <md-divider style="margin-top: 5px"></md-divider>
                                 </div>
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
-                                     ng-click="preAddItemAction({}, 'ChannelLevelDetail', '新增数据')"
-                                     ng-if="formMenuDisplayOption['107-detailAdd'].display && (menuAuthDataMap[formMenuDisplayOption['107-detailAdd'].uuid] || isAdmin() || !formMenuDisplayOption['107-detailAdd'].uuid)">
+                                     ng-click="preAddItemAction({}, 'ChannelLevelDetail', '新增数据')">
                                     <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
                                 </div>
                             </div>
@@ -121,7 +115,6 @@
                         <input ng-model="keyWord" ng-keypress="queryEnter($event)">
                     </md-input-container>
                     <md-button class="md-raised" style="margin-top: 20px;height: 20px;"
-                               ng-if="formMenuDisplayOption['100-query'].display && (menuAuthDataMap[formMenuDisplayOption['100-query'].uuid] || isAdmin() || !formMenuDisplayOption['100-query'].uuid)"
                                ng-click="queryAction()">
                         查询
                     </md-button>
