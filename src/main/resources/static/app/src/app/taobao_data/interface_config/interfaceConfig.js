@@ -71,8 +71,6 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
             $scope.listFilterOption.select.platform, $scope.listFilterOption.no, $scope.listFilterOption.name, $scope.listFilterOption.keyWord, $scope.RES_UUID_MAP.EPS.INTERFACE_CONFIG.RES_UUID, interfaceItem.interface)
             .success(function (data) {
                 $scope.itemList = data;
-                $scope.pageOption.totalPage = 1;
-                $scope.pageOption.totalElements = data.length;
                 $scope.selectAllFlag = false;
                 $scope.selectedItemSize = 0;
 
@@ -89,6 +87,10 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                         }
                     });
                 }
+                $scope.pageOption.totalPage = 1;
+                $scope.pageOption.totalElements = $scope.interfaceItemList.length;
+                $scope.selectAllFlag = false;
+                $scope.selectedItemSize = 0;
 
                 if (data.length > 0) {
                     angular.forEach(data, function (item) {
@@ -106,10 +108,7 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
                 }
             });
         });
-        $scope.pageOption.totalPage = 1;
-        $scope.pageOption.totalElements = $scope.interfaceItemList.length;
-        $scope.selectAllFlag = false;
-        $scope.selectedItemSize = 0;
+
     };
 
     $scope.getMenuAuthData($scope.RES_UUID_MAP.EPS.INTERFACE_CONFIG.RES_UUID).success(function (data) {
