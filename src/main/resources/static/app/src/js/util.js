@@ -575,7 +575,23 @@ RES_UUID_MAP = {
         ALLOT_APP: {
             RES_UUID: '45188954-8e15-4deb-b60a-089da30e877f',
             TITLE: '调拨单维护APP'
-        }
+        },
+        MISCELLANEOUS_TYPE: {
+            RES_UUID: 'f4f911e1-5210-493c-96b3-6e56a3ac2c47',
+            TITLE: '杂项类型基础资料'
+        },
+        ALLOT_TYPE: {
+            RES_UUID: '35152a9b-477b-4d65-9441-8b058020dc3b',
+            TITLE: '调拨类型基础资料'
+        },
+        UNIT_CONVERSION: {
+            RES_UUID: 'f53ce013-cf8c-48be-8040-ebdc7544db3b',
+            TITLE: '单位换算基础资料'
+        },
+        ITEM_UNIT_CONVERSION: {
+            RES_UUID: '5e2c5da6-08d2-4b68-9572-a1ab9eb76744',
+            TITLE: '商品单位换算基础资料'
+        },
     }
 };
 
@@ -744,6 +760,30 @@ angular.module('IOne-Constant').constant('Constant', {
             icon: 'inv_icon',
             subList: [
                 {
+                    id: '/inv/allotType',
+                    name: RES_UUID_MAP.INV.ALLOT_TYPE.TITLE,
+                    link: '/inv/allotType',
+                    uuid: RES_UUID_MAP.INV.ALLOT_TYPE.RES_UUID
+                },
+                {
+                    id: '/inv/miscellaneousType',
+                    name: RES_UUID_MAP.INV.MISCELLANEOUS_TYPE.TITLE,
+                    link: '/inv/miscellaneousType',
+                    uuid: RES_UUID_MAP.INV.MISCELLANEOUS_TYPE.RES_UUID
+                },
+                {
+                    id: '/inv/unitConversion',
+                    name: RES_UUID_MAP.INV.UNIT_CONVERSION.TITLE,
+                    link: '/inv/unitConversion',
+                    uuid: RES_UUID_MAP.INV.UNIT_CONVERSION.RES_UUID
+                },
+                {
+                    id: '/inv/itemUnitConversion',
+                    name: RES_UUID_MAP.INV.ITEM_UNIT_CONVERSION.TITLE,
+                    link: '/inv/itemUnitConversion',
+                    uuid: RES_UUID_MAP.INV.ITEM_UNIT_CONVERSION.RES_UUID
+                },
+                {
                     id: '/inv/inventoryDetail',
                     name: '库存明细查询',
                     link: '/inv/inventoryDetail',
@@ -761,7 +801,8 @@ angular.module('IOne-Constant').constant('Constant', {
                     name: '调拨单维护APP',
                     link: '/allotApp',
                     uuid: RES_UUID_MAP.INV.ALLOT_APP.RES_UUID
-                }
+                },
+
             ]
         },
         {

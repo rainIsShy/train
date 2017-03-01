@@ -43,7 +43,7 @@ angular.module('IOne-Production').service('ChannelService', function ($http, Con
         return $http.get(Constant.BACKEND_BASE + '/channels/' + uuid);
     };
 
-    this.getWithNoChannelLevel = function (sizePerPage, page, confirm, status, searchKeyword) {
+    this.getWithNoChannelLevel = function (sizePerPage, page, confirm, status, searchKeyword, parentOcmBaseChanUuid) {
         confirm = confirm == 0 ? '' : confirm;
         status = status == 0 ? '' : status;
 
@@ -56,8 +56,11 @@ angular.module('IOne-Production').service('ChannelService', function ($http, Con
         if (searchKeyword !== undefined && searchKeyword !== null) {
             url = url + '&keyWord=' + searchKeyword;
         }
-        console.log(url);
 
+        if (parentOcmBaseChanUuid !== undefined && parentOcmBaseChanUuid !== null) {
+            url = url + '&parentOcmBaseChanUuid=' + parentOcmBaseChanUuid;
+            return $http.get(Constant.BACKEND_BASE + url + '&action=lower')
+        }
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
@@ -68,6 +71,26 @@ angular.module('IOne-Production').service('ChannelService', function ($http, Con
     this.modify = function (channelUuid, channelUpdateInput) {
             return $http.patch(Constant.BACKEND_BASE + '/channels/' + channelUuid, channelUpdateInput);
         };
+    this.getNotLowerChannel = function (sizePerPage, page, confirm, status, searchKeyword, resUuid, channelUuid) {
+        confirm = confirm == 0 ? '' : confirm;
+        status = status == 0 ? '' : status;
+
+        var url = '/channels?size=' + sizePerPage
+            + '&page=' + page
+            + '&confirm=' + confirm
+            + '&status=' + status;
+        if (searchKeyword !== undefined && searchKeyword !== null) {
+            url = url + '&keyWord=' + searchKeyword;
+        }
+
+        if (resUuid !== undefined && resUuid !== null) {
+            url = url + '&resUuid=' + resUuid;
+        }
+        if (channelUuid !== undefined && channelUuid !== null) {
+            url = url + '&channelUuid=' + channelUuid;
+        }
+        return $http.get(Constant.BACKEND_BASE + url + '&action=lower');
+    };
 
 });
 

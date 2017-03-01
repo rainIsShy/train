@@ -295,13 +295,19 @@
                                     <span>送货日期: <span style="font-style: italic">{{item.deliverDate| date:'yyyy-MM-dd'}}</span></span>
                                 </div>
                                 <div layout="row" layout-align="end center">
-                                    <md-switch ng-model="item.confirm" aria-label="Switch 1" class="md-block" ng-true-value="'2'" ng-false-value="'1'" ng-click="confirmClickAction($event, item)">
+                                    <md-switch ng-model="item.confirm" aria-label="Switch 1" class="md-block"
+                                               ng-true-value="'2'" ng-false-value="'1'"
+                                               ng-change="confirmClickAction($event, item)">
                                         审核
                                     </md-switch>
-                                    <md-switch ng-model="item.status" aria-label="Switch 1" class="md-block" ng-true-value="'1'" ng-false-value="'2'" ng-click="statusClickAction($event, item)">
+                                    <md-switch ng-model="item.status" aria-label="Switch 1" class="md-block"
+                                               ng-true-value="'1'" ng-false-value="'2'"
+                                               ng-change="statusClickAction($event, item)">
                                         启用
                                     </md-switch>
-                                    <md-switch ng-model="item.release" aria-label="Switch 1" class="md-block" ng-true-value="'2'" ng-false-value="'1'" ng-click="releaseClickAction($event, item)">
+                                    <md-switch ng-model="item.release" aria-label="Switch 1" class="md-block"
+                                               ng-true-value="'2'" ng-false-value="'1'"
+                                               ng-change="releaseClickAction($event, item)">
                                         发布
                                     </md-switch>
                                     <md-button class="md-button close-btn" aria-label="More" ng-click="toggleMorePanelAction(item)" style="position: relative;left: 15px;">
