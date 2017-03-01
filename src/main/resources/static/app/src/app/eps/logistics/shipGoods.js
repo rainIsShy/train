@@ -39,8 +39,14 @@ angular.module('IOne-Production').controller('ShipGoodsManagementController', fu
               var orderId = dtl.orderId;
               SalesOrderMaster.getAll(10,0,'' ,'','' ,null , orderId, null, null, null, null).then(
                   function (response) {
-                      dtl.psoOrderConfirm = response.data.content[0].confirm;
-                      dtl.psoOrderTransfer = response.data.content[0].transferPsoFlag
+                      if (response.data.content.length > 0) {
+                          if (!angular.isUndefined(response.data.content[0].confirm)) {
+                              dtl.psoOrderConfirm = response.data.content[0].confirm;
+                          }
+                          if (!angular.isUndefined(response.data.content[0].transferPsoFlag)) {
+                              dtl.psoOrderTransfer = response.data.content[0].transferPsoFlag
+                          }
+                      }
                   },
                   function () {
                       $scope.showError("服務存取失敗!");
@@ -116,7 +122,13 @@ angular.module('IOne-Production').controller('ShipGoodsManagementController', fu
             if(dtl.isSelected){
                 //物流公司代码.如"POST"就代表中国邮政,"ZJS"就代表宅急送.调用 taobao.logistics.companies.get 获取。
                 //company_code, 目前固定用 POST.
-                var sendData = {tid: dtl.orderId, out_sid: dtl.logisticsNo, company_code: "POST"};
+                //configKey 之後要開放成, 是可以選店家的, 或者從數據上自帶入
+                var sendData = {
+                    tid: dtl.orderId,
+                    out_sid: dtl.logisticsNo,
+                    company_code: "POST",
+                    configKey: "A6045FEA-9A42-4F04-B087-0FC4FD79D812"
+                };
                 TaoBaoAdapterService.executeLogistics(sendData, $scope, function (response) {
                     $scope.showInfo("发货成功！");
                 });

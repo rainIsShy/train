@@ -160,9 +160,9 @@ angular.module('IOne-Production').service('TaoBaoAdapterService', function ($htt
 
     //執行發貨
     this.executeLogistics = function (logisticsData, controllerScope, successCallBack) {
-        var logisticsUrl = ecAdapterUrl + '/api/taobao/logistics'
+        var logisticsUrl = ecAdapterUrl + '/api/taobao/logistics/logisticsOfflineSend'
 
-        return $http.patch(logisticsUrl, logisticsData).success(function (response, status) {
+        return $http.post(logisticsUrl, logisticsData).success(function (response, status) {
             if (status == 200) {
                 successCallBack(response);
             } else {
@@ -170,9 +170,9 @@ angular.module('IOne-Production').service('TaoBaoAdapterService', function ($htt
             }
         }).error(function (response) {
             if (response == null) {
-                controllerScope.showError("[" + (status + '') + "]Connect Server Fail");
+                controllerScope.showError("[" + (response.status + '') + "]Connect Server Fail");
             } else {
-                controllerScope.showError("[" + (status + '') + "]" + response.message);
+                controllerScope.showError("[" + (response.status + '') + "]" + response.message);
             }
         });
     };
