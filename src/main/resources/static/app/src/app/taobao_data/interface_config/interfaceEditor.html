@@ -5,30 +5,15 @@
         <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">{{value.desc}}</label>
         <input type="text" ng-model="source[key]" ng-required="value.notBlank" ng-disabled="!value.editable">
     </md-input-container>
-    <md-input-container flex-sm="100" flex="50" layout-padding
-                        ng-if="source.ecTypeNo == 'TAOBAO' || source.ecTypeNo == 'TMALL' || source.ecTypeNo == 'JD' || source.ecTypeNo == 'VIP'">
-        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">appKey</label>
-        <input type="text" ng-model="source.appKey" ng-required="value.notBlank">
-    </md-input-container>
-    <md-input-container flex-sm="100" flex="50" layout-padding
-                        ng-if="source.ecTypeNo == 'TAOBAO' || source.ecTypeNo == 'TMALL' || source.ecTypeNo == 'JD'">
-        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">secret</label>
-        <input type="text" ng-model="source.secret" ng-required="value.notBlank">
-    </md-input-container>
-    <md-input-container flex-sm="100" flex="50" layout-padding
-                        ng-if="source.ecTypeNo == 'TAOBAO' || source.ecTypeNo == 'TMALL' || source.ecTypeNo == 'JD'">
-        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">sessionKey</label>
-        <input type="text" ng-model="source.sessionKey" ng-required="value.notBlank">
-    </md-input-container>
-    <md-input-container flex-sm="100" flex="50" layout-padding ng-if="source.ecTypeNo == 'VIP'">
-        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">appSecret</label>
-        <input type="text" ng-model="source['appSecret']" ng-required="value.notBlank">
-    </md-input-container>
-    <md-input-container flex-sm="100" flex="50" layout-padding ng-if="source.ecTypeNo == 'VIP'">
-        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">vendorId</label>
-        <input type="text" ng-model="source['vendorId']" ng-required="value.notBlank">
-    </md-input-container>
 </div>
+
+<div ng-if="source.ecTypeNo == 'TAOBAO'"
+     ng-include=" 'app/src/app/taobao_data/interface_config/taobaoAddEdit.html'"></div>
+<div ng-if="source.ecTypeNo == 'TMALL'"
+     ng-include=" 'app/src/app/taobao_data/interface_config/tmallAddEdit.html'"></div>
+<div ng-if="source.ecTypeNo == 'JD'" ng-include=" 'app/src/app/taobao_data/interface_config/jdAddEdit.html'"></div>
+<div ng-if="source.ecTypeNo == 'VIP'" ng-include=" 'app/src/app/taobao_data/interface_config/vipAddEdit.html'"></div>
+
 
 <div layout="row" layout-wrap>
     <md-input-container flex-sm="100" flex="50" layout-padding ng-repeat="(key, value) in objectInfo"

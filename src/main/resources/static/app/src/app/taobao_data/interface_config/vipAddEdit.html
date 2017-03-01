@@ -1,0 +1,14 @@
+<div layout="row" layout-wrap>
+    <md-input-container flex-sm="100" flex="50" layout-padding>
+        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">appKey</label>
+        <input type="text" ng-model="source.appKey" ng-required="value.notBlank">
+    </md-input-container>
+    <md-input-container flex-sm="100" flex="50" layout-padding>
+        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">appSecret</label>
+        <input type="text" ng-model="source.appSecret" ng-required="value.notBlank">
+    </md-input-container>
+    <md-input-container flex-sm="100" flex="50" layout-padding>
+        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">vendorId</label>
+        <input type="text" ng-model="source.vendorId" ng-required="value.notBlank">
+    </md-input-container>
+</div>
