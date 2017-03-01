@@ -16,6 +16,7 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
     $scope.PLATFORM = {
        0:  '全部',
        'TAOBAO': '淘宝',
+       'TMALL': '天猫',
        'JD': '京东',
        'VIP': '唯品会'
     };
@@ -62,7 +63,7 @@ angular.module('IOne-Production').controller('EPSInterfaceConfigController', fun
         $scope.sortType = '';
     };
 
-    $scope.interfaceList = [{"interface" : 'jd'},{"interface" : 'taobao'},{"interface" : 'vip'}];
+    $scope.interfaceList = [{"interface" : 'jd'},{"interface" : 'taobao'},{"interface" : 'tmall'},{"interface" : 'vip'}];
     $scope.refreshList = function () {
         //EPSInterfaceConfigService.getAll
         angular.forEach($scope.interfaceList,function(interfaceItem){
