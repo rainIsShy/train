@@ -197,13 +197,6 @@
                                                     <span>抛转</span>
                                                 </md-button>
                                             </div>
-                                            <div ng-if="detail.transferFlag != '2' && menuDisplayOption['oneOffSync'].display && (menuAuthDataMap[menuDisplayOption['oneOffSync'].uuid] || isAdmin() || !menuDisplayOption['oneOffSync'].uuid)">
-                                                <md-button class="md-fab   "
-                                                           ng-disabled="detail.status != '2'"
-                                                           ng-click="oneOffSync($event, detail)">
-                                                    <span>一键</span>
-                                                </md-button>
-                                            </div>
                                             <div ng-if="isReTransferable(detail)">
                                                 <md-button class="md-fab md-primary"
                                                            ng-disabled="detail.status != '2'"
@@ -395,13 +388,6 @@
                                         <md-button class="md-fab md-mini" ng-disabled="detail.status != '2'"
                                                    ng-click="detailTransferClickAction($event, detail)">
                                             <span>抛转</span>
-                                        </md-button>
-                                    </div>
-                                    <div ng-if="detail.transferFlag != '2' && menuDisplayOption['oneOffSync'].display && (menuAuthDataMap[menuDisplayOption['oneOffSync'].uuid] || isAdmin() || !menuDisplayOption['oneOffSync'].uuid)">
-                                        <md-button class="md-fab   md-mini"
-                                                   ng-disabled="detail.status != '2'"
-                                                   ng-click="oneOffSync($event, detail)">
-                                            <span>一键</span>
                                         </md-button>
                                     </div>
                                     <div ng-if="isReTransferable(detail)">
