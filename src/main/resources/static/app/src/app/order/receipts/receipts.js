@@ -345,6 +345,17 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
         });
     };
 
+    $scope.detailOneOffReTransferClickAction = function (event, detail) {
+        $scope.stopEventPropagation(event);
+        $scope.showConfirm('确认一键重新抛转吗？', "", function () {
+            Receipts.oneOffReTransfer(detail.orderMaster.uuid, [detail.uuid]).success(function () {
+                $scope.showInfo('一键重新抛转成功。');
+            }).error(function (err) {
+                $scope.showError('一键重新抛转失败。<br />' + err.message);
+            });
+        });
+    };
+
 
     $scope.detailAuditTransferClickAction = function (event, detail) {
         $scope.stopEventPropagation(event);
