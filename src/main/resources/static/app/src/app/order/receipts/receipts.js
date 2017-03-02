@@ -570,6 +570,13 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
             $scope.menuDisplayOption['reTransfer1'].display &&
             ( $scope.menuAuthDataMap[$scope.menuDisplayOption['reTransfer1'].uuid] || $scope.isAdmin() || !$scope.menuDisplayOption['reTransfer1'].uuid);
     }
+
+    $scope.isOneOffReTransferable = function (receiptOrderDetail) {
+        return receiptOrderDetail.transferFlag == Constant.TRANSFER_FLAG[2].value &&
+            receiptOrderDetail.paidType != Constant.PAID_TYPE[4].value &&
+            $scope.menuDisplayOption['oneOffReTransfer'].display &&
+            ( $scope.menuAuthDataMap[$scope.menuDisplayOption['oneOffReTransfer'].uuid] || $scope.isAdmin() || !$scope.menuDisplayOption['oneOffReTransfer'].uuid);
+    }
 });
 
 angular.module('IOne-Production').controller('selectChannelController', function ($scope, $mdDialog, ChannelService) {
