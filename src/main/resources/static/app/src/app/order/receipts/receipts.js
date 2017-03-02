@@ -358,6 +358,18 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
         });
     };
 
+    $scope.detailRevertTransferClickAction = function (event, detail) {
+        $scope.stopEventPropagation(event);
+        $scope.showConfirm('确认抛转还原吗？', "", function () {
+            Receipts.revertTransfer(detail.orderMaster.uuid, [detail.uuid]).success(function () {
+
+                $scope.showInfo('抛转还原成功。');
+            }).error(function (err) {
+                $scope.showError('抛转还原失败。<br />' + err.message);
+            });
+        });
+    };
+
     //批量审核
     $scope.confirmAllClickAction = function (event) {
         $scope.stopEventPropagation(event);

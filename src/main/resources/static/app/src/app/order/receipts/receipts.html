@@ -394,6 +394,13 @@
                                         <md-button class="md-fab md-primary md-mini"
                                                    ng-disabled="detail.status != '2'"
                                                    ng-click="detailTransferClickAction($event, detail)">
+                                            <span>还原</span>
+                                        </md-button>
+                                    </div>
+                                    <div ng-if="isReTransferable(detail)">
+                                        <md-button class="md-fab md-primary md-mini"
+                                                   ng-disabled="detail.status != '2'"
+                                                   ng-click="detailTransferClickAction($event, detail)">
                                             <span>重抛</span>
                                         </md-button>
                                     </div>
