@@ -44,6 +44,7 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
         'batchTransfer': {display: true, name: '批量抛转', uuid: 'FF1449B3-B6BC-4368-A410-F709A37A5887'},
         'batchReTransfer': {display: true, name: '批量重抛', uuid: 'DF5F7982-B0F4-4ED4-8A6E-62AFB40F84C7'},
         'auditTransfer': {display: true, name: '审核抛转', uuid: '38af05ca-1baa-4660-869f-0ed680309bd0'},
+        'oneOffReTransfer': {display: true, name: '一键重新抛转', uuid: '9d361cd0-7775-48f3-a1d6-1dc4d2e2a471'}
     };
 
     $scope.refreshList = function () {
