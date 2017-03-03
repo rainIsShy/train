@@ -485,7 +485,7 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
         var ignoredNos = '';
         var updateInput = {
             uuid: [],
-            receiptOrderConversion: 'true'
+            receiptOrderReConversion: 'true'
         };
         angular.forEach($scope.itemList, function (item) {
             if (item.selected) {
