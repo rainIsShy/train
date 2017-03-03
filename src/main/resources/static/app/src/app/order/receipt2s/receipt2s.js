@@ -295,8 +295,8 @@ angular.module('IOne-Production').controller('Receipt2sController', function ($s
             $scope.showConfirm('确认重新抛转收退款单身吗？', '', function () {
                 var UpdateInput = {
                     uuid: detail.uuid,
-                    transferFlag: '2'
-                };
+                    reTransferAction: true
+            };
                 Receipt2s.modify(detail.salesOrderMaster.uuid, UpdateInput).success(function (data) {
                     $scope.showInfo('重新抛转成功！');
                 }).error(function (response) {

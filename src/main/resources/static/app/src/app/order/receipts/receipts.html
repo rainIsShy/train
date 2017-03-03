@@ -217,6 +217,13 @@
                                                     <span>审抛</span>
                                                 </md-button>
                                             </div>
+                                            <div ng-if="isOneOffReTransferable(detail)">
+                                                <md-button class="md-fab md-primary"
+                                                           ng-disabled="detail.status != '2'"
+                                                           ng-click="detailOneOffReTransferClickAction($event, detail)">
+                                                    <span>一键重</span>
+                                                </md-button>
+                                            </div>
                                         </div>
                                     </div>
                                     <md-divider></md-divider>
@@ -415,6 +422,13 @@
                                         <md-button class="md-fab md-mini" ng-disabled="detail.status != '1'"
                                                    ng-click="detailAuditTransferClickAction($event, detail)">
                                             <span>审抛</span>
+                                        </md-button>
+                                    </div>
+                                    <div ng-if="isOneOffReTransferable(detail)">
+                                        <md-button class="md-fab md-primary md-mini"
+                                                   ng-disabled="detail.status != '2'"
+                                                   ng-click="detailOneOffReTransferClickAction($event, detail)">
+                                            <span>一重</span>
                                         </md-button>
                                     </div>
                                 </div>
