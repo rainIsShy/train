@@ -48,19 +48,15 @@ angular.module('IOne-Production').controller('TipTopController', function ($scop
     };
 
     $scope.refreshList = function () {
-        SynchronizationService.getAllParameter($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.dbTypeKeyWord,$scope.keyWord).success(function (data) {
+        SynchronizationService.getAllParameter($scope.dbTypeKeyWord,$scope.keyWord).success(function (data) {
             $scope.itemList = data.content;
-            $scope.pageOption.totalPage = data.totalPages;
-            $scope.pageOption.totalElements = data.totalElements;
             $scope.getSynType();
         });
     };
 
     $scope.refreshSubList = function (item) {
-        SynchronizationService.getAllParameter($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,item.syncType).success(function (data) {
+        SynchronizationService.getAllParameter(item.syncType).success(function (data) {
             $scope.subItemList = data.content;
-            $scope.pageOption.totalPage = data.totalPages;
-            $scope.pageOption.totalElements = data.totalElements;
             item.detailList = $scope.subItemList;
         });
     };
@@ -76,6 +72,9 @@ angular.module('IOne-Production').controller('TipTopController', function ($scop
             tempSynType.push(item);
         });
         $scope.itemSynType = tempSynType;
+        $scope.tempSynTypePage =  Math.ceil(tempSynType.length/$scope.pageOption.sizePerPage);
+        $scope.pageOption.totalPage = $scope.tempSynTypePage;
+        $scope.pageOption.totalElements = tempSynType.length;
     }
 
     $scope.pageDetailOption = {
@@ -162,26 +161,27 @@ angular.module('IOne-Production').controller('TipTopController', function ($scop
          if($scope.status != 'edit'){
              SynchronizationService.add($scope.addItem).success(function(){
                  $scope.showInfo("新增成功!");
+                 if($scope.domain == 'ChannelLevelDetail'){
+                     $scope.refreshSubList($scope.selectedItem);
+                     $scope.listItemAction();
+                     $scope.showDetailPanelAction($scope.selectedItem);
+                     return;
+                 }
+                 if($scope.domain == 'ChannelLevelMaster'){
+                     $scope.refreshList();
+                     $scope.listItemAction();
+                     return;
+                 }
              });
-             if($scope.domain == 'ChannelLevelDetail'){
+         }
+
+         if($scope.status = 'edit'){
+             SynchronizationService.modify($scope.addItem.uuid,$scope.addItem).success(function () {
+                 $scope.showInfo("修改成功!");
                  $scope.refreshSubList($scope.selectedItem);
-                 $scope.listItemAction();
-                 $scope.showDetailPanelAction($scope.selectedItem);
-                return;
-             }
-             if($scope.domain == 'ChannelLevelMaster'){
                  $scope.refreshList();
                  $scope.listItemAction();
-                 return;
-             }
-         }
-         if($scope.status = 'edit'){
-            SynchronizationService.modify($scope.addItem.uuid,$scope.addItem).success(function () {
-                $scope.showInfo("修改成功!");
-                $scope.refreshSubList($scope.selectedItem);
-                $scope.refreshList();
-                $scope.listItemAction();
-            });
+             });
          }
 
      }

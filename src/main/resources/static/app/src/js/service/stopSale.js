@@ -4,8 +4,8 @@ angular.module('IOne-Production').service('SynchronizationService', function ($h
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
-    this.getAllParameter = function (sizePerPage, page, syncType,keyWord) {
-        var url = '/synchronizations?size=' +sizePerPage + '&page=' + page;
+    this.getAllParameter = function (syncType,keyWord) {
+        var url = '/synchronizations?';
         if(syncType != undefined && syncType != null && syncType != ""){
             url = url + '&syncType=' + syncType;
         }
