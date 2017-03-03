@@ -71,18 +71,20 @@ angular.module('IOne-Production').controller('TipTopController', function ($scop
             tempSynType[item.syncType] = true;
             tempSynType.push(item);
         });
-        $scope.itemSynType = tempSynType;
-        $scope.tempSynTypePage =  Math.ceil(tempSynType.length/$scope.pageOption.sizePerPage);
-        $scope.pageOption.totalPage = $scope.tempSynTypePage;
+        $scope.pageOption.totalPage = Math.floor(tempSynType.length/$scope.pageOption.sizePerPage)+1;
         $scope.pageOption.totalElements = tempSynType.length;
-    }
 
-    $scope.pageDetailOption = {
-        sizePerPage: 10,
-        currentPage: 0,
-        totalPage: 100,
-        totalElements: 100
-    };
+        var startCurrentPageTotal=$scope.pageOption.currentPage*$scope.pageOption.sizePerPage;
+        var endCurrentPageTotal=$scope.pageOption.currentPage+1*$scope.pageOption.sizePerPage;
+        var tempDataList=[];
+        for(var i=startCurrentPageTotal;i<endCurrentPageTotal;i++){
+            tempDataList.push(tempSynType[i]);
+            if(i == tempSynType.length-1){
+                break;
+            }
+        }
+        $scope.itemSynType = tempDataList;
+    }
 
     $scope.$watch('listFilterOption', function () {
         $scope.pageOption.currentPage = 0;
