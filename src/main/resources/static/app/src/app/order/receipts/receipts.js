@@ -362,10 +362,23 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
         console.log(detail);
         $scope.showConfirm('确认审核抛转吗？', "", function () {
             Receipts.auditTransfer(detail.orderMaster.uuid, [detail.uuid]).success(function () {
-
+                detail.status = Constant.CONFIRM[2].value;
+                detail.transferFlag = Constant.TRANSFER_FLAG[2].value;
                 $scope.showInfo('审核抛转成功。');
             }).error(function (err) {
                 $scope.showError('审核抛转失败。<br />' + err.message);
+            });
+        });
+    };
+
+    $scope.detailRevertTransferClickAction = function (event, detail) {
+        $scope.stopEventPropagation(event);
+        $scope.showConfirm('确认抛转还原吗？', "", function () {
+            Receipts.revertTransfer(detail.orderMaster.uuid, [detail.uuid]).success(function () {
+                detail.transferFlag = Constant.TRANSFER_FLAG[1].value;
+                $scope.showInfo('抛转还原成功。');
+            }).error(function (err) {
+                $scope.showError('抛转还原失败。<br />' + err.message);
             });
         });
     };
