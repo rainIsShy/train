@@ -350,7 +350,8 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
         console.log(detail);
         $scope.showConfirm('确认审核抛转吗？', "", function () {
             Receipts.auditTransfer(detail.orderMaster.uuid, [detail.uuid]).success(function () {
-
+                detail.status = '1';
+                detail.transferFlag = '1';
                 $scope.showInfo('审核抛转成功。');
             }).error(function (err) {
                 $scope.showError('审核抛转失败。<br />' + err.message);
@@ -362,7 +363,7 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
         $scope.stopEventPropagation(event);
         $scope.showConfirm('确认抛转还原吗？', "", function () {
             Receipts.revertTransfer(detail.orderMaster.uuid, [detail.uuid]).success(function () {
-
+                detail.transferFlag = '1';
                 $scope.showInfo('抛转还原成功。');
             }).error(function (err) {
                 $scope.showError('抛转还原失败。<br />' + err.message);
