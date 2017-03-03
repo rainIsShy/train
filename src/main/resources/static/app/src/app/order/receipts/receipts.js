@@ -304,7 +304,7 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
             $scope.showConfirm('确认重新抛转收退银单身吗？', '', function () {
                 var UpdateInput = {
                     uuid: detail.uuid,
-                    receiptOrderConversion: 'true'
+                    receiptOrderReConversion: 'true'
                 };
                 Receipts.modify(detail.orderMaster.uuid, UpdateInput).success(function () {
                     $scope.showInfo('重新抛转成功！');
