@@ -197,7 +197,7 @@
                                                     <span>抛转</span>
                                                 </md-button>
                                             </div>
-                                            <div ng-if="isReTransferable(detail)">
+                                            <div ng-if="detail.transferFlag == '2' && menuDisplayOption['revert'].display && (menuAuthDataMap[menuDisplayOption['revert'].uuid] || isAdmin() || !menuDisplayOption['revert'].uuid)">
                                                 <md-button class="md-fab md-primary"
                                                            ng-disabled="detail.status != '2'"
                                                            ng-click="detailRevertTransferClickAction($event, detail)">
