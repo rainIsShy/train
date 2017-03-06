@@ -42,7 +42,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
     };
 
     $scope.refreshList = function () {
-        ChannelLevelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, '', '', '', '', $scope.keyword, $scope.parentKeyword, '', '', '', '', RES_UUID_MAP.OCM.CHANNEL_LEVEL.RES_UUID).success(function (data) {
+        ChannelLevelService.getAllNoPage('', '', '', '', $scope.keyword, $scope.parentKeyword, '', '', '', '', RES_UUID_MAP.OCM.CHANNEL_LEVEL.RES_UUID).success(function (data) {
             $scope.itemList = data.content;
             var mapTotalElements={};
             var totalElements=0;
@@ -53,10 +53,19 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                 mapTotalElements[item.parentOcmBaseChanUuid]=true;
                 totalElements=totalElements+1;
             });
-            $scope.pageOption.totalPage = data.totalPages;
+
             $scope.pageOption.totalElements = totalElements;
+            $scope.pageOption.totalPage = Math.floor($scope.pageOption.totalElements/$scope.pageOption.sizePerPage)+1;
             $scope.getChannelParent();
-            angular.forEach($scope.itemList, function (item) {
+
+            var startCurrentPageTotal=$scope.pageOption.currentPage*$scope.pageOption.sizePerPage;
+            var endCurrentPageTotal=$scope.pageOption.currentPage+1*$scope.pageOption.sizePerPage;
+            var tempDataList=[];
+            for(var i=startCurrentPageTotal;i<endCurrentPageTotal;i++){
+                tempDataList.push(data[i]);
+            }
+            $scope.dataList = tempDataList;
+            angular.forEach($scope.dataList, function (item) {
                 item.detailList = [];
                 $scope.getChannelName(item);
                 $scope.refreshSubList(item);
@@ -514,16 +523,6 @@ angular.module('IOne-Production').controller('ParentChannelSelectController', fu
             });
         };
     $scope.notLowerChannel();
-
-//    $scope.refreshChannel = function () {
-//            ChannelService.getAllGlobalQuery($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, $scope.searchKeyword).success(function (data) {
-//                $scope.allChannel = data.content;
-//                $scope.pageOption.totalElements = data.totalElements;
-//                $scope.pageOption.totalPage = data.totalPages;
-//            });
-//        };
-//    $scope.refreshChannel();
-
 
     $scope.selectChannel = function (channel) {
         $scope.channel = channel;

@@ -531,6 +531,46 @@ angular.module('IOne-Production').service('ChannelLevelService', function ($http
     };
 
 
+    this.getAllNoPage = function (confirm, status, no, name, keyword, parentKeyword, parentOcmBaseChanUuid, excludeChannelUuid, resUuid) {
+            confirm = confirm == 0 ? '' : confirm;
+            status = status == 0 ? '' : status;
+
+            var url = '/channelLevels?'
+                + '&confirm=' + confirm
+                + '&status=' + status;
+
+            if (no != undefined && no != null && no != '') {
+                url = url + '&no=' + no;
+            }
+
+            if (name != undefined && name != null && name != '') {
+                url = url + '&name=' + name;
+            }
+
+
+            if (keyword != undefined && keyword != null && keyword != '') {
+                url = url + '&keyword=' + keyword;
+            }
+
+            if (parentKeyword != undefined && parentKeyword != null && parentKeyword != '') {
+                url = url + '&parentKeyword=' + parentKeyword;
+            }
+
+            if (parentOcmBaseChanUuid != undefined && parentOcmBaseChanUuid != null && parentOcmBaseChanUuid != '') {
+                url = url + '&parentOcmBaseChanUuid=' + parentOcmBaseChanUuid;
+            }
+
+            if (excludeChannelUuid != undefined && excludeChannelUuid != null && excludeChannelUuid != '') {
+                url = url + '&excludeChannelUuid=' + excludeChannelUuid;
+            }
+
+            if (resUuid != undefined && resUuid != null) {
+                url = url + '&resUuid=' + resUuid;
+            }
+            return $http.get(Constant.BACKEND_BASE + url);
+        };
+
+
     this.getByChannelUuid = function (channelUuid) {
         return $http.get(Constant.BACKEND_BASE + '/channelLevels?channelUuid=' + channelUuid);
     };
