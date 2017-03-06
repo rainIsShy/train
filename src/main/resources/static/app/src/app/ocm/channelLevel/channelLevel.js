@@ -57,18 +57,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
             $scope.pageOption.totalElements = totalElements;
             $scope.pageOption.totalPage = Math.floor($scope.pageOption.totalElements/$scope.pageOption.sizePerPage)+1;
             $scope.getChannelParent();
-
-            var startCurrentPageTotal=$scope.pageOption.currentPage*$scope.pageOption.sizePerPage;
-            var endCurrentPageTotal=$scope.pageOption.currentPage+1*$scope.pageOption.sizePerPage;
-            var tempDataList=[];
-            for(var i=startCurrentPageTotal;i<endCurrentPageTotal;i++){
-                tempDataList.push(data[i]);
-                if(i == tempDataList.length-1){
-                    break;
-                }
-            }
-            $scope.dataList = tempDataList;
-            angular.forEach($scope.dataList, function (item) {
+            angular.forEach($scope.itemList, function (item) {
                 item.detailList = [];
                 $scope.getChannelName(item);
                 $scope.refreshSubList(item);
@@ -103,15 +92,25 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
     $scope.getChannelParent = function (){
         $scope.itemParent=[];
         var mapParentOcmBaseUuid = {};
+        $scope.tempParentOcmBaseUuid = [];
         angular.forEach($scope.itemList,function(item){
             if(mapParentOcmBaseUuid[item.parentOcmBaseChanUuid]){
-               return;
-           }
-           mapParentOcmBaseUuid[item.parentOcmBaseChanUuid] = true;
-           ChannelService.get(item.parentOcmBaseChanUuid).success(function (data){
-               $scope.itemParent.push(data);
-           });
+                return;
+            }
+            mapParentOcmBaseUuid[item.parentOcmBaseChanUuid] = true;
+            $scope.tempParentOcmBaseUuid.push(item.parentOcmBaseChanUuid);
         });
+
+        var startCurrentPageTotal=$scope.pageOption.currentPage*$scope.pageOption.sizePerPage;
+        var endCurrentPageTotal=startCurrentPageTotal+$scope.pageOption.sizePerPage;
+        for(var i=startCurrentPageTotal;i<$scope.tempParentOcmBaseUuid.length;i++){
+            ChannelService.get($scope.tempParentOcmBaseUuid[i]).success(function (data){
+                $scope.itemParent.push(data);
+            });
+            if(i == $scope.tempParentOcmBaseUuid.length-1 || i == endCurrentPageTotal-1){
+                break;
+            }
+        }
 
     };
 
