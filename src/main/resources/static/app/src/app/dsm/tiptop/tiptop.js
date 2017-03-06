@@ -75,7 +75,7 @@ angular.module('IOne-Production').controller('TipTopController', function ($scop
         $scope.pageOption.totalElements = tempSynType.length;
 
         var startCurrentPageTotal=$scope.pageOption.currentPage*$scope.pageOption.sizePerPage;
-        var endCurrentPageTotal=$scope.pageOption.currentPage+1*$scope.pageOption.sizePerPage;
+        var endCurrentPageTotal=startCurrentPageTotal+$scope.pageOption.sizePerPage;
         var tempDataList=[];
         for(var i=startCurrentPageTotal;i<endCurrentPageTotal;i++){
             tempDataList.push(tempSynType[i]);
