@@ -63,6 +63,9 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
             var tempDataList=[];
             for(var i=startCurrentPageTotal;i<endCurrentPageTotal;i++){
                 tempDataList.push(data[i]);
+                if(i == tempDataList.length-1){
+                    break;
+                }
             }
             $scope.dataList = tempDataList;
             angular.forEach($scope.dataList, function (item) {
