@@ -51,7 +51,7 @@ i1:
   tiptop-adapter:
     url: http://project.benchmarkchina.com:10813
   ec-adapter:
-    url: http://project.benchmarkchina.com:10814
+    url: http://project.benchmarkchina.com:10041
   tmall-adapter:
     url: http://project.benchmarkchina.com:10815
 
@@ -93,7 +93,7 @@ i1:
   tiptop-adapter:
     url: http://project.benchmarkchina.com:10813
   ec-adapter:
-    url: http://project.benchmarkchina.com:10814
+    url: http://project.benchmarkchina.com:10041
   tmall-adapter:
     url: http://project.benchmarkchina.com:10815
 
