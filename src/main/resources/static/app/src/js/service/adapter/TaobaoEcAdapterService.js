@@ -162,7 +162,6 @@ angular.module('IOne-Production').service('TaoBaoAdapterService', function ($htt
 
     //執行發貨
     this.executeLogistics = function (logisticsData, controllerScope, successCallBack) {
-        //11
         var logisticsUrl = ecAdapterUrl + '/api/taobao/logistics/logisticsOfflineSend'
 
         return $http.post(logisticsUrl, logisticsData).success(function (response, status) {
