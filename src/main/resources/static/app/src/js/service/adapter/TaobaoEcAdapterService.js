@@ -68,8 +68,8 @@ angular.module('IOne-Production').service('TaoBaoAdapterService', function ($htt
     };
 
     //电商接口平台CURD
-    this.insertConfig = function (insertObj, controllerScope, successCallBack) {
-        var url = ecAdapterUrl + '/taobao/config/insert';
+    this.insertConfig = function (insertObj, controllerScope, ecTypeNo, successCallBack) {
+        var url = ecAdapterUrl + '/ec/config/'+ecTypeNo+'/insert';
         angular.forEach(insertObj, function (item) {
             item.createUserUuid = $rootScope.globals.currentUser.userUuid;
         });
@@ -88,12 +88,12 @@ angular.module('IOne-Production').service('TaoBaoAdapterService', function ($htt
         });
     };
 
-    this.updateConfig = function (updateObj, controllerScope, successCallBack) {
-        var url = ecAdapterUrl + '/taobao/config/update';
+    this.updateConfig = function (updateObj, controllerScope, updateEcTypeNo, uuid, successCallBack) {
+        var url = ecAdapterUrl + '/ec/config/'+updateEcTypeNo+'/update/'+uuid;
         angular.forEach(updateObj, function (item) {
-            delete(item.createDate);
-            delete(item.modifiedDate);
-            item.modifierUuid = $rootScope.globals.currentUser.userUuid;
+//            delete(item.createDate);
+//            delete(item.modifiedDate);
+//            item.modifierUuid = $rootScope.globals.currentUser.userUuid;
         });
         return $http.patch(url, updateObj).success(function (response, status) {
             if (status == 200) {
@@ -110,8 +110,8 @@ angular.module('IOne-Production').service('TaoBaoAdapterService', function ($htt
         });
     };
 
-    this.deleteConfig = function (deleteObj, controllerScope, successCallBack) {
-        var url = ecAdapterUrl + '/taobao/config/delete';
+    this.deleteConfig = function (deleteObj, controllerScope, deleteEcTypeNo, uuid, successCallBack) {
+        var url = ecAdapterUrl + '/ec/config/'+deleteEcTypeNo+'/delete/'+uuid;
         angular.forEach(deleteObj, function (item) {
             delete(item.createDate);
             delete(item.modifiedDate);
@@ -136,13 +136,15 @@ angular.module('IOne-Production').service('TaoBaoAdapterService', function ($htt
         });
     };
 
-    this.queryConfig = function (sizePerPage, page, confirm, status, no, name, keyWord, resUuid) {
+    this.queryConfig = function (sizePerPage, page, confirm, status, platform, no, name, keyWord, resUuid, interface) {
         confirm = confirm == 0 ? '' : confirm;
         status = status == 0 ? '' : status;
-        var url = ecAdapterUrl + '/taobao/config/list?size=' + sizePerPage
+        platform = platform == 0 ? '' : platform;
+        var url = ecAdapterUrl + '/ec/config/'+interface+'/list?size=' + sizePerPage
             + '&page=' + page
             + '&confirm=' + confirm
-            + '&status=' + status;
+            + '&status=' + status
+            + '&platform='+ platform;
         if (no !== undefined && no !== null && no !== '') {
             url = url + '&no=' + no;
         }
@@ -176,6 +178,17 @@ angular.module('IOne-Production').service('TaoBaoAdapterService', function ($htt
                 controllerScope.showError("[" + (response.status + '') + "]" + response.message);
             }
         });
+    };
+
+
+    this.queryChannel = function(){
+        var url = ecAdapterUrl + '/ec/config/common/list/ocm/chan';
+        return $http.get(url);
+    };
+
+    this.queryMall = function(){
+        var url = ecAdapterUrl + '/ec/config/common/list/ocm/mall';
+        return $http.get(url);
     };
 
 });

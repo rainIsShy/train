@@ -69,6 +69,14 @@ angular.module('IOne-Production').service('Receipts', function ($http, Constant)
         return $http.patch(Constant.BACKEND_BASE + '/orders/' + orderUuid + '/receipts?action=auditTransfer', uuids);
     };
 
+    this.oneOffReTransfer = function (orderUuid, uuids) {
+        return $http.patch(Constant.BACKEND_BASE + '/orders/' + orderUuid + '/receipts?action=oneOffReTransfer', uuids);
+    };
+
+    this.revertTransfer = function (orderUuid, uuids) {
+        return $http.patch(Constant.BACKEND_BASE + '/orders/' + orderUuid + '/receipts?action=revertTransfer', uuids);
+    };
+
 });
 
 

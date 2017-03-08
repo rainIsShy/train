@@ -44,6 +44,8 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
         'batchTransfer': {display: true, name: '批量抛转', uuid: 'FF1449B3-B6BC-4368-A410-F709A37A5887'},
         'batchReTransfer': {display: true, name: '批量重抛', uuid: 'DF5F7982-B0F4-4ED4-8A6E-62AFB40F84C7'},
         'auditTransfer': {display: true, name: '审核抛转', uuid: '38af05ca-1baa-4660-869f-0ed680309bd0'},
+        'oneOffReTransfer': {display: true, name: '一键重新抛转', uuid: '9d361cd0-7775-48f3-a1d6-1dc4d2e2a471'},
+        'revert': {display: true, name: '还原', uuid: 'a3399bef-1e8a-4f8d-9907-3b47693c4a2b'}
     };
 
     $scope.refreshList = function () {
@@ -303,7 +305,7 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
             $scope.showConfirm('确认重新抛转收退银单身吗？', '', function () {
                 var UpdateInput = {
                     uuid: detail.uuid,
-                    receiptOrderConversion: 'true'
+                    receiptOrderReConversion: 'true'
                 };
                 Receipts.modify(detail.orderMaster.uuid, UpdateInput).success(function () {
                     $scope.showInfo('重新抛转成功！');
@@ -344,16 +346,40 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
         });
     };
 
+    $scope.detailOneOffReTransferClickAction = function (event, detail) {
+        $scope.stopEventPropagation(event);
+        $scope.showConfirm('确认一键重新抛转吗？', "", function () {
+            Receipts.oneOffReTransfer(detail.orderMaster.uuid, [detail.uuid]).success(function () {
+                $scope.showInfo('一键重新抛转成功。');
+            }).error(function (err) {
+                $scope.showError('一键重新抛转失败。<br />' + err.message);
+            });
+        });
+    };
+
 
     $scope.detailAuditTransferClickAction = function (event, detail) {
         $scope.stopEventPropagation(event);
         console.log(detail);
         $scope.showConfirm('确认审核抛转吗？', "", function () {
             Receipts.auditTransfer(detail.orderMaster.uuid, [detail.uuid]).success(function () {
-
+                detail.status = Constant.CONFIRM[2].value;
+                detail.transferFlag = Constant.TRANSFER_FLAG[2].value;
                 $scope.showInfo('审核抛转成功。');
             }).error(function (err) {
                 $scope.showError('审核抛转失败。<br />' + err.message);
+            });
+        });
+    };
+
+    $scope.detailRevertTransferClickAction = function (event, detail) {
+        $scope.stopEventPropagation(event);
+        $scope.showConfirm('确认抛转还原吗？', "", function () {
+            Receipts.revertTransfer(detail.orderMaster.uuid, [detail.uuid]).success(function () {
+                detail.transferFlag = Constant.TRANSFER_FLAG[1].value;
+                $scope.showInfo('抛转还原成功。');
+            }).error(function (err) {
+                $scope.showError('抛转还原失败。<br />' + err.message);
             });
         });
     };
@@ -473,7 +499,7 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
         var ignoredNos = '';
         var updateInput = {
             uuid: [],
-            receiptOrderConversion: 'true'
+            receiptOrderReConversion: 'true'
         };
         angular.forEach($scope.itemList, function (item) {
             if (item.selected) {
@@ -568,6 +594,13 @@ angular.module('IOne-Production').controller('ReceiptsController', function ($sc
             receiptOrderDetail.paidType != Constant.PAID_TYPE[4].value &&
             $scope.menuDisplayOption['reTransfer1'].display &&
             ( $scope.menuAuthDataMap[$scope.menuDisplayOption['reTransfer1'].uuid] || $scope.isAdmin() || !$scope.menuDisplayOption['reTransfer1'].uuid);
+    }
+
+    $scope.isOneOffReTransferable = function (receiptOrderDetail) {
+        return receiptOrderDetail.transferFlag == Constant.TRANSFER_FLAG[2].value &&
+            receiptOrderDetail.paidType != Constant.PAID_TYPE[4].value &&
+            $scope.menuDisplayOption['oneOffReTransfer'].display &&
+            ( $scope.menuAuthDataMap[$scope.menuDisplayOption['oneOffReTransfer'].uuid] || $scope.isAdmin() || !$scope.menuDisplayOption['oneOffReTransfer'].uuid);
     }
 });
 

@@ -858,7 +858,8 @@ angular.module('IOne-Constant').constant('Constant', {
                 {id: '/dsm/rule', name: '同步规则管理', link: '/dsm/rule', uuid: ''},
                 {id: '/dsm/schedule', name: '同步任务管理', link: '/dsm/schedule', uuid: ''},
                 {id: '/dsm/log', name: '日志管理', link: '/dsm/log', uuid: ''},
-                {id: '/dsm/stopSale', name: '商品数据同步管理', link: '/dsm/stopSale', uuid: ''}
+                {id: '/dsm/stopSale', name: '商品数据同步管理', link: '/dsm/stopSale', uuid: ''},
+                {id: '/dsm/tiptop', name: '易拓数据同步配置', link: '/dsm/tiptop', uuid: ''}
             ]
         },
         {
@@ -1437,7 +1438,6 @@ angular.module('IOne-Constant').constant('Constant', {
     },
     'DEFAULT_WAREHOUSE': {
          0: {value: 'Y', name: '默认仓库'},
-         1: {value: 'N', name: '取消默认'},
-
+         1: {value: 'N', name: '取消默认'}
     }
 });

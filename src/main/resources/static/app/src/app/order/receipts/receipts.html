@@ -197,11 +197,11 @@
                                                     <span>抛转</span>
                                                 </md-button>
                                             </div>
-                                            <div ng-if="detail.transferFlag != '2' && menuDisplayOption['oneOffSync'].display && (menuAuthDataMap[menuDisplayOption['oneOffSync'].uuid] || isAdmin() || !menuDisplayOption['oneOffSync'].uuid)">
-                                                <md-button class="md-fab   "
+                                            <div ng-if="detail.transferFlag == '2' && menuDisplayOption['revert'].display && (menuAuthDataMap[menuDisplayOption['revert'].uuid] || isAdmin() || !menuDisplayOption['revert'].uuid)">
+                                                <md-button class="md-fab md-primary"
                                                            ng-disabled="detail.status != '2'"
-                                                           ng-click="oneOffSync($event, detail)">
-                                                    <span>一键</span>
+                                                           ng-click="detailRevertTransferClickAction($event, detail)">
+                                                    <span>还原</span>
                                                 </md-button>
                                             </div>
                                             <div ng-if="isReTransferable(detail)">
@@ -215,6 +215,13 @@
                                                 <md-button class="md-fab md-primary" ng-disabled="detail.status != '1'"
                                                            ng-click="detailAuditTransferClickAction($event, detail)">
                                                     <span>审抛</span>
+                                                </md-button>
+                                            </div>
+                                            <div ng-if="isOneOffReTransferable(detail)">
+                                                <md-button class="md-fab md-primary"
+                                                           ng-disabled="detail.status != '2'"
+                                                           ng-click="detailOneOffReTransferClickAction($event, detail)">
+                                                    <span>一键重</span>
                                                 </md-button>
                                             </div>
                                         </div>
@@ -397,11 +404,11 @@
                                             <span>抛转</span>
                                         </md-button>
                                     </div>
-                                    <div ng-if="detail.transferFlag != '2' && menuDisplayOption['oneOffSync'].display && (menuAuthDataMap[menuDisplayOption['oneOffSync'].uuid] || isAdmin() || !menuDisplayOption['oneOffSync'].uuid)">
-                                        <md-button class="md-fab   md-mini"
+                                    <div ng-if="isReTransferable(detail)">
+                                        <md-button class="md-fab md-primary md-mini"
                                                    ng-disabled="detail.status != '2'"
-                                                   ng-click="oneOffSync($event, detail)">
-                                            <span>一键</span>
+                                                   ng-click="detailRevertTransferClickAction($event, detail)">
+                                            <span>还原</span>
                                         </md-button>
                                     </div>
                                     <div ng-if="isReTransferable(detail)">
@@ -415,6 +422,13 @@
                                         <md-button class="md-fab md-mini" ng-disabled="detail.status != '1'"
                                                    ng-click="detailAuditTransferClickAction($event, detail)">
                                             <span>审抛</span>
+                                        </md-button>
+                                    </div>
+                                    <div ng-if="isOneOffReTransferable(detail)">
+                                        <md-button class="md-fab md-primary md-mini"
+                                                   ng-disabled="detail.status != '2'"
+                                                   ng-click="detailOneOffReTransferClickAction($event, detail)">
+                                            <span>一重</span>
                                         </md-button>
                                     </div>
                                 </div>

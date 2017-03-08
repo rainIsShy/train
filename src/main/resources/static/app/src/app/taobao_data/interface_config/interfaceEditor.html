@@ -1,0 +1,73 @@
+<h4 class="md-title" layout-padding>基本属性</h4>
+<div layout="row" layout-wrap>
+    <md-input-container flex-sm="100" flex="50" layout-padding ng-repeat="(key, value) in objectInfo"
+                        ng-if="value.type == 'STRING' && value.show  && value.desc != 'APP_SESSION' && value.desc != 'APP_SECRET' && value.desc != 'APP_KEY'">
+        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">{{value.desc}}</label>
+        <input type="text" ng-model="source[key]" ng-required="value.notBlank" ng-disabled="!value.editable">
+    </md-input-container>
+</div>
+
+<div ng-if="source.ecTypeNo == 'TAOBAO'"
+     ng-include=" 'app/src/app/taobao_data/interface_config/taobaoAddEdit.html'"></div>
+<div ng-if="source.ecTypeNo == 'TMALL'"
+     ng-include=" 'app/src/app/taobao_data/interface_config/tmallAddEdit.html'"></div>
+<div ng-if="source.ecTypeNo == 'JD'" ng-include=" 'app/src/app/taobao_data/interface_config/jdAddEdit.html'"></div>
+<div ng-if="source.ecTypeNo == 'VIP'" ng-include=" 'app/src/app/taobao_data/interface_config/vipAddEdit.html'"></div>
+
+
+<div layout="row" layout-wrap>
+    <md-input-container flex-sm="100" flex="50" layout-padding ng-repeat="(key, value) in objectInfo"
+                        ng-if="value.type == 'INT' && value.show">
+        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">{{value.desc}}</label>
+        <input type="number" ng-model="source[key]" ng-required="value.notBlank" ng-disabled="!value.editable">
+    </md-input-container>
+</div>
+
+<h4 class="md-title" layout-padding>对象类属性</h4>
+<div layout="row" layout-wrap>
+    <md-input-container flex-sm="100" flex="50" layout-padding ng-repeat="(key, value) in objectInfo"
+                        ng-if="value.type == 'OBJECT' && value.show && value.desc == '电商平台'">
+        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">{{value.desc}}</label>
+        <md-select ng-model="platformName">
+            <md-option ng-repeat="value in platformData" ng-value="value.name" ng-click="selectClick(value)">
+                {{value.name}}
+            </md-option>
+        </md-select>
+    </md-input-container>
+
+    <md-input-container flex-sm="100" flex="50" layout-padding ng-repeat="(key, value) in objectInfo"
+                        ng-if="value.type == 'OBJECT' && value.show && value.desc == '电商渠道'">
+        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">{{value.desc}}</label>
+        <input type="text" ng-model="source[key].name" ng-required="value.notBlank"
+               ng-disabled="!value.editable">
+        <md-button class="md-icon-button close-btn float-right" style="color: gray;" aria-label="More"
+                   ng-click="openDlg(key, value)" ng-disabled="!value.editable">
+            <ng-md-icon icon="search"></ng-md-icon>
+        </md-button>
+    </md-input-container>
+</div>
+
+<h4 class="md-title" layout-padding>选择类属性</h4>
+<div layout="row" layout-wrap>
+    <md-input-container flex-sm="100" flex="50" layout-padding ng-repeat="(key, value) in objectInfo"
+                        ng-if="value.type == 'SELECT' && value.show">
+        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">{{value.desc}}</label>
+        <md-select ng-model="source[key] ? source[key] : value.defaultValue" ng-required="value.notBlank"
+                   ng-disabled="!value.editable">
+            <md-option ng-repeat="(key1, value1) in value.options" value="{{key1}}">
+                {{value1}}
+            </md-option>
+        </md-select>
+    </md-input-container>
+</div>
+
+<h4 class="md-title" layout-padding>日期类属性</h4>
+<div layout="row" layout-wrap>
+    <div flex-sm="100" flex="50" layout-padding ng-repeat="(key, value) in objectInfo"
+         ng-if="value.type == 'DATE' && value.show">
+        <label ng-class="(value.notBlank && !source[key]) ? 'required-field' : ''">{{value.desc}}</label>
+        <md-datepicker ng-model="source[key]" md-placeholder="{{value.desc}}" ng-disabled="!value.editable">
+        </md-datepicker>
+    </div>
+
+</div>

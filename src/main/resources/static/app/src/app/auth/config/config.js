@@ -236,7 +236,7 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
 
     $scope.editItem = function(item) {
         $scope.selectedItem = item;
-        $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
+        $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS_ADD, 1);
     };
 
     $scope.resTreeCheckBoxHandler = function(node) {

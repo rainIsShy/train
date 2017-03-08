@@ -1,0 +1,259 @@
+<div class="main-panel">
+    <div ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS">
+        <div layout="row" class="top-title">
+            <div flex="70" hide-sm hide-md class="left-title" ng-show="selectedItem" style="position: relative;">
+                <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;">
+                </md-button>
+                <md-menu>
+                    <md-button class="md-icon-button close-btn" aria-label="More" style="float: left;"
+                               ng-click="$mdOpenMenu($event)">
+                        <ng-md-icon icon="menu"></ng-md-icon>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="deleteClickAction($event, selectedItem)">
+                                <ng-md-icon icon="delete"></ng-md-icon>
+                                删除
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+                <span>易拓数据同步数据详细信息</span>
+                <md-button class="md-icon-button close-btn float-right" aria-label="More"
+                           ng-click="selectedItem = null">
+                    <ng-md-icon icon="chevron_left"></ng-md-icon>
+                </md-button>
+            </div>
+            <div flex class="right-title">
+                <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
+                           ng-click="preAddItemAction(selectedItem, 'ChannelLevelMaster', '新增同步数据')">
+                    <ng-md-icon icon="add"></ng-md-icon>
+                </md-button>
+                <span>易拓数据同步数据</span>
+                <md-menu>
+                    <md-button class="md-icon-button close-btn float-right" aria-label="More"
+                               ng-click="$mdOpenMenu($event)">
+                        <ng-md-icon icon="menu"></ng-md-icon>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button class="md-button" aria-label="More" ng-click="deleteAllClickAction($event)">
+                                <ng-md-icon icon="delete"></ng-md-icon>
+                                批量删除
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+        </div>
+
+        <div layout="row" class="main-body border">
+            <div flex="70" hide-sm hide-md layout="column" class="left-body" ng-show="selectedItem">
+                <div flex="100" layout-padding>
+                    <div layout="row" layout-padding style="font-size: 20px;padding-top: 2px; font-weight: bold;">
+                        <span flex>同步类型: {{selectedItem.syncType}}&nbsp;&nbsp;{{selectedItem.remark}}</span>
+                    </div>
+                    <md-divider></md-divider>
+                    <md-tabs md-dynamic-height md-border-bottom style="padding-top: 30px;">
+                        <md-tab label="同步详细信息">
+                            <div layout="row" layout-wrap style="margin-top: 20px;">
+                                <div flex="100" ng-repeat="detail in selectedItem.detailList" ng-click=""
+                                     class="prod-item" style="position: relative;">
+                                    <div layout="row" class="height: 100%;">
+                                        <div flex="50">
+                                            <div layout-padding>易拓客户编号 :
+                                                <span>{{detail.tiptopClientNo}}</span>&nbsp;&nbsp;&nbsp;&nbsp;易拓客户名称 :
+                                                <span>{{detail.tiptopClientName}}</span>
+                                            </div>
+                                            <div layout-padding>易拓DB :
+                                                <span>{{detail.tiptopDb}}</span>&nbsp;&nbsp;&nbsp;&nbsp;DB类型 : <span>{{DB_TYPE[detail.dbType].name}}</span>
+                                            </div>
+                                        </div>
+
+                                        <div style="position: absolute; right: -10px; bottom: 10px;">
+                                            <md-button class="md-icon-button close-btn" aria-label="More"
+                                                       style="float: left; margin-left: 36px;"
+                                                       ng-click="editItemAction(detail,'编辑易拓同步数据')">
+                                                <ng-md-icon icon="edit"></ng-md-icon>
+                                            </md-button>
+                                            <md-button class="md-button close-btn" aria-label="More"
+                                                       ng-click="deleteDetailAction(detail)">
+                                                <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>
+                                                删除
+                                            </md-button>
+                                        </div>
+                                    </div>
+                                    <!-- detail panel -->
+                                    <div layout="row" ng-show="detail.showMorePanel">
+                                        <div layout-margin>Have more stuff here....</div>
+                                    </div>
+                                    <md-divider style="margin-top: 5px"></md-divider>
+                                </div>
+                                <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
+                                     ng-click="preAddItemAction({}, 'ChannelLevelDetail', '新增数据')">
+                                    <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
+                                </div>
+                            </div>
+                        </md-tab>
+                    </md-tabs>
+                </div>
+            </div>
+            <div flex class="right-body">
+                <!-- basic search-->
+                <div class="search-bar" layout="row" style="position: relative">
+                    <span style="position: absolute; top: 15px; left: 10px;">
+                        <md-checkbox ng-model="selectAllFlag" aria-label="Checkbox"
+                                     ng-change="selectAllAction()"></md-checkbox>
+                    </span>
+                    <md-input-container flex style="margin-left: 50px;">
+                        <label>同步类型</label>
+                        <input ng-model="dbTypeKeyWord" ng-keypress="queryEnter($event)">
+                    </md-input-container>
+                    <md-input-container flex style="margin-left: 50px;">
+                        <label>易拓客户</label>
+                        <input ng-model="keyWord" ng-keypress="queryEnter($event)">
+                    </md-input-container>
+                    <md-button class="md-raised" style="margin-top: 20px;height: 20px;"
+                               ng-click="queryAction()">
+                        查询
+                    </md-button>
+
+                </div>
+                <!-- status panel-->
+                <div layout="row" layout-warp layout-padding layout-margin ng-show="!selectedItem"
+                     style="margin: 20px 0px 20px 0px; padding-left: 60px;background-color: whitesmoke;position: relative;height: 50px;padding-top: 15px;">
+                    <span flex="20">总记录数: {{pageOption.totalElements}}</span>
+                    <span flex="20">已选记录数: {{selected.length}}</span>
+
+                    <md-menu>
+                        <md-button class="md-button close-btn" aria-label="More" ng-click="$mdOpenMenu($event)"
+                                   style="position: absolute;right: 0px;top: 0px;">
+                            <ng-md-icon icon="sort"></ng-md-icon>
+                            排序
+                        </md-button>
+                        <md-menu-content width="2">
+                            <md-menu-item>
+                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('channel.name')">
+                                    <ng-md-icon ng-show="sortByField == 'name'" icon="play_arrow"></ng-md-icon>
+                                    按名称
+                                </md-button>
+                                <md-button class="md-button" aria-label="More" ng-click="sortByAction('channel.no')">
+                                    <ng-md-icon ng-show="sortByField == 'no'" icon="play_arrow"></ng-md-icon>
+                                    按编号
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </div>
+                <div ng-repeat="item in itemSynType | orderBy : 'no'"
+                     ng-class="selectedItem.uuid == item.uuid ? 'selected-item':''">
+                    <div class="summary-item" style="background-color: transparent">
+                        <div layout="row" layout-wrap>
+                            <span style="position: absolute">
+                                <md-checkbox ng-model="item.selected" aria-label="Checkbox"
+                                             ng-click="selectItemAction($event, item)"></md-checkbox>
+                            </span>
+                            <div flex="100" layout="row"
+                                 style="padding-left: 50px;padding-top: 10px; font-weight: bold;">
+                                <span flex ng-click="showDetailPanelAction(item)" class="summary-item__title">同步类型: {{item.syncType}}&nbsp;&nbsp;{{item.remark}}</span>
+                            </div>
+                            <div flex="100" layout="row" style="padding-left: 50px;padding-top: 10px;font-size: 14px;"
+                                 layout-align="space-between center" ng-hide="selectedItem">
+                                <div flex layout="row" style="color:#7f8fa4">
+                                    <span>易拓DB: <span
+                                            style="font-style: italic">{{item.tiptopDb}}&nbsp;&nbsp;</span></span>
+                                    <span>易拓客户编号: <span
+                                            style="font-style: italic">{{item.tiptopClientNo}}&nbsp;&nbsp;</span></span>
+                                    <span>易拓客户名称: <span
+                                            style="font-style: italic">{{item.tiptopClientName}}&nbsp;&nbsp;</span></span>
+                                    <span>同步类型: <span
+                                            style="font-style: italic">{{item.syncType}}&nbsp;&nbsp;</span></span>
+                                    <span>DB类型: <span style="font-style: italic">{{DB_TYPE[item.dbType].name}}&nbsp;&nbsp;</span></span>
+                                </div>
+                                <div layout="row" layout-align="end center">
+                                    <md-button class="md-button close-btn" aria-label="More"
+                                               ng-click="toggleMorePanelAction(item)"
+                                               style="position: relative;left: 15px;"
+                                               ng-disabled="item.detailList.length ==0">
+                                        查看更多...
+                                    </md-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div layout="row" layout-wrap ng-show="item.showMorePanel && !selectedItem"
+                         style="font-size: 14px;">
+                        <div flex="100" ng-repeat="subItem in item.detailList" style="padding: 10px 20px 0px 20px;">
+                            <md-divider></md-divider>
+                            <div layout="row" style="height: 100%;">
+                                <div flex="40">
+                                    <div layout-padding>渠道编号 : <span>{{subItem.channel.no}}</span></div>
+                                </div>
+                                <div flex="40">
+                                    <div layout-padding>渠道名称 : <span>{{subItem.channel.name}}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <md-divider></md-divider>
+                </div>
+                <div pagination option="pageOption" callback="refreshList()"></div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS">
+        <div layout="row" class="top-title">
+            <div flex="100" class="left-title">
+                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="listItemAction()"
+                           style="float: left; margin-left: 36px;">
+                    <ng-md-icon icon="chevron_left"></ng-md-icon>
+                </md-button>
+                <span>{{desc}}</span>
+                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="saveItemAction()">
+                    <ng-md-icon icon="save"></ng-md-icon>
+                </md-button>
+            </div>
+        </div>
+        <div flex="100" layout="column" layout-padding>
+            <md-input-container>
+                <label class="label">同步类型：</label>
+                <input type="text" aria-label="..." ng-model="addItem.syncType"
+                       ng-disabled="status == 'edit' || status == 'add'">
+            </md-input-container>
+        </div>
+        <div flex="100" layout="column" layout-padding>
+            <md-input-container>
+                <label class="label">DB类型：</label>
+                <md-select ng-model="listFilterOption.dbType">
+                    <md-option ng-repeat="(key, value) in DB_TYPE" ng-value="key">{{value.name}}</md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div flex="100" layout="column" layout-padding>
+            <md-input-container>
+                <label class="label">易拓DB：</label>
+                <input type="text" aria-label="..." ng-model="addItem.tiptopDb">
+            </md-input-container>
+        </div>
+        <div flex="100" layout="column" layout-padding>
+            <md-input-container>
+                <label class="label">易拓客户编号：</label>
+                <input type="text" aria-label="..." ng-model="addItem.tiptopClientNo">
+            </md-input-container>
+        </div>
+        <div flex="100" layout="column" layout-padding>
+            <md-input-container>
+                <label class="label">易拓客户名称：</label>
+                <input type="text" aria-label="..." ng-model="addItem.tiptopClientName">
+            </md-input-container>
+        </div>
+        <div flex="100" layout="column" layout-padding>
+            <md-input-container>
+                <label class="label">备注：</label>
+                <input type="text" aria-label="..." ng-model="addItem.remark">
+            </md-input-container>
+        </div>
+    </div>
+</div>
