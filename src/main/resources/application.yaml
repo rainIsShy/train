@@ -61,14 +61,14 @@ i1:
 banner:
   location: banner-dev.txt
 
+spring:
+  profiles: DEV
+
 i1:
   ec-adapter:
     url: http://project.benchmarkchina.com:10041
   tmall-adapter:
     url: http://project.benchmarkchina.com:10815
-
-spring:
-  profiles: DEV
 
 --- # Kent's Dev
 
