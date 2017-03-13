@@ -934,7 +934,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 }, function () {
                     PmmOrderMaster.delete($scope.selectedItem.uuid).success(function () {
                     });
-                    $scope.showInfo('新增失败。');
+                    $scope.showError('新增失败。');
                 });
             }).error(function () {
                 $scope.showError('新增失败。');
