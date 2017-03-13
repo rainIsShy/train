@@ -24,7 +24,7 @@ i1:
   tiptop-adapter:
     url: http://localhost:8083
   ec-adapter:
-    url: http://localhost:8084
+    url: http://project.benchmarkchina.com:10041
   tmall-adapter:
     url: http://localhost:8085
 
@@ -63,19 +63,6 @@ banner:
 
 spring:
   profiles: DEV
-
-i1:
-  i1-server:
-    url: http://project.benchmarkchina.com:10811
-  i1-adapter:
-    url: http://project.benchmarkchina.com:10812
-  tiptop-adapter:
-    url: http://project.benchmarkchina.com:10813
-  ec-adapter:
-    url: http://project.benchmarkchina.com:10041
-  tmall-adapter:
-    url: http://project.benchmarkchina.com:10815
-
 
 --- # Kent's Dev
 
