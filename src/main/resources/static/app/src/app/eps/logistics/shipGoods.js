@@ -127,9 +127,10 @@ angular.module('IOne-Production').controller('ShipGoodsManagementController', fu
                     tid: dtl.orderId,
                     out_sid: dtl.logisticsNo,
                     company_code: "POST",
-                    configKey: "0637405a-0659-4666-b9cc-040d0913ac50"
+                    configKey: "0637405a-0659-4666-b9cc-040d0913ac50" //這個要再調整
                 };
                 TaoBaoAdapterService.executeLogistics(sendData, $scope, function (response) {
+                    LogisticsDetailRelationsService.updateShipStatus(dtl)
                     $scope.showInfo("发货成功！");
                 });
                 // console.log("需要被發貨的單 ", dtl.orderId);
