@@ -925,9 +925,12 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 });
 
                 $q.all(promises).then(function () {
-                    $scope.changeViewStatus($scope.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
-                    $scope.editItem($scope.selectedItem);
-                    $scope.showInfo('新增成功。');
+                    PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
+                        $scope.selectedItem = data;
+                        $scope.changeViewStatus($scope.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
+                        $scope.editItem($scope.selectedItem);
+                        $scope.showInfo('新增成功。');
+                    })
                 }, function () {
                     PmmOrderMaster.delete($scope.selectedItem.uuid).success(function () {
                     });
