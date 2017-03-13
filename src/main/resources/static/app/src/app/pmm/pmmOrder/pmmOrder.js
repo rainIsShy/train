@@ -10,9 +10,9 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     //initialize model value.
     $scope.orderListMenu = {
         select: {
-            confirm: Constant.AUDIT[1].value,
-            status: Constant.STATUS[1].value,
-            transferFlag: Constant.TRANSFER_PSO_FLAG[2].value,
+            confirm: Constant.AUDIT[0].value,
+            status: Constant.STATUS[0].value,
+            transferFlag: Constant.TRANSFER_PSO_FLAG[0].value,
             startDate: null,
             endDate: null
         },
