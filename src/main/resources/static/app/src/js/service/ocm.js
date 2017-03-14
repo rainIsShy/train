@@ -314,7 +314,7 @@ angular.module('IOne-Production').service('OCMChannelService', function ($http, 
     };
 
     this.getByNo = function (no) {
-        return $http.get(Constant.BACKEND_BASE + '/channels?no=' + no);
+        return $http.get(Constant.BACKEND_BASE + '/channels?eqNo=' + no);
     };
 
     this.get = function (uuid) {
