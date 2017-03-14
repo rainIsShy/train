@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('EcommerceOrdersController', function ($scope, $q, $window, EcommerceOrdersMaster, EcommerceOrderDetail, EcommerceOrderDetailExtend, EdelivWayService, SaleTypes, $mdDialog, $timeout, Constant) {
+angular.module('IOne-Production').controller('EcommerceOrdersController', function ($scope, $q, $window, EcommerceOrdersMaster, EcommerceLogisticsDetailR, EcommerceOrderDetail, EcommerceOrderDetailExtend, EdelivWayService, SaleTypes, $mdDialog, $timeout, Constant) {
 
     $scope.ecommerceOrderListMenu = {
         selectAll: false,
@@ -120,7 +120,7 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
         $scope.ecommerceOrderListMenu.selectAll = false;
         $scope.resetInitialValue();//审核 抛转重刷后 清除选中单据
 
-        //查询条件：起始时间 截止时间 销售单号 启用状态 审核状态
+        //查询条件：起始时间 截止时间 销售单号 启用状态
         if ($scope.ecommerceOrderListMenu.startDate !== undefined) {
             if ($scope.ecommerceOrderListMenu.startDate !== null) {
                 orderDateBegin = new Date($scope.ecommerceOrderListMenu.startDate);
@@ -177,14 +177,17 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                         angular.forEach($scope.OrderMasterList.content, function (orderMaster, index) {
                             EcommerceOrderDetail.getAll(orderMaster.uuid).success(function (data) {
                                 $scope.OrderMasterList.content[index].detailList = data.content;
-                                //console.info($scope.OrderMasterList);
+                            });
+                            EcommerceLogisticsDetailR.getAllByOrderId(orderMaster.no).success(function (data) {
+                                if (data.length > 0) {
+                                    $scope.OrderMasterList.content[index].logisticsDetailRList = data;
+                                }
                             });
                         });
                     }
 
                 }
             );
-
     };
 
     $scope.selected = [];
@@ -1466,6 +1469,19 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
         });
     };
 
+    //展示logisticsDetailRInfo
+    $scope.openLogisticsDetailRDlg = function (orderMaster) {
+        $mdDialog.show({
+            controller: 'LogisticsDetailRController',
+            templateUrl: 'app/src/app/taobao_data/ecommerce_orders/logisticsDetailRInfo.html.',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            locals: {
+                selectedItem: orderMaster
+            }
+        });
+    };
+
     //删除出货子单身
     $scope.orderDetailExtendDeleteMenuAction = function (orderDetailExtend) {
         if ($scope.selectedItem.transferPsoFlag == '1') {
@@ -2043,6 +2059,14 @@ angular.module('IOne-Production').controller('EeditOrderExtendDetailController',
     };
 });
 
+//展示logisticsDetailRInfo
+angular.module('IOne-Production').controller('LogisticsDetailRController', function ($scope, $mdDialog, selectedItem) {
+    $scope.logisticsDetailRList = angular.copy(selectedItem.logisticsDetailRList);
+
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    }
+});
 
 
 

@@ -136,7 +136,6 @@ angular.module('IOne-Production').service('EcommerceOrderDetailExtend', function
 
 });
 
-
 angular.module('IOne-Production').service('EtaobaoCustomers', function ($http, Constant) {
     this.getAll = function (sizePerPage, page, clientName) {
         var url = '/taobaoCustomers?size=' + sizePerPage + '&page=' + page;
@@ -268,6 +267,9 @@ angular.module('IOne-Production').service('EareaService', function ($http, Const
     };
 });
 
-
-
+angular.module('IOne-Production').service('EcommerceLogisticsDetailR', function ($http, Constant) {
+    this.getAllByOrderId = function (orderId) {
+        return $http.get(Constant.BACKEND_BASE + '/logisticsDetailRelations/list?orderId=' + orderId);
+    };
+});
 

@@ -52,7 +52,7 @@
                     <div>合计金额：&nbsp;{{orderMaster.orderAmount|currency:'￥'}}</div>
                     <div>审核状态：&nbsp;{{CONFIRM[orderMaster.confirm].name}}</div>
                     <div>抛转状态：&nbsp;{{TRANSFER_PSO_FLAG[orderMaster.transferPsoFlag].name}}</div>
-                    <div>合计金额：&nbsp;{{orderMaster.orderAmount|currency:'￥'}}</div>
+                    <div>ERP状态： &nbsp;{{orderMaster.logisticsDetailRList ? "已出货":"未出货"}}</div>
                     <div>组装费用：&nbsp;{{orderMaster.assembleAmount|currency:'￥'}}</div>
                     <div>单身变更：&nbsp;{{ORDER_CHANGE_FLAG[orderMaster.orderChangeFlag].name}}</div>
                 </div>
@@ -72,6 +72,10 @@
             <div layout="row">
                 <div flex>备注：{{orderMaster.remark}}</div>
                 <div flex="20" align="right">
+                    <md-button class="md-raised"
+                               ng-disabled="!orderMaster.logisticsDetailRList"
+                               ng-click="openLogisticsDetailRDlg(orderMaster)">&nbsp;出货信息
+                    </md-button>
                     <md-button class="md-raised"
                                ng-click="editItem(orderMaster)">&nbsp;查看详情
                     </md-button>
