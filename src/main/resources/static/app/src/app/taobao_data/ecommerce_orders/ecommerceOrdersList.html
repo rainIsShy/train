@@ -52,7 +52,7 @@
                     <div>合计金额：&nbsp;{{orderMaster.orderAmount|currency:'￥'}}</div>
                     <div>审核状态：&nbsp;{{CONFIRM[orderMaster.confirm].name}}</div>
                     <div>抛转状态：&nbsp;{{TRANSFER_PSO_FLAG[orderMaster.transferPsoFlag].name}}</div>
-                    <div>ERP 状态：&nbsp;{{orderMaster.logisticsDetailRList ? "已出货":"未出货"}}</div>
+                    <div>ERP 状态：&nbsp;{{orderMaster.logisticsDetailRelationList ? "已出货":"未出货"}}</div>
                     <div>电商发货状态：&nbsp;{{orderMaster.logisticsDetailRelationConfirm ? "已出货":"未出货"}}</div>
                     <div>组装费用：&nbsp;{{orderMaster.assembleAmount|currency:'￥'}}</div>
                     <div>单身变更：&nbsp;{{ORDER_CHANGE_FLAG[orderMaster.orderChangeFlag].name}}</div>
