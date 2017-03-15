@@ -1478,7 +1478,7 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
     $scope.openlogisticsDetailRelationDlg = function (orderMaster) {
         $mdDialog.show({
             controller: 'logisticsDetailRelationController',
-            templateUrl: 'app/src/app/taobao_data/ecommerce_orders/logisticsDetailRelationInfo.html.',
+            templateUrl: 'app/src/app/taobao_data/ecommerce_orders/logisticsDetailRelationInfo.html',
             parent: angular.element(document.body),
             targetEvent: event,
             locals: {
