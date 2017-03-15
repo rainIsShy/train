@@ -267,7 +267,7 @@ angular.module('IOne-Production').service('EareaService', function ($http, Const
     };
 });
 
-angular.module('IOne-Production').service('EcommerceLogisticsDetailR', function ($http, Constant) {
+angular.module('IOne-Production').service('EcommercelogisticsDetailRelation', function ($http, Constant) {
     this.getAllByOrderId = function (orderId) {
         return $http.get(Constant.BACKEND_BASE + '/logisticsDetailRelations/list?orderId=' + orderId);
     };

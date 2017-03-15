@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('EcommerceOrdersController', function ($scope, $q, $window, EcommerceOrdersMaster, EcommerceLogisticsDetailR, EcommerceOrderDetail, EcommerceOrderDetailExtend, EdelivWayService, SaleTypes, $mdDialog, $timeout, Constant) {
+angular.module('IOne-Production').controller('EcommerceOrdersController', function ($scope, $q, $window, EcommerceOrdersMaster, EcommercelogisticsDetailRelation, EcommerceOrderDetail, EcommerceOrderDetailExtend, EdelivWayService, SaleTypes, $mdDialog, $timeout, Constant) {
 
     $scope.ecommerceOrderListMenu = {
         selectAll: false,
@@ -178,9 +178,14 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                             EcommerceOrderDetail.getAll(orderMaster.uuid).success(function (data) {
                                 $scope.OrderMasterList.content[index].detailList = data.content;
                             });
-                            EcommerceLogisticsDetailR.getAllByOrderId(orderMaster.no).success(function (data) {
+                            EcommercelogisticsDetailRelation.getAllByOrderId(orderMaster.no).success(function (data) {
                                 if (data.length > 0) {
-                                    $scope.OrderMasterList.content[index].logisticsDetailRList = data;
+                                    $scope.OrderMasterList.content[index].logisticsDetailRelationList = data;
+                                    angular.forEach(data, function (logisticsDetailRelation) {
+                                        if (logisticsDetailRelation.confirm == "2") {
+                                            $scope.OrderMasterList.content[index].logisticsDetailRelationConfirm = true;
+                                        }
+                                    });
                                 }
                             });
                         });
@@ -1469,11 +1474,11 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
         });
     };
 
-    //展示logisticsDetailRInfo
-    $scope.openLogisticsDetailRDlg = function (orderMaster) {
+    //展示logisticsDetailRelationInfo
+    $scope.openlogisticsDetailRelationDlg = function (orderMaster) {
         $mdDialog.show({
-            controller: 'LogisticsDetailRController',
-            templateUrl: 'app/src/app/taobao_data/ecommerce_orders/logisticsDetailRInfo.html.',
+            controller: 'logisticsDetailRelationController',
+            templateUrl: 'app/src/app/taobao_data/ecommerce_orders/logisticsDetailRelationInfo.html.',
             parent: angular.element(document.body),
             targetEvent: event,
             locals: {
@@ -2059,9 +2064,9 @@ angular.module('IOne-Production').controller('EeditOrderExtendDetailController',
     };
 });
 
-//展示logisticsDetailRInfo
-angular.module('IOne-Production').controller('LogisticsDetailRController', function ($scope, $mdDialog, selectedItem) {
-    $scope.logisticsDetailRList = angular.copy(selectedItem.logisticsDetailRList);
+//展示logisticsDetailRelationInfo
+angular.module('IOne-Production').controller('logisticsDetailRelationController', function ($scope, $mdDialog, selectedItem) {
+    $scope.logisticsDetailRelationList = angular.copy(selectedItem.logisticsDetailRelationList);
 
     $scope.cancelDlg = function () {
         $mdDialog.cancel();

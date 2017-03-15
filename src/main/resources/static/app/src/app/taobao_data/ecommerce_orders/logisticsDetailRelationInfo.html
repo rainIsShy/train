@@ -1,0 +1,35 @@
+<md-dialog style="padding:20px;min-width: 1000px;">
+    <div>
+        <div layout="row">
+            <div flex="90" align="center">
+                出货信息
+            </div>
+            <div flex>
+                <md-button ng-click="cancelDlg()">
+                    <i class="fa fa-times"></i>
+                </md-button>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div layout="row">
+            <div align="center" flex="30" class=" table-head">订单号</div>
+            <div align="center" flex="15" class=" table-head">出货单号</div>
+            <div align="center" flex="20" class=" table-head">物流单号</div>
+            <div align="center" flex="10" class=" table-head">物流公司</div>
+            <div align="center" flex="15" class=" table-head">收货日期</div>
+            <div align="center" flex="10" class=" table-head">电商发货状态</div>
+        </div>
+    </div>
+    <div ng-repeat="logisticsDetailRelation in logisticsDetailRelationList">
+        <div layout="row">
+            <div align="center" flex="30" class=" table-item">{{logisticsDetailRelation.orderId}}</div>
+            <div align="center" flex="15" class=" table-item">{{logisticsDetailRelation.deliverNo}}</div>
+            <div align="center" flex="20" class=" table-item">{{logisticsDetailRelation.logisticsNo}}</div>
+            <div align="center" flex="10" class=" table-item">{{logisticsDetailRelation.ocmBaseSupplierName}}</div>
+            <div align="center" flex="15" class=" table-item">{{logisticsDetailRelation.receiptDate}}</div>
+            <div align="center" flex="10" class=" table-item">{{logisticsDetailRelation.confirm == '2'? '已发货':'未发货'}}
+            </div>
+        </div>
+    </div>
+</md-dialog>
