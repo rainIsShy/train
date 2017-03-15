@@ -10,9 +10,9 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     //initialize model value.
     $scope.orderListMenu = {
         select: {
-            confirm: Constant.AUDIT[1].value,
-            status: Constant.STATUS[1].value,
-            transferFlag: Constant.TRANSFER_PSO_FLAG[2].value,
+            confirm: Constant.AUDIT[0].value,
+            status: Constant.STATUS[0].value,
+            transferFlag: Constant.TRANSFER_PSO_FLAG[0].value,
             startDate: null,
             endDate: null
         },
@@ -925,13 +925,16 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 });
 
                 $q.all(promises).then(function () {
-                    $scope.changeViewStatus($scope.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
-                    $scope.editItem($scope.selectedItem);
-                    $scope.showInfo('新增成功。');
+                    PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
+                        $scope.selectedItem = data;
+                        $scope.changeViewStatus($scope.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
+                        $scope.editItem($scope.selectedItem);
+                        $scope.showInfo('新增成功。');
+                    })
                 }, function () {
                     PmmOrderMaster.delete($scope.selectedItem.uuid).success(function () {
                     });
-                    $scope.showInfo('新增失败。');
+                    $scope.showError('新增失败。');
                 });
             }).error(function () {
                 $scope.showError('新增失败。');
