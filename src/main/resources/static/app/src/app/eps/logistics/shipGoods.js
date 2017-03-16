@@ -138,13 +138,13 @@ angular.module('IOne-Production').controller('ShipGoodsManagementController', fu
                 //物流公司代码.如"POST"就代表中国邮政,"ZJS"就代表宅急送.调用 taobao.logistics.companies.get 获取。
                 //company_code, 目前固定用 POST.
                 //configKey 之後要開放成, 是可以選店家的, 或者從數據上自帶入
-                var sendData = {
+                var logisticsData = {
                     tid: dtl.orderId,
                     out_sid: dtl.logisticsNo,
                     company_code: "POST",
                     configKey: dtl.ocmBaseChanUuid
                 };
-                TaoBaoAdapterService.executeLogistics(sendData, $scope, function (response) {
+                TaoBaoAdapterService.executeLogistics(logisticsData, $scope, function (response) {
                     LogisticsDetailRelationsService.updateShipStatus(dtl).then(
                         function (response) {
                             if ((selectedList.length - 1) == index) {
