@@ -46,6 +46,9 @@ angular.module('IOne-Production').controller('ShipGoodsManagementController', fu
                           if (!angular.isUndefined(response.data.content[0].transferPsoFlag)) {
                               dtl.psoOrderTransfer = response.data.content[0].transferPsoFlag
                           }
+                          if (!angular.isUndefined(response.data.content[0].channel)) {
+                              dtl.ocmBaseChanUuid = response.data.content[0].channel.uuid;
+                          }
                       }
                   },
                   function () {
@@ -139,7 +142,7 @@ angular.module('IOne-Production').controller('ShipGoodsManagementController', fu
                     tid: dtl.orderId,
                     out_sid: dtl.logisticsNo,
                     company_code: "POST",
-                    configKey: "0637405a-0659-4666-b9cc-040d0913ac50" //這個要再調整
+                    configKey: dtl.ocmBaseChanUuid
                 };
                 TaoBaoAdapterService.executeLogistics(sendData, $scope, function (response) {
                     LogisticsDetailRelationsService.updateShipStatus(dtl).then(
