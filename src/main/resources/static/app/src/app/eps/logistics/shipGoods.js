@@ -117,28 +117,43 @@ angular.module('IOne-Production').controller('ShipGoodsManagementController', fu
         });
     }
 
-    $scope.shipGoods = function(){
-        angular.forEach($scope.logisticsDetailRelations, function(dtl, key) {
-            if(dtl.isSelected){
-                //物流公司代码.如"POST"就代表中国邮政,"ZJS"就代表宅急送.调用 taobao.logistics.companies.get 获取。
-                //company_code, 目前固定用 POST.
-                //configKey 之後要開放成, 是可以選店家的, 或者從數據上自帶入
-                var sendData = {
-                    tid: dtl.orderId,
-                    out_sid: dtl.logisticsNo,
-                    company_code: "POST",
-                    configKey: "0637405a-0659-4666-b9cc-040d0913ac50" //這個要再調整
-                };
-                TaoBaoAdapterService.executeLogistics(sendData, $scope, function (response) {
-                    LogisticsDetailRelationsService.updateShipStatus(dtl)
-                    $scope.showInfo("发货成功！");
-                });
-                // console.log("需要被發貨的單 ", dtl.orderId);
-            }
-        });
+    $scope.shipGoods = function () {
+        var isConfirm = false;
+        // angular.forEach($scope.logisticsDetailRelations, function(dtl) {
+        //     if (dtl.confirm == 2) {
+        //         isConfirm = true;
+        //     }
+        // });
 
-        //重新查询。
-        $scope.queryAll();
+        if (isConfirm) {
+            $scope.showError("所选的单据已审核！");
+        } else {
+            angular.forEach($scope.logisticsDetailRelations, function (dtl, index) {
+                if (dtl.isSelected) {
+                    //物流公司代码.如"POST"就代表中国邮政,"ZJS"就代表宅急送.调用 taobao.logistics.companies.get 获取。
+                    //company_code, 目前固定用 POST.
+                    //configKey 之後要開放成, 是可以選店家的, 或者從數據上自帶入
+                    var sendData = {
+                        tid: dtl.orderId,
+                        out_sid: dtl.logisticsNo,
+                        company_code: "POST",
+                        configKey: "0637405a-0659-4666-b9cc-040d0913ac50" //這個要再調整
+                    };
+                    TaoBaoAdapterService.executeLogistics(sendData, $scope, function (response) {
+                        LogisticsDetailRelationsService.updateShipStatus(dtl);
+
+                        if (($scope.logisticsDetailRelations.length - 1) == index) {
+                            $scope.showInfo("发货成功！");
+
+                            //重新查询。
+                            $scope.queryAll();
+                        }
+                    });
+                    // console.log("需要被發貨的單 ", dtl.orderId);
+                }
+            });
+        }
+
     }
 
     function init(){
