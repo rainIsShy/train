@@ -142,14 +142,18 @@ angular.module('IOne-Production').controller('ShipGoodsManagementController', fu
                     configKey: "0637405a-0659-4666-b9cc-040d0913ac50" //這個要再調整
                 };
                 TaoBaoAdapterService.executeLogistics(sendData, $scope, function (response) {
-                    LogisticsDetailRelationsService.updateShipStatus(dtl);
-
-                    if ((selectedList.length - 1) == index) {
-                        $scope.showInfo("发货成功！");
-
-                        //重新查询。
-                        $scope.queryAll();
-                    }
+                    LogisticsDetailRelationsService.updateShipStatus(dtl).then(
+                        function (response) {
+                            if ((selectedList.length - 1) == index) {
+                                //重新查询。
+                                $scope.queryAll();
+                                $scope.showInfo("发货成功！");
+                            }
+                        },
+                        function (error) {
+                            $scope.showError(error);
+                        }
+                    );
                 });
                 // console.log("需要被發貨的單 ", dtl.orderId);
             });
