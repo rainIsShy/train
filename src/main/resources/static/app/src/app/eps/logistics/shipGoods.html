@@ -1,0 +1,82 @@
+<div flex layout="column" class="menu order-item-background">
+    <div layout="row" layout-md="column" layout-sm="column">
+        <md-input-container>
+            <label>收货人：</label>
+            <input ng-model="queryConditions.receiveName"/>
+        </md-input-container>
+        <md-input-container>
+            <label>联系电话：</label>
+            <input ng-model="queryConditions.receivePhone"/>
+        </md-input-container>
+        <md-input-container>
+            <label>发货起始日期：</label>
+            <input type="date" ng-model="queryConditions.receiptDateFrom"/>
+        </md-input-container>
+        <md-input-container>
+            <label>发货截止日期：</label>
+            <input type="date" ng-model="queryConditions.receiptDateTo"/>
+        </md-input-container>
+    </div>
+    <div layout="row" layout-md="column" layout-sm="column">
+        <md-input-container>
+            <label>电商订单号：</label>
+            <input ng-model="queryConditions.orderId"/>
+        </md-input-container>
+        <md-input-container>
+            <label>发货状态：</label>
+        </md-input-container>
+        <md-select placeholder="" ng-model="queryConditions.confirm" class="select">
+            <md-option ng-repeat="(key, value) in Constant.CONFIRM" ng-value="value.value">{{value.name}}</md-option>
+        </md-select>
+        <md-input-container>
+            <label>物流公司：</label>
+            <input ng-model="queryConditions.supplierName"/>
+        </md-input-container>
+    </div>
+</div>
+
+<div flex layout="column" class="menu">
+    <div layout="row" layout-md="column" layout-sm="column">
+        <span flex></span>
+        <md-button class="md-raised" layout-align="end center"
+                   aria-label="查询" ng-click="queryAll()"> &nbsp;查询
+        </md-button>
+        <md-button class="md-raised" layout-align="end center"
+                   aria-label="EXCEl导入" ngf-select ngf-change="addAllByExcel($files)"> &nbsp;EXCEl导入
+        </md-button>
+        <md-button class="md-raised" layout-align="end center"
+                   aria-label="审核发货" ng-click="shipGoods()"> &nbsp;审核发货
+        </md-button>
+    </div>
+</div>
+
+<table>
+    <tr style="background-color:#BDBDBD;">
+        <th>
+            <md-checkbox ng-model="isSelectedAll" ng-change="selectAll()"></md-checkbox>
+        </th>
+        <th>物流公司</th>
+        <th>订单号</th>
+        <th>收货人</th>
+        <th>发货地址</th>
+        <th>联系电话</th>
+        <th>发货状态</th>
+        <th>预订单审核</th>
+        <th>预订单抛转</th>
+    </tr>
+    <tr ng-repeat="dtl in logisticsDetailRelations">
+        <td>
+            <md-checkbox ng-model="dtl.isSelected"></md-checkbox>
+        </td>
+        <td ng-bind="dtl.supplier.name"></td>
+        <td ng-bind="dtl.orderId"></td>
+        <td ng-bind="dtl.receiveName"></td>
+        <td ng-bind="dtl.receiveAddress"></td>
+        <td ng-bind="dtl.receivePhone"></td>
+        <td ng-bind="Constant.AUDIT[dtl.confirm].name"></td>
+        <td ng-bind="Constant.AUDIT[dtl.psoOrderConfirm].name"></td>
+        <td ng-bind="Constant.TRANSFER_PSO_FLAG[dtl.psoOrderTransfer].name"></td>
+    </tr>
+</table>
+
+<div pagination option="queryConditions" callback="queryAll()"></div>

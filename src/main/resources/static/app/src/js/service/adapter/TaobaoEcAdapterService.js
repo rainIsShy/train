@@ -160,6 +160,26 @@ angular.module('IOne-Production').service('TaoBaoAdapterService', function ($htt
         return $http.get(url);
     };
 
+    //執行發貨
+    this.executeLogistics = function (logisticsData, controllerScope, successCallBack) {
+        var logisticsUrl = ecAdapterUrl + '/api/taobao/logistics/logisticsOfflineSend'
+
+        return $http.post(logisticsUrl, logisticsData).success(function (response, status) {
+            if (status == 200) {
+                successCallBack(response);
+            } else {
+                controllerScope.showError('執行失敗');
+            }
+        }).error(function (response) {
+            if (response == null) {
+                controllerScope.showError("[" + (response.status + '') + "]Connect Server Fail");
+            } else {
+                controllerScope.showError("[" + (response.status + '') + "]" + response.message);
+            }
+        });
+    };
+
+
     this.queryChannel = function(){
         var url = ecAdapterUrl + '/ec/config/common/list/ocm/chan';
         return $http.get(url);
