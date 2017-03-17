@@ -50,7 +50,7 @@ public class AdapterInfoController {
         AdapterInfo adapterInfo = new AdapterInfo();
         adapterInfo.setAdapterServerUrl(this.adapterServerUrl);
         adapterInfo.setEcAdapterServerUrl(this.ecAdapterServerUrl);
-//        adapterInfo.setEcAdapterServerUrl("http://project.benchmarkchina.com:10041");
+//        /adapterInfo.setEcAdapterServerUrl("http://project.benchmarkchina.com:10041");
 
         adapterInfo.setI1ServerUrl(this.i1ServerUrl);
         adapterInfo.setTiptopAdapterServerUrl(this.tiptopAdapterServerUrl);
