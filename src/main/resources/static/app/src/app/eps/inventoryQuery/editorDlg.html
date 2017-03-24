@@ -1,0 +1,29 @@
+<md-dialog style="padding: 30px;min-width:400px; max-height: 500px;">
+    <div layout="row">
+        <div flex="100">
+            <form name="itemEditor" novalidate>
+                <md-input-container>
+                    <label>楼房：</label>
+                    <md-select ng-model="editingItem.buildingType">
+                        <md-option ng-repeat="(key, value) in BUILDING_TYPE" ng-value="key">{{value.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container>
+                    <label>楼层：</label>
+                    <input name="text" type="text" ng-model="editingItem.floor">
+                </md-input-container>
+                <md-input-container>
+                    <label class="label">确认送货日期：</label>
+                    <input type="date" ng-model="editingItem.confDeliverDate">
+                </md-input-container>
+            </form>
+            <div layout="row">
+                <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+                <md-button ng-click="saveDetail()">
+                    <i class="fa fa-check"></i>&nbsp;回访完结
+                </md-button>
+            </div>
+        </div>
+    </div>
+</md-dialog>
