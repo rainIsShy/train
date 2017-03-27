@@ -1526,7 +1526,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             targetEvent: event,
             locals: {}
         }).then(function (data) {
-            console.log(data);
             $scope.selectedItem.receiveAddress = data;
         });
     };
