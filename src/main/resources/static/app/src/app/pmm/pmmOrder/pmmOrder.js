@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('PmmOrderController', function ($scope, $q, PmmOrderMaster, PmmOrderDetail, PmmOrderExtendDetail, PmmOrderExtendDetail2, OrderItemCustomDetail, OrderCustomScope, OrderChannelCurrency, OrderChannelTax, SaleTypes, CBIEmployeeService, $mdDialog, $timeout, Constant, ErpAdapterService) {
+angular.module('IOne-Production').controller('PmmOrderController', function ($scope, $q, PmmOrderMaster, PmmOrderDetail, PmmOrderExtendDetail, PmmOrderExtendDetail2, OrderItemCustomDetail, OrderCustomScope, OrderChannelCurrency, OrderChannelTax, SaleTypes, CBIEmployeeService, $mdDialog, $timeout, Constant, ErpAdapterService, OCMChannelService) {
 
     //initialize model value.
     $scope.orderListMenu = {
@@ -1311,6 +1311,13 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         }).then(function (data) {
             $scope.selectedItem.channel = data;
             $scope.selectedItem.channelUuid = data.uuid;
+
+            OCMChannelService.findAreaAddress($scope.selectedItem.channelUuid).success(function (data) {
+
+                if (data.areaAddress) {
+                    $scope.selectedItem.receiveAddress = data.areaAddress;
+                }
+            });
         });
     };
 
