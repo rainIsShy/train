@@ -20,12 +20,7 @@ angular.module('IOne-Production').controller('InventoryQueryController', functio
     $scope.isLoading = false;
 
     $scope.listFilterOption = {
-        select: {
-            confStatus: Constant.WALK_THROUGH_CONF_STATUS[0].value,
-            confirm: Constant.CONFIRM[0].value,
-            transferFlag: Constant.TRANSFER_PSO_FLAG[0].value,
-            orderType: Constant.EPS_ORDER_TYPE[0].value
-        }
+        suite : ''
     };
 
     $scope.sortByAction = function (field) {
@@ -34,11 +29,25 @@ angular.module('IOne-Production').controller('InventoryQueryController', functio
     };
 
     $scope.refreshList = function () {
-        InventoryQueryMaster.getAll().success(function (data) {
-            $scope.itemList = data.content;
-            $scope.pageOption.totalPage = data.totalPages;
-            $scope.pageOption.totalElements = data.totalElements;
-        });
+        InventoryQueryMaster.getAll($scope.listFilterOption.suite).success(function (data) {
+        if(data){
+            $scope.pageOption.totalPage = Math.floor(data.length/$scope.pageOption.sizePerPage)+1;
+                $scope.pageOption.totalElements = data.length;
+                var startCurrentPageTotal = $scope.pageOption.currentPage*$scope.pageOption.sizePerPage;
+                var endCurrentPageTotal = startCurrentPageTotal+$scope.pageOption.sizePerPage;
+                var tempDataList = [];
+                for(var i=startCurrentPageTotal;i<endCurrentPageTotal;i++){
+                    if(data[i]){
+                    tempDataList.push(data[i]);
+                    }
+                }
+                $scope.itemList = tempDataList;
+        }
+    });
+    InventoryQueryMaster.getTotal($scope.listFilterOption.suite).success(function (data) {
+        $scope.itemListTotal = data;
+    });
+
     };
 
     $scope.$watch('listFilterOption.select', function () {
