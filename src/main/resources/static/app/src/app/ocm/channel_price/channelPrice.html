@@ -115,14 +115,14 @@
                                     <input aria-label="..." ng-model="itemName"
                                            ng-keydown="$event.which === 13 && searchChannelPriceWithPaging()"/>
                                 </md-input-container>
-                                <md-input-container layout="row" style=" height: 79px;">
-                                    <div style=" padding: 20px 0px 0px 0px;"><label>仓库：</label></div>
-                                    <md-select placeholder="" ng-model="warehouseUuid" class="select">
-                                        <md-option ng-repeat="warehouse in warehouses.content"
-                                                   ng-value="warehouse.uuid">{{warehouse.no}}，{{warehouse.name}}
-                                        </md-option>
-                                    </md-select>
-                                </md-input-container>
+                                <!--<md-input-container layout="row" style=" height: 79px;">-->
+                                <!--<div style=" padding: 20px 0px 0px 0px;"><label>仓库：</label></div>-->
+                                <!--<md-select placeholder="" ng-model="warehouseUuid" class="select">-->
+                                <!--<md-option ng-repeat="warehouse in warehouses.content"-->
+                                <!--ng-value="warehouse.uuid">{{warehouse.no}}，{{warehouse.name}}-->
+                                <!--</md-option>-->
+                                <!--</md-select>-->
+                                <!--</md-input-container>-->
 
                                 <md-button class="md-raised" aria-label="..."  ng-if="ocmListMenuDisplayOption['600-query'].display"
                                            ng-click="searchChannelPriceWithPaging()" style="margin-top: 22px;height: 20px;"> 查找
@@ -137,23 +137,23 @@
                                 <md-button class="md-raised"    ng-click="updateStandardPriceInBatch()" style="margin-top: 22px;height: 20px;"> 执行
                                 </md-button>
                                 <md-input-container >
-                                    <label>批量最低折扣维护：</label>
+                                    <label>批量最低折扣率维护：</label>
                                     <input type="number" aria-label="..." ng-model="saleDiscountRate" string-to-number      max="1" min="0"   step="0.01" />
                                 </md-input-container>
                                 <md-button class="md-raised" aria-label="..."   ng-click="updateSalePriceInBatch()" style="margin-top: 22px;height: 20px;"> 执行
                                 </md-button>
 
-                                <md-input-container layout="row" style=" height: 79px;">
-                                    <div style=" padding: 25px 0px 0px 0px;"><label>批量仓库维护：</label></div>
-                                    <md-select placeholder="" ng-model="warehouseUpdatedUuid" class="select">
-                                        <md-option ng-repeat="warehouse in warehouses.content"
-                                                   ng-value="warehouse.uuid">{{warehouse.no}}，{{warehouse.name}}
-                                        </md-option>
-                                    </md-select>
-                                </md-input-container>
-                                <md-button class="md-raised" aria-label="..." ng-click="updateWarehouseInBatch()"
-                                           style="margin-top: 22px;height: 20px;"> 执行
-                                </md-button>
+                                <!--<md-input-container layout="row" style=" height: 79px;">-->
+                                <!--<div style=" padding: 25px 0px 0px 0px;"><label>批量仓库维护：</label></div>-->
+                                <!--<md-select placeholder="" ng-model="warehouseUpdatedUuid" class="select">-->
+                                <!--<md-option ng-repeat="warehouse in warehouses.content"-->
+                                <!--ng-value="warehouse.uuid">{{warehouse.no}}，{{warehouse.name}}-->
+                                <!--</md-option>-->
+                                <!--</md-select>-->
+                                <!--</md-input-container>-->
+                                <!--<md-button class="md-raised" aria-label="..." ng-click="updateWarehouseInBatch()"-->
+                                <!--style="margin-top: 22px;height: 20px;"> 执行-->
+                                <!--</md-button>-->
                             </div>
                             <div align="center"><span ng-if="logining"><img style="width: 20px;padding-top: 13px;" src="app/img/spinner.gif"/></span></div>
                             <div  ng-if="selectedItem != null">
