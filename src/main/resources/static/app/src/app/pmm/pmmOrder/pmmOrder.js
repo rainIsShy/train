@@ -868,6 +868,8 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         if ($scope.selectedItem) {
             PmmOrderMaster.modify($scope.selectedItem).success(function () {
                 $scope.showInfo('修改数据成功。');
+                $scope.changeViewStatus($scope.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
+                $scope.editItem($scope.selectedItem);
             }).error(function () {
                 $scope.showError('修改数据失败。');
             });
@@ -1514,7 +1516,20 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
     $scope.isSelectedAllDetail = function () {
         return $scope.selectedDetail.length == $scope.getDtlCheckboxCnt();
-    }
+    };
+
+    $scope.openAreaDlg = function () {
+        $mdDialog.show({
+            controller: 'PmmOrderAreaSelectController',
+            templateUrl: 'app/src/app/pmm/pmmOrder/selectArea.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            locals: {}
+        }).then(function (data) {
+            console.log(data);
+            $scope.selectedItem.receiveAddress = data;
+        });
+    };
 });
 
 angular.module('IOne-Production').controller('OrderChannelSearchController', function ($scope, $mdDialog, ChannelService) {
@@ -2080,3 +2095,63 @@ angular.module('IOne-Production').controller('SelectItemScopeController', functi
     };
 });
 
+
+angular.module('IOne-Production').controller('PmmOrderAreaSelectController', function ($scope, $mdDialog, Area) {
+    $scope.pageOption = {
+        sizePerPage: 5,
+        currentPage: 0,
+        totalPage: 0,
+        totalElements: 0
+    };
+
+
+    $scope.refreshArea = function () {
+        var grade2Uuid = '723F3CCA-79C5-4C00-BEAF-C74622B54142';
+        Area.getGradeAndParentUuid(3, grade2Uuid).success(function (data) {
+            $scope.areaGrade3List = data.content;
+        });
+    };
+
+    $scope.selectedIndex = 0;
+    $scope.refreshSubArea = function (grade, parentUuid) {
+        Area.getGradeAndParentUuid(grade, parentUuid).success(function (data) {
+            if (grade == '4') {
+                $scope.areaGrade4List = data.content
+            } else if (grade == '5') {
+                if (data.content && data.totalElements == 1) {
+                    $scope.selectArea(data.content[0]);
+                } else {
+                    $scope.areaGrade5List = data.content;
+                }
+            }
+        });
+    };
+
+    $scope.refreshArea();
+
+    $scope.listTabSelected = function (grade, parentUuid, areaName) {
+        $scope.refreshSubArea(grade, parentUuid);
+        if (grade == '4') {
+            $scope.selectedIndex = 1;
+            $scope.area3Name = areaName;
+        } else if (grade == '5') {
+            $scope.selectedIndex = 2;
+            $scope.area4Name = areaName;
+        }
+    };
+
+    $scope.selectArea = function (item) {
+        $scope.selectedItem = item;
+        $scope.area5Name = item.name.indexOf($scope.area4Name) != 0 ? item.name : '';
+        $scope.addressName = $scope.area3Name + $scope.area4Name + $scope.area5Name;
+        $mdDialog.hide($scope.addressName);
+    };
+
+    $scope.hideDlg = function (item) {
+        $scope.selectedItem = item;
+        $mdDialog.hide($scope.addressName);
+    };
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+});
