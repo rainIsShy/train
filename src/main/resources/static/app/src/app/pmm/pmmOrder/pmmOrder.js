@@ -1316,6 +1316,8 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
                 if (data.areaAddress) {
                     $scope.selectedItem.receiveAddress = data.areaAddress;
+                } else {
+                    $scope.selectedItem.receiveAddress = "";
                 }
             });
         });
