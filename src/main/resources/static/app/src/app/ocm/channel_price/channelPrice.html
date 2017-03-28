@@ -115,14 +115,14 @@
                                     <input aria-label="..." ng-model="itemName"
                                            ng-keydown="$event.which === 13 && searchChannelPriceWithPaging()"/>
                                 </md-input-container>
-                                <md-input-container layout="row" style=" height: 79px;">
-                                    <div style=" padding: 20px 0px 0px 0px;"><label>仓库：</label></div>
-                                    <md-select placeholder="" ng-model="warehouseUuid" class="select">
-                                        <md-option ng-repeat="warehouse in warehouses.content"
-                                                   ng-value="warehouse.uuid">{{warehouse.no}}，{{warehouse.name}}
-                                        </md-option>
-                                    </md-select>
-                                </md-input-container>
+                                <!--<md-input-container layout="row" style=" height: 79px;">-->
+                                <!--<div style=" padding: 20px 0px 0px 0px;"><label>仓库：</label></div>-->
+                                <!--<md-select placeholder="" ng-model="warehouseUuid" class="select">-->
+                                <!--<md-option ng-repeat="warehouse in warehouses.content"-->
+                                <!--ng-value="warehouse.uuid">{{warehouse.no}}，{{warehouse.name}}-->
+                                <!--</md-option>-->
+                                <!--</md-select>-->
+                                <!--</md-input-container>-->
 
                                 <md-button class="md-raised" aria-label="..."  ng-if="ocmListMenuDisplayOption['600-query'].display"
                                            ng-click="searchChannelPriceWithPaging()" style="margin-top: 22px;height: 20px;"> 查找
@@ -131,44 +131,44 @@
                             <div layout="row" layout-margin layout-padding  layout-md="column" layout-sm="column"
                                  ng-show="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY ">
                                 <md-input-container>
-                                    <label>批量价格维护：</label>
+                                    <label>批量价格系数维护：</label>
                                     <input type="number" aria-label="..." ng-model="standardPriceDiscountRate"  string-to-number   min="0"   step="0.01"/>
                                 </md-input-container>
                                 <md-button class="md-raised"    ng-click="updateStandardPriceInBatch()" style="margin-top: 22px;height: 20px;"> 执行
                                 </md-button>
                                 <md-input-container >
-                                    <label>批量折扣维护：</label>
+                                    <label>批量最低折扣率维护：</label>
                                     <input type="number" aria-label="..." ng-model="saleDiscountRate" string-to-number      max="1" min="0"   step="0.01" />
                                 </md-input-container>
                                 <md-button class="md-raised" aria-label="..."   ng-click="updateSalePriceInBatch()" style="margin-top: 22px;height: 20px;"> 执行
                                 </md-button>
 
-                                <md-input-container layout="row" style=" height: 79px;">
-                                    <div style=" padding: 25px 0px 0px 0px;"><label>批量仓库维护：</label></div>
-                                    <md-select placeholder="" ng-model="warehouseUpdatedUuid" class="select">
-                                        <md-option ng-repeat="warehouse in warehouses.content"
-                                                   ng-value="warehouse.uuid">{{warehouse.no}}，{{warehouse.name}}
-                                        </md-option>
-                                    </md-select>
-                                </md-input-container>
-                                <md-button class="md-raised" aria-label="..." ng-click="updateWarehouseInBatch()"
-                                           style="margin-top: 22px;height: 20px;"> 执行
-                                </md-button>
+                                <!--<md-input-container layout="row" style=" height: 79px;">-->
+                                <!--<div style=" padding: 25px 0px 0px 0px;"><label>批量仓库维护：</label></div>-->
+                                <!--<md-select placeholder="" ng-model="warehouseUpdatedUuid" class="select">-->
+                                <!--<md-option ng-repeat="warehouse in warehouses.content"-->
+                                <!--ng-value="warehouse.uuid">{{warehouse.no}}，{{warehouse.name}}-->
+                                <!--</md-option>-->
+                                <!--</md-select>-->
+                                <!--</md-input-container>-->
+                                <!--<md-button class="md-raised" aria-label="..." ng-click="updateWarehouseInBatch()"-->
+                                <!--style="margin-top: 22px;height: 20px;"> 执行-->
+                                <!--</md-button>-->
                             </div>
                             <div align="center"><span ng-if="logining"><img style="width: 20px;padding-top: 13px;" src="app/img/spinner.gif"/></span></div>
                             <div  ng-if="selectedItem != null">
                                 <div   layout="row"    ng-if="selectedItem != null">
                                     <div align="center" flex="5"  class=" table-head" ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"></div>
-                                    <div align="center" flex="10"  class=" table-head">目录</div>
+                                    <div align="center" flex="15" class=" table-head">目录</div>
                                     <div align="center" flex="10"  class=" table-head">商品名称</div>
                                     <div align="center" flex="10"  class=" table-head">商品编号</div>
-                                    <div align="center" flex="10"  class=" table-head">规格</div>
+                                    <div align="center" flex="15" class=" table-head">规格</div>
                                     <div align="center" flex="5" class=" table-head">成本价</div>
                                     <div align="center" flex="10"  class=" table-head">标准价</div>
-                                    <div align="center" flex="5" class=" table-head">出货折扣率</div>
-                                    <div align="center" flex="10"  class=" table-head">最低出货价</div>
-                                    <div align="center" flex="5" class=" table-head">仓库编号</div>
-                                    <div align="center" flex="5" class=" table-head">仓库名称</div>
+                                    <div align="center" flex="5" class=" table-head">最低折扣率</div>
+                                    <div align="center" flex="10" class=" table-head">最低折扣价</div>
+                                    <!--<div align="center" flex="5" class=" table-head">仓库编号</div>-->
+                                    <!--<div align="center" flex="5" class=" table-head">仓库名称</div>-->
                                     <div align="center" flex="5"  class=" table-head">审核否</div>
                                     <div align="center" flex="5"  class=" table-head">有效否</div>
                                 </div>
@@ -180,7 +180,7 @@
                                             </md-checkbox>
 
                                         </div>
-                                        <div  align="center" flex="10" class=" table-item">
+                                        <div align="center" flex="15" class=" table-item">
                                             <div style=" padding: 10px 0px 0px 0px;">{{channelPrice.catalogueName}}</div>
                                         </div>
                                         <div  align="center" flex="10" class=" table-item">
@@ -189,7 +189,7 @@
                                         <div  align="center" flex="10" class=" table-item">
                                             <div style=" padding: 10px 0px 0px 0px;">{{channelPrice.item.no }}</div>
                                         </div>
-                                        <div  align="center" flex="10" class=" table-item">
+                                        <div align="center" flex="15" class=" table-item">
                                             <div style=" padding: 10px 0px 0px 0px;">{{channelPrice.item.standard }}</div>
                                         </div>
                                         <div align="center" flex="5" class=" table-item">
@@ -200,31 +200,33 @@
                                         <div  align="center" flex="10" class="table-item">
                                             <md-input-container>
                                                 <input type="number" aria-label="..." string-to-number ng-model="channelPrice.standardPrice" min="0" step="0.01"
-                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS || channelPrice.confirm == 2"
+                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS "
                                                        ng-change="changeSaleDiscountRate(channelPrice)">
                                             </md-input-container>
                                         </div>
 
                                         <div align="center" flex="5" class="table-item">
                                             <md-input-container>
-                                                <input type="number"  aria-label="..." string-to-number    ng-model="channelPrice.saleDiscountRate"   max="1" min="0"   step="0.01"
-                                                       ng-change="changeSaleDiscountRate(channelPrice)"  ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS || channelPrice.confirm == 2">
+                                                <input type="number" aria-label="..." string-to-number ng-model="channelPrice.saleDiscountRate" max="1" min="0" step="0.01"
+                                                       ng-change="changeSaleDiscountRate(channelPrice)"
+                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                                             </md-input-container>
                                         </div>
                                         <div  align="center" flex="10" class=" table-item">
                                             <md-input-container>
-                                                <input type="number" aria-label="..." string-to-number   ng-model="channelPrice.salePrice"   min="0"  step="0.01"
-                                                       ng-change="changeSalePrice(channelPrice)" ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS || channelPrice.confirm == 2">
+                                                <input type="number" aria-label="..." string-to-number ng-model="channelPrice.salePrice" min="0" step="0.01"
+                                                       ng-change="changeSalePrice(channelPrice)"
+                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS ">
                                             </md-input-container>
                                         </div>
-                                        <div align="center" flex="5" class=" table-item">
-                                            <div style=" padding: 10px 0px 0px 0px;">{{channelPrice.warehouse.no }}
-                                            </div>
-                                        </div>
-                                        <div align="center" flex="5" class=" table-item">
-                                            <div style=" padding: 10px 0px 0px 0px;">{{channelPrice.warehouse.name }}
-                                            </div>
-                                        </div>
+                                        <!--<div align="center" flex="5" class=" table-item">-->
+                                        <!--<div style=" padding: 10px 0px 0px 0px;">{{channelPrice.warehouse.no }}-->
+                                        <!--</div>-->
+                                        <!--</div>-->
+                                        <!--<div align="center" flex="5" class=" table-item">-->
+                                        <!--<div style=" padding: 10px 0px 0px 0px;">{{channelPrice.warehouse.name }}-->
+                                        <!--</div>-->
+                                        <!--</div>-->
                                         <div  align="center" flex="5" class=" table-item" layout="row" >
                                             <md-checkbox style=" padding: 0px 0px 0px 20px;" aria-label="..." ng-model="channelPrice.confirm"   ng-disabled="true"
                                                          ng-true-value="'2'" ng-false-value="'1'" ></md-checkbox>
