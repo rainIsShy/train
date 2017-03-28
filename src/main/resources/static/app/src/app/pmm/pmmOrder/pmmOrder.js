@@ -896,6 +896,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 $scope.selectedItem.channel = data.content[0].channel;
                 $scope.selectedItem.channelUuid = data.content[0].channel.uuid;
                 $scope.selectedItem.department = $scope.selectedItem.employee.department;
+                $scope.findAreaAddress($scope.selectedItem.channelUuid);
             }
         });
 
@@ -1311,15 +1312,18 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         }).then(function (data) {
             $scope.selectedItem.channel = data;
             $scope.selectedItem.channelUuid = data.uuid;
+            $scope.findAreaAddress($scope.selectedItem.channelUuid);
+        });
+    };
 
-            OCMChannelService.findAreaAddress($scope.selectedItem.channelUuid).success(function (data) {
+    $scope.findAreaAddress = function (channelUuid) {
+        OCMChannelService.findAreaAddress($scope.selectedItem.channelUuid).success(function (data) {
 
-                if (data.areaAddress) {
-                    $scope.selectedItem.receiveAddress = data.areaAddress;
-                } else {
-                    $scope.selectedItem.receiveAddress = "";
-                }
-            });
+            if (data.areaAddress) {
+                $scope.selectedItem.receiveAddress = data.areaAddress;
+            } else {
+                $scope.selectedItem.receiveAddress = "";
+            }
         });
     };
 

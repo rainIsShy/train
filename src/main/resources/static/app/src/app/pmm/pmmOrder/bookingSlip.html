@@ -170,8 +170,9 @@
                                     <div flex="33"  layout="column" layout-padding>
                                         <md-input-container >
                                             <label class="label" style="color: red;">经销商：</label>
-                                            <input type="text"  aria-label="..." ng-model="selectedItem.channel.name"
-                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"  ng-click="openOrderChannelDlg()">
+                                            <input type="text" aria-label="..." ng-model="selectedItem.channel.name"
+                                                   ng-disabled="(ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS) || currentUser != 'admin'"
+                                                   ng-click="openOrderChannelDlg()">
                                         </md-input-container>
                                         <md-input-container >
                                             <label class="label" style="color: red;">开单日期：</label>
