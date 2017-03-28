@@ -333,6 +333,10 @@ angular.module('IOne-Production').service('OCMChannelService', function ($http, 
         return $http.post(Constant.BACKEND_BASE + '/channels', AddInput);
     };
 
+    this.findAreaAddress = function (uuid) {
+        return $http.get(Constant.BACKEND_BASE + '/channels/' + uuid + '?action=findAreaAddress');
+    }
+
 });
 
 angular.module('IOne-Production').service('OCMMallService', function ($http, Constant) {

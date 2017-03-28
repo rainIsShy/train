@@ -1,0 +1,72 @@
+<md-dialog style="min-width: 700px;max-height: 500px; overflow-y:scroll">
+    <!--<md-content layout="column">-->
+    <div>
+        <md-tabs md-selected="selectedIndex" md-dynamic-height md-center-tabs="false">
+            <md-tab label="省份">
+                <md-tab-body>
+                    <md-content>
+                        <div layout="row" layout-wrap style="margin-top: 20px;">
+                            <div flex="20" ng-model="area3" ng-repeat="area in areaGrade3List"
+                                 ng-click="listTabSelected('4', area.uuid, area.name)" class="prod-item"
+                                 style="">
+                                <md-button class="md-button" aria-label="More" ng-click="">
+                                    {{area.name}} {{$parent.selectedTabIndex}}
+                                </md-button>
+                            </div>
+                        </div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+
+            <md-tab>
+                <md-tab-label>市区</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <div layout="row" layout-wrap style="margin-top: 20px;">
+                            <div flex="20" ng-model="area4" ng-repeat="area in areaGrade4List"
+                                 ng-click="listTabSelected('5', area.uuid, area.name)" class="prod-item"
+                                 style="">
+                                <md-button class="md-button" aria-label="More" ng-click="">
+                                    {{area.name}}
+                                </md-button>
+                            </div>
+                        </div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+
+            <md-tab>
+                <md-tab-label>县区</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <div layout="row" layout-wrap style="margin-top: 20px;"> {{area5}}
+                            <div flex="20" ng-model="area5" ng-repeat="area in areaGrade5List" class="prod-item">
+                                <md-button class="md-button" aria-label="More" ng-click="selectArea(area)">
+                                    {{area.name}}
+                                </md-button>
+                            </div>
+                        </div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+
+        </md-tabs>
+    </div>
+    <md-divider style="margin: 7px 7px 7px 7px;"></md-divider>
+    <div layout="row">
+        <!--<md-button ng-click="hideDlg(area5)">-->
+        <!--<i class="fa fa-check"></i>&nbsp;确定-->
+        <!--</md-button>-->
+        <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+    </div>
+
+    <!--</md-content>-->
+</md-dialog>
+
+
+<style>
+    md-tab-item {
+        max-width: 150px !important;
+    }
+
+</style>
