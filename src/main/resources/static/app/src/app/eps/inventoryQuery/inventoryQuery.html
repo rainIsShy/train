@@ -1,0 +1,53 @@
+<div class="main-panel">
+    <div layout="row" class="top-title">
+        <div flex class="right-title">
+            <span>报表列表</span>
+        </div>
+    </div>
+    <div layout="row" class="main-body border">
+        <div flex class="right-body">
+            <div class="search-bar" layout="row" style="position: relative">
+                <md-input-container flex="20" style="margin-left: 50px;">
+                    <label>查询套件</label>
+                    <input ng-model="listFilterOption.suite">
+                </md-input-container>
+                <md-input-container flex="20" style="margin-left: 50px;" >
+                    <label>可销售库存</label>
+                    <input ng-model="itemListTotal" ng-disabled="true">
+                </md-input-container>
+                <md-button class="md-icon-button md-primary" style="position: relative; top: 15px;"
+                           ng-click="refreshList()">
+                    <i class="fa fa-search"></i>
+                </md-button>
+            </div>
+            <div layout="row" style="background-color:#BDBDBD;" >
+                <div align="center" flex="10">层级</div>
+                <div align="center" flex="10">LEV</div>
+                <div align="center" flex="15">料号</div>
+                <div align="center" flex="15">品名</div>
+                <div align="center" flex="15">规格</div>
+                <div align="center" flex="10">发包单位</div>
+                <div align="center" flex="10">组成用量</div>
+                <div align="center" flex="10">可用库存</div>
+            </div>
+            <div ng-repeat="item in itemList"  >
+                <div layout="row" layout-margin >
+                    <div align="center" flex="10" class="table-item">{{item.epsLevel}}</div>
+                    <div align="center" flex="10" class="table-item">{{item.lev}}</div>
+                    <div align="center" flex="15" class="table-item">{{item.bmb03}}</div>
+                    <div align="center" flex="15" class="table-item">{{item.ima02}}</div>
+                    <div align="center" flex="15" class="table-item">{{item.ima021}}</div>
+                    <div align="center" flex="10" class="table-item">{{item.bmb10}}</div>
+                    <div align="center" flex="10" class="table-item">{{item.bmb06}}</div>
+                    <div align="center" flex="10" class="table-item">{{item.nvl}}</div>
+                </div>
+            </div>
+            <div pagination option="pageOption" callback="refreshList()"></div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
