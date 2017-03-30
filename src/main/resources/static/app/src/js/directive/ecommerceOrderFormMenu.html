@@ -37,7 +37,7 @@
 
     <md-button class="md-raised" ng-click="ecommerceOrderListMenuAction(418, $event)"
                ng-if="ecommerceFormMenuDisplayOption['418-print'].display && (menuAuthDataMap[ecommerceFormMenuDisplayOption['418-print'].uuid] || isAdmin() || !ecommerceFormMenuDisplayOption['418-print'].uuid)"
-               ng-disabled="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD || revert_throw_button_disabled == 1"
+               ng-disabled=""
                style="margin-top: 0px;height: 20px;" aria-label="打印">
         &nbsp;{{ecommerceFormMenuDisplayOption['418-print'].name}}
     </md-button>
