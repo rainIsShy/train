@@ -1,13 +1,13 @@
-angular.module('IOne-Production').config(['$routeProvider', function($routeProvider) {
+angular.module('IOne-Production').config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/auth/config', {
         controller: 'AuthConfigController',
         templateUrl: 'app/src/app/auth/config/config.html'
     })
 }]);
 
-angular.module('IOne-Production').controller('AuthConfigController', function($scope, $http, Constant, SysCptService, $mdDialog,
-                                                                              SysMenusService, UserService, DataBanService, DataPermitService,
-                                                                              CptService, MenuService, ResService, RoleService, FunctionService) {
+angular.module('IOne-Production').controller('AuthConfigController', function ($scope, $http, Constant, SysCptService, $mdDialog,
+                                                                               SysMenusService, UserService, DataBanService, DataPermitService,
+                                                                               CptService, MenuService, ResService, RoleService, FunctionService) {
     $scope.userPageOption = {
         sizePerPage: 10,
         currentPage: 0,
@@ -58,11 +58,11 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
     };
 
     //Get all possible names of system cpts.
-    SysCptService.getAllAvailableNames().success(function(data) {
+    SysCptService.getAllAvailableNames().success(function (data) {
         $scope.allSysCptNames = data;
     });
 
-    $scope.toggleTreeNode = function(tree, node) {
+    $scope.toggleTreeNode = function (tree, node) {
         //tree.toggle();
 
         $scope.selectedTreeNode = node;
@@ -79,15 +79,15 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
             $scope.selectedSysMenu = null;
             $scope.selectedSysCpt = null;
 
-            SysCptService.getAll(node.uuid).success(function(data) {
+            SysCptService.getAll(node.uuid).success(function (data) {
                 $scope.cptList = data;
 
-                CptService.getAll($scope.entityType, $scope.selectedItem.uuid, '', node.uuid).success(function(data) {
+                CptService.getAll($scope.entityType, $scope.selectedItem.uuid, '', node.uuid).success(function (data) {
                     $scope.detailCpts = data;
 
-                    angular.forEach(data, function(value, index) {
-                        angular.forEach($scope.cptList, function(cpt) {
-                            if(cpt.uuid == value.sysCpt.uuid && value.displayFlag == '1') {
+                    angular.forEach(data, function (value, index) {
+                        angular.forEach($scope.cptList, function (cpt) {
+                            if (cpt.uuid == value.sysCpt.uuid && value.displayFlag == '1') {
                                 cpt.checked = true;
                             }
                         })
@@ -95,16 +95,16 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
                 });
             });
 
-            SysMenusService.getAll(node.uuid).success(function(data) {
+            SysMenusService.getAll(node.uuid).success(function (data) {
                 $scope.menuList = data;
 
                 //Get all data of current selected user or role or function for menus.
-                MenuService.getAll($scope.entityType, $scope.selectedItem.uuid, '', node.uuid).success(function(data) {
+                MenuService.getAll($scope.entityType, $scope.selectedItem.uuid, '', node.uuid).success(function (data) {
                     $scope.detailMenus = data;
 
-                    angular.forEach(data, function(value, index) {
-                        angular.forEach($scope.menuList.content, function(menu) {
-                            if(menu.uuid == value.sysMenu.uuid) {
+                    angular.forEach(data, function (value, index) {
+                        angular.forEach($scope.menuList.content, function (menu) {
+                            if (menu.uuid == value.sysMenu.uuid) {
                                 menu.checked = true;
                             }
                         })
@@ -116,17 +116,17 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
         }
     };
 
-    $scope.getResTree = function() {
-        if($scope.isNotValid($scope.resTree)) {
-            $http.get(Constant.BACKEND_BASE + '/sysRess/resTree').success(function(data) {
+    $scope.getResTree = function () {
+        if ($scope.isNotValid($scope.resTree)) {
+            $http.get(Constant.BACKEND_BASE + '/sysRess/resTree').success(function (data) {
                 $scope.resTree = data;
             });
         }
     };
 
-    $scope.iterateResTree = function(tree) {
-        angular.forEach(tree, function(data, value) {
-            if($scope.isValid($scope.currentEntityResMap[data.uuid])) {
+    $scope.iterateResTree = function (tree) {
+        angular.forEach(tree, function (data, value) {
+            if ($scope.isValid($scope.currentEntityResMap[data.uuid])) {
                 data.checked = true;
             } else {
                 data.checked = false;
@@ -140,8 +140,8 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
 
     $scope.getResTree();
 
-    $scope.cptClickHandler = function(type, cpt) {
-        if($scope.selectedItem == undefined) {
+    $scope.cptClickHandler = function (type, cpt) {
+        if ($scope.selectedItem == undefined) {
             $scope.showWarn('请从列表中选择一个职能，角色或者账号。');
             return
         }
@@ -150,28 +150,28 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
         $scope.$parent.selectedSysCptObject = null;
         $scope.selectedSysCpt = cpt;
 
-        DataPermitService.getAllValues(type, $scope.selectedItem.uuid, cpt.uuid, cpt.sysRes.uuid).success(function(data) {
+        DataPermitService.getAllValues(type, $scope.selectedItem.uuid, cpt.uuid, cpt.sysRes.uuid).success(function (data) {
             $scope.permitDataList = data;
         });
-        DataBanService.getAllValues(type, $scope.selectedItem.uuid, cpt.uuid, cpt.sysRes.uuid).success(function(data) {
+        DataBanService.getAllValues(type, $scope.selectedItem.uuid, cpt.uuid, cpt.sysRes.uuid).success(function (data) {
             $scope.banDataList = data;
         });
     };
 
-    $scope.menuClickHandler = function(type, menu) {
+    $scope.menuClickHandler = function (type, menu) {
         $scope.selectedSysMenu = menu;
     };
 
-    $scope.getFunctions = function() {
-        FunctionService.getAll($scope.functionPageOption.sizePerPage, $scope.functionPageOption.currentPage, '', $scope.searchKeyword.func).success(function(data) {
+    $scope.getFunctions = function () {
+        FunctionService.getAll($scope.functionPageOption.sizePerPage, $scope.functionPageOption.currentPage, '', $scope.searchKeyword.func).success(function (data) {
             $scope.allFunctions = data;
             $scope.functionPageOption.totalPage = data.totalPages;
             $scope.functionPageOption.totalElements = data.totalElements;
         });
     };
 
-    $scope.getRoles = function() {
-        RoleService.getAll($scope.rolePageOption.sizePerPage, $scope.rolePageOption.currentPage, '', $scope.searchKeyword.role).success(function(data) {
+    $scope.getRoles = function () {
+        RoleService.getAll($scope.rolePageOption.sizePerPage, $scope.rolePageOption.currentPage, '', $scope.searchKeyword.role).success(function (data) {
             $scope.allRoles = data;
             $scope.rolePageOption.totalPage = data.totalPages;
             $scope.rolePageOption.totalElements = data.totalElements;
@@ -179,15 +179,15 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
     };
 
     $scope.userType = 1;
-    $scope.getUsers = function() {
-        UserService.getAll($scope.userPageOption.sizePerPage, $scope.userPageOption.currentPage, '', $scope.userType, '', $scope.searchKeyword.user).success(function(data) {
+    $scope.getUsers = function () {
+        UserService.getAll($scope.userPageOption.sizePerPage, $scope.userPageOption.currentPage, '', $scope.userType, '', $scope.searchKeyword.user).success(function (data) {
             $scope.allUsers = data;
             $scope.userPageOption.totalPage = data.totalPages;
             $scope.userPageOption.totalElements = data.totalElements;
         });
     };
 
-    $scope.refreshUsers = function() {
+    $scope.refreshUsers = function () {
         $scope.getUsers();
         $scope.selectedItem = null;
     };
@@ -196,7 +196,7 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
     $scope.getRoles();
     $scope.getUsers();
 
-    $scope.selectEntity = function(entity, type) {
+    $scope.selectEntity = function (entity, type) {
         $scope.entityType = type; //'user'
         $scope.selectedItem = entity;
         $scope.selectedEntityTabIndex = type - 1;
@@ -212,11 +212,11 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
         $scope.selectedSysCpt = null;
         $scope.selectedSysMenu = null;
 
-        ResService.getAll($scope.entityType, $scope.selectedItem.uuid).success(function(data) {
+        ResService.getAll($scope.entityType, $scope.selectedItem.uuid).success(function (data) {
             $scope.detailRes = data;
 
             $scope.currentEntityResMap = {};
-            angular.forEach($scope.detailRes, function(value, index) {
+            angular.forEach($scope.detailRes, function (value, index) {
                 $scope.currentEntityResMap[value.sysRes.uuid] = value;
             });
 
@@ -224,31 +224,31 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
         });
     };
 
-    $scope.listTabSelected = function() {
+    $scope.listTabSelected = function () {
         $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS, 0);
     };
 
-    $scope.formTabSelected = function() {
-        $scope.getMenuAuthData($scope.RES_UUID_MAP.AUTH.CONFIG.FORM_PAGE.RES_UUID).success(function(data) {
+    $scope.formTabSelected = function () {
+        $scope.getMenuAuthData($scope.RES_UUID_MAP.AUTH.CONFIG.FORM_PAGE.RES_UUID).success(function (data) {
             $scope.menuAuthDataMap = $scope.menuDataMap(data);
         });
     };
 
-    $scope.editItem = function(item) {
+    $scope.editItem = function (item) {
         $scope.selectedItem = item;
-        $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS_ADD, 1);
+        $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
     };
 
-    $scope.resTreeCheckBoxHandler = function(node) {
-        if($scope.isEditing && $scope.entityType && $scope.selectedItem) {
-            if(node.checked == false) {
-                ResService.add($scope.entityType, $scope.selectedItem.uuid, node.uuid).success(function(data) {
+    $scope.resTreeCheckBoxHandler = function (node) {
+        if ($scope.isEditing && $scope.entityType && $scope.selectedItem) {
+            if (node.checked == false) {
+                ResService.add($scope.entityType, $scope.selectedItem.uuid, node.uuid).success(function (data) {
                     $scope.detailRes.push(data);
                 });
             } else {
                 //Find the menu or data and delete it.
-                angular.forEach($scope.detailRes, function(value, index) {
-                    if(value.sysRes.uuid == node.uuid) {
+                angular.forEach($scope.detailRes, function (value, index) {
+                    if (value.sysRes.uuid == node.uuid) {
                         ResService.delete(value.uuid);
                     }
                 })
@@ -256,15 +256,15 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
         }
     };
 
-    $scope.menuCheckBoxHandler = function(sysMenu) {
-        if($scope.isEditing && $scope.entityType && $scope.selectedItem) {
-            if(sysMenu.checked == undefined || sysMenu.checked == false) {
-                MenuService.add($scope.entityType, $scope.selectedItem.uuid, sysMenu.uuid).success(function(data) {
+    $scope.menuCheckBoxHandler = function (sysMenu) {
+        if ($scope.isEditing && $scope.entityType && $scope.selectedItem) {
+            if (sysMenu.checked == undefined || sysMenu.checked == false) {
+                MenuService.add($scope.entityType, $scope.selectedItem.uuid, sysMenu.uuid).success(function (data) {
                     $scope.detailMenus.push(data);
                 });
             } else {
-                angular.forEach($scope.detailMenus, function(value, index) {
-                    if(value.sysMenu.uuid == sysMenu.uuid) {
+                angular.forEach($scope.detailMenus, function (value, index) {
+                    if (value.sysMenu.uuid == sysMenu.uuid) {
                         MenuService.delete(value.uuid);
                     }
                 })
@@ -272,29 +272,32 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
         }
     };
 
-    $scope.cptCheckBoxHandler = function(sysCpt) {
-        if($scope.isEditing && $scope.entityType && $scope.selectedItem) {
-            if(sysCpt.checked == undefined || sysCpt.checked == false) {
+    $scope.cptCheckBoxHandler = function (sysCpt) {
+        if ($scope.isEditing && $scope.entityType && $scope.selectedItem) {
+            if (sysCpt.checked == undefined || sysCpt.checked == false) {
                 //需要判断当前是否已经存在。
                 var currentCpt = null;
-                for(var i = 0; i<$scope.detailCpts.length ; i++) {
-                    if($scope.detailCpts[i].sysCpt && $scope.detailCpts[i].sysCpt.uuid == sysCpt.uuid) {
-                        currentCpt = $scope.detailCpts[i];
-                        break;
+                if (!jQuery.isEmptyObject($scope.detailCpts)) {
+
+                    for (var i = 0; i < $scope.detailCpts.length; i++) {
+                        if ($scope.detailCpts[i].sysCpt && $scope.detailCpts[i].sysCpt.uuid == sysCpt.uuid) {
+                            currentCpt = $scope.detailCpts[i];
+                            break;
+                        }
                     }
                 }
-                if(currentCpt) {
+                if (currentCpt) {
                     currentCpt.displayFlag = 1;
                     CptService.modify(currentCpt);
 
                 } else {
-                    CptService.add($scope.entityType, $scope.selectedItem.uuid, sysCpt.uuid, 1).success(function(data) {
+                    CptService.add($scope.entityType, $scope.selectedItem.uuid, sysCpt.uuid, 1).success(function (data) {
                         $scope.detailCpts.push(data);
                     });
                 }
             } else {
-                angular.forEach($scope.detailCpts, function(value, index) {
-                    if(value.sysCpt && value.sysCpt.uuid == sysCpt.uuid) {
+                angular.forEach($scope.detailCpts, function (value, index) {
+                    if (value.sysCpt && value.sysCpt.uuid == sysCpt.uuid) {
                         value.displayFlag = 2;
                         CptService.modify(value);
                     }
@@ -303,19 +306,19 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
         }
     };
 
-    $scope.exitModifyMenuAction = function() {
+    $scope.exitModifyMenuAction = function () {
         $scope.changeViewStatus($scope.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
     };
 
-    $scope.canAddPermitBanData = function() {
-        if($scope.selectedSysCpt && $scope.isEditing) {
+    $scope.canAddPermitBanData = function () {
+        if ($scope.selectedSysCpt && $scope.isEditing) {
             return true;
         } else {
             return false;
         }
     };
 
-    $scope.addPermitData = function() {
+    $scope.addPermitData = function () {
         $mdDialog.show({
             controller: 'DataListController',
             templateUrl: 'app/src/app/auth/config/dataListDlg.html',
@@ -325,10 +328,10 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
                 selectedSysRes: $scope.selectedTreeNode,
                 selectedSysCpt: $scope.selectedSysCpt
             }
-        }).then(function(data) {
-            DataPermitService.add($scope.entityType, $scope.selectedItem.uuid, data.selectedData.valueUuid, $scope.selectedSysCpt.uuid).success(function(response) {
-                if($scope.permitDataList) {
-                    if(data.selectedObject) {
+        }).then(function (data) {
+            DataPermitService.add($scope.entityType, $scope.selectedItem.uuid, data.selectedData.valueUuid, $scope.selectedSysCpt.uuid).success(function (response) {
+                if ($scope.permitDataList) {
+                    if (data.selectedObject) {
                         $scope.permitDataList.push(data.selectedObject);
                     } else {
                         $scope.permitDataList.push(response)
@@ -338,19 +341,19 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
         });
     };
 
-    $scope.deletePermitData = function(data) {
-        if($scope.selectedSysCpt.objectFlag == '1') {
-            DataPermitService.delete(null, $scope.entityType, $scope.selectedItem.uuid, data.uuid || data.UUID, $scope.selectedSysCpt.uuid).success(function() {
+    $scope.deletePermitData = function (data) {
+        if ($scope.selectedSysCpt.objectFlag == '1') {
+            DataPermitService.delete(null, $scope.entityType, $scope.selectedItem.uuid, data.uuid || data.UUID, $scope.selectedSysCpt.uuid).success(function () {
                 $scope.permitDataList.splice($scope.permitDataList.indexOf(data), 1);
             });
         } else {
-            DataPermitService.delete(data.uuid).success(function() {
+            DataPermitService.delete(data.uuid).success(function () {
                 $scope.permitDataList.splice($scope.permitDataList.indexOf(data), 1);
             });
         }
     };
 
-    $scope.addBanData = function() {
+    $scope.addBanData = function () {
         $mdDialog.show({
             controller: 'DataListController',
             templateUrl: 'app/src/app/auth/config/dataListDlg.html',
@@ -360,10 +363,10 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
                 selectedSysRes: $scope.selectedTreeNode,
                 selectedSysCpt: $scope.selectedSysCpt
             }
-        }).then(function(data) {
-            DataBanService.add($scope.entityType, $scope.selectedItem.uuid, data.selectedData.valueUuid, $scope.selectedSysCpt.uuid).success(function(response) {
-                if($scope.banDataList) {
-                    if(data.selectedObject) {
+        }).then(function (data) {
+            DataBanService.add($scope.entityType, $scope.selectedItem.uuid, data.selectedData.valueUuid, $scope.selectedSysCpt.uuid).success(function (response) {
+                if ($scope.banDataList) {
+                    if (data.selectedObject) {
                         $scope.banDataList.push(data.selectedObject);
                     } else {
                         $scope.banDataList.push(response)
@@ -373,20 +376,20 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
         });
     };
 
-    $scope.deleteBanData = function(data) {
-        if($scope.selectedSysCpt.objectFlag == '1') {
-            DataBanService.delete(null, $scope.entityType, $scope.selectedItem.uuid, data.uuid || data.UUID, $scope.selectedSysCpt.uuid).success(function() {
+    $scope.deleteBanData = function (data) {
+        if ($scope.selectedSysCpt.objectFlag == '1') {
+            DataBanService.delete(null, $scope.entityType, $scope.selectedItem.uuid, data.uuid || data.UUID, $scope.selectedSysCpt.uuid).success(function () {
                 $scope.banDataList.splice($scope.banDataList.indexOf(data), 1);
             });
         } else {
-            DataBanService.delete(data.uuid).success(function() {
+            DataBanService.delete(data.uuid).success(function () {
                 $scope.banDataList.splice($scope.banDataList.indexOf(data), 1);
             });
         }
     };
 
 
-    $scope.addSysCpt = function() {
+    $scope.addSysCpt = function () {
         $mdDialog.show({
             controller: 'AddSysCptController',
             templateUrl: 'app/src/app/auth/config/addSysCptDlg.html',
@@ -395,16 +398,16 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
             locals: {
                 allSysCptNames: $scope.allSysCptNames
             }
-        }).then(function(data) {
-            SysCptService.add(data.sysCpt.name, data.sysCpt.value, $scope.selectedTreeNode.uuid, data.sysCpt.objectFlag).success(function(data) {
+        }).then(function (data) {
+            SysCptService.add(data.sysCpt.name, data.sysCpt.value, $scope.selectedTreeNode.uuid, data.sysCpt.objectFlag).success(function (data) {
                 $scope.cptList = $scope.cptList || [];
                 $scope.cptList.push(data);
-                CptService.getAll($scope.entityType, $scope.selectedItem.uuid, '', $scope.selectedTreeNode.uuid).success(function(data) {
+                CptService.getAll($scope.entityType, $scope.selectedItem.uuid, '', $scope.selectedTreeNode.uuid).success(function (data) {
                     $scope.detailCpts = data;
 
-                    angular.forEach(data, function(value, index) {
-                        angular.forEach($scope.cptList, function(cpt) {
-                            if(value.sysCpt && cpt.uuid == value.sysCpt.uuid && value.displayFlag == '1') {
+                    angular.forEach(data, function (value, index) {
+                        angular.forEach($scope.cptList, function (cpt) {
+                            if (value.sysCpt && cpt.uuid == value.sysCpt.uuid && value.displayFlag == '1') {
                                 cpt.checked = true;
                             }
                         })
@@ -414,10 +417,10 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
         });
     };
 
-    $scope.deleteSysCpt = function(sysCpt) {
-        $scope.showConfirm('确认删除吗？', '允许和禁止数据会被同步删除。', function() {
-            if(sysCpt) {
-                SysCptService.delete(sysCpt.uuid).success(function() {
+    $scope.deleteSysCpt = function (sysCpt) {
+        $scope.showConfirm('确认删除吗？', '允许和禁止数据会被同步删除。', function () {
+            if (sysCpt) {
+                SysCptService.delete(sysCpt.uuid).success(function () {
                     $scope.cptList.splice($scope.cptList.indexOf(sysCpt), 1);
                     $scope.permitDataList = null;
                     $scope.banDataList = null;
@@ -428,23 +431,23 @@ angular.module('IOne-Production').controller('AuthConfigController', function($s
     }
 });
 
-angular.module('IOne-Production').controller('DataListController', function($mdDialog, $scope, $http, Constant, selectedSysRes, selectedSysCpt) {
+angular.module('IOne-Production').controller('DataListController', function ($mdDialog, $scope, $http, Constant, selectedSysRes, selectedSysCpt) {
     $scope.selectedSysCpt = selectedSysCpt;
     $scope.selectedSysRes = selectedSysRes;
 
-    if($scope.selectedSysCpt.objectFlag == '1') {
+    if ($scope.selectedSysCpt.objectFlag == '1') {
         var url = Constant.BACKEND_BASE + "/";
 
-        if(SYS_CPT_API_MAP[$scope.selectedSysCpt.value]) {
+        if (SYS_CPT_API_MAP[$scope.selectedSysCpt.value]) {
             url += SYS_CPT_API_MAP[$scope.selectedSysCpt.value]
         } else {
             url += $scope.selectedSysCpt.value + 's';
         }
 
         url += '?resUuid=' + selectedSysRes.uuid + '&size=1000000';
-        console.log('the url is : ' + url);
-        $http.get(url).success(function(data) {
-            if(angular.isDefined(data.content)) {
+
+        $http.get(url).success(function (data) {
+            if (angular.isDefined(data.content)) {
                 $scope.dataList = data.content;
             } else {
                 $scope.dataList = data;
@@ -456,57 +459,58 @@ angular.module('IOne-Production').controller('DataListController', function($mdD
         valueUuid: ''
     };
 
-    $scope.selectAction = function(item) {
+    $scope.selectAction = function (item) {
         $scope.searching = false;
-        $scope.selectedData.valueUuid = $scope.selectedSysCpt.objectFlag == '1'? item['uuid'] : item;
+        $scope.selectedData.valueUuid = $scope.selectedSysCpt.objectFlag == '1' ? item['uuid'] : item;
     };
 
-    $scope.$watch('selectedData.valueUuid', function() {
-        angular.forEach($scope.dataList, function(value, index) {
-            if(value.uuid == $scope.selectedData.valueUuid) {
+    $scope.$watch('selectedData.valueUuid', function () {
+        angular.forEach($scope.dataList, function (value, index) {
+            if (value.uuid == $scope.selectedData.valueUuid) {
                 $scope.selectedObject = value;
             }
         });
     });
 
-    $scope.hideDlg = function() {
+    $scope.hideDlg = function () {
         $mdDialog.hide({
-            'selectedData' : $scope.selectedData,
-            'selectedObject' : $scope.selectedObject
+            'selectedData': $scope.selectedData,
+            'selectedObject': $scope.selectedObject
         });
     };
 
-    $scope.cancelDlg = function() {
+    $scope.cancelDlg = function () {
         $mdDialog.cancel();
     };
 });
 
 
-
-angular.module('IOne-Production').controller('AddSysCptController', function($mdDialog, $scope, allSysCptNames) {
+angular.module('IOne-Production').controller('AddSysCptController', function ($mdDialog, $scope, allSysCptNames) {
     $scope.allSysCptNames = allSysCptNames;
     $scope.sysCpt = {
         name: '',
         value: '',
         objectFlag: "1"
     };
-    $scope.hideDlg = function() {
+    $scope.hideDlg = function () {
         $mdDialog.hide({
-            'sysCpt' : $scope.sysCpt
+            'sysCpt': $scope.sysCpt
         });
     };
 
-    $scope.selectAction = function(value) {
+    $scope.selectAction = function (value) {
         $scope.sysCpt.value = value.value;
         $scope.sysCpt.objectFlag = value.objectFlag;
         $scope.searching = false;
     };
 
-    $scope.$watch('sysCpt.value', function() {
-        $scope.sysCpt.objectFlag = $scope.allSysCptNames[$scope.sysCpt.value].objectFlag;
+    $scope.$watch('sysCpt.value', function () {
+        if ("" != $scope.sysCpt.value) {
+            $scope.sysCpt.objectFlag = $scope.allSysCptNames[$scope.sysCpt.value].objectFlag;
+        }
     });
 
-    $scope.cancelDlg = function() {
+    $scope.cancelDlg = function () {
         $mdDialog.cancel();
     };
 });
