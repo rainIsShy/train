@@ -221,6 +221,10 @@
                             <md-option ng-repeat="(key, value) in CHANNEL_FLAG" ng-value="key">{{value.name}}</md-option>
                         </md-select>
                     </md-input-container>
+                    <md-input-container flex="20" ng-show="selectedItem == null">
+                        <label>业务员</label>
+                        <input ng-model="listFilterOption.groupUser" ng-keypress="queryEnter($event)">
+                    </md-input-container>
                 </div>
                 <!-- status panel-->
                 <div layout="row" layout-warp layout-padding layout-margin ng-show="!selectedItem"
