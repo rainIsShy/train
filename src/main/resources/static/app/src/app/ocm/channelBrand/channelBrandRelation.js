@@ -19,21 +19,6 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
         showQueryBar: true
     };
 
-    // $scope.formMenuDisplayOption = {
-    //     '100-add': {display: false, name: '新增', uuid: '452A0E53-2BAD-44F3-BD75-DE919C1C9DAC'},
-    //     '101-delete': {display: false, name: '删除', uuid: 'BF6AC3DC-D9C5-400C-8C66-D9FCF74E49A1'},
-    //     '102-edit': {display: false, name: '编辑', uuid: '169AA869-6A62-4287-9136-40886E7246ED'},
-    //
-    //     '200-cancel': {display: false, name: '取消新增', uuid: '8536C6CE-75F0-46F4-9CFA-A3DE2AB371CE'},
-    //     '201-save': {display: false, name: '保存', uuid: 'C03E7689-267F-4A6B-AA7D-88A99C9CEFF0'},
-    //
-    //
-    //     '302-save': {display: false, name: '保存', uuid: '01673539-3C67-4E76-B616-3767B07E6922'},
-    //     '303-cancel': {display: false, name: '取消修改', uuid: 'FD70B726-FF76-45B4-B667-BB778B3C2AA9'},
-    //     '304-quit': {display: false, name: '退出编辑', uuid: '63367BAD-6D79-4994-B420-EBFAA30D8357'},
-    //
-    //     '611-selectAll': {display: false, name: '全选', uuid: ''}
-    // };
 
 
     $scope.ocmListMenuDisplayOption = {
