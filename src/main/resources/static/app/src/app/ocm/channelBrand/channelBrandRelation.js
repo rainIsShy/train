@@ -39,7 +39,7 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
     $scope.ocmListMenuDisplayOption = {
         '600-query': {display: true, name: '查询', uuid: '6d9a8d23-85c8-4bda-a40c-718df09ee765'},
         '601-selectAll': {display: false, name: '全选', uuid: '290387e5-185b-40bc-8534-db2249048ef1'},
-        '602-execute': {display: true, name: '查询', uuid: '11d9eafb-ad7b-408b-8ac7-a386cdec2171'},
+        '602-execute': {display: true, name: '执行', uuid: '11d9eafb-ad7b-408b-8ac7-a386cdec2171'},
     };
 
 
