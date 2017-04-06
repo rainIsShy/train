@@ -1,0 +1,133 @@
+<div layout-fill class="right-container">
+    <md-contend>
+        <md-tabs md-selected="$parent.selectedTabIndex" md-boarder-bottom md-dynamic-height md-center-tabs="false">
+
+            <md-tab md-on-select="listTabSelected()">
+                <md-tab-label>{{listTabName}}</md-tab-label>
+                <md-tab-body>
+                    <md-content>
+                        <div>
+                            <div layout="column">
+                                <div flex layout="column" class="order-item-background"
+                                     ng-if="ocmListMenu.showQueryBar">
+                                    <div class="menu" layout="row" layout-md="column" layout-sm="column">
+                                        <md-input-container>
+                                            <label>渠道店/直营编号：</label>
+                                            <input ng-model="ocmListMenu.channelNo"/>
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <label>渠道店/直营店：</label>
+                                            <input ng-model="ocmListMenu.channelName"/>
+                                        </md-input-container>
+
+                                        <md-button class="md-raised"
+                                                   ng-if="ocmListMenuDisplayOption['600-query'].display && (menuAuthDataMap[ocmListMenuDisplayOption['600-query'].uuid] || isAdmin() || !ocmListMenuDisplayOption['600-query'].uuid)"
+                                                   style="margin-top: 22px;height: 20px;" ng-click="queryMenuAction()">
+                                            &nbsp;{{ocmListMenuDisplayOption['600-query'].name}}
+                                        </md-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-include=" 'app/src/app/ocm/channelBrand/channelBrandRelationList.html'"></div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+
+            <md-tab md-on-select="formTabSelected()">
+                <md-tab-label>{{formTabName}}</md-tab-label>
+                <!--表单预览模式-->
+                <md-tab-body>
+                    <md-content class="formList">
+                        <form name="mainForm" novalidate>
+                            <!--<div ng-if="selectedItem != null" channel-series-relation-table1></div>-->
+
+
+                            <div layout-margin layout-padding class="md-whiteframe-z1"
+                                 ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS">
+                                <p style="color: red;">请从清单列表中选择一个商品。</p>
+                            </div>
+                            <div layout="row" layout-margin layout-padding layout-md="column" layout-sm="column"
+                                 layout-align="space-around left"
+                                 ng-show="selectedItem != null && channelRelationList.content.length > 0">
+                                <md-input-container>
+                                    <label>渠道店/直营店：</label>
+                                    <input aria-label="..." ng-model="selectedItem.name" ng-disabled="true"/>
+                                </md-input-container>
+                                <md-input-container>
+                                    <label>品牌编号：</label>
+                                    <input aria-label="..." ng-model="selectedItem.brandNo"/>
+                                </md-input-container>
+                                <md-input-container>
+                                    <label>品牌名称：</label>
+                                    <input aria-label="..." ng-model="selectedItem.brandName"/>
+                                </md-input-container>
+
+                                <md-button class="md-raised" aria-label="..."
+                                           ng-if="ocmListMenuDisplayOption['600-query'].display"
+                                           ng-click="searchChannelRelationWithPaging(selectedItem.brandNo, selectedItem.brandName)"
+                                           style="margin-top: 22px;height: 20px;"> 查找
+                                </md-button>
+                            </div>
+
+                            <div layout="row" layout-margin layout-padding layout-md="column" layout-sm="column"
+                                 ng-show="selectedItem != null && channelRelationList.content.length > 0">
+                                <md-input-container>
+                                    <label>定价系数维护：</label>
+                                    <input type="number" aria-label="..." ng-model="priceCoefficient" string-to-number
+                                           min="0"/>
+                                </md-input-container>
+                                <md-button class="md-raised"
+                                           ng-if="ocmListMenuDisplayOption['602-execute'].display && (menuAuthDataMap[ocmListMenuDisplayOption['602-execute'].uuid] || isAdmin() || !ocmListMenuDisplayOption['602-execute'].uuid)"
+                                           ng-click="updateInBatch()" style="margin-top: 22px;height: 20px;"> 执行
+                                </md-button>
+                            </div>
+
+                            <div align="center"><span ng-if="logining"><img style="width: 20px;padding-top: 13px;"
+                                                                            src="app/img/spinner.gif"/>   更新数据中，请稍候</span>
+                            </div>
+
+                            <div layout-margin layout-align="center center" ng-if="selectedItem != null">
+                                <div layout="row" ng-if="selectedItem != null">
+                                    <div align="center" flex="5" class=" table-head"
+                                         ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"></div>
+                                    <div align="center" flex="10" class=" table-head">品牌编号</div>
+                                    <div align="center" flex="10" class=" table-head">品牌名称</div>
+                                    <div align="center" flex="10" class=" table-head">定价系数</div>
+                                </div>
+
+                                <div ng-repeat="channelRelation in channelRelationList.content | orderBy: 'series.no'">
+                                    <div layout="row">
+                                        <div flex="5" class=" table-item"
+                                             ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                            <md-checkbox aria-label="..." ng-checked="exists(channelRelation, selected)"
+                                                         ng-click="toggle(channelRelation, selected)">
+                                            </md-checkbox>
+
+                                        </div>
+                                        <div align="center" flex="10" class=" table-item">
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelRelation.brand.no}}</div>
+                                        </div>
+                                        <div align="center" flex="10" class=" table-item">
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelRelation.brand.name }}
+                                            </div>
+                                        </div>
+                                        <div align="center" flex="10" class=" table-item">
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelRelation.priceCoefficient
+                                                }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div pagination option="pageOption"
+                                     callback="searchChannelRelationWithPaging(selectedItem.brandNo, selectedItem.brandName)"></div>
+                            </div>
+                        </form>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+
+        </md-tabs>
+
+    </md-contend>
+</div>
