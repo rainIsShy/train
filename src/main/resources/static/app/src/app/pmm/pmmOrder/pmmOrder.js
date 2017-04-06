@@ -1611,7 +1611,7 @@ angular.module('IOne-Production').controller('OrderCustomerSearchController', fu
 });
 
 
-angular.module('IOne-Production').controller('OrderItemsSearchController', function ($scope, $q, $mdDialog, OrderItems, ChannelItemInfoService, channelUuid, saleTypes) {
+angular.module('IOne-Production').controller('OrderItemsSearchController', function ($scope, $q, $mdDialog, OrderItems, ChannelItemInfoService, channelUuid, saleTypes, Constant) {
 
     $scope.channelUuid = channelUuid;
     $scope.saleTypes = saleTypes;
@@ -1649,6 +1649,7 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         if (path && path.indexOf('IMAGE') == 0) {
             return Constant.BACKEND_BASE + '/app/assets/' + path;
         } else {
+            console.log(Constant.BACKEND_BASE + '/app/assets/IMAGE/' + path);
             return Constant.BACKEND_BASE + '/app/assets/IMAGE/' + path;
         }
     };

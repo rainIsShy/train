@@ -44,9 +44,9 @@
                 <div layout="column" flex="5"></div>
                 <div layout="column" flex="25">
 
-                    <md-input-container>
+                    <div ng-class="centre" ng-show="addOrderDetail.item.path != null" s>
                         <img class="prod-sm-img" src="{{getImageFullPath(addOrderDetail.item.path)}}">
-                    </md-input-container>
+                    </div>
 
                     <md-input-container>
                         <label class="label">品号：</label>
