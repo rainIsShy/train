@@ -1642,6 +1642,17 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
 
     $scope.refreshData();
 
+    $scope.getImageFullPath = function (path) {
+        if (path == null) {
+            return Constant.BACKEND_BASE + '/app/img/item.jpeg';
+        }
+        if (path && path.indexOf('IMAGE') == 0) {
+            return Constant.BACKEND_BASE + '/app/assets/' + path;
+        } else {
+            return Constant.BACKEND_BASE + '/app/assets/IMAGE/' + path;
+        }
+    };
+
     $scope.selectData = function (data) {
         $scope.addOrderDetail.item = data;
         $scope.addOrderDetail.itemUuid = data.uuid;
