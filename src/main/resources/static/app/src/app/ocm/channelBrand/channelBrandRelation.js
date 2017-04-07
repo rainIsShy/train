@@ -147,7 +147,7 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
 
     $scope.updateInBatch = function () {
 
-        if ($scope.priceCoefficient) {
+        if (!$scope.priceCoefficient) {
             $scope.showError('请输入定价系数维护!');
             return;
         }
