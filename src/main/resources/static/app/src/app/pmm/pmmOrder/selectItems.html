@@ -8,8 +8,9 @@
 
         <div flex layout="column" style="font-size: small">
             <div layout="row">
-                <div layout="column" flex="20" ng-if="saveData.length > 0">
-                    <div style=" padding: 0px 0px 15px 0px;">新增商品清单</div>
+                <div layout="column" flex="25" ng-if="saveData.length > 0"
+                     style=" padding: 10px; height:550px; overflow-x: hidden;">
+                    <div>新增商品清单</div>
                     <md-chips ng-repeat="newData in saveData">
                         <md-chip>
                             <span style="font-size: small" ng-click="bindAddData(newData)">{{newData.item.name}}</span>
@@ -17,12 +18,11 @@
                         </md-chip>
                     </md-chips>
                 </div>
-                <div layout="column" flex="35">
+                <div layout="column" flex="35" style=" padding: 10px;">
 
                     <div style=" padding: 0px 0px 15px 0px;">请选择商品</div>
                     <form name="searchData" novalidate="">
                         <div layout="row" flex="40">
-
                             <md-input-container flex="40">
                                 <label>商品编号/品名</label>
                                 <input name="no" type="text" ng-model="searchKeyword">
@@ -97,7 +97,7 @@
                                ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                     </md-input-container>
                 </div>
-                <div layout="column" flex="5"></div>
+                <!--<div layout="column" flex="5"></div>-->
                 <div layout="column" flex="20">
                     <md-input-container>
                         <label>销售类型：</label>
