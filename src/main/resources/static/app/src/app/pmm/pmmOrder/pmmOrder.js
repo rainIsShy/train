@@ -1648,7 +1648,7 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
     };
 
     $scope.refreshData = function () {
-        OrderItems.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, channelUuid, $scope.searchNo, $scope.searchName).success(function (data) {
+        OrderItems.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, channelUuid, $scope.searchNo, $scope.searchName, $scope.searchKeyword, $scope.searchStandard).success(function (data) {
             $scope.allData = data;
             if ($scope.allData.content.length < 1) {
                 $scope.showWarn('未搜索到该商品，请确认是否维护该商品定价信息！');
