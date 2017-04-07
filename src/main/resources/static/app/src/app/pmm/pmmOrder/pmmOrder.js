@@ -994,7 +994,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
 
                     $q.all(promises).then(function (data) {
-                        $scope.editItem($scope.selectedItem.pmmOrderMst);
+                        $scope.editItem($scope.selectedItem);
                         $scope.showInfo('新增产品成功。');
                     });
                 }

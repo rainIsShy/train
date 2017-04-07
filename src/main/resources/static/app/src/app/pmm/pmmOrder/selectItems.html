@@ -40,9 +40,12 @@
                             </md-button>
                         </div>
                         <md-list-item class="md-2-line" ng-repeat="data in allData.content" ng-click="selectData(data)">
-                            <div class="md-list-item-text" layout="row">
+                            <div class="md-list-item-text">
                                 <div flex="35" layout="column"><span>{{ data.no }}</span></div>
                                 <div layout="column"><span>{{ data.name }}</span></div>
+                            </div>
+                            <div class="md-list-item-text">
+                                <div layout="column"><span>{{ data.standard }}</span></div>
                             </div>
                             <md-divider ></md-divider>
                         </md-list-item>
