@@ -5,13 +5,21 @@
     }
 </style>
     <md-content >
-        <div flex layout="column">
+
+        <div flex layout="column" style="font-size: small">
             <div layout="row">
+                <div layout="column" flex="20" ng-if="saveData.length > 0">
+                    <div style=" padding: 0px 0px 15px 0px;">新增商品清单</div>
+                    <md-chips ng-repeat="newData in saveData">
+                        <md-chip>
+                            <span style="font-size: small" ng-click="bindAddData(newData)">{{newData.item.name}}</span>
+                            <md-icon md-svg-icon="md-close" ng-click="removeAddData(data)"></md-icon>
+                        </md-chip>
+                    </md-chips>
+                </div>
+                <div layout="column" flex="35">
 
-                <div layout="column" flex="40">
-                    <div style=" padding: 0px 0px 15px 0px;">请选择商品
-
-                    </div>
+                    <div style=" padding: 0px 0px 15px 0px;">请选择商品</div>
                     <form name="searchData" novalidate="">
                         <div layout="row" flex="40">
 
@@ -33,18 +41,18 @@
                         </div>
                         <md-list-item class="md-2-line" ng-repeat="data in allData.content" ng-click="selectData(data)">
                             <div class="md-list-item-text" layout="row">
-                                <div flex="35" layout="column"><h3>{{ data.no }}</h3></div>
-                                <div layout="column"><h3>{{ data.name }}</h3></div>
+                                <div flex="35" layout="column"><span>{{ data.no }}</span></div>
+                                <div layout="column"><span>{{ data.name }}</span></div>
                             </div>
                             <md-divider ></md-divider>
                         </md-list-item>
                     </form>
                     <div pagination option="pageOption" callback="refreshData()"></div>
                 </div>
-                <div layout="column" flex="5"></div>
-                <div layout="column" flex="25">
+                <!--<div layout="column" flex="5"></div>-->
+                <div layout="column" flex="20">
 
-                    <div ng-class="centre" ng-show="addOrderDetail.item.path != null" s>
+                    <div ng-class="centre" ng-show="addOrderDetail.item.path != null" sytle="width:150px">
                         <img class="prod-sm-img" src="{{getImageFullPath(addOrderDetail.item.path)}}">
                     </div>
 
@@ -83,7 +91,7 @@
                     </md-input-container>
                 </div>
                 <div layout="column" flex="5"></div>
-                <div layout="column" flex="25">
+                <div layout="column" flex="20">
                     <md-input-container>
                         <label>销售类型：</label>
                         <md-select placeholder="" ng-model="addOrderDetail.saleTypeUuid" class="select" ng-change="refreshUI()"
@@ -143,9 +151,13 @@
                     </md-input-container>
                 </div>
             </div>
+
             <div layout="row">
+                <md-button ng-click="addData()">
+                    <i class="fa fa-plus"></i>&nbsp;新增
+                </md-button>
                 <md-button ng-click="hideDlg()">
-                    <i class="fa fa-check"></i>&nbsp;确定
+                    <i class="fa fa-check"></i>&nbsp;保存
                 </md-button>
                 <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
             </div>

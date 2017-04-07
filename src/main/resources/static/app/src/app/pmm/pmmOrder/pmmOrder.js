@@ -982,20 +982,38 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     saleTypes: $scope.saleTypes
                 }
             }).then(function (data) {
-                //existing order
-                if ($scope.selectedItem.uuid) {
-                    PmmOrderDetail.add($scope.selectedItem.uuid, data.addOrderDetail).success(function (data) {
-                        $scope.editItem(data.pmmOrderMst);
+                console.log(data);
+                if (data.length > 0) {
+                    var promises = [];
+                    angular.forEach(data, function (detail) {
+                        var response = PmmOrderDetail.add($scope.selectedItem.uuid, detail).success(function (x) {
+
+                        });
+                        promises.push(response);
+                    });
+
+
+                    $q.all(promises).then(function (data) {
+                        $scope.editItem($scope.selectedItem.pmmOrderMst);
                         $scope.showInfo('新增产品成功。');
                     });
-                } else {
-                    //new order
-                    if (!$scope.OrderDetailList.content) {
-                        $scope.OrderDetailList.content = [];
-                    }
-                    $scope.OrderDetailList.content.push(data.addOrderDetail);
-                    $scope.isSelectedAllDetail();
                 }
+
+
+                //existing order
+                // if ($scope.selectedItem.uuid) {
+                //     PmmOrderDetail.add($scope.selectedItem.uuid, data.addOrderDetail).success(function (data) {
+                //         $scope.editItem(data.pmmOrderMst);
+                //         $scope.showInfo('新增产品成功。');
+                //     });
+                // } else {
+                //     //new order
+                //     if (!$scope.OrderDetailList.content) {
+                //         $scope.OrderDetailList.content = [];
+                //     }
+                //     $scope.OrderDetailList.content.push(data.addOrderDetail);
+                //     $scope.isSelectedAllDetail();
+                // }
             });
         }
     };
@@ -1655,6 +1673,7 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
     };
 
     $scope.selectData = function (data) {
+        $scope.addOrderDetail = {};
         $scope.addOrderDetail.item = data;
         $scope.addOrderDetail.itemUuid = data.uuid;
         $scope.addOrderDetail.oriPurPrice = data.suggestPrice;
@@ -1694,7 +1713,8 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         $mdDialog.cancel();
     };
 
-    $scope.hideDlg = function () {
+    $scope.saveData = [];
+    $scope.addData = function () {
         var errMsgs = [];
         if (null == $scope.addOrderDetail.item) {
             errMsgs.push("请选择商品");
@@ -1718,6 +1738,7 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
                 $scope.showError(val);
             });
         } else {
+
             $scope.addOrderDetail.oriPurPrice = $scope.addOrderDetail.oriTransactionPrice + $scope.addOrderDetail.perCustomizePrice;
             $scope.addOrderDetail.natPurPrice = $scope.addOrderDetail.natTransactionPrice + $scope.addOrderDetail.perCustomizePrice;
             $scope.addOrderDetail.oriPurAmt = $scope.addOrderDetail.oriPurPrice * $scope.addOrderDetail.orderQty;
@@ -1725,10 +1746,56 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
             $scope.addOrderDetail.oriPurAmtTax = $scope.addOrderDetail.oriPurAmt + $scope.addOrderDetail.oriPurTax;
             $scope.addOrderDetail.natPurAmtTax = $scope.addOrderDetail.natPurAmt + $scope.addOrderDetail.natPurTax;
 
-            $mdDialog.hide({
-                'addOrderDetail': $scope.addOrderDetail
-            });
+            $scope.saveData.push(angular.copy($scope.addOrderDetail));
         }
+    };
+
+    $scope.bindAddData = function (data) {
+        $scope.addOrderDetail = data;
+    };
+
+    $scope.removeAddData = function (data) {
+        $scope.saveData.splice($scope.saveData.indexOf(data), 1);
+    };
+
+
+    $scope.hideDlg = function () {
+        $mdDialog.hide($scope.saveData);
+
+        // var errMsgs = [];
+        // if (null == $scope.addOrderDetail.item) {
+        //     errMsgs.push("请选择商品");
+        // } else if (null == $scope.addOrderDetail.orderQty) {
+        //     errMsgs.push("请输入采购数量");
+        // } else if (null == $scope.addOrderDetail.oriPurPrice) {
+        //     errMsgs.push("请输入采购单价");
+        // } else if ($scope.addOrderDetail.saleTypeUuid == 'D3DE3DF8-5D38-4083-A41A-B0E440E3786E') {
+        //     if (!$scope.addOrderDetail.promotionDiscountRate && $scope.addOrderDetail.promotionDiscountRate !== 0) {
+        //         errMsgs.push("请输入促销折扣率");
+        //     }
+        //     if (!$scope.addOrderDetail.promotionPrice && $scope.addOrderDetail.promotionPrice !== 0) {
+        //         errMsgs.push("请输入促销单价");
+        //     }
+        // } else if ($scope.addOrderDetail.saleTypeUuid == 'F1DEDA0E-A607-4934-B305-EEC3C447C509' && !$scope.addOrderDetail.specialPrice && $scope.addOrderDetail.specialPrice !== 0) { // 特价
+        //     errMsgs.push("请输入特价单价");
+        // }
+        //
+        // if (errMsgs.length > 0) {
+        //     angular.forEach(errMsgs, function (val) {
+        //         $scope.showError(val);
+        //     });
+        // } else {
+        //     $scope.addOrderDetail.oriPurPrice = $scope.addOrderDetail.oriTransactionPrice + $scope.addOrderDetail.perCustomizePrice;
+        //     $scope.addOrderDetail.natPurPrice = $scope.addOrderDetail.natTransactionPrice + $scope.addOrderDetail.perCustomizePrice;
+        //     $scope.addOrderDetail.oriPurAmt = $scope.addOrderDetail.oriPurPrice * $scope.addOrderDetail.orderQty;
+        //     $scope.addOrderDetail.natPurAmt = $scope.addOrderDetail.natPurPrice * $scope.addOrderDetail.orderQty;
+        //     $scope.addOrderDetail.oriPurAmtTax = $scope.addOrderDetail.oriPurAmt + $scope.addOrderDetail.oriPurTax;
+        //     $scope.addOrderDetail.natPurAmtTax = $scope.addOrderDetail.natPurAmt + $scope.addOrderDetail.natPurTax;
+        //
+        //     $mdDialog.hide({
+        //         'addOrderDetail': $scope.addOrderDetail
+        //     });
+        // }
     };
 
     $scope.showError = function (info) {
