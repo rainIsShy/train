@@ -58,8 +58,9 @@
                 <!--<div layout="column" flex="5"></div>-->
                 <div layout="column" flex="20">
 
-                    <div ng-class="centre" ng-show="addOrderDetail.item.path != null" sytle="width:150px">
-                        <img class="prod-sm-img" src="{{getImageFullPath(addOrderDetail.item.path)}}">
+                    <div ng-class="centre" ng-show="addOrderDetail.item.path != null">
+                        <img class="prod-sm-img" sytle="width:150px"
+                             src="{{getImageFullPath(addOrderDetail.item.path)}}">
                     </div>
 
                     <md-input-container>
