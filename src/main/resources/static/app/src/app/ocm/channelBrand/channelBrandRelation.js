@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('ChannelBrandRelationController', function ($scope, $q, ChannelService, ChannelBrandRelationsService, ChannelSeriesRelationService, $mdDialog, $timeout, Constant) {
+angular.module('IOne-Production').controller('ChannelBrandRelationController', function ($scope, $q, ChannelService, ChannelBrandRelationsService, $mdDialog, Constant) {
     //initial model value
 
     $scope.listFilterItem = {
@@ -20,8 +20,7 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
     };
 
 
-
-    $scope.ocmListMenuDisplayOption = {
+    $scope.menuDisplayOption = {
         '600-query': {display: true, name: '查询', uuid: '6d9a8d23-85c8-4bda-a40c-718df09ee765'},
         '601-selectAll': {display: false, name: '全选', uuid: '290387e5-185b-40bc-8534-db2249048ef1'},
         '602-execute': {display: true, name: '执行', uuid: '11d9eafb-ad7b-408b-8ac7-a386cdec2171'},
@@ -104,7 +103,7 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
         $scope.areaCode = null;
         $scope.areaName = null;
 
-        $scope.getMenuAuthData($scope.RES_UUID_MAP.OCM.CHANNEL_SERIES_RELATION.FORM_PAGE.RES_UUID).success(function (data) {
+        $scope.getMenuAuthData($scope.RES_UUID_MAP.OCM.CHANNEL_BRAND_RELATION.FORM_PAGE.RES_UUID).success(function (data) {
             $scope.menuAuthDataMap = $scope.menuDataMap(data);
         });
     };
@@ -113,12 +112,23 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
     $scope.formTabSelected = function () {
         $scope.ocmListMenu.showQueryBar = false;
         $scope.selected = [];
-        $scope.getMenuAuthData($scope.RES_UUID_MAP.OCM.CHANNEL_RELATION.FORM_PAGE.RES_UUID).success(function (data) {
+        $scope.getMenuAuthData($scope.RES_UUID_MAP.OCM.CHANNEL_BRAND_RELATION.FORM_PAGE.RES_UUID).success(function (data) {
             $scope.menuAuthDataMap = $scope.menuDataMap(data);
         });
     };
 
     $scope.selected = [];
+
+    $scope.selectAllAction = function () {
+        $scope.selected = [];
+        if ($scope.ocmListMenu.selectAll == true) {
+
+            angular.forEach($scope.channelRelationList.content, function (item) {
+                $scope.selected.push(item);
+            });
+        }
+
+    };
 
     $scope.toggle = function (item, selected) {
         var idx = selected.indexOf(item);
@@ -136,6 +146,12 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
 
 
     $scope.updateInBatch = function () {
+
+        if ($scope.priceCoefficient) {
+            $scope.showError('请输入定价系数维护!');
+            return;
+        }
+
         if ($scope.selected.length <= 0) {
             $scope.showError('请选择要维护的品牌!');
             return;
@@ -164,32 +180,20 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
                 ChannelBrandRelationsService.updatePrice($scope.selectedItem.uuid, brands).success(function () {
                     $scope.showInfo('修改定价成功。');
                     $scope.logining = false;
+
+                    $scope.selected = [];
+                    $scope.ocmListMenu.selectAll = false;
                 });
             }, function () {
                 $scope.showInfo('修改定价系数成功。');
                 $scope.logining = false;
+                $scope.ocmListMenu.selectAll = false;
+                $scope.selected = [];
             });
+
 
         })
     };
 
-
-    $scope.selectAllMenuAction = function () {
-        if ($scope.ocmListMenu.selectAll == true) {
-            $scope.selected = [];
-            if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
-                angular.forEach($scope.channelRelationList.content, function (item) {
-                    $scope.selected.push(item);
-                });
-                $scope.changeButtonStatus();
-            } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
-                angular.forEach($scope.ChannelList.content, function (item) {
-                    $scope.selected.push(item);
-                });
-            }
-        } else if ($scope.ocmListMenu.selectAll == false) {
-            $scope.selected = [];
-        }
-    };
 
 });

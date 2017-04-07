@@ -21,9 +21,9 @@
                                         </md-input-container>
 
                                         <md-button class="md-raised"
-                                                   ng-if="ocmListMenuDisplayOption['600-query'].display && (menuAuthDataMap[ocmListMenuDisplayOption['600-query'].uuid] || isAdmin() || !ocmListMenuDisplayOption['600-query'].uuid)"
+                                                   ng-if="menuDisplayOption['600-query'].display && (menuAuthDataMap[menuDisplayOption['600-query'].uuid] || isAdmin() || !menuDisplayOption['600-query'].uuid)"
                                                    style="margin-top: 22px;height: 20px;" ng-click="queryMenuAction()">
-                                            &nbsp;{{ocmListMenuDisplayOption['600-query'].name}}
+                                            &nbsp;{{menuDisplayOption['600-query'].name}}
                                         </md-button>
                                     </div>
                                 </div>
@@ -64,7 +64,7 @@
                                 </md-input-container>
 
                                 <md-button class="md-raised" aria-label="..."
-                                           ng-if="ocmListMenuDisplayOption['600-query'].display"
+                                           ng-if="menuDisplayOption['600-query'].display"
                                            ng-click="searchChannelRelationWithPaging(selectedItem.brandNo, selectedItem.brandName)"
                                            style="margin-top: 22px;height: 20px;"> 查找
                                 </md-button>
@@ -78,10 +78,11 @@
                                            min="0"/>
                                 </md-input-container>
                                 <md-button class="md-raised"
-                                           ng-if="ocmListMenuDisplayOption['602-execute'].display && (menuAuthDataMap[ocmListMenuDisplayOption['602-execute'].uuid] || isAdmin() || !ocmListMenuDisplayOption['602-execute'].uuid)"
+                                           ng-if="menuDisplayOption['602-execute'].display && (menuAuthDataMap[menuDisplayOption['602-execute'].uuid] || isAdmin() || !menuDisplayOption['602-execute'].uuid)"
                                            ng-click="updateInBatch()" style="margin-top: 22px;height: 20px;"> 执行
                                 </md-button>
                             </div>
+
 
                             <div align="center"><span ng-if="logining"><img style="width: 20px;padding-top: 13px;"
                                                                             src="app/img/spinner.gif"/>   更新数据中，请稍候</span>
@@ -89,8 +90,11 @@
 
                             <div layout-margin layout-align="center center" ng-if="selectedItem != null">
                                 <div layout="row" ng-if="selectedItem != null">
-                                    <div align="center" flex="5" class=" table-head"
-                                         ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"></div>
+                                    <div align="center" flex="5" class=" table-head">
+                                        <md-checkbox ng-model="ocmListMenu.selectAll" ng-change="selectAllAction()"
+                                                     aria-label="全选" ng-true-value="true"
+                                                     ng-false-value="false"></md-checkbox>
+                                    </div>
                                     <div align="center" flex="10" class=" table-head">品牌编号</div>
                                     <div align="center" flex="10" class=" table-head">品牌名称</div>
                                     <div align="center" flex="10" class=" table-head">定价系数</div>
