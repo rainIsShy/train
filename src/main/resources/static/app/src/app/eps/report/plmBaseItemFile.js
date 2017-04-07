@@ -58,7 +58,14 @@ angular.module('IOne-Production').controller('EpsOrderReport_plmBaseItemFile_con
             EpsOrderReportService.getPlmBaseItemFile(orderDateFrom, orderDateTo, $scope.pageOption).then(function (response) {
                 $scope.pageOption.totalPage = response.data.totalPages;
                 $scope.pageOption.totalElements = response.data.totalElements;
-                $scope.report = response.data;
+                $scope.report = response.data
+                if (response.data.content) {
+                    angular.forEach(response.data.content, function (itemTest) {
+                        itemTest['预计配送时间'] = $filter("date")(itemTest['预计配送时间'], "yyyy-MM-dd HH:mm:ss");
+                        itemTest['下单日期'] = $filter("date")(itemTest['预计配送时间'], "yyyy-MM-dd HH:mm:ss");
+                    });
+                }
+
                 if (response.data.content.length == 0)$scope.showInfo("沒有任何資料");
 
                 if ($scope.reportKeys.length == 0) {
