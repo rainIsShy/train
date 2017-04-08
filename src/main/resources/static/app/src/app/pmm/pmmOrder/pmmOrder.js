@@ -1749,6 +1749,11 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
                 $scope.showError(val);
             });
         } else {
+            $scope.addOrderDetail.oriTransactionPrice = $scope.addOrderDetail.oriTransactionPrice ? $scope.addOrderDetail.oriTransactionPrice : 0;
+            $scope.addOrderDetail.perCustomizePrice = $scope.addOrderDetail.perCustomizePrice ? $scope.addOrderDetail.perCustomizePrice : 0;
+            $scope.addOrderDetail.orderQty = $scope.addOrderDetail.orderQty ? $scope.addOrderDetail.orderQty : 0;
+            $scope.addOrderDetail.oriPurTax = $scope.addOrderDetail.oriPurTax ? $scope.addOrderDetail.oriPurTax : 0;
+            $scope.addOrderDetail.natPurTax = $scope.addOrderDetail.natPurTax ? $scope.addOrderDetail.natPurTax : 0;
 
             $scope.addOrderDetail.oriPurPrice = $scope.addOrderDetail.oriTransactionPrice + $scope.addOrderDetail.perCustomizePrice;
             $scope.addOrderDetail.natPurPrice = $scope.addOrderDetail.natTransactionPrice + $scope.addOrderDetail.perCustomizePrice;
