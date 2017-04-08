@@ -1,0 +1,26 @@
+<div layout="row" style="background-color:#BDBDBD;" layout-margin layout-align="center center">
+    <div align="center" flex="25">渠道编号</div>
+    <div align="center" flex="25">渠道商/直营店</div>
+    <div align="center" flex="25">品牌数</div>
+    <div align="center" flex="25"></div>
+</div>
+
+
+<div ng-repeat="channel in ChannelList.content">
+    <div layout="row" layout-margin layout-align="center center">
+
+        <div align="center" flex="25" class="table-item">{{channel.no}}</div>
+
+        <div align="center" flex="25" class="table-item">{{channel.name}}</div>
+
+        <div align="center" flex="25" class="table-item">{{channel.count}}</div>
+
+
+        <div align="center" flex="25">
+            <md-button class="md-raised" style="float: left;" ng-click="editItem(channel)">&nbsp;查看详情</md-button>
+        </div>
+    </div>
+</div>
+
+<div pagination option="queryPageOption" callback="queryMenuAction()"></div>
+

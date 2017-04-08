@@ -117,6 +117,18 @@ RES_UUID_MAP = {
         RES_UUID: 'DF48D392-1122-4FC3-A519-0ADE0AA2A841',
         TITLE: '渠道管理',
 
+        CHANNEL_BRAND_RELATION: {
+            RES_UUID: 'c455aebf-36e3-49e3-8200-690f6bc20554',
+            TITLE: '渠道品牌维护',
+            LIST_PAGE: {
+                RES_UUID: '26faed95-fcd4-4e88-896a-7f16ae7ace29',
+                TITLE: '渠道品牌维护-清单'
+            },
+            FORM_PAGE: {
+                RES_UUID: '0f07e8b0-21fb-4461-8c1a-fc7ccbcf3e5c',
+                TITLE: '渠道品牌维护-表单'
+            }
+        },
         CHANNEL_SERIES_RELATION: {
                     RES_UUID: 'C31D75DD-529A-4386-9544-FB70BC043601',
                     TITLE: '渠道系列维护',
@@ -719,6 +731,12 @@ angular.module('IOne-Constant').constant('Constant', {
             icon: 'fa fa-fax',
             subList: [
                 {id: 'promotion', name: '促销活动', link: '/promotion', uuid: RES_UUID_MAP.OCM.PROMOTION.RES_UUID},
+                {
+                    id: '/channelBrandRelation',
+                    name: '渠道品牌维护',
+                    link: '/channelBrandRelation',
+                    uuid: RES_UUID_MAP.OCM.CHANNEL_BRAND_RELATION.RES_UUID
+                },
                 {id: '/channelSeriesRelation', name: '渠道系列维护', link: '/channelSeriesRelation', uuid: RES_UUID_MAP.OCM.CHANNEL_SERIES_RELATION.RES_UUID},
                 {
                     id: '/channelPrice',
