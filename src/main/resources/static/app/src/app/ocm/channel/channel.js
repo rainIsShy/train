@@ -54,7 +54,7 @@ angular.module('IOne-Production').controller('OCMChannelController', function ($
 
     $scope.refreshList = function () {
         OCMChannelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.listFilterOption.select.confirm, $scope.listFilterOption.select.status,
-            $scope.listFilterOption.no, $scope.listFilterOption.name, $scope.listFilterOption.select.channelFlag, $scope.listFilterOption.keyWord, $scope.RES_UUID_MAP.CBI.CHANNEL.RES_UUID)
+            $scope.listFilterOption.no, $scope.listFilterOption.name, $scope.listFilterOption.select.channelFlag, $scope.listFilterOption.keyWord, $scope.listFilterOption.groupUser, $scope.RES_UUID_MAP.CBI.CHANNEL.RES_UUID)
             .success(function (data) {
                 $scope.itemList = data.content;
                 $scope.pageOption.totalPage = data.totalPages;

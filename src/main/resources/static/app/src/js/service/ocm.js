@@ -282,7 +282,7 @@ angular.module('IOne-Production').service('OCMParametersService', function ($htt
 });
 
 angular.module('IOne-Production').service('OCMChannelService', function ($http, Constant) {
-    this.getAll = function (sizePerPage, page, confirm, status, no, name, channelFlag, keyWord, resUuid) {
+    this.getAll = function (sizePerPage, page, confirm, status, no, name, channelFlag, keyWord, groupUser, resUuid) {
         confirm = confirm == 0 ? '' : confirm;
         status = status == 0 ? '' : status;
 
@@ -310,6 +310,11 @@ angular.module('IOne-Production').service('OCMChannelService', function ($http, 
         if (resUuid !== undefined && resUuid !== null) {
             url = url + '&resUuid=' + resUuid;
         }
+
+        if (groupUser !== undefined && groupUser !== null) {
+            url = url + '&groupUser=' + groupUser;
+        }
+
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
