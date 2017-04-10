@@ -1640,10 +1640,13 @@ angular.module('IOne-Production').controller('OrderCustomerSearchController', fu
 });
 
 
-angular.module('IOne-Production').controller('OrderItemsSearchController', function ($scope, $q, $mdDialog, OrderItems, ChannelItemInfoService, channelUuid, saleTypes, Constant) {
+angular.module('IOne-Production').controller('OrderItemsSearchController', function ($scope, $q, $mdDialog, OrderItems, ChannelItemInfoService, channelUuid, SaleTypes, Constant) {
+    SaleTypes.getAll().success(function (data) {
+        $scope.saleTypes = data.content;
+    });
 
     $scope.channelUuid = channelUuid;
-    $scope.saleTypes = saleTypes;
+    // $scope.saleTypes = saleTypes;
     $scope.addOrderDetail = {};
     $scope.pageOption = {
         sizePerPage: 5,
@@ -1749,6 +1752,12 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
                 $scope.showError(val);
             });
         } else {
+            angular.forEach($scope.saleTypes, function (saleType) {
+                if (saleType.uuid == $scope.addOrderDetail.saleTypeUuid) {
+                    $scope.addOrderDetail.saleType = saleType;
+                }
+            });
+
             $scope.addOrderDetail.oriTransactionPrice = $scope.addOrderDetail.oriTransactionPrice ? $scope.addOrderDetail.oriTransactionPrice : 0;
             $scope.addOrderDetail.perCustomizePrice = $scope.addOrderDetail.perCustomizePrice ? $scope.addOrderDetail.perCustomizePrice : 0;
             $scope.addOrderDetail.orderQty = $scope.addOrderDetail.orderQty ? $scope.addOrderDetail.orderQty : 0;
