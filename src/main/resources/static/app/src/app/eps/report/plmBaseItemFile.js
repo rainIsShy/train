@@ -58,7 +58,7 @@ angular.module('IOne-Production').controller('EpsOrderReport_plmBaseItemFile_con
             EpsOrderReportService.getPlmBaseItemFile(orderDateFrom, orderDateTo, $scope.pageOption).then(function (response) {
                 $scope.pageOption.totalPage = response.data.totalPages;
                 $scope.pageOption.totalElements = response.data.totalElements;
-                $scope.report = response.data
+                $scope.report = response.data;
                 if (response.data.content.length == 0)$scope.showInfo("沒有任何資料");
 
                 if ($scope.reportKeys.length == 0) {

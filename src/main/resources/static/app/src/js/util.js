@@ -604,6 +604,23 @@ RES_UUID_MAP = {
             RES_UUID: '5e2c5da6-08d2-4b68-9572-a1ab9eb76744',
             TITLE: '商品单位换算基础资料'
         },
+    },
+
+    REPORT: {
+        RES_UUID: '69FE81D1-6864-4D96-B808-AE806B82E20A',
+        TITLE: '报表管理',
+        REPORT_SELECT: {
+            RES_UUID: '30A12258-76F9-4CF0-BB5C-C47F608E8FD5',
+            TITLE: '报表查询'
+        },
+        PLM_BASE_ITEM_FILE: {
+            RES_UUID: '694FC88F-96D6-414B-9930-8C0614430C09',
+            TITLE: '电商订单料件明细(包件)'
+        },
+        INVENTORY_SELECT: {
+            RES_UUID: 'F86B3508-33A8-4975-A10A-31E7C7EDE162',
+            TITLE: '电商套件库存查询报表'
+        }
     }
 };
 
@@ -857,14 +874,14 @@ angular.module('IOne-Constant').constant('Constant', {
         },
         {
             id: 7,
-            uuid: '',
+            uuid: RES_UUID_MAP.REPORT.RES_UUID,
             name: '报表管理',
             isOpen: false,
             icon: 'fa fa-history',
             subList: [
-                {id: '/reports', name: '报表查询', link: '/reports', uuid: ''},
-                {id: '/eps/report/plmBaseItemFile', name: '电商订单料件明细(包件)', link: '/eps/report/plmBaseItemFile', uuid: ''},
-                {id: '/eps/inventoryQuery', name: '电商套件库存查询报表', link: '/eps/inventoryQuery', uuid: ''}
+                {id: '/reports', name: '报表查询', link: '/reports', uuid: RES_UUID_MAP.REPORT.REPORT_SELECT.RES_UUID},
+                {id: '/eps/report/plmBaseItemFile', name: '电商订单料件明细(包件)', link: '/eps/report/plmBaseItemFile', uuid: RES_UUID_MAP.REPORT.PLM_BASE_ITEM_FILE.RES_UUID},
+                {id: '/eps/inventoryQuery', name: '电商套件库存查询报表', link: '/eps/inventoryQuery', uuid: RES_UUID_MAP.REPORT.INVENTORY_SELECT.RES_UUID}
             ]
         },
         {
