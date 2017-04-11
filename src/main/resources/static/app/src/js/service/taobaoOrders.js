@@ -63,6 +63,10 @@ angular.module('IOne-Production').service('TaobaoOrders', function ($http, Const
         return $http.patch(Constant.BACKEND_BASE + '/taobaoTrades/' + DeliveryInput.uuid + '?type=delivery', DeliveryInput);
     }
 
+//    this.updateTidToNo = function (uuid, tid) {
+//        return $http.patch(Constant.BACKEND_BASE + '/taobaoTrades/' + uuid + tid + '&action = updateTidToNo');
+//    }
+
     /*  this.getOrderMasterCount = function( confirm, status,resUuid) {
      confirm = confirm == 0 ? '' : confirm;
      status = status == 0 ? '' : status;

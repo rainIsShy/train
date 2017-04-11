@@ -286,6 +286,14 @@ angular.module('IOne-Production').controller('TaobaoOrdersController', function 
         }
     };
 
+//    $scope.updateTid = function () {
+//        TaobaoOrders.updateTidToNo().success(function(returnMsgs) {
+//            $scope.showInfo('更新销售单号成功');
+//        }).error(function() {
+//            $scope.showError('更新销售单号失败');
+//        })
+//    }
+
     //抛转（审核）
     $scope.throwMenuAction = function () {
         var tid = '';
