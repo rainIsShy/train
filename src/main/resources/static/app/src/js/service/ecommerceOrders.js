@@ -96,6 +96,10 @@ angular.module('IOne-Production').service('EcommerceOrdersMaster', function ($ht
         return $http.patch(Constant.BACKEND_BASE + '/epsOrders?action=rollback', uuids);
     };
 
+    this.doSpecialFinish = function (uuid) {
+        return $http.patch(Constant.BACKEND_BASE + '/epsOrders/jd/specialFinish/' + uuid);
+    };
+
 });
 
 angular.module('IOne-Production').service('EcommerceOrderDetail', function ($http, Constant) {

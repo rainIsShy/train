@@ -39,7 +39,8 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
         '407-add': {display: true, name: '新增', uuid: '6A8F9438-C2FF-4BF3-8797-7B680AAA068E'},
         '408-supervisorAudit': {display: true, name: '主管审核', uuid: 'C515BAEB-758F-4265-AD6A-50FBDD614DD3'},
         '409-o2oOverdue': {display: true, name: '逾期拒绝配送', uuid: 'ADAA19C6-424B-4BE7-B2E2-F8D5B9ECCFC9'},
-        '410-rollbackTransfer': {display: true, name: '抛转还原', uuid: '324a85e8-6f5b-46bf-a42d-3e8926276a0d'}
+        '410-rollbackTransfer': {display: true, name: '抛转还原', uuid: '324a85e8-6f5b-46bf-a42d-3e8926276a0d'},
+        '421-specialFinish': {display: true, name: '特殊完结', uuid: '5cffd48e-7fbb-4636-b744-67cf786f5698'}
     };
 
     $scope.ecommerceFormMenuDisplayOption = {
@@ -49,7 +50,8 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
         '417-cancelthrow': {display: true, name: '取消抛转预订单', uuid: 'AE4CF2E4-4CCE-40DA-B060-0D00FCDA76C8'},
         '418-print': {display: true, name: '打印', uuid: '753C7E95-FC29-40DA-8296-DA858325FCF0'},
         '419-supervisorAudit': {display: true, name: '主管审核', uuid: 'F97D8B53-AF71-448F-AB73-63BAFB83F77F'},
-        '420-rollbackTransfer': {display: true, name: '抛转还原', uuid: 'fb882032-4d7f-4998-854e-6217a5089a25'}
+        '420-rollbackTransfer': {display: true, name: '抛转还原', uuid: 'fb882032-4d7f-4998-854e-6217a5089a25'},
+        '422-specialFinish': {display: true, name: '特殊完结', uuid: 'd8e824ff-3763-4102-90b3-a3ccc898945e'}
     };
 
     $scope.pageOption = {
@@ -1546,6 +1548,37 @@ angular.module('IOne-Production').controller('EcommerceOrdersController', functi
                     }
                 });
             }
+        });
+    };
+
+    $scope.doSpecialFinish = function () {
+
+        var uuid = "";
+        if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
+            if (!$scope.selected || $scope.selected.length == 0) { // list
+                $scope.showError('请选择待特殊完结的资料。');
+                return;
+            } else if ($scope.selected.length > 1) {
+                $scope.showError('一次只能处理一笔资料，请重新选择');
+                return;
+            }
+
+            uuid = $scope.selected[0].uuid;
+        }
+
+        if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
+            uuid = $scope.selectedItem.uuid;
+        }
+
+        $scope.showConfirm('确认特殊完结吗？', '', function () {
+
+            EcommerceOrdersMaster.doSpecialFinish(uuid).success(function () {
+                $scope.queryMenuActionWithPaging();//刷新查询
+                $scope.showInfo('特殊完结成功！');
+            }).error(function (res) {
+                $scope.showError("[" + res.status + "]" + res.message);
+                // $scope.showError('销售单号:' + data.content + ',不允许抛转还原');
+            });
         });
     };
 

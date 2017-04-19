@@ -48,6 +48,14 @@
                style="margin-top: 0px;height: 20px;" aria-label="抛转还原">
         &nbsp;{{ecommerceFormMenuDisplayOption['420-rollbackTransfer'].name}}
     </md-button>
+
+    <md-button
+            ng-if="ecommerceFormMenuDisplayOption['422-specialFinish'].display && (menuAuthDataMap[ecommerceFormMenuDisplayOption['422-specialFinish'].uuid] || isAdmin() || !ecommerceFormMenuDisplayOption['422-specialFinish'].uuid)"
+            ng-disabled="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY || ui_status == UI_STATUS.EDIT_UI_STATUS_ADD"
+            class="md-raised" ng-click="doSpecialFinish()"
+            style="margin-top: 0px;height: 20px;" aria-label="特殊完结">
+        &nbsp;{{ecommerceFormMenuDisplayOption['422-specialFinish'].name}}
+    </md-button>
 </div>
 
 
