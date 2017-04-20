@@ -14,13 +14,13 @@ angular.module('IOne-Production').service('EpsOrderQuery', function ($http, Cons
 
         if (filter.orderStartDate != null && filter.orderStartDate != undefined && filter.orderStartDate != "") {
             var orderStartDate = new Date(filter.orderStartDate);
-            orderStartDate = moment(orderStartDate).format('yyyy-MM-dd');
+            orderStartDate = moment(orderStartDate).format('YYYY-MM-DD');
             url = url + '&orderStartDate=' + orderStartDate;
         }
 
         if (filter.orderEndDate != null && filter.orderEndDate != undefined && filter.orderEndDate != "") {
             var orderEndDate = new Date(filter.orderEndDate);
-            orderEndDate = moment(orderEndDate).format('yyyy-MM-dd');
+            orderEndDate = moment(orderEndDate).format('YYYY-MM-DD');
             url = url + '&orderEndDate=' + orderEndDate;
         }
 
