@@ -620,6 +620,10 @@ RES_UUID_MAP = {
         INVENTORY_SELECT: {
             RES_UUID: 'F86B3508-33A8-4975-A10A-31E7C7EDE162',
             TITLE: '电商套件库存查询报表'
+        },
+        EPS_ORDER_QUERY: {
+            RES_UUID: 'C4A7718A-3B92-4D70-9067-4902A6271B1E',
+            TITLE: '电商订单查询报表'
         }
     }
 };
@@ -881,7 +885,8 @@ angular.module('IOne-Constant').constant('Constant', {
             subList: [
                 {id: '/reports', name: '报表查询', link: '/reports', uuid: RES_UUID_MAP.REPORT.REPORT_SELECT.RES_UUID},
                 {id: '/eps/report/plmBaseItemFile', name: '电商订单料件明细(包件)', link: '/eps/report/plmBaseItemFile', uuid: RES_UUID_MAP.REPORT.PLM_BASE_ITEM_FILE.RES_UUID},
-                {id: '/eps/inventoryQuery', name: '电商套件库存查询报表', link: '/eps/inventoryQuery', uuid: RES_UUID_MAP.REPORT.INVENTORY_SELECT.RES_UUID}
+                {id: '/eps/inventoryQuery', name: '电商套件库存查询报表', link: '/eps/inventoryQuery', uuid: RES_UUID_MAP.REPORT.INVENTORY_SELECT.RES_UUID},
+                {id: '/eps/epsOrderQuery', name: '电商订单查询报表', link: '/eps/epsOrderQuery', uuid: RES_UUID_MAP.REPORT.EPS_ORDER_QUERY.RES_UUID}
             ]
         },
         {
