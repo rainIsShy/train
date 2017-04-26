@@ -24,7 +24,7 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
         INV_INVENTORY_DTL: {value: 'INV_INVENTORY_DTL', name: '库存数据同步'},
         PSO_DELIVER_ORDER_EXT_DTL: {value: 'PSO_DELIVER_ORDER_EXT_DTL', name: '出货同步'},
         EPS_DELIVER_ORDER_EXT_DTL: {value: 'EPS_DELIVER_ORDER_EXT_DTL', name: '电商出货单同步'},
-        OCM_BASE_CHAN_BRAND_R: {value: 'OCM_BASE_CHAN_BRAND_R', name: '渠道品牌关系同步'},
+        OCM_CHAN_BRAND: {value: 'OCM_CHAN_BRAND', name: '渠道品牌关系同步'},
     };
 
     $scope.selected = [];
@@ -190,7 +190,7 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
                     $scope.logining = false;
                     $scope.showError(errResp.message);
                 });
-            } else if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.OCM_BASE_CHAN_BRAND_R.name) {
+            } else if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.OCM_CHAN_BRAND.name) {
                 // 电商出货单同步
                 IoneAdapterService.transferIoneAdapter("/chanBrandTask", param, $scope, function (response) {
                     var totalTcChanBrandCount = addResponse(response.updateTcChanBrandCount, response.insertTcChanBrandCount);
