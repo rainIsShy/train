@@ -23,7 +23,8 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
         PLM_ITEM_R: {value: 'PLM_ITEM_COL_FILE', name: '商品批号同步'},
         INV_INVENTORY_DTL: {value: 'INV_INVENTORY_DTL', name: '库存数据同步'},
         PSO_DELIVER_ORDER_EXT_DTL: {value: 'PSO_DELIVER_ORDER_EXT_DTL', name: '出货同步'},
-        EPS_DELIVER_ORDER_EXT_DTL: {value: 'EPS_DELIVER_ORDER_EXT_DTL', name: '电商出货单同步'}
+        EPS_DELIVER_ORDER_EXT_DTL: {value: 'EPS_DELIVER_ORDER_EXT_DTL', name: '电商出货单同步'},
+        OCM_CHAN_BRAND: {value: 'OCM_CHAN_BRAND', name: '渠道品牌关系同步'},
     };
 
     $scope.selected = [];
@@ -184,6 +185,17 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
                     var totalEpsOgbCount = addResponse(response.updateEpsOgbCount, response.insertEpsOgbCount);
                     var totalEpsLogisticsDtlRCount = addResponse(response.updateEpsLogisticsDtlRCount, response.insertEpsLogisticsDtlRCount);
                     $scope.showInfo('ERP同步到 TIPTOP_EPS_OGB_FILE，共 ' + totalEpsOgbCount + '笔数据同步成功!\n TIPTOP_EPS_OGB_FILE 同步到 EPS_LOGISTICS_DTL_R，共 ' + totalEpsLogisticsDtlRCount + '笔数据同步成功!');
+                    $scope.logining = false;
+                }).error(function (errResp) {
+                    $scope.logining = false;
+                    $scope.showError(errResp.message);
+                });
+            } else if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.OCM_CHAN_BRAND.name) {
+                // 电商出货单同步
+                IoneAdapterService.transferIoneAdapter("/chanBrandTask", param, $scope, function (response) {
+                    var totalTcChanBrandCount = addResponse(response.updateTcChanBrandCount, response.insertTcChanBrandCount);
+                    var totalChanBrandRelationCount = addResponse(response.updateChannelBrandRelationCount, response.insertChannelBrandRelationCount);
+                    $scope.showInfo('ERP同步到 TIPTOP_TC_CHAN_BRAND_FILE，共 ' + totalTcChanBrandCount + '笔数据同步成功!\n TIPTOP_TC_CHAN_BRAND_FILE 同步到 OCM_BASE_CHAN_BRAND_R，共 ' + totalChanBrandRelationCount + '笔数据同步成功!');
                     $scope.logining = false;
                 }).error(function (errResp) {
                     $scope.logining = false;
