@@ -218,7 +218,7 @@ spring:
 
 i1:
   i1-server:
-    url: http://project.benchmarkchina.com:50971
+    url: http://localhost:8081
   i1-adapter:
     url: http://project.benchmarkchina.com:10812
   tiptop-adapter:

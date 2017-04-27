@@ -208,7 +208,7 @@ angular.module('IOne-Production').service('EchannelService', function ($http, Co
         confirm = confirm == 0 ? '' : confirm;
         status = status == 0 ? '' : status;
 
-        var url = '/channels?size=' + sizePerPage
+        var url = '/channels/o2o?size=' + sizePerPage
             + '&page=' + page
             + '&confirm=' + confirm
             + '&status=' + status
