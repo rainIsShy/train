@@ -120,6 +120,7 @@
                                     <div align="center" flex="10" class=" table-head">品牌编号</div>
                                     <div align="center" flex="10" class=" table-head">品牌名称</div>
                                     <div align="center" flex="10" class=" table-head">定价系数</div>
+                                    <div align="center" flex="10" class=" table-head">有效否</div>
                                 </div>
 
                                 <div ng-repeat="channelRelation in channelRelationList.content | orderBy: 'series.no'">
@@ -142,6 +143,12 @@
                                             <div style=" padding: 10px 0px 0px 0px;">{{channelRelation.priceCoefficient
                                                 }}
                                             </div>
+                                        </div>
+                                        <div align="center" flex="10" class=" table-item">
+                                            <md-checkbox style=" padding: 0px 0px 0px 20px;" aria-label="..."
+                                                         ng-model="channelRelation.status" ng-disabled="true"
+                                                         ng-true-value="'1'" ng-false-value="'2'"></md-checkbox>
+                                            </md-input-container>
                                         </div>
                                     </div>
                                 </div>

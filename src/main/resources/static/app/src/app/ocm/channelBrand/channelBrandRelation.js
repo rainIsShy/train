@@ -65,7 +65,7 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
     };
 
     $scope.queryChannelRelationWithPaging = function () {
-        ChannelBrandRelationsService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, '1', $scope.selectedItem.uuid)
+        ChannelBrandRelationsService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, '', $scope.selectedItem.uuid, '', '', 'N')
             .success(function (data) {
                 $scope.channelRelationList = data;
                 $scope.pageOption.totalPage = data.totalPages;
@@ -74,7 +74,7 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
     };
 
     $scope.searchChannelRelationWithPaging = function (no, name) {
-        ChannelBrandRelationsService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, '1', $scope.selectedItem.uuid, no, name)
+        ChannelBrandRelationsService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, '', $scope.selectedItem.uuid, no, name, 'N')
             .success(function (data) {
                 var dataResult = [];
 
@@ -97,7 +97,7 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
                 $scope.queryPageOption.totalPage = data.totalPages;
                 $scope.queryPageOption.totalElements = data.totalElements;
                 angular.forEach($scope.ChannelList.content, function (channel) {
-                    ChannelBrandRelationsService.getAllByChannelUuid(channel.uuid, '1', RES_UUID_MAP.OCM.CHANNEL_BRAND_RELATION.LIST_PAGE.RES_UUID).success(function (data) {
+                    ChannelBrandRelationsService.getAllByChannelUuid(channel.uuid, '', 'N', RES_UUID_MAP.OCM.CHANNEL_BRAND_RELATION.LIST_PAGE.RES_UUID).success(function (data) {
                         channel.count = data.content.length;
                     });
                 });
@@ -291,7 +291,7 @@ angular.module('IOne-Production').controller('AddBrandController', function ($sc
     $scope.listFilterItem = listFilterItem;
     $scope.channel = channel;
     $scope.pageOptionForProd = {
-        sizePerPage: 1000,
+        sizePerPage: 10,
         currentPage: 0,
         totalPage: 0,
         totalElements: 0
@@ -319,11 +319,13 @@ angular.module('IOne-Production').controller('AddBrandController', function ($sc
         showQueryBar: true
     };
 
+
     $scope.pageOption = {
-        sizePerPage: 10,
+        sizePerPage: 5,
         currentPage: 0,
-        totalPage: 100,
-        totalElements: 100
+        totalPage: 0,
+        totalElements: 0
+
     };
 
     $scope.listFilterOption = {
@@ -340,74 +342,67 @@ angular.module('IOne-Production').controller('AddBrandController', function ($sc
 
 
     $scope.refreshAllTemplate = function () {
-        ChannelBrandRelationsService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.channel.uuid)
-            .success(function (data) {
-                $scope.channelRelationList = data;
-                $scope.pageOption.totalPage = data.totalPages;
-                $scope.pageOption.totalElements = data.totalElements;
+        BrandFile.getUnuseBrandByChannelUuid($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.channel.uuid).success(function (data) {
+            $scope.pageOption.totalPage = data.totalPages;
+            $scope.pageOption.totalElements = data.totalElements;
+            $scope.allProductionsData = data.content;
+        });
 
-                BrandFile.getAll(100, 0).success(function (data) {
-                    var dataResult = [];
-                    angular.forEach(data.content, function (item) {
-                        if ($scope.listFilterItem.indexOf(item.uuid) == -1) {
-                            dataResult.push(item);
-                        }
-                    });
-                    if ($scope.channelRelationList.content.length == 0) {
-                        $scope.allProductionsData = dataResult;
-                        $scope.pageOption.totalPage = data.totalPages;
-                        $scope.pageOption.totalElements = data.totalElements;
-                    } else {
-                        angular.forEach($scope.channelRelationList.content, function (item2) {
-                            for (var i = 0; i < dataResult.length - 1; i++) {
-                                if (item2.series.uuid == dataResult[i].uuid) {
-                                    dataResult.splice(i, 1);
-                                }
-                            }
-                            $scope.allProductionsData = dataResult;
-                            $scope.pageOption.totalPage = data.totalPages;
-                            $scope.pageOption.totalElements = data.totalElements;
-                        });
-                    }
-                });
-            });
-
-        $scope.selectedItem = null;
-        $scope.selectedTemplateNode = null;
-        $scope.selectedTemplateNodeData = null;
-        $scope.selectedTemplateNodeDataUuid = null;
     };
 
-    $scope.select = function (selectedObject) {
-        if (selectedObject.length == 0) {
-            toastr["warning"]("请选择需要关联的系列");
+    $scope.save = function () {
+        if ($scope.selected.length == 0) {
+            $scope.showWarn("请选择需要关联的品牌");
         } else {
-            $scope.selectedTemplateNode = selectedObject;
-            $mdDialog.hide($scope.selectedTemplateNode);
-            if ($scope.selectedTemplateNode != undefined && $scope.selectedTemplateNode.length > 0) {
-                var promises = [];
-
-                angular.forEach($scope.selectedTemplateNode, function (channelRelation) {
-                    channelRelation.channelUuid = $scope.channel.uuid;
-                    channelRelation.seriesUuid = channelRelation.uuid;
-                    var channelRelationResponse = ChannelBrandRelationsService.add(channelRelation).error(function (data) {
-                        toastr["error"]("重复添加");
-                    });
-                    promises.push(channelRelationResponse);
+            var promises = [];
+            angular.forEach($scope.selected, function (item) {
+                var addObject = {
+                    brandUuid: item.uuid,
+                    priceCoefficient: 1,
+                    status: "1",
+                    channelUuid: $scope.channel.uuid
+                };
+                var channelRelationResponse = ChannelBrandRelationsService.add(addObject).error(function (data) {
+                    $scope.showError('品牌:' + item.brand.name + '重复添加');
                 });
+                promises.push(channelRelationResponse);
+            });
 
-                $q.all(promises).then(function (data) {
-                    toastr["success"]("新增渠道区域信息成功。");
-                    $scope.editItem($scope.selectedItem);
-                }, function (data) {
-                    toastr["success"]('新增渠道区域信息完成。');
-                    $scope.editItem($scope.selectedItem);
-                });
-            } else {
-                $scope.channelRelationList = $scope.ExistedChannelRelationList;
-            }
-            $scope.cancelDlg();
-            $scope.editItem($scope.channel);
+
+            $q.all(promises).then(function (data) {
+                $scope.cancelDlg();
+                $scope.editItem($scope.channel);
+                $scope.showInfo("新增渠道品牌成功。");
+            });
+
+
+            // selectedObject.priceCoefficient = 1;
+            // selectedObject.status = "1";
+            // $scope.selectedTemplateNode = selectedObject;
+            // $mdDialog.hide($scope.selectedTemplateNode);
+            // if ($scope.selectedTemplateNode != undefined && $scope.selectedTemplateNode.length > 0) {
+            //     var promises = [];
+            //
+            //     angular.forEach($scope.selectedTemplateNode, function (channelRelation) {
+            //         channelRelation.channelUuid = $scope.channel.uuid;
+            //         channelRelation.seriesUuid = channelRelation.uuid;
+            //         var channelRelationResponse = ChannelBrandRelationsService.add(channelRelation).error(function (data) {
+            //             $scope.showError('品牌重复添加');
+            //         });
+            //         promises.push(channelRelationResponse);
+            //     });
+            //
+            //     $q.all(promises).then(function (data) {
+            //         $scope.success("新增渠道品牌成功。");
+            //         $scope.editItem($scope.selectedItem);
+            //     }, function () {
+            //         $scope.success('新增渠道品牌完成。');
+            //         $scope.editItem($scope.selectedItem);
+            //     });
+            // } else {
+            //     $scope.channelRelationList = $scope.ExistedChannelRelationList;
+            // }
+
         }
     };
 
@@ -425,6 +420,7 @@ angular.module('IOne-Production').controller('AddBrandController', function ($sc
         else {
             selected.push(item);
         }
+        console.log($scope.selected);
     };
 
     $scope.exists = function (item, list) {
@@ -440,6 +436,7 @@ angular.module('IOne-Production').controller('AddBrandController', function ($sc
                     $scope.ocmListMenu.selectAll = false;
                 });
             }
+
 
             angular.forEach($scope.allProductionsData, function (item) {
                 if (item.no.indexOf(no) > -1 || item.name.indexOf(name) > -1) {

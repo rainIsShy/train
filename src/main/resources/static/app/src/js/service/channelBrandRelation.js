@@ -13,7 +13,7 @@ angular.module('IOne-Production').service('ChannelBrandRelationsService', functi
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
-    this.getAllWithPaging = function (sizePerPage, page, status, channelUuid, brandNo, brandName) {
+    this.getAllWithPaging = function (sizePerPage, page, status, channelUuid, brandNo, brandName, dealerFlag) {
         var url = '/channelBrandRelations?size=' + sizePerPage
             + '&page=' + page
             + '&status=' + status
@@ -27,14 +27,20 @@ angular.module('IOne-Production').service('ChannelBrandRelationsService', functi
             url = url + '&brandName=' + brandName;
         }
 
+        if (dealerFlag) {
+            url = url + '&dealerFlag=' + dealerFlag;
+        }
+
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
 
-    this.getAllByChannelUuid = function (channelUuid, status, resUuid) {
+    this.getAllByChannelUuid = function (channelUuid, status, dealerFlag, resUuid) {
         var url = '/channelBrandRelations?status=' + status
             + '&channelUuid=' + channelUuid;
-
+        if (dealerFlag) {
+            url = url + '&dealerFlag=' + dealerFlag;
+        }
 
         if (resUuid !== undefined && resUuid !== null) {
             url = url + '&resUuid=' + resUuid;
