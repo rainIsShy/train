@@ -225,9 +225,11 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
                 op: 'add'
             }
         }).then(function (data) {
-            $scope.logining = true;
-            $scope.populateChannelRelation(data);
+            $scope.showInfo('删除数据成功。');
+            $scope.editItem($scope.selectedItem);
+
         });
+
     };
 
     $scope.populateChannelRelation = function (data) {
@@ -241,35 +243,6 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
     };
 
 
-    // $scope.addMenuAction = function () {
-    //     if ($scope.channelRelationList.content != undefined && $scope.channelRelationList.content.length > 0) {
-    //         var promises = [];
-    //
-    //         angular.forEach($scope.channelRelationList.content, function (channelRelation) {
-    //             channelRelation.channelUuid = $scope.selectedItem.uuid;
-    //             channelRelation.seriesUuid = channelRelation.series.uuid;
-    //             var channelRelationResponse = ChannelSeriesRelationService.add(channelRelation).error(function (data) {
-    //                 $scope.showError("重复添加");
-    //             });
-    //             promises.push(channelRelationResponse);
-    //         });
-    //
-    //         $q.all(promises).then(function (data) {
-    //             $scope.showInfo('新增渠道区域信息成功。');
-    //             $scope.editItem($scope.selectedItem);
-    //         }, function (data) {
-    //             $scope.showInfo('新增渠道区域信息完成。');
-    //             $scope.editItem($scope.selectedItem);
-    //         });
-    //     } else {
-    //         $scope.channelRelationList = $scope.ExistedChannelRelationList;
-    //     }
-    //     $scope.changeViewStatus($scope.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
-    // };
-    //
-    // $scope.cancelAddMenuAction = function () {
-    //     $scope.editItem($scope.selectedItem);
-    // };
 
     $scope.deleteMenuAction = function () {
         if ($scope.selected.length > 0) {
@@ -507,7 +480,7 @@ angular.module('IOne-Production').controller('AddBrandController', function ($sc
     };
 
     $scope.cancelDlg = function () {
-        $mdDialog.cancel();
+        $mdDialog.hide();
     };
 
     $scope.selected = [];
