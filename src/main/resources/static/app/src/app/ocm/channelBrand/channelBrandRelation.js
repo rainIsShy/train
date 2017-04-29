@@ -21,23 +21,28 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
 
 
     $scope.formMenuDisplayOption = {
-        '100-add': {display: true, name: '新增', uuid: '452A0E53-2BAD-44F3-BD75-DE919C1C9DAC'},
-        '101-delete': {display: true, name: '删除', uuid: 'BF6AC3DC-D9C5-400C-8C66-D9FCF74E49A1'},
-        '102-edit': {display: true, name: '编辑', uuid: '169AA869-6A62-4287-9136-40886E7246ED'},
+        '100-add': {display: true, name: '新增', uuid: '10dece1d-3a54-4d23-a41e-9419b42efe66'},
+        '101-delete': {display: true, name: '删除', uuid: '58516534-9c0b-46ea-b000-82b03ca79f97'},
+        '102-edit': {display: true, name: '编辑', uuid: 'af9c186a-08f5-48d7-9249-36e4985f5cda'},
 
-        '200-cancel': {display: true, name: '取消新增', uuid: '8536C6CE-75F0-46F4-9CFA-A3DE2AB371CE'},
-        '201-save': {display: true, name: '保存', uuid: 'C03E7689-267F-4A6B-AA7D-88A99C9CEFF0'},
+        '200-cancel': {display: true, name: '取消新增', uuid: '0c637a24-9692-42e6-a431-22fc5c5bdd24'},
+        '201-save': {display: true, name: '保存', uuid: 'aaf72666-02bf-4073-b692-44b42759a029'},
 
 
-        '302-save': {display: true, name: '保存', uuid: '01673539-3C67-4E76-B616-3767B07E6922'},
-        '303-cancel': {display: true, name: '取消修改', uuid: 'FD70B726-FF76-45B4-B667-BB778B3C2AA9'},
-        '304-quit': {display: true, name: '退出编辑', uuid: '63367BAD-6D79-4994-B420-EBFAA30D8357'},
+        '302-save': {display: true, name: '保存', uuid: 'a4b3b116-409a-49d6-ad05-4237143f9413'},
+        '303-cancel': {display: true, name: '取消修改', uuid: '66b7ae2c-8fae-4f04-a80a-25cb79ce793d'},
+        '304-quit': {display: true, name: '退出编辑', uuid: '0d290203-dc51-4b9f-bf4f-197d80f3e677'},
 
         '600-query': {display: true, name: '查询', uuid: '6d9a8d23-85c8-4bda-a40c-718df09ee765'},
         '601-selectAll': {display: false, name: '全选', uuid: '290387e5-185b-40bc-8534-db2249048ef1'},
         '602-execute': {display: true, name: '执行', uuid: '11d9eafb-ad7b-408b-8ac7-a386cdec2171'},
-    };
 
+        '611-selectAll': {display: true, name: '全选', uuid: '53eac324-6a60-4fa4-803e-913117f1f229'},
+        '612-audit': {display: true, name: '审核', uuid: 'ce9db12c-4d83-4cbd-9f8b-d84ad7280022'},
+        '613-revertAudit': {display: true, name: '取消审核', uuid: '129a721f-e0de-4edf-8567-7d227c0d03d2'},
+        '614-valid': {display: true, name: '有效', uuid: '4c064386-ef2c-4738-9e44-ad4b578c45d2'},
+        '615-invalid': {display: true, name: '无效', uuid: 'da7f191e-a3bc-47bd-aa0b-f1243aa81a64'}
+    };
 
     $scope.queryPageOption = {
         sizePerPage: 10,
@@ -212,7 +217,7 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
             controller: 'AddBrandController',
             templateUrl: 'app/src/app/ocm/channelBrand/addChannelBrandRelation.html',
             parent: angular.element(document.body),
-            //targetEvent: event,
+            targetEvent: event,
             locals: {
                 Series: $scope.selectedItem,
                 channel: $scope.selectedItem,
@@ -236,43 +241,43 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
     };
 
 
-    $scope.addMenuAction = function () {
-        if ($scope.channelRelationList.content != undefined && $scope.channelRelationList.content.length > 0) {
-            var promises = [];
-
-            angular.forEach($scope.channelRelationList.content, function (channelRelation) {
-                channelRelation.channelUuid = $scope.selectedItem.uuid;
-                channelRelation.seriesUuid = channelRelation.series.uuid;
-                var channelRelationResponse = ChannelSeriesRelationService.add(channelRelation).error(function (data) {
-                    $scope.showError("重复添加");
-                });
-                promises.push(channelRelationResponse);
-            });
-
-            $q.all(promises).then(function (data) {
-                $scope.showInfo('新增渠道区域信息成功。');
-                $scope.editItem($scope.selectedItem);
-            }, function (data) {
-                $scope.showInfo('新增渠道区域信息完成。');
-                $scope.editItem($scope.selectedItem);
-            });
-        } else {
-            $scope.channelRelationList = $scope.ExistedChannelRelationList;
-        }
-        $scope.changeViewStatus($scope.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
-    };
-
-    $scope.cancelAddMenuAction = function () {
-        $scope.editItem($scope.selectedItem);
-    };
+    // $scope.addMenuAction = function () {
+    //     if ($scope.channelRelationList.content != undefined && $scope.channelRelationList.content.length > 0) {
+    //         var promises = [];
+    //
+    //         angular.forEach($scope.channelRelationList.content, function (channelRelation) {
+    //             channelRelation.channelUuid = $scope.selectedItem.uuid;
+    //             channelRelation.seriesUuid = channelRelation.series.uuid;
+    //             var channelRelationResponse = ChannelSeriesRelationService.add(channelRelation).error(function (data) {
+    //                 $scope.showError("重复添加");
+    //             });
+    //             promises.push(channelRelationResponse);
+    //         });
+    //
+    //         $q.all(promises).then(function (data) {
+    //             $scope.showInfo('新增渠道区域信息成功。');
+    //             $scope.editItem($scope.selectedItem);
+    //         }, function (data) {
+    //             $scope.showInfo('新增渠道区域信息完成。');
+    //             $scope.editItem($scope.selectedItem);
+    //         });
+    //     } else {
+    //         $scope.channelRelationList = $scope.ExistedChannelRelationList;
+    //     }
+    //     $scope.changeViewStatus($scope.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
+    // };
+    //
+    // $scope.cancelAddMenuAction = function () {
+    //     $scope.editItem($scope.selectedItem);
+    // };
 
     $scope.deleteMenuAction = function () {
         if ($scope.selected.length > 0) {
-            $scope.showConfirm('确认删除吗？', '删除的渠道区域信息不可恢复。', function () {
+            $scope.showConfirm('确认删除吗？', '删除的渠道信息不可恢复。', function () {
                 if ($scope.selected) {
                     var promises = [];
                     angular.forEach($scope.selected, function (channelItemInfo) {
-                        var response = ChannelSeriesRelationService.delete(channelItemInfo.uuid).success(function (data) {
+                        var response = ChannelBrandRelationsService.delete(channelItemInfo.uuid).success(function (data) {
                         });
                         promises.push(response);
                     });
@@ -283,6 +288,128 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
                 }
             });
         }
+    };
+
+    $scope.selectAllMenuAction = function () {
+        if ($scope.ocmListMenu.selectAll == true) {
+            $scope.selected = [];
+            if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
+                angular.forEach($scope.channelRelationList.content, function (item) {
+                    $scope.selected.push(item);
+                });
+                $scope.changeButtonStatus();
+            } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
+                angular.forEach($scope.ChannelList.content, function (item) {
+                    $scope.selected.push(item);
+                });
+            }
+        } else if ($scope.ocmListMenu.selectAll == false) {
+            $scope.selected = [];
+        }
+    };
+
+    $scope.changeButtonStatus = function () {
+        $scope.resetInitialValue();
+        var firstLoop = true;
+        // only channel price will come into this logic
+        angular.forEach($scope.selected, function (channelRelation) {
+            $scope.changeButtonStatusByConfirm(channelRelation);
+            $scope.changeButtonStatusByStatus(channelRelation);
+            if (firstLoop) {
+                firstLoop = false;
+                $scope.firstLoopStatus = channelRelation.status;
+                $scope.firstLoopConfirm = channelRelation.confirm;
+            } else {
+                if ($scope.firstLoopStatus !== channelRelation.status) {
+                    $scope.valid_status_button_disabled = 1;
+                    $scope.invalid_status_button_disabled = 1;
+                }
+                if ($scope.firstLoopConfirm !== channelRelation.confirm) {
+                    $scope.audit_button_disabled = 1;
+                    $scope.revert_audit_button_disabled = 1;
+                }
+            }
+        });
+    };
+
+    $scope.validStatusMenuAction = function () {
+        if ($scope.selected.length > 0) {
+            $scope.showConfirm('确认修改启用状态为有效吗？', '', function () {
+                if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
+                    var promises = [];
+                    angular.forEach($scope.selected, function (channelRelation) {
+                        var ChannelRelationUpdateInput = {
+                            status: Constant.STATUS[1].value
+                        };
+                        var response = ChannelBrandRelationsService.modify(channelRelation.uuid, ChannelRelationUpdateInput).success(function () {
+
+                        });
+                        promises.push(response);
+                    });
+                    $q.all(promises).then(function () {
+                        $scope.showInfo('修改数据成功。');
+                        $scope.editItem($scope.selectedItem);
+                    })
+                } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
+                    var promises = [];
+                    angular.forEach($scope.selected, function (channel) {
+
+                        var ChannelRelationUpdateInput = {
+//                            channelUuid: channel.uuid,
+                            status: Constant.STATUS[1].value
+                        };
+                        var response = ChannelService.modify(channel.uuid, ChannelRelationUpdateInput).success(function (data) {
+                        });
+                        promises.push(response);
+
+                    });
+                    $q.all(promises).then(function (data) {
+                        $scope.showInfo('修改数据成功。');
+                        $scope.queryMenuAction();
+                    })
+                }
+            });
+        }
+
+    };
+
+    $scope.invalidStatusMenuAction = function () {
+        if ($scope.selected.length > 0) {
+            $scope.showConfirm('确认修改启用状态为无效吗？', '', function () {
+                if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
+                    var promises = [];
+                    angular.forEach($scope.selected, function (channelRelation) {
+                        console.log(channelRelation);
+                        var channelRelationUpdateInput = {
+                            status: Constant.STATUS[2].value
+                        };
+                        var response = ChannelBrandRelationsService.modify(channelRelation.uuid, channelRelationUpdateInput).success(function () {
+
+                        });
+                        promises.push(response);
+                    });
+                    $q.all(promises).then(function () {
+                        $scope.showInfo('修改数据成功。');
+                        $scope.editItem($scope.selectedItem);
+                    })
+                } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
+                    var promises = [];
+                    angular.forEach($scope.selected, function (channel) {
+                        var channelRelationUpdateInput = {
+                            status: Constant.STATUS[2].value
+                        };
+                        var response = ChannelService.modify(channel.uuid, channelRelationUpdateInput).success(function (data) {
+                        });
+                        promises.push(response);
+                    });
+                    $q.all(promises).then(function () {
+                        $scope.showInfo('修改数据成功。');
+                        $scope.queryMenuAction();
+                    })
+                }
+            });
+        }
+
     };
 
 });
@@ -352,7 +479,7 @@ angular.module('IOne-Production').controller('AddBrandController', function ($sc
 
     $scope.save = function () {
         if ($scope.selected.length == 0) {
-            $scope.showWarn("请选择需要关联的品牌");
+            toastr["warning"]("请选择需要关联的品牌");
         } else {
             var promises = [];
             angular.forEach($scope.selected, function (item) {
@@ -363,45 +490,18 @@ angular.module('IOne-Production').controller('AddBrandController', function ($sc
                     channelUuid: $scope.channel.uuid
                 };
                 var channelRelationResponse = ChannelBrandRelationsService.add(addObject).error(function (data) {
-                    $scope.showError('品牌:' + item.brand.name + '重复添加');
+                    toastr["error"]("请选择需要关联的品牌");
                 });
                 promises.push(channelRelationResponse);
             });
 
 
-            $q.all(promises).then(function (data) {
+            $q.all(promises).then(function () {
+                toastr["success"]("新增渠道品牌成功");
                 $scope.cancelDlg();
                 $scope.editItem($scope.channel);
-                $scope.showInfo("新增渠道品牌成功。");
             });
 
-
-            // selectedObject.priceCoefficient = 1;
-            // selectedObject.status = "1";
-            // $scope.selectedTemplateNode = selectedObject;
-            // $mdDialog.hide($scope.selectedTemplateNode);
-            // if ($scope.selectedTemplateNode != undefined && $scope.selectedTemplateNode.length > 0) {
-            //     var promises = [];
-            //
-            //     angular.forEach($scope.selectedTemplateNode, function (channelRelation) {
-            //         channelRelation.channelUuid = $scope.channel.uuid;
-            //         channelRelation.seriesUuid = channelRelation.uuid;
-            //         var channelRelationResponse = ChannelBrandRelationsService.add(channelRelation).error(function (data) {
-            //             $scope.showError('品牌重复添加');
-            //         });
-            //         promises.push(channelRelationResponse);
-            //     });
-            //
-            //     $q.all(promises).then(function (data) {
-            //         $scope.success("新增渠道品牌成功。");
-            //         $scope.editItem($scope.selectedItem);
-            //     }, function () {
-            //         $scope.success('新增渠道品牌完成。');
-            //         $scope.editItem($scope.selectedItem);
-            //     });
-            // } else {
-            //     $scope.channelRelationList = $scope.ExistedChannelRelationList;
-            // }
 
         }
     };

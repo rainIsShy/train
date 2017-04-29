@@ -93,7 +93,7 @@
                             </div>
 
                             <div layout="row" layout-margin layout-padding layout-md="column" layout-sm="column"
-                                 ng-show="selectedItem != null && channelRelationList.content.length > 0">
+                                 ng-show="selectedItem != null && channelRelationList.content.length > 0  && (selectedItem.channelFlag == '2' || selectedItem.channelFlag == '4')">
                                 <md-input-container>
                                     <label>定价系数维护：</label>
                                     <input type="number" aria-label="..." ng-model="priceCoefficient" string-to-number
