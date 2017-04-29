@@ -225,7 +225,6 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
                 op: 'add'
             }
         }).then(function (data) {
-            $scope.showInfo('删除数据成功。');
             $scope.editItem($scope.selectedItem);
 
         });
