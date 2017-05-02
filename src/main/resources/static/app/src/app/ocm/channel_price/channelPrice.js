@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('ChannelPriceController', function ($scope, $q, OCMParametersService, WarehousesService, ChannelService, ChannelPriceService, ChannelLevelService, CatalogueTemplate, Catalogue, ProductionCatalogueDetails, $mdDialog, $timeout, Constant) {
+angular.module('IOne-Production').controller('ChannelPriceController', function ($scope, $q, OCMParametersService, WarehousesService, ChannelService, ChannelPriceService, ChannelLevelService, CatalogueTemplate, Catalogue, ProductionCatalogueDetails, IoneAdapterService, $mdDialog, $timeout, Constant) {
     //initialize model value.
     $scope.ocmListMenu = {
         selectAll: false,
@@ -20,6 +20,7 @@ angular.module('IOne-Production').controller('ChannelPriceController', function 
         '102-edit': {display: true, name: '编辑', uuid: '4A7E5038-2319-4089-AE5D-FDCB32C3FFB5'},
         '109-copy': {display: true, name: '导入', uuid: 'C1E09C8F-489B-4E92-AED9-7A185DE3E989'},
         '110-syncPrice': {display: true, name: '同步定价', uuid: '4dceb5a1-41ac-4cae-87b9-f6b2a12d2093'},
+        '111-updatePrice': {display: true, name: '更新价格', uuid: '4dceb5a1-41ac-4cae-87b9-f6b2a12d2093'},
         '301-delete': {display: true, name: '清空', uuid: 'c47d30c5-6550-45a2-9b4c-931895ef8f1c'},
 
         '200-cancel': {display: true, name: '取消新增', uuid: '8536C6CE-75F0-46F4-9CFA-A3DE2AB371CE'},
@@ -72,6 +73,8 @@ angular.module('IOne-Production').controller('ChannelPriceController', function 
             $scope.copyChannelPrice();
         } else if (menuId == 110) {
             $scope.syncChannelPrice();
+        } else if (menuId == 111) {
+            $scope.updateChannelPrice();
         }
 
         //Add menu
@@ -747,6 +750,20 @@ angular.module('IOne-Production').controller('ChannelPriceController', function 
         });
     };
 
+    $scope.updateChannelPrice = function () {
+        $scope.logining = true;
+        var param = {
+            channelUuid: $scope.selectedItem.uuid
+        };
+        IoneAdapterService.transferIoneAdapter("/chanImaPriceTask", param, $scope, function (response) {
+            $scope.showInfo('價格更新完成!');
+            $scope.logining = false;
+        }).error(function (errResp) {
+            $scope.logining = false;
+            $scope.showError(errResp.message);
+        });
+    };
+
     $scope.deleteNodeMenuAction = function () {
         $scope.showConfirm('确认清空吗？', '清空的商品定价不可恢复。', function () {
             ChannelPriceService.deleteByChannel($scope.selectedItem.uuid).success(function (data) {
@@ -790,6 +807,7 @@ angular.module('IOne-Production').controller('ChannelPriceController', function 
             });
         });
     };
+
 
     OCMParametersService.getAll().success(function (ocmParameterData) {
         $scope.standardPriceCoefficient = ocmParameterData.content[0].standardPriceCoefficient;
