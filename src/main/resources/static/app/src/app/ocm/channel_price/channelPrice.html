@@ -30,6 +30,13 @@
                                                        ng-if="formMenuDisplayOption['110-syncPrice'].display && (menuAuthDataMap[formMenuDisplayOption['110-syncPrice'].uuid] || isAdmin() || !formMenuDisplayOption['110-syncPrice'].uuid)">
                                                 <i class="fa fa-files-o"></i>&nbsp;{{formMenuDisplayOption['110-syncPrice'].name}}
                                             </md-button>
+
+                                            <md-button ng-click="menuAction(111)"
+                                                       ng-show="selectedItem.channelFlag == '1' || selectedItem.channelFlag == '2' || selectedItem.channelFlag == '3' || selectedItem.channelFlag == '4'"
+                                                       ng-if="formMenuDisplayOption['111-updatePrice'].display && (menuAuthDataMap[formMenuDisplayOption['111-updatePrice'].uuid] || isAdmin() || !formMenuDisplayOption['111-updatePrice'].uuid)">
+                                                <i class="fa fa-clipboard"></i>&nbsp;{{formMenuDisplayOption['111-updatePrice'].name}}
+                                            </md-button>
+
                                             <md-button ng-click="menuAction(100)"
                                                        ng-if="formMenuDisplayOption['100-add'].display && (menuAuthDataMap[formMenuDisplayOption['100-add'].uuid] || isAdmin() || !formMenuDisplayOption['100-add'].uuid)">
                                                 <i class="fa fa-plus"></i>&nbsp;{{formMenuDisplayOption['100-add'].name}}
