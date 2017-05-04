@@ -35,12 +35,10 @@ angular.module('IOne-Production').service('ChannelBrandRelationsService', functi
     };
 
 
-    this.getAllByChannelUuid = function (channelUuid, status, dealerFlag, resUuid) {
+    this.getAllByChannelUuid = function (channelUuid, status, resUuid) {
         var url = '/channelBrandRelations?status=' + status
             + '&channelUuid=' + channelUuid;
-        if (dealerFlag) {
-            url = url + '&dealerFlag=' + dealerFlag;
-        }
+
 
         if (resUuid !== undefined && resUuid !== null) {
             url = url + '&resUuid=' + resUuid;

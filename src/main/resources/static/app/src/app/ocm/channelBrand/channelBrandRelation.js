@@ -70,7 +70,6 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
     };
 
     $scope.queryChannelRelationWithPaging = function () {
-        console.log($scope.selectedItem.channelFlag);
         var status = '';
         if ($scope.selectedItem.channelFlag == '1' || $scope.selectedItem.channelFlag == '3') {
             status = '1'
@@ -107,7 +106,13 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
                 $scope.queryPageOption.totalPage = data.totalPages;
                 $scope.queryPageOption.totalElements = data.totalElements;
                 angular.forEach($scope.ChannelList.content, function (channel) {
-                    ChannelBrandRelationsService.getAllByChannelUuid(channel.uuid, '', 'N', RES_UUID_MAP.OCM.CHANNEL_BRAND_RELATION.LIST_PAGE.RES_UUID).success(function (data) {
+
+                    var status = '';
+                    if (channel.channelFlag == '1' || channel.channelFlag == '3') {
+                        status = '1'
+                    }
+
+                    ChannelBrandRelationsService.getAllByChannelUuid(channel.uuid, status, RES_UUID_MAP.OCM.CHANNEL_BRAND_RELATION.LIST_PAGE.RES_UUID).success(function (data) {
                         channel.count = data.content.length;
                     });
                 });
