@@ -70,7 +70,12 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
     };
 
     $scope.queryChannelRelationWithPaging = function () {
-        ChannelBrandRelationsService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, '', $scope.selectedItem.uuid, '', '', 'N')
+        console.log($scope.selectedItem.channelFlag);
+        var status = '';
+        if ($scope.selectedItem.channelFlag == '1' || $scope.selectedItem.channelFlag == '3') {
+            status = '1'
+        }
+        ChannelBrandRelationsService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, status, $scope.selectedItem.uuid, '', '')
             .success(function (data) {
                 $scope.channelRelationList = data;
                 $scope.pageOption.totalPage = data.totalPages;
