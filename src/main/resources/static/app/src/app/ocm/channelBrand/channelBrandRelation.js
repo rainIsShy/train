@@ -70,23 +70,27 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
     };
 
     $scope.queryChannelRelationWithPaging = function () {
+        // var status = '';
+        // if ($scope.selectedItem.channelFlag == '1' || $scope.selectedItem.channelFlag == '3') {
+        //     status = '1'
+        // }
+        // ChannelBrandRelationsService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, status, $scope.selectedItem.uuid, '', '')
+        //     .success(function (data) {
+        //         $scope.channelRelationList = data;
+        //         $scope.pageOption.totalPage = data.totalPages;
+        //         $scope.pageOption.totalElements = data.totalElements;
+        //     });
+        $scope.searchChannelRelationWithPaging('', '')
+    };
+
+    $scope.searchChannelRelationWithPaging = function (no, name) {
         var status = '';
         if ($scope.selectedItem.channelFlag == '1' || $scope.selectedItem.channelFlag == '3') {
             status = '1'
         }
-        ChannelBrandRelationsService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, status, $scope.selectedItem.uuid, '', '')
-            .success(function (data) {
-                $scope.channelRelationList = data;
-                $scope.pageOption.totalPage = data.totalPages;
-                $scope.pageOption.totalElements = data.totalElements;
-            });
-    };
 
-    $scope.searchChannelRelationWithPaging = function (no, name) {
-        ChannelBrandRelationsService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, '', $scope.selectedItem.uuid, no, name, 'N')
+        ChannelBrandRelationsService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, status, $scope.selectedItem.uuid, no, name)
             .success(function (data) {
-                var dataResult = [];
-
                 $scope.channelRelationList.content = data.content;
                 $scope.pageOption.totalPage = data.totalPages;
                 $scope.pageOption.totalElements = data.totalElements;
