@@ -321,6 +321,7 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
     $scope.validStatusMenuAction = function () {
         if ($scope.selected.length > 0) {
             $scope.showConfirm('确认修改启用状态为有效吗？', '', function () {
+                $scope.logining = true;
                 if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
                     var promises = [];
                     angular.forEach($scope.selected, function (channelRelation) {
@@ -333,6 +334,7 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
                         promises.push(response);
                     });
                     $q.all(promises).then(function () {
+                        $scope.logining = false;
                         $scope.showInfo('修改数据成功。');
                         $scope.editItem($scope.selectedItem);
                     })
@@ -350,6 +352,7 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
 
                     });
                     $q.all(promises).then(function (data) {
+                        $scope.logining = false;
                         $scope.showInfo('修改数据成功。');
                         $scope.queryMenuAction();
                     })
@@ -362,10 +365,10 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
     $scope.invalidStatusMenuAction = function () {
         if ($scope.selected.length > 0) {
             $scope.showConfirm('确认修改启用状态为无效吗？', '', function () {
+                $scope.logining = true;
                 if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
                     var promises = [];
                     angular.forEach($scope.selected, function (channelRelation) {
-                        console.log(channelRelation);
                         var channelRelationUpdateInput = {
                             status: Constant.STATUS[2].value
                         };
@@ -375,6 +378,7 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
                         promises.push(response);
                     });
                     $q.all(promises).then(function () {
+                        $scope.logining = false;
                         $scope.showInfo('修改数据成功。');
                         $scope.editItem($scope.selectedItem);
                     })
@@ -389,6 +393,7 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
                         promises.push(response);
                     });
                     $q.all(promises).then(function () {
+                        $scope.logining = false;
                         $scope.showInfo('修改数据成功。');
                         $scope.queryMenuAction();
                     })
