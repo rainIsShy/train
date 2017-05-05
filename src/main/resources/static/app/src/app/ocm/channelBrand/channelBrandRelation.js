@@ -270,6 +270,7 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
                     $q.all(promises).then(function () {
                         $scope.showInfo('删除数据成功。');
                         $scope.editItem($scope.selectedItem);
+
                     });
                 }
             });
