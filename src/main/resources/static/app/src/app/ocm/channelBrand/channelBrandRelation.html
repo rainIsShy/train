@@ -21,9 +21,9 @@
                                         </md-input-container>
 
                                         <md-button class="md-raised"
-                                                   ng-if="menuDisplayOption['600-query'].display && (menuAuthDataMap[menuDisplayOption['600-query'].uuid] || isAdmin() || !menuDisplayOption['600-query'].uuid)"
+                                                   ng-if="formMenuDisplayOption['600-query'].display && (menuAuthDataMap[formMenuDisplayOption['600-query'].uuid] || isAdmin() || !formMenuDisplayOption['600-query'].uuid)"
                                                    style="margin-top: 22px;height: 20px;" ng-click="queryMenuAction()">
-                                            &nbsp;{{menuDisplayOption['600-query'].name}}
+                                            &nbsp;{{formMenuDisplayOption['600-query'].name}}
                                         </md-button>
                                     </div>
                                 </div>
@@ -40,8 +40,30 @@
                 <md-tab-body>
                     <md-content class="formList">
                         <form name="mainForm" novalidate>
-                            <!--<div ng-if="selectedItem != null" channel-series-relation-table1></div>-->
 
+                            <div ng-if="selectedItem != null" channel-series-relation-table1></div>
+                            <div ng-if="selectedItem != null" channel-series-relation-table2></div>
+                            <div layout="column">
+                                <div flex layout="column" class="order-item-background"
+                                     ng-if="ocmListMenu.showQueryBar">
+                                    <div class="menu" layout="row" layout-md="column" layout-sm="column">
+                                        <md-input-container>
+                                            <label>渠道店/直营编号：</label>
+                                            <input ng-model="ocmListMenu.channelNo"/>
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <label>渠道店/直营店：</label>
+                                            <input ng-model="ocmListMenu.channelName"/>
+                                        </md-input-container>
+
+                                        <md-button class="md-raised"
+                                                   ng-if="formMenuDisplayOption['600-query'].display && (menuAuthDataMap[formMenuDisplayOption['600-query'].uuid] || isAdmin() || !formMenuDisplayOption['600-query'].uuid)"
+                                                   style="margin-top: 22px;height: 20px;" ng-click="queryMenuAction()">
+                                            &nbsp;{{formMenuDisplayOption['600-query'].name}}
+                                        </md-button>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div layout-margin layout-padding class="md-whiteframe-z1"
                                  ng-if="ui_status == UI_STATUS.VIEW_UI_STATUS">
@@ -64,21 +86,21 @@
                                 </md-input-container>
 
                                 <md-button class="md-raised" aria-label="..."
-                                           ng-if="menuDisplayOption['600-query'].display"
+                                           ng-if="formMenuDisplayOption['600-query'].display"
                                            ng-click="searchChannelRelationWithPaging(selectedItem.brandNo, selectedItem.brandName)"
                                            style="margin-top: 22px;height: 20px;"> 查找
                                 </md-button>
                             </div>
 
                             <div layout="row" layout-margin layout-padding layout-md="column" layout-sm="column"
-                                 ng-show="selectedItem != null && channelRelationList.content.length > 0">
+                                 ng-show="selectedItem != null && channelRelationList.content.length > 0  && (selectedItem.channelFlag == '2' || selectedItem.channelFlag == '4')">
                                 <md-input-container>
                                     <label>定价系数维护：</label>
                                     <input type="number" aria-label="..." ng-model="priceCoefficient" string-to-number
                                            min="0"/>
                                 </md-input-container>
                                 <md-button class="md-raised"
-                                           ng-if="menuDisplayOption['602-execute'].display && (menuAuthDataMap[menuDisplayOption['602-execute'].uuid] || isAdmin() || !menuDisplayOption['602-execute'].uuid)"
+                                           ng-if="formMenuDisplayOption['602-execute'].display && (menuAuthDataMap[formMenuDisplayOption['602-execute'].uuid] || isAdmin() || !formMenuDisplayOption['602-execute'].uuid)"
                                            ng-click="updateInBatch()" style="margin-top: 22px;height: 20px;"> 执行
                                 </md-button>
                             </div>
@@ -98,6 +120,7 @@
                                     <div align="center" flex="10" class=" table-head">品牌编号</div>
                                     <div align="center" flex="10" class=" table-head">品牌名称</div>
                                     <div align="center" flex="10" class=" table-head">定价系数</div>
+                                    <div align="center" flex="10" class=" table-head">有效否</div>
                                 </div>
 
                                 <div ng-repeat="channelRelation in channelRelationList.content | orderBy: 'series.no'">
@@ -120,6 +143,12 @@
                                             <div style=" padding: 10px 0px 0px 0px;">{{channelRelation.priceCoefficient
                                                 }}
                                             </div>
+                                        </div>
+                                        <div align="center" flex="10" class=" table-item">
+                                            <md-checkbox style=" padding: 0px 0px 0px 20px;" aria-label="..."
+                                                         ng-model="channelRelation.status" ng-disabled="true"
+                                                         ng-true-value="'1'" ng-false-value="'2'"></md-checkbox>
+                                            </md-input-container>
                                         </div>
                                     </div>
                                 </div>

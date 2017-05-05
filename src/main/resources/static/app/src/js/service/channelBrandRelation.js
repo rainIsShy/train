@@ -27,6 +27,10 @@ angular.module('IOne-Production').service('ChannelBrandRelationsService', functi
             url = url + '&brandName=' + brandName;
         }
 
+        // if (dealerFlag) {
+        //     url = url + '&dealerFlag=' + dealerFlag;
+        // }
+
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
