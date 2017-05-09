@@ -67,7 +67,7 @@
                         </span>
                         <span flex="100" flex-sm="100" layout-padding>
                             <span class="item-name">上层渠道</span>
-                            <span class="item-content">{{parentOcmBaseChanName}}</span>
+                            <span class="item-content">{{selectedItem.parentOcmBaseChanName}}</span>
                         </span>
                     </div>
 
@@ -93,11 +93,12 @@
                                         </div>
                                     </div>
                                     <!-- detail panel -->
-                                    <div layout="row" ng-show="detail.showMorePanel">
-                                        <div layout-margin>Have more stuff here....</div>
-                                    </div>
+                                    <!--<div layout="row" ng-show="detail.showMorePanel">-->
+                                    <!--<div layout-margin>Have more stuff here....</div>-->
+                                    <!--</div>-->
                                     <md-divider style="margin-top: 5px"></md-divider>
                                 </div>
+                                <div pagination option="pageDetailOption" callback="refreshSubList(selectedItem)"></div>
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
                                      ng-click="preAddItemAction({}, 'ChannelLevelDetail', '新增下级渠道')"
                                      ng-if="formMenuDisplayOption['107-detailAdd'].display && (menuAuthDataMap[formMenuDisplayOption['107-detailAdd'].uuid] || isAdmin() || !formMenuDisplayOption['107-detailAdd'].uuid)">
@@ -119,10 +120,10 @@
                         <label>渠道</label>
                         <input ng-model="keyword" ng-keypress="queryEnter($event)">
                     </md-input-container>
-                    <md-input-container flex style="margin-left: 50px;">
-                        <label>上层渠道</label>
-                        <input ng-model="parentKeyword" ng-keypress="queryEnter($event)">
-                    </md-input-container>
+                    <!--<md-input-container flex style="margin-left: 50px;">-->
+                    <!--<label>上层渠道</label>-->
+                    <!--<input ng-model="parentKeyword" ng-keypress="queryEnter($event)">-->
+                    <!--</md-input-container>-->
                     <md-button class="md-raised" style="margin-top: 20px;height: 20px;"
                                ng-if="formMenuDisplayOption['100-query'].display && (menuAuthDataMap[formMenuDisplayOption['100-query'].uuid] || isAdmin() || !formMenuDisplayOption['100-query'].uuid)"
                                ng-click="queryAction()">
@@ -156,7 +157,7 @@
                         </md-menu-content>
                     </md-menu>
                 </div>
-                <div ng-repeat="item in itemParent | orderBy : 'no'"
+                <div ng-repeat="item in itemList | orderBy : 'no'"
                      ng-class="selectedItem.uuid == item.uuid ? 'selected-item':''">
                     <div class="summary-item" style="background-color: transparent">
                         <div layout="row" layout-wrap>
@@ -173,14 +174,14 @@
                                 <div flex layout="row" style="color:#7f8fa4">
                                     <span>渠道: <span style="font-style: italic">{{item.name}}&nbsp;&nbsp;</span></span>
                                 </div>
-                                <div layout="row" layout-align="end center">
-                                    <md-button class="md-button close-btn" aria-label="More"
-                                               ng-click="toggleMorePanelAction(item)"
-                                               style="position: relative;left: 15px;"
-                                               ng-disabled="item.detailList.length ==0">
-                                        查看更多...
-                                    </md-button>
-                                </div>
+                                <!--<div layout="row" layout-align="end center">-->
+                                <!--<md-button class="md-button close-btn" aria-label="More"-->
+                                <!--ng-click="toggleMorePanelAction(item)"-->
+                                <!--style="position: relative;left: 15px;"-->
+                                <!--ng-disabled="item.detailList.length ==0">-->
+                                <!--查看更多...-->
+                                <!--</md-button>-->
+                                <!--</div>-->
                             </div>
                         </div>
                     </div>

@@ -42,24 +42,28 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
     };
 
     $scope.refreshList = function () {
-        ChannelLevelService.getAllNoPage('', '', '', '', $scope.keyword, $scope.parentKeyword, '', '', '', '', RES_UUID_MAP.OCM.CHANNEL_LEVEL.RES_UUID).success(function (data) {
+        ChannelService.getAllParent($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, $scope.keyword, $scope.keyword, RES_UUID_MAP.OCM.CHANNEL_LEVEL.RES_UUID).success(function (data) {
             $scope.itemList = data.content;
-            var mapTotalElements={};
-            var totalElements=0;
-            angular.forEach($scope.itemList,function(item){
-                if(mapTotalElements[item.parentOcmBaseChanUuid]){
-                    return;
-                }
-                mapTotalElements[item.parentOcmBaseChanUuid]=true;
-                totalElements=totalElements+1;
-            });
+            // var mapTotalElements={};
+            // var totalElements=0;
+            // angular.forEach($scope.itemList,function(item){
+            //     if(mapTotalElements[item.parentOcmBaseChanUuid]){
+            //         return;
+            //     }
+            //     mapTotalElements[item.parentOcmBaseChanUuid]=true;
+            //     totalElements=totalElements+1;
+            // });
 
-            $scope.pageOption.totalElements = totalElements;
-            $scope.pageOption.totalPage = Math.floor($scope.pageOption.totalElements/$scope.pageOption.sizePerPage)+1;
-            $scope.getChannelParent();
+            // $scope.pageOption.totalElements = totalElements;
+            // $scope.pageOption.totalPage = Math.floor($scope.pageOption.totalElements/$scope.pageOption.sizePerPage)+1;
+            // $scope.getChannelParent();
+
+            $scope.pageOption.totalElements = data.totalElements;
+            $scope.pageOption.totalPage = data.totalPages;
+
             angular.forEach($scope.itemList, function (item) {
                 item.detailList = [];
-                $scope.getChannelName(item);
+                $scope.getParentChannel(item);
                 $scope.refreshSubList(item);
             });
 
@@ -89,30 +93,42 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
         });
     };
 
-    $scope.getChannelParent = function (){
-        $scope.itemParent=[];
-        var mapParentOcmBaseUuid = {};
-        $scope.tempParentOcmBaseUuid = [];
-        angular.forEach($scope.itemList,function(item){
-            if(mapParentOcmBaseUuid[item.parentOcmBaseChanUuid]){
-                return;
+    $scope.getParentChannel = function (item) {
+        ChannelLevelService.getByChannelUuid(item.uuid).success(function (data) {
+            if (data.content) {
+                angular.forEach(data.content, function (parent) {
+                    item.parentOcmBaseChanUuid = parent.parentOcmBaseChanUuid;
+                    $scope.getChannelName(item);
+                })
+
             }
-            mapParentOcmBaseUuid[item.parentOcmBaseChanUuid] = true;
-            $scope.tempParentOcmBaseUuid.push(item.parentOcmBaseChanUuid);
         });
-
-        var startCurrentPageTotal=$scope.pageOption.currentPage*$scope.pageOption.sizePerPage;
-        var endCurrentPageTotal=startCurrentPageTotal+$scope.pageOption.sizePerPage;
-        for(var i=startCurrentPageTotal;i<$scope.tempParentOcmBaseUuid.length;i++){
-            ChannelService.get($scope.tempParentOcmBaseUuid[i]).success(function (data){
-                $scope.itemParent.push(data);
-            });
-            if(i == $scope.tempParentOcmBaseUuid.length-1 || i == endCurrentPageTotal-1){
-                break;
-            }
-        }
-
     };
+
+    // $scope.getChannelParent = function (){
+    //     $scope.itemParent=[];
+    //     var mapParentOcmBaseUuid = {};
+    //     $scope.tempParentOcmBaseUuid = [];
+    //     angular.forEach($scope.itemList,function(item){
+    //         if(mapParentOcmBaseUuid[item.parentOcmBaseChanUuid]){
+    //             return;
+    //         }
+    //         mapParentOcmBaseUuid[item.parentOcmBaseChanUuid] = true;
+    //         $scope.tempParentOcmBaseUuid.push(item.parentOcmBaseChanUuid);
+    //     });
+    //
+    //     var startCurrentPageTotal=$scope.pageOption.currentPage*$scope.pageOption.sizePerPage;
+    //     var endCurrentPageTotal=startCurrentPageTotal+$scope.pageOption.sizePerPage;
+    //     for(var i=startCurrentPageTotal;i<$scope.tempParentOcmBaseUuid.length;i++){
+    //         ChannelService.get($scope.tempParentOcmBaseUuid[i]).success(function (data){
+    //             $scope.itemParent.push(data);
+    //         });
+    //         if(i == $scope.tempParentOcmBaseUuid.length-1 || i == endCurrentPageTotal-1){
+    //             break;
+    //         }
+    //     }
+    //
+    // };
 
     $scope.$watch('listFilterOption', function () {
         $scope.pageOption.currentPage = 0;
@@ -137,18 +153,19 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
      * Show left detail panel when clicking the title
      */
     $scope.showDetailPanelAction = function (item) {
+        $scope.pageDetailOption.currentPage = 0;
         $scope.refreshSubList(item);
-        angular.forEach($scope.itemList,function(list){
-            if(item.uuid==list.channel.uuid){
-                ChannelService.get(list.parentOcmBaseChanUuid).success(function (data){
-                    $scope.parentOcmBaseChanName = data.name;
-                    $scope.parentOcmBaseChanUuid = data.uuid;
-                });
-            }else{
-                    $scope.parentOcmBaseChanName=null;
-                    $scope.parentOcmBaseChanUuid = null;
-            }
-        });
+        // angular.forEach($scope.itemList,function(list){
+        //     if(item.uuid==list.uuid){
+        //         ChannelService.get(list.parentOcmBaseChanUuid).success(function (data){
+        //             $scope.parentOcmBaseChanName = data.name;
+        //             $scope.parentOcmBaseChanUuid = data.uuid;
+        //         });
+        //     }else{
+        //             $scope.parentOcmBaseChanName=null;
+        //             $scope.parentOcmBaseChanUuid = null;
+        //     }
+        // });
         $scope.selectedItem=item;
     };
 
@@ -277,7 +294,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                         if(listItem.channel.uuid == $scope.addItem.channelUuid){
                            $scope.tempModifyChannelLevel=true;
                            $scope.tempListItemUuid=listItem.uuid;
-                           return;
+
                         }
                     });
                     if($scope.tempModifyChannelLevel){
@@ -294,7 +311,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                     angular.forEach($scope.itemList,function(item){
                         if(item.parentOcmBaseChanUuid == $scope.addItem.channelUuid && item.channel.uuid == $scope.addItem.parentOcmBaseChanUuid){
                             $scope.tempAddChannelLevel=true;
-                            return;
+
                         }
                     });
                     if($scope.tempAddChannelLevel){
@@ -307,7 +324,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                         $scope.refreshList();
                         $scope.listItemAction();
                         $scope.parentOcmBaseChanName=$scope.addItem.parentChannelName;
-                        return;
+
                     });
                 } else {
                     $scope.showError("不可设置此上层渠道!");
@@ -371,7 +388,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                          $scope.selectedItem=null;
                          $scope.listItemAction();
                     });
-                };
+                }
             });
         });
      };
@@ -405,7 +422,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
                         if(item.uuid == listItem.parentOcmBaseChanUuid){
                             var response = ChannelLevelService.delete(listItem.uuid).success(function (data) {
                             })
-                        };
+                        }
                         promises.push(response);
                     });
                 });

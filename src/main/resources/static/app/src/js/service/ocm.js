@@ -92,6 +92,25 @@ angular.module('IOne-Production').service('ChannelService', function ($http, Con
         return $http.get(Constant.BACKEND_BASE + url + '&action=lower');
     };
 
+    this.getAllParent = function (sizePerPage, page, confirm, status, searchKeyword, resUuid) {
+        confirm = confirm == 0 ? '' : confirm;
+        status = status == 0 ? '' : status;
+
+        var url = '/channels?size=' + sizePerPage
+            + '&page=' + page
+            + '&confirm=' + confirm
+            + '&status=' + status
+            + '&isShowParentChannel=Y';
+
+        if (searchKeyword !== undefined && searchKeyword !== null) {
+            url = url + '&keyWord=' + searchKeyword;
+        }
+        if (resUuid !== undefined && resUuid !== null) {
+            url = url + '&resUuid=' + resUuid;
+        }
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
 });
 
 angular.module('IOne-Production').service('ChannelPriceService', function ($http, Constant) {
