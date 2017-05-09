@@ -98,7 +98,7 @@
                                     <!--</div>-->
                                     <md-divider style="margin-top: 5px"></md-divider>
                                 </div>
-                                <div pagination option="pageDetailOption" callback="refreshSubList()"></div>
+                                <div pagination option="pageDetailOption" callback="refreshSubList(selectedItem)"></div>
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
                                      ng-click="preAddItemAction({}, 'ChannelLevelDetail', '新增下级渠道')"
                                      ng-if="formMenuDisplayOption['107-detailAdd'].display && (menuAuthDataMap[formMenuDisplayOption['107-detailAdd'].uuid] || isAdmin() || !formMenuDisplayOption['107-detailAdd'].uuid)">
