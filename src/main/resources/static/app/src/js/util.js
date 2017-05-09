@@ -785,7 +785,7 @@ angular.module('IOne-Constant').constant('Constant', {
                 },
                 {
                     id: '/channelLevel',
-                    name: '渠道层级维护作业',
+                    name: '渠道层级维护',
                     link: '/channelLevel',
                     uuid: RES_UUID_MAP.OCM.CHANNEL_LEVEL.RES_UUID
                 }
