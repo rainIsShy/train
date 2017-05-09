@@ -153,6 +153,7 @@ angular.module('IOne-Production').controller('ChannelLevelController', function 
      * Show left detail panel when clicking the title
      */
     $scope.showDetailPanelAction = function (item) {
+        $scope.pageDetailOption.currentPage = 0;
         $scope.refreshSubList(item);
         // angular.forEach($scope.itemList,function(list){
         //     if(item.uuid==list.uuid){
