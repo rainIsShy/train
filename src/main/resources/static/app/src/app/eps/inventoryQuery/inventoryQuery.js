@@ -43,6 +43,9 @@ angular.module('IOne-Production').controller('InventoryQueryController', functio
                 }
                 $scope.itemList = tempDataList;
         }
+        if (data.length == 0) {
+            $scope.showWarn("该料号不存在");
+        }
     });
     InventoryQueryMaster.getTotal($scope.listFilterOption.suite).success(function (data) {
         $scope.itemListTotal = data;

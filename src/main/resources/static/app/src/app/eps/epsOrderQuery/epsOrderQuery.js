@@ -1,10 +1,10 @@
 angular.module('IOne-Production').config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/eps/epsOrderQuery', {
-        controller: 'InventoryQueryController',
+        controller: 'EpsOrderQueryController',
         templateUrl: 'app/src/app/eps/epsOrderQuery/epsOrderQuery.html'
     })
 }]);
-angular.module('IOne-Production').controller('InventoryQueryController', function ($scope, EpsOrderQuery,$filter, WalkThroughDetail, Constant, $mdDialog) {
+angular.module('IOne-Production').controller('EpsOrderQueryController', function ($scope, EpsOrderQuery,$filter, WalkThroughDetail, Constant, $mdDialog) {
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
