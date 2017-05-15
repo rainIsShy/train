@@ -700,6 +700,61 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
         }
     };
 
+    // 410 審核拋轉
+    $scope.auditTransfer = function () {
+            var errorNos = '';
+            var transferedNos = '';
+            angular.forEach($scope.selected, function (item) {
+                if (!item.contractNo) {
+                    errorNos += '<br />' + item.no;
+                }
+                if (item.transferPsoFlag == 1) {
+                    transferedNos += '<br />' + item.no;
+                }
+            });
+            if (errorNos) {
+                $scope.showError('以下产品销售单合同号为空：' + errorNos);
+            }
+            if (transferedNos) {
+                $scope.showError('以下产品销售单已抛转：' + transferedNos);
+            }
+            if (errorNos || transferedNos) {
+                return false;
+            }
+            var uuids = [];
+            angular.forEach($scope.selected, function (item) {
+                uuids.push(item.uuid);
+            });
+            OrderMaster.validatePossibility(uuids).success(function () {
+                var mainPromises = [];
+                var errorInfo = '';
+                angular.forEach($scope.selected, function (item) {
+                    mainPromises.push(Parameters.getAll(item.channel.uuid).success(function (data) {
+                        if (data.content && data.content.length > 0) {
+                            var itemDepositRate = data.content[0].depositRate;
+                            if (item.paidRate < itemDepositRate) {
+                                errorInfo += '订单：' + item.no + '的收款比率<' + itemDepositRate * 100 + '%<br>';
+                            }
+                        }
+                    }));
+                });
+
+                $q.all(mainPromises).then(function () {
+                    $scope.showConfirm('确认 审核抛转 吗？', errorInfo, function () {
+                        OrderMaster.auditTransfer(uuids).success(function () {
+                            $scope.queryMenuActionWithPaging();
+                            $scope.showInfo('审核抛转 成功。');
+                        }).error(function (err) {
+                            $scope.showError('审核抛转 失败。<br />' + err.message);
+                        });
+                    });
+                });
+            }).error(function (err) {
+                $scope.showError('审核抛转 失败。<br />' + err.message);
+            });
+        };
+
+    // 409 拋轉還原
     $scope.rollbackTransfer = function () {
         if ($scope.selected.length > 0 || $scope.selectedItem.length > 0) {
             $scope.showConfirm('确认抛转还原吗？', '', function () {
@@ -1226,59 +1281,6 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                     $scope.showInfo('删除成功。');
                 });
             }
-        });
-    };
-
-    $scope.auditTransfer = function () {
-        var errorNos = '';
-        var transferedNos = '';
-        angular.forEach($scope.selected, function (item) {
-            if (!item.contractNo) {
-                errorNos += '<br />' + item.no;
-            }
-            if (item.transferPsoFlag == 1) {
-                transferedNos += '<br />' + item.no;
-            }
-        });
-        if (errorNos) {
-            $scope.showError('以下产品销售单合同号为空：' + errorNos);
-        }
-        if (transferedNos) {
-            $scope.showError('以下产品销售单已抛转：' + transferedNos);
-        }
-        if (errorNos || transferedNos) {
-            return false;
-        }
-        var uuids = [];
-        angular.forEach($scope.selected, function (item) {
-            uuids.push(item.uuid);
-        });
-        OrderMaster.validatePossibility(uuids).success(function () {
-            var mainPromises = [];
-            var errorInfo = '';
-            angular.forEach($scope.selected, function (item) {
-                mainPromises.push(Parameters.getAll(item.channel.uuid).success(function (data) {
-                    if (data.content && data.content.length > 0) {
-                        var itemDepositRate = data.content[0].depositRate;
-                        if (item.paidRate < itemDepositRate) {
-                            errorInfo += '订单：' + item.no + '的收款比率<' + itemDepositRate * 100 + '%<br>';
-                        }
-                    }
-                }));
-            });
-
-            $q.all(mainPromises).then(function () {
-                $scope.showConfirm('确认 审核抛转 吗？', errorInfo, function () {
-                    OrderMaster.auditTransfer(uuids).success(function () {
-                        $scope.queryMenuActionWithPaging();
-                        $scope.showInfo('审核抛转 成功。');
-                    }).error(function (err) {
-                        $scope.showError('审核抛转 失败。<br />' + err.message);
-                    });
-                });
-            });
-        }).error(function (err) {
-            $scope.showError('审核抛转 失败。<br />' + err.message);
         });
     };
 
