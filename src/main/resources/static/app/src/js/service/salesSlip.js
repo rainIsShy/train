@@ -104,6 +104,7 @@ angular.module('IOne-Production').service('OrderMaster', function ($http, Consta
         return $http.patch(Constant.BACKEND_BASE + '/orders/' + uuid + '/sync', OrderMasterUpdateInput);
     };
 
+    //com.bq.i1.pso.web.OrderMasterController#auditTransfer
     this.auditTransfer = function (uuids) {
         return $http.patch(Constant.BACKEND_BASE + '/orders?action=auditTransfer', uuids);
     };

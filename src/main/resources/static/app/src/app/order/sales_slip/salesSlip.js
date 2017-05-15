@@ -652,7 +652,7 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
         }
     };
 
-    // 407 一鍵拋轉
+    // 407 一鍵拋轉 com.bq.i1.pso.web.OrderMasterController#oneOffSync
     $scope.oneOffSync = function () {
         var mstList = [];
         var uuidList = [];
