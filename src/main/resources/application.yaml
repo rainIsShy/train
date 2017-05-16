@@ -238,13 +238,9 @@ i1:
   i1-server:
     url: http://localhost:8081
   i1-adapter:
-    url: http://210.21.91.198:8082
+    url: http://localhost:8082
   tiptop-adapter:
-    url: http://210.21.91.198:8083
-  ec-adapter:
-    url: http://210.21.91.198:8084
-  tmall-adapter:
-    url: http://121.41.43.91:30000
+    url: http://localhost:8083
 
 
 
