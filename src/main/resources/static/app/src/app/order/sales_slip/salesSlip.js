@@ -675,6 +675,9 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
         }
 
         if (uuidList.length > 0) {
+            $scope.throw_button_disabled = 1;
+            $scope.revert_audit_button_disabled = 1;
+
             OrderMaster.oneOffSync(uuidList.join(','), {}).success(function (response) {
                 if (response) {
                     angular.forEach(response, function (item) {
@@ -689,15 +692,20 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                                 $scope.showWarn('销售单抛转成功， 预订单抛转失败。');
                             }
                         }
+                        $scope.throw_button_disabled = 0;
+                        $scope.revert_audit_button_disabled = 0;
                         $scope.queryMenuActionWithPaging();
                     });
                 }
             }).error(function (response) {
+                $scope.throw_button_disabled = 0;
+                $scope.revert_audit_button_disabled = 0;
                 $scope.showError(response.message);
             })
         } else {
             $scope.showWarn('请选择待抛转销售单。');
         }
+
     };
 
     // 410 審核拋轉
