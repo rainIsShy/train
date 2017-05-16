@@ -1,0 +1,110 @@
+<div class="main-panel">
+    <div>
+        <div layout="row" class="top-title">
+            <div class="left-title flex" style="position: relative;" ng-show="false">
+            </div>
+            <div class="right-title flex">
+                <span>经销商使用统计表</span>
+            </div>
+        </div>
+        <div layout="row" class="main-body border">
+            <div flex="70" hide-sm hide-md layout="column" class="left-body" ng-show="false">
+            </div>
+            <div flex class="right-body" layout="column" style="margin: 0px 15px;">
+                <!-- basic search-->
+                <div layout="row" layout-md="column" layout-sm="column" class="menu">
+                    <md-input-container flex="15">
+                        <label>省份</label>
+                        <input type="text" ng-model="proName">
+                        <md-button ng-click="openProDlg()" class="md-icon-button float-right md-button" style="margin-top: 10px;">
+                            <ng-md-icon icon="search"></ng-md-icon>
+                        </md-button>
+                    </md-input-container>
+                    <md-input-container flex="15">
+                        <label>城市</label>
+                        <input type="text" ng-model="cityName">
+                        <md-button ng-click="openCityDlg()" class="md-icon-button float-right md-button" style="margin-top: 10px;">
+                            <ng-md-icon icon="search"></ng-md-icon>
+                        </md-button>
+                    </md-input-container>
+                    <md-input-container flex="15">
+                        <label>地区</label>
+                        <input type="text" ng-model="districtName">
+                        <md-button ng-click="openDistrictDlg()" class="md-icon-button float-right md-button" style="margin-top: 10px;">
+                            <ng-md-icon icon="search"></ng-md-icon>
+                        </md-button>
+                    </md-input-container>
+                    <md-input-container flex="15">
+                        <label>经销商</label>
+                        <input type="text" ng-model="channelName">
+                        <md-button ng-click="openChannelDlg()" class="md-icon-button float-right md-button" style="margin-top: 10px;">
+                            <ng-md-icon icon="search"></ng-md-icon>
+                        </md-button>
+                    </md-input-container>
+                    <md-input-container flex="15">
+                        <label class="label">下单日起</label>
+                        <input type="date" ng-model="orderDateStart" min="0000-01-01" max="9999-12-31">
+                    </md-input-container>
+                    <md-input-container flex="15">
+                        <label class="label">下单日止</label>
+                        <input type="date" ng-model="orderDateEnd" min="0000-01-01" max="9999-12-31">
+                    </md-input-container>
+                    <md-menu-item style="margin-left: 10px;position: relative;bottom: 5px;" ng-if="menuDisplayOption['search'].display && (menuAuthDataMap[menuDisplayOption['search'].uuid] || isAdmin() || !menuDisplayOption['search'].uuid)">
+                        <md-button style="margin-top: 22px;height: 20px;text-align: center;" class="md-raised" ng-click="queryReport()">{{menuDisplayOption['search'].name}}</md-button>
+                    </md-menu-item>
+                </div>
+                <div style="margin-bottom: 30px;">
+                    <md-content>
+                        <md-divider style="margin-bottom:5px;"></md-divider>
+                        <md-data-table-container>
+                            <table md-data-table md-row-select="selected" md-progress="deferred">
+                                <thead>
+                                <tr>
+                                    <th><span class="md-subhead ">编号</span></th>
+                                    <th><span class="md-subhead ">省份</span></th>
+                                    <th><span class="md-subhead ">城市</span></th>
+                                    <th><span class="md-subhead ">地区</span></th>
+                                    <th><span class="md-subhead ">经销商编号</span></th>
+                                    <th><span class="md-subhead ">经销商名称</span></th>
+                                    <th><span class="md-subhead ">销售金额</span></th>
+                                    <th><span class="md-subhead ">销售单数</span></th>
+                                    <th><span class="md-subhead ">采购金额</span></th>
+                                    <th><span class="md-subhead ">采购单数</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="item in reportResult">
+                                    <td><span class="md-body-1">{{($index + 1)}}</span></td>
+                                    <td><span class="md-body-1">{{::item['省份']}}</span></td>
+                                    <td><span class="md-body-1">{{::item['城市']}}</span></td>
+                                    <td><span class="md-body-1">{{::item['地区']}}</span></td>
+                                    <td><span class="md-body-1">{{::item['经销商编号']}}</span></td>
+                                    <td><span class="md-body-1">{{::item['经销商名称']}}</span></td>
+                                    <td><span class="md-body-1">{{::item['SUM(M.销售金额)']}}</span></td>
+                                    <td><span class="md-body-1">{{::item['SUM(M.销售单数)']}}</span></td>
+                                    <td><span class="md-body-1">{{::item['SUM(M.采购金额)']}}</span></td>
+                                    <td><span class="md-body-1">{{::item['SUM(M.采购单数)']}}</span></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </md-data-table-container>
+
+                        <div pagination option="pageOption" callback="queryReport()"></div>
+                        <div ng-show="pageOption.totalElements > 0">总预定量: {{totalOrderQty}}</div>
+
+                    </md-content>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    table thead {
+        background-color: #BDBDBD;
+    }
+
+    table thead tr th {
+        border: 1px solid white;
+    }
+</style>

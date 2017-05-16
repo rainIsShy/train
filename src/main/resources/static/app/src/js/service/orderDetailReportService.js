@@ -65,6 +65,10 @@ angular.module('IOne-Production').service('OrderDetailReportService', function (
                 url += '/searchItemNo?page=' + page + '&size=' + size
                     + '&no=' + keyword;
                 break;
+            case '5':
+                url += '/searchDistrict?page=' + page + '&size=' + size
+                    + '&name=' + keyword + '&cityName=' + scopeData.cityName;
+                break;
         }
         return $http.get(url);
     }
