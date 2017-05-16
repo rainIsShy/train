@@ -229,4 +229,19 @@ i1:
   tmall-adapter:
     url: http://project.benchmarkchina.com:10815
 
+--- # bruce's Dev
+
+spring:
+  profiles: bruce
+
+i1:
+  i1-server:
+    url: http://localhost:8081
+  i1-adapter:
+    url: http://localhost:8082
+  tiptop-adapter:
+    url: http://localhost:8083
+
+
+
 
