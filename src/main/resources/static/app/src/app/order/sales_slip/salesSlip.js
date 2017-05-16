@@ -733,6 +733,14 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
             angular.forEach($scope.selected, function (item) {
                 uuids.push(item.uuid);
             });
+        if (uuids.length < 1) {
+            $scope.showWarn('请选择待抛转销售单。');
+            return;
+        } else {
+            $scope.audit_button_disabled = 1
+            $scope.return_button_disabled = 1
+            $scope.audit_transfer_button_disabled = 1;
+        }
             OrderMaster.validatePossibility(uuids).success(function () {
                 var mainPromises = [];
                 var errorInfo = '';
@@ -750,17 +758,27 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                 $q.all(mainPromises).then(function () {
                     $scope.showConfirm('确认 审核抛转 吗？', errorInfo, function () {
                         OrderMaster.auditTransfer(uuids).success(function () {
+                            enabledAuditTransferButton();
                             $scope.queryMenuActionWithPaging();
                             $scope.showInfo('审核抛转 成功。');
                         }).error(function (err) {
+                            enabledAuditTransferButton();
                             $scope.showError('审核抛转 失败。<br />' + err.message);
                         });
                     });
                 });
             }).error(function (err) {
+                enabledAuditTransferButton();
                 $scope.showError('审核抛转 失败。<br />' + err.message);
             });
-        };
+
+        function enabledAuditTransferButton() {
+            $scope.audit_button_disabled = 0;
+            $scope.return_button_disabled = 0;
+            $scope.audit_transfer_button_disabled = 0;
+
+        }
+    };
 
     // 409 拋轉還原
     $scope.rollbackTransfer = function () {
