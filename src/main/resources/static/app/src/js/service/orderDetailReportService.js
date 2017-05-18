@@ -58,7 +58,7 @@ angular.module('IOne-Production').service('OrderDetailReportService', function (
                 break;
             case '3':
                 url += '/searchChannel?page=' + page + '&size=' + size
-                    + '&proName=' + scopeData.proName + '&cityName=' + scopeData.cityName
+                    + '&proName=' + scopeData.proName + '&cityName=' + scopeData.cityName + '&districtName=' + scopeData.districtName
                     + '&name=' + keyword;
                 break;
             case '4':
