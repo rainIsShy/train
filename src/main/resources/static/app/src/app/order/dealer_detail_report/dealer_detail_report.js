@@ -109,7 +109,7 @@ angular.module('IOne-Production').controller('DeaderOrderDetailReportController'
             targetEvent: event,
             locals: {
                 fieldType: '3',
-                fieldName: '接单经销商',
+                fieldName: '经销商',
                 fieldValue: $scope
             }
         }).then(function (data) {
