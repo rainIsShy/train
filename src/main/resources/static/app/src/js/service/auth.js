@@ -377,7 +377,7 @@ angular.module('IOne-Production').service('GroupUserService', function(Constant,
         if(keyword == undefined) keyword = '';
 
         var that = this;
-        return this.promise = $http.get(Constant.BACKEND_BASE + '/groupUsers?page=' + page + '&size=' + size + '&status=' + status + '&keyword=' + keyword).success(function() {
+        return this.promise = $http.get(Constant.BACKEND_BASE + '/groupUsers?page=' + page + '&size=' + size + '&status=' + status + '&keyWord=' + keyword).success(function() {
             that.promise = null;
         });
     };
