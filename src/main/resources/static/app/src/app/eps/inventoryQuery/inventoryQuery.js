@@ -43,7 +43,7 @@ angular.module('IOne-Production').controller('InventoryQueryController', functio
                 }
                 $scope.itemList = tempDataList;
         }
-        if (data.length == 0) {
+        if (data.length == 0 && $scope.listFilterOption.suite != "") {
             $scope.showWarn("该料号不存在");
         }
     });
@@ -309,20 +309,6 @@ angular.module('IOne-Production').controller('InventoryQueryController', functio
 
         }
 
-        /*$scope.showConfirm('确认回访吗？', '', function () {
-         WalkThroughMaster.modify(uuids).success(function () {
-                angular.forEach($scope.itemList, function (item) {
-                    if (item.selected === true) {
-                        item.confirm = Constant.CONFIRM[2].value;
-                    }
-                });
-
-         $scope.showInfo('回访成功！');
-            }).error(function (response) {
-                //$scope.showError($scope.getError(response.message));
-                $scope.showError(response.message);
-            });
-         });*/
     };
 
     $scope.sycClickAction = function (event) {
@@ -411,7 +397,26 @@ angular.module('IOne-Production').controller('InventoryQueryController', functio
             });
         });
     };
+
+    $scope.openQuerylDlg = function () {
+        $mdDialog.show({
+            controller: 'QueryDlgController',
+            templateUrl: 'app/src/app/eps/inventoryQuery/queryDlg.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            locals: {
+                saleTypes: $scope.saleTypes,
+                OrderDetailList: $scope.OrderDetailList
+            }
+        }).then(function (data) {
+            var queryReturnData = data;
+            $scope.listFilterOption.suite = queryReturnData.item.no;
+            console.log($scope.listFilterOption.suite);
+        });
+    };
 });
+
+
 
 angular.module('IOne-Production').controller('ItemEditorController', function ($scope, Constant, $mdDialog, editingItem) {
     $scope.editingItem = editingItem;
@@ -426,6 +431,67 @@ angular.module('IOne-Production').controller('ItemEditorController', function ($
         $mdDialog.hide($scope.editingItem);
     };
 
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+});
+
+angular.module('IOne-Production').controller('QueryDlgController', function ($scope, $mdDialog, saleTypes, OrderDetailList) {
+    $scope.OrderDetailList = angular.copy(OrderDetailList);
+    $scope.addOrderDetail = [];
+
+    $scope.itemSearchParam = {
+        confirm: 2,
+        release: 2,
+        status: 1,
+        eshopType: 2,
+        assemblingFlag: 1
+    };
+
+    $scope.disableOrderPrice = false;
+    $scope.isChangingProduction = false;
+    $scope.showChangingProductionPanel = function () {
+        $scope.isChangingProduction = true;
+    };
+    $scope.hideChangingProductionPanel = function () {
+        $scope.isChangingProduction = false;
+    };
+    var maxNo = 0;
+    $scope.findMaxNo = function (OrderDetailList) {
+        if ($scope.OrderDetailList !== undefined && $scope.OrderDetailList !== '' && $scope.OrderDetailList !== null) {
+            maxNo = 0;
+            angular.forEach(OrderDetailList.content, function (orderDetail) {
+                if (Number(orderDetail.no) > Number(maxNo)) {
+                    maxNo = Number(orderDetail.no)
+                }
+            });
+        }
+    };
+    $scope.findMaxNo(OrderDetailList);
+    $scope.setZero = function (saleType) {
+        if (saleType.name == '赠送') {
+            $scope.addOrderDetail.orderPrice = 0;
+            $scope.disableOrderPrice = true;
+        } else {
+            $scope.disableOrderPrice = false;
+        }
+    };
+
+    //选中商品
+    $scope.selectBom = function (production) {
+        if (production) {
+            $scope.addOrderDetail.no = Number(maxNo) + Number(1);
+            $scope.addOrderDetail.item = production;
+            $scope.addOrderDetail.itemUuid = production.uuid;
+            $scope.addOrderDetail.orderQuantity = 1;    //新增时默认数量设置为1
+            $scope.isChangingProduction = false;
+            //console.info($scope.addOrderDetail)
+        }
+    };
+
+    $scope.hideDlg = function () {
+        $mdDialog.hide($scope.addOrderDetail);
+    };
     $scope.cancelDlg = function () {
         $mdDialog.cancel();
     };

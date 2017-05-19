@@ -1,0 +1,43 @@
+<md-dialog style="padding:20px;max-width: 900px;" class="prod">
+    <md-content>
+        <form flex name="addCustomForm" novalidate ng-if="!isChangingProduction">
+            <div flex layout="row" layout-align="start end">
+                <div flex flex-offset="80">
+                    <md-button class="md-raised md-accent" ng-click="showChangingProductionPanel()">选择商品</md-button>
+                </div>
+                <div flex layout="row">
+                    <md-button class="md-fab md-accent" ng-click="hideDlg()" ng-disabled="addCustomForm.$invalid">
+                        <i class="fa fa-check"></i>
+                    </md-button>
+                    <md-button class="md-fab md-warn" ng-click="cancelDlg()">
+                        <i class="fa fa-times"></i>
+                    </md-button>
+                </div>
+            </div>
+            <div flex layout="row">
+                <md-input-container flex="25">
+                    <label class="label">品号：</label>
+                    <input type="text" ng-model="addOrderDetail.item.no" disabled>
+                </md-input-container>
+                <md-input-container flex="25">
+                    <label class="label">品名：</label>
+                    <input type="text" ng-model="addOrderDetail.item.name" disabled>
+                </md-input-container>
+                <md-input-container flex="25">
+                    <label class="label">品牌：</label>
+                    <input type="text" ng-model="addOrderDetail.item.brand.name" disabled>
+                </md-input-container>
+                <md-input-container flex="25">
+                    <label class="label">标准价</label>
+                    <input type="text" ng-model="addOrderDetail.item.standardPrice" disabled>
+                </md-input-container>
+            </div>
+            <md-divider style="margin: 10px 5px 10px 5px;"></md-divider>
+        </form>
+        <md-button ng-if="isChangingProduction" class="md-fab md-primary" ng-click="hideChangingProductionPanel()">
+            <i class="fa fa-times"></i>
+        </md-button>
+        <div ng-if="isChangingProduction" flex="50" production-List select-item-callback="selectBom(production)"
+             param="itemSearchParam" style="max-height: 500px; overflow-y: auto; overflow-x: hidden;"></div>
+    </md-content>
+</md-dialog>
