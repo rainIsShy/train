@@ -8,13 +8,15 @@
                     <ng-md-icon icon="edit"></ng-md-icon>
                 </md-button>
                 <md-menu>
-                    <md-button class="md-icon-button close-btn" aria-label="More" style="float: left;margin-left: 36px;" ng-click="$mdOpenMenu($event)">
+                    <md-button class="md-icon-button close-btn" aria-label="More" style="float: left;margin-left: 36px;"
+                               ng-click="$mdOpenMenu($event)">
                         <ng-md-icon icon="menu"></ng-md-icon>
                     </md-button>
                     <md-menu-content width="2">
                         <md-menu-item
                                 ng-if="menuDisplayOption['detailConfirm'].display && (menuAuthDataMap[menuDisplayOption['detailConfirm'].uuid] || isAdmin() || !menuDisplayOption['detailConfirm'].uuid)">
-                            <md-button class="md-button" aria-label="More" ng-click="confirmClickAction($event, selectedItem)"
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="confirmClickAction($event, selectedItem)"
                                        ng-disabled="selectedItem.confirm == '2' || selectedItem.status != '1'">
                                 <ng-md-icon icon="lock"></ng-md-icon>
                                 审核
@@ -22,7 +24,8 @@
                         </md-menu-item>
                         <md-menu-item
                                 ng-if="menuDisplayOption['detailRevertConfirm'].display && (menuAuthDataMap[menuDisplayOption['detailRevertConfirm'].uuid] || isAdmin() || !menuDisplayOption['detailRevertConfirm'].uuid)">
-                            <md-button class="md-button" aria-label="More" ng-click="confirmClickAction($event, selectedItem)"
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="confirmClickAction($event, selectedItem)"
                                        ng-disabled="selectedItem.confirm != '2'">
                                 <ng-md-icon icon="lock_open"></ng-md-icon>
                                 取审
@@ -30,7 +33,8 @@
                         </md-menu-item>
                         <md-menu-item
                                 ng-if="menuDisplayOption['detailStatus'].display && (menuAuthDataMap[menuDisplayOption['detailStatus'].uuid] || isAdmin() || !menuDisplayOption['detailStatus'].uuid)">
-                            <md-button class="md-button" aria-label="More" ng-click="statusClickAction($event, selectedItem)"
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="statusClickAction($event, selectedItem)"
                                        ng-disabled="selectedItem.status == '1'">
                                 <ng-md-icon icon="lock"></ng-md-icon>
                                 启用
@@ -38,7 +42,8 @@
                         </md-menu-item>
                         <md-menu-item
                                 ng-if="menuDisplayOption['detailRevertStatus'].display && (menuAuthDataMap[menuDisplayOption['detailRevertStatus'].uuid] || isAdmin() || !menuDisplayOption['detailRevertStatus'].uuid)">
-                            <md-button class="md-button" aria-label="More" ng-click="statusClickAction($event, selectedItem)"
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="statusClickAction($event, selectedItem)"
                                        ng-disabled="selectedItem.status != '1'">
                                 <ng-md-icon icon="lock_open"></ng-md-icon>
                                 禁用
@@ -46,7 +51,8 @@
                         </md-menu-item>
                         <md-menu-item
                                 ng-if="menuDisplayOption['detailDelete'].display && (menuAuthDataMap[menuDisplayOption['detailDelete'].uuid] || isAdmin() || !menuDisplayOption['detailDelete'].uuid)">
-                            <md-button class="md-button" aria-label="More" ng-click="deleteClickAction($event, selectedItem)"
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="deleteClickAction($event, selectedItem)"
                                        ng-disabled="selectedItem.confirm == '2' || selectedItem.status == '2'">
                                 <ng-md-icon icon="delete"></ng-md-icon>
                                 删除
@@ -55,7 +61,8 @@
                     </md-menu-content>
                 </md-menu>
                 <span>详细信息</span>
-                <md-button class="md-icon-button close-btn float-right" aria-label="More"ng-click="hideItemDetailsAction($event)">
+                <md-button class="md-icon-button close-btn float-right" aria-label="More"
+                           ng-click="hideItemDetailsAction($event)">
                     <ng-md-icon icon="chevron_left"></ng-md-icon>
                 </md-button>
             </div>
@@ -66,7 +73,8 @@
                 </md-button>
                 <span>渠道/直营店列表</span>
                 <md-menu>
-                    <md-button class="md-icon-button close-btn float-right" aria-label="More" ng-click="$mdOpenMenu($event)">
+                    <md-button class="md-icon-button close-btn float-right" aria-label="More"
+                               ng-click="$mdOpenMenu($event)">
                         <ng-md-icon icon="menu"></ng-md-icon>
                     </md-button>
                     <md-menu-content width="2">
@@ -80,7 +88,8 @@
                         </md-menu-item>
                         <md-menu-item
                                 ng-if="menuDisplayOption['batchRevertConfirm'].display && (menuAuthDataMap[menuDisplayOption['batchRevertConfirm'].uuid] || isAdmin() || !menuDisplayOption['batchRevertConfirm'].uuid)">
-                            <md-button class="md-button" aria-label="More" ng-click="revertConfirmAllClickAction($event)"
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="revertConfirmAllClickAction($event)"
                                        ng-disabled="disabledBatchCancelConfirm">
                                 <ng-md-icon icon="lock_open"></ng-md-icon>
                                 批量取审
@@ -172,14 +181,53 @@
                             <span class="item-name">审核状态</span>
                             <span class="item-content">{{CONFIRM[selectedItem.confirm].name}}</span>
                         </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">上层渠道</span>
+                            <span class="item-content">{{selectedItem.parentOcmBaseChanName}}</span>
+                            <md-button class="md-raised" aria-label="..."
+                                       ng-click="openParentLevelDlg()"> 设置 </md-button>
+                        </span>
                     </div>
+                    <md-tabs md-dynamic-height md-border-bottom style="padding-top: 30px;">
+                        <md-tab label="下层渠道信息">
+                            <div layout="row" layout-wrap style="margin-top: 20px;">
+                                <div flex="100" ng-repeat="detail in selectedItem.childList" ng-click=""
+                                     class="prod-item" style="position: relative;">
+                                    <div layout="row" class="height: 100%;">
+                                        <div flex="50">
+                                            <div layout-padding>渠道编号 : <span>{{detail.channel.no}}</span></div>
+                                            <div layout-padding>渠道名称 : <span>{{detail.channel.name}}</span></div>
+                                        </div>
+
+                                        <div style="position: absolute; right: -10px; bottom: 10px;">
+                                            <md-button class="md-button close-btn" aria-label="More"
+                                                       ng-click="deleteChannelLevelAction(detail)"
+                                                       ng-if="menuDisplayOption['channelLevel-detailDelete'].display && (menuAuthDataMap[formMenuDisplayOption['channelLevel-detailDelete'].uuid] || isAdmin() || !menuDisplayOption['channelLevel-detailDelete'].uuid)">
+                                                <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>
+                                                删除
+                                            </md-button>
+
+                                        </div>
+                                    </div>
+                                    <md-divider style="margin-top: 5px"></md-divider>
+                                </div>
+                                <div pagination option="pageDetailOption" callback="refreshSubList(selectedItem)"></div>
+                                <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
+                                     ng-click="preAddItemAction({}, 'OCM_BASE_CHAN_LEVEL', '新增下级渠道')"
+                                     ng-if="menuDisplayOption['channelLevel-detailAdd'].display && (menuAuthDataMap[formMenuDisplayOption['channelLevel-detailAdd'].uuid] || isAdmin() || !menuDisplayOption['channelLevel-detailAdd'].uuid)">
+                                    <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
+                                </div>
+                            </div>
+                        </md-tab>
+                    </md-tabs>
                 </div>
             </div>
             <div flex class="right-body">
                 <!-- basic search-->
                 <div flex layout="row" style="position: relative" layout-align="start start">
                     <span style="position: absolute; top: 15px; left: 10px;">
-                        <md-checkbox ng-model="selectAllFlag" aria-label="Checkbox" ng-change="selectAllAction()"></md-checkbox>
+                        <md-checkbox ng-model="selectAllFlag" aria-label="Checkbox"
+                                     ng-change="selectAllAction()"></md-checkbox>
                     </span>
                     <md-input-container flex="20" style="margin-left: 55px;" ng-show="selectedItem == null">
                         <label>审核状态</label>
@@ -205,7 +253,7 @@
                         <label>输入关键字查询</label>
                         <input ng-model="listFilterOption.keyWord" ng-keypress="queryEnter($event)">
                     </md-input-container>
-                      <span flex style="padding-top: 10px;" align="right">
+                    <span flex style="padding-top: 10px;" align="right">
                         <md-button class="md-icon-button" aria-label="Eat cake" ng-click="showAdvancedSearchAction()">
                             <ng-md-icon icon="expand_more" ng-show="!displayAdvancedSearPanel"></ng-md-icon>
                             <ng-md-icon icon="expand_less" ng-show="displayAdvancedSearPanel"></ng-md-icon>
@@ -218,7 +266,8 @@
                     <md-input-container flex="20" ng-show="selectedItem == null">
                         <label>渠道/直营店类型</label>
                         <md-select ng-model="listFilterOption.select.channelFlag">
-                            <md-option ng-repeat="(key, value) in CHANNEL_FLAG" ng-value="key">{{value.name}}</md-option>
+                            <md-option ng-repeat="(key, value) in CHANNEL_FLAG" ng-value="key">{{value.name}}
+                            </md-option>
                         </md-select>
                     </md-input-container>
                     <md-input-container flex="20" ng-show="selectedItem == null">
@@ -232,7 +281,8 @@
                     <span flex="20">总记录数: {{pageOption.totalElements}}</span>
                     <span flex="20">已选记录数: {{selectedItemSize}}</span>
                     <md-menu>
-                        <md-button class="md-button close-btn" aria-label="More" ng-click="$mdOpenMenu($event)" style="position: absolute;right: 0px;top: 0px;">
+                        <md-button class="md-button close-btn" aria-label="More" ng-click="$mdOpenMenu($event)"
+                                   style="position: absolute;right: 0px;top: 0px;">
                             <ng-md-icon icon="sort"></ng-md-icon>
                             排序
                         </md-button>
@@ -250,17 +300,21 @@
                         </md-menu-content>
                     </md-menu>
                 </div>
-                <div ng-repeat="item in itemList | orderBy:sortByField" ng-class="selectedItem.no == item.no ? 'selected-item':''">
+                <div ng-repeat="item in itemList | orderBy:sortByField"
+                     ng-class="selectedItem.no == item.no ? 'selected-item':''">
                     <div class="summary-item">
                         <div layout="row" layout-wrap>
                             <span style="position: absolute">
-                                <md-checkbox ng-model="item.selected" aria-label="Checkbox" ng-click="selectItemAction($event, item)"></md-checkbox>
+                                <md-checkbox ng-model="item.selected" aria-label="Checkbox"
+                                             ng-click="selectItemAction($event, item)"></md-checkbox>
                             </span>
 
-                            <div flex="100" layout="row" style="padding-left: 50px;padding-top: 10px; font-weight: bold;">
+                            <div flex="100" layout="row"
+                                 style="padding-left: 50px;padding-top: 10px; font-weight: bold;">
                                 <span flex ng-click="showDetailPanelAction(item)" class="summary-item__title">{{item.no}}</span>
                             </div>
-                            <div flex="100" layout="row" style="padding-left: 50px;padding-top: 10px;font-size: 14px;" layout-align="space-between center" ng-hide="selectedItem">
+                            <div flex="100" layout="row" style="padding-left: 50px;padding-top: 10px;font-size: 14px;"
+                                 layout-align="space-between center" ng-hide="selectedItem">
                                 <div flex layout="row" style="color:#7f8fa4">
                                     <span>渠道/直营店: <span style="font-style: italic">{{item.name}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
                                     <span>类型: <span style="font-style: italic">{{CHANNEL_FLAG[item.channelFlag].name}}&nbsp;&nbsp;/&nbsp;&nbsp;</span></span>
@@ -302,7 +356,8 @@
                                     </div>!-->
                                 </div>
                             </div>
-                            <div flex="100" style="padding-left: 50px;padding-top: 30px;font-size: 14px;color:#7f8fa4" ng-show="selectedItem">
+                            <div flex="100" style="padding-left: 50px;padding-top: 30px;font-size: 14px;color:#7f8fa4"
+                                 ng-show="selectedItem">
                                 渠道/直营店:<span style="font-style: italic">{{item.name}}</span>
                             </div>
                         </div>
@@ -314,10 +369,11 @@
             </div>
         </div>
     </div>
-    <div ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS">
+    <div ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS && domain == ''">
         <div layout="row" class="top-title">
             <div flex="100" class="left-title">
-                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="listItemAction()" style="float: left; margin-left: 36px;">
+                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="listItemAction()"
+                           style="float: left; margin-left: 36px;">
                     <ng-md-icon icon="chevron_left"></ng-md-icon>
                 </md-button>
                 <span>{{desc}}</span>
@@ -327,5 +383,37 @@
             </div>
         </div>
         <object-editor class="object-editor" status="status" source="source" domain="domain"></object-editor>
+    </div>
+
+    <div ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS && domain == 'OCM_BASE_CHAN_LEVEL'">
+        <div layout="row" class="top-title">
+            <div flex="100" class="left-title">
+                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="listItemAction()"
+                           style="float: left; margin-left: 36px;">
+                    <ng-md-icon icon="chevron_left"></ng-md-icon>
+                </md-button>
+                <span>{{desc}}</span>
+                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="saveChannelLevelAction()">
+                    <ng-md-icon icon="save"></ng-md-icon>
+                </md-button>
+            </div>
+        </div>
+        <div flex="100" layout="column" layout-padding>
+            <md-input-container>
+                <label class="label">渠道：</label>
+                <input type="text" aria-label="..." ng-model="addItem.channelName"
+                       ng-disabled="status == 'edit'"
+                       ng-click="openChannelDlg()">
+            </md-input-container>
+        </div>
+
+        <div flex="100" layout="column" layout-padding>
+            <md-input-container>
+                <label class="label">上层渠道：</label>
+                <input type="text" aria-label="..." ng-model="addItem.parentChannelName"
+                       ng-disabled="status == 'add'"
+                       ng-click="openParentChannelDlg()">
+            </md-input-container>
+        </div>
     </div>
 </div>
