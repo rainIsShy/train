@@ -25,6 +25,7 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
         PSO_DELIVER_ORDER_EXT_DTL: {value: 'PSO_DELIVER_ORDER_EXT_DTL', name: '出货同步'},
         EPS_DELIVER_ORDER_EXT_DTL: {value: 'EPS_DELIVER_ORDER_EXT_DTL', name: '电商出货单同步'},
         OCM_CHAN_BRAND: {value: 'OCM_CHAN_BRAND', name: '渠道品牌关系同步'},
+        EPS_O2O_MAIL: {value: 'EPS_O2O_MAIL', name: '电商线下门店同步'}
     };
 
     $scope.selected = [];
@@ -196,6 +197,17 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
                     var totalTcChanBrandCount = addResponse(response.updateTcChanBrandCount, response.insertTcChanBrandCount);
                     var totalChanBrandRelationCount = addResponse(response.updateChannelBrandRelationCount, response.insertChannelBrandRelationCount);
                     $scope.showInfo('ERP同步到 TIPTOP_TC_CHAN_BRAND_FILE，共 ' + totalTcChanBrandCount + '笔数据同步成功!\n TIPTOP_TC_CHAN_BRAND_FILE 同步到 OCM_BASE_CHAN_BRAND_R，共 ' + totalChanBrandRelationCount + '笔数据同步成功!');
+                    $scope.logining = false;
+                }).error(function (errResp) {
+                    $scope.logining = false;
+                    $scope.showError(errResp.message);
+                });
+            } else if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.EPS_O2O_MAIL.name) {
+                // 电商线下门店同步
+                IoneAdapterService.transferIoneAdapter("/tcQybTask", param, $scope, function (response) {
+                    var totalTipTopTcQybFileCount = addResponse(response.updateTipTopTcQybFile, response.insertTipTopTcQybFile);
+                    var totalSysBaseMapFileCount = addResponse(response.updateSysBaseMapFileCount, response.insertSysBaseMapFileCount);
+                    $scope.showInfo('ERP同步到 TIPTOP_TC_QYB_FILE，共 ' + totalTipTopTcQybFileCount + '笔数据同步成功!\n TIPTOP_TC_QYB_FILE 同步到 SYS_BASE_MAP_FILE，共 ' + totalSysBaseMapFileCount + '笔数据同步成功!');
                     $scope.logining = false;
                 }).error(function (errResp) {
                     $scope.logining = false;
