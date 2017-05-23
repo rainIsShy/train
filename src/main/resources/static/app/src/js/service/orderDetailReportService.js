@@ -58,12 +58,16 @@ angular.module('IOne-Production').service('OrderDetailReportService', function (
                 break;
             case '3':
                 url += '/searchChannel?page=' + page + '&size=' + size
-                    + '&proName=' + scopeData.proName + '&cityName=' + scopeData.cityName
+                    + '&proName=' + scopeData.proName + '&cityName=' + scopeData.cityName + '&districtName=' + scopeData.districtName
                     + '&name=' + keyword;
                 break;
             case '4':
                 url += '/searchItemNo?page=' + page + '&size=' + size
                     + '&no=' + keyword;
+                break;
+            case '5':
+                url += '/searchDistrict?page=' + page + '&size=' + size
+                    + '&name=' + keyword + '&cityName=' + scopeData.cityName;
                 break;
         }
         return $http.get(url);

@@ -284,12 +284,14 @@ RES_UUID_MAP = {
                 TITLE: '采购单-表单'
             }
         },
-
+        DEALER_DETAIL_REPORT: {
+            RES_UUID: '5eb81a14-ccf9-49bb-88fe-b9f0015856b2',
+            TITLE: '经销商使用统计表'
+        },
         ORDER_DETAIL_REPORT: {
             RES_UUID: '6d32107c-618c-4569-bcd8-6aee9da40c5b',
             TITLE: '客户订单明细表'
         }
-
     },
 
     CBI: {
@@ -725,6 +727,12 @@ angular.module('IOne-Constant').constant('Constant', {
                 {id: '/receipt2s', name: '预订单收退款管理', link: '/receipt2s', uuid: RES_UUID_MAP.PSO.SO_RECEIPT.RES_UUID},
                 {id: '2-9', name: '回单/欠货单', link: '', uuid: ''},
                 {id: '/walkThrough', name: '预排回访', link: '/walkThrough', uuid: RES_UUID_MAP.PSO.WALK_THROUGH.RES_UUID},
+                {
+                    id: '/dealerOrderDetailReport',
+                    name: RES_UUID_MAP.PSO.DEALER_DETAIL_REPORT.TITLE,
+                    link: '/dealerOrderDetailReport',
+                    uuid: RES_UUID_MAP.PSO.DEALER_DETAIL_REPORT.RES_UUID
+                },
                 {
                     id: '/orderDetailReport',
                     name: RES_UUID_MAP.PSO.ORDER_DETAIL_REPORT.TITLE,
