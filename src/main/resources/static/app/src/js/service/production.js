@@ -45,6 +45,10 @@ angular.module('IOne-Production').service('Production', function($http, Constant
             + '&orderByName=' + orderByName);
     };
 
+    this.getNo = function(name,no) {
+        return $http.get(Constant.BACKEND_BASE + '/items/' + '?name=' +  name + '&no=' + no + '&action=getItemName');
+    };
+
     this.get = function(productionUuid, resUuid) {
         return $http.get(Constant.BACKEND_BASE + '/items/' + productionUuid + '?resUuid=' + resUuid);
     };

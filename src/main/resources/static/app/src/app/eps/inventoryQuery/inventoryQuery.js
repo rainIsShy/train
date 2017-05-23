@@ -84,13 +84,13 @@ angular.module('IOne-Production').controller('InventoryQueryController', functio
             }
         }).then(function (data) {
             var queryReturnData = data;
-            $scope.listFilterOption.suite = queryReturnData.item.no;
+            $scope.listFilterOption.suite = queryReturnData.childNo;
             console.log($scope.listFilterOption.suite);
         });
     };
 });
 
-angular.module('IOne-Production').controller('QueryDlgController', function ($scope, $mdDialog, saleTypes, OrderDetailList) {
+angular.module('IOne-Production').controller('QueryDlgController', function ($scope, $mdDialog, saleTypes, OrderDetailList, Production) {
     $scope.OrderDetailList = angular.copy(OrderDetailList);
     $scope.addOrderDetail = [];
 
@@ -143,7 +143,11 @@ angular.module('IOne-Production').controller('QueryDlgController', function ($sc
     };
 
     $scope.hideDlg = function () {
-        $mdDialog.hide($scope.addOrderDetail);
+        Production.getNo($scope.addOrderDetail.item.name,$scope.addOrderDetail.item.no).success(function (data) {
+            $scope.returnData = data;
+            $scope.addOrderDetail.childNo = $scope.returnData[0].no;
+            $mdDialog.hide($scope.addOrderDetail);
+        });
     };
     $scope.cancelDlg = function () {
         $mdDialog.cancel();
