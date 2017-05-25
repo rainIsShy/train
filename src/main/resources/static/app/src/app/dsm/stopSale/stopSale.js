@@ -217,9 +217,7 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
             } else if ($scope.listFilterOption.syncType.name == $scope.TIPTOP_SYNC_TYPE.EPS_O2O_AREA.name) {
                 // 电商O2O配送经销商对应资料同步
                 IoneAdapterService.transferIoneAdapter("/tcQyaTask", param, $scope, function (response) {
-                    var totalTipTopTcQyaFileCount = addResponse(response.updateTipTopTcQyaFile, response.insertTipTopTcQyaFile);
-                    var totalOcmBaseChanRCount = addResponse(response.updateOcmBaseChanRCount, response.insertOcmBaseChanRCount);
-                    $scope.showInfo('ERP同步到 TIPTOP_TC_QYA_FILE，共 ' + totalTipTopTcQyaFileCount + '笔数据同步成功!\n TIPTOP_TC_QYA_FILE 同步到 OCM_BASE_CHAN_R，共 ' + totalOcmBaseChanRCount + '笔数据同步成功!');
+                    $scope.showInfo('ERP同步到 TIPTOP_TC_QYA_FILE，共 ' + response.insertTipTopTcQyaFileCount + '笔数据同步成功!\n TIPTOP_TC_QYA_FILE 同步到 OCM_BASE_CHAN_R，共 ' + response.insertOcmBaseChanRCount + '笔数据同步成功!');
                     $scope.logining = false;
                 }).error(function (errResp) {
                     $scope.logining = false;
