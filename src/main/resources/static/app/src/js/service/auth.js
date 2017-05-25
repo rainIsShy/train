@@ -382,6 +382,11 @@ angular.module('IOne-Production').service('GroupUserService', function(Constant,
         });
     };
 
+    this.getAll = function(size, page, keyword) {
+        if(keyword == undefined) keyword = '';
+        return $http.get(Constant.BACKEND_BASE + '/groupUsers?page=' + page + '&size=' + size + '&keyword=' + keyword);
+    };
+
     this.get = function(uuid) {
         return $http.get(Constant.BACKEND_BASE + '/groupUsers/' + uuid);
     };
