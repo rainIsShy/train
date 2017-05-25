@@ -1192,7 +1192,8 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             targetEvent: event,
             locals: {
                 selectedOrderExtendDetail: orderExtendDetail,
-                channelUuid: $scope.selectedItem.channel.uuid
+                channelUuid: $scope.selectedItem.channel.uuid,
+                baseClassUuid: $scope.selectedItem.baseClass.uuid,
             }
         }).then(function (data) {
             PmmOrderExtendDetail.modify(data.selectedOrderExtendDetail.pmmOrderDetail.uuid, data.selectedOrderExtendDetail.uuid, data.selectedOrderExtendDetail).success(function () {
@@ -2005,7 +2006,7 @@ angular.module('IOne-Production').controller('PmmOrderExtendDetail2Controller', 
 });
 
 
-angular.module('IOne-Production').controller('PmmOrderExtendDetailController', function ($scope, $mdDialog, selectedOrderExtendDetail, channelUuid) {
+angular.module('IOne-Production').controller('PmmOrderExtendDetailController', function ($scope, $mdDialog, selectedOrderExtendDetail, channelUuid, baseClassUuid) {
     $scope.selectedOrderExtendDetail = angular.copy(selectedOrderExtendDetail);
 
     $scope.openExtItemDlg = function () {
@@ -2018,12 +2019,13 @@ angular.module('IOne-Production').controller('PmmOrderExtendDetailController', f
             skipHide: true,
             locals: {
                 fieldName: '归属补件',
-                channelUuid: channelUuid
+                channelUuid: channelUuid,
+                baseClassUuid: baseClassUuid
             }
         }).then(function (data) {
             if (!data.isCancel) {
-                $scope.selectedOrderExtendDetail.baseItem = {name: data.name};
-                $scope.selectedOrderExtendDetail.plmBaseItemFileBUuid = data.uuid;
+                $scope.selectedOrderExtendDetail.baseItem = {name: data.item.name};
+                $scope.selectedOrderExtendDetail.plmBaseItemFileBUuid = data.item.uuid;
             }
         });
     };
@@ -2152,7 +2154,7 @@ angular.module('IOne-Production').controller('OrderPurchaseReturnController', fu
 });
 
 
-angular.module('IOne-Production').controller('SelectItemsController', function ($scope, $mdDialog, fieldName, channelUuid, OrderItems, ProductionCatalogueDetails) {
+angular.module('IOne-Production').controller('SelectItemsController', function ($scope, $mdDialog, fieldName, channelUuid, OrderItems, ProductionCatalogueDetails, baseClassUuid) {
     $scope.pageOption = {
         sizePerPage: 5,
         currentPage: 0,
@@ -2166,20 +2168,13 @@ angular.module('IOne-Production').controller('SelectItemsController', function (
     };
 
     $scope.refreshList = function () {
-        // OrderItems.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, channelUuid, $scope.searchNo, $scope.searchName).success(function (data) {
-        //     $scope.searchResult = data;
-        //     if ($scope.searchResult.content.length < 1) {
-        //         $scope.showError('当前经销商没有商品，请检查渠道定价是否设置。');
-        //     }
-        //     $scope.pageOption.totalElements = data.totalElements;
-        //     $scope.pageOption.totalPage = data.totalPages;
-        // });
 
         var today = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-        ProductionCatalogueDetails.getAllByAppCatalogue($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, channelUuid, today, $scope.searchNo, $scope.searchName, '').success(function (data) {
+        ProductionCatalogueDetails.getAllByAppCatalogue($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, channelUuid, today, $scope.searchNo, $scope.searchName, '', baseClassUuid).success(function (data) {
             $scope.searchResult = data;
             if ($scope.searchResult.content.length < 1) {
-                $scope.showError('当前经销商没有商品，请检查渠道定价是否设置。');
+                // $scope.showError('当前经销商没有商品，请检查渠道定价是否设置。');
+                toastr["error"]('当前经销商没有商品，请检查渠道定价是否设置。');
             }
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
