@@ -404,7 +404,12 @@ RES_UUID_MAP = {
         TAG_CLASS: {
             RES_UUID: '682ab4ea-7cc8-4be4-af4d-22acc4f3b489',
             TITLE: '标签分类维护'
+        },
+        BASE_CLASS: {
+            RES_UUID: '55c5cb3a-8d24-4074-871e-682ef78708b4',
+            TITLE: '分類維護'
         }
+
     },
 
     EPS: {
@@ -1121,7 +1126,8 @@ angular.module('IOne-Constant').constant('Constant', {
                     uuid: RES_UUID_MAP.CBI.LOGISTICS_INSTALLATIONS.RES_UUID
                 },
                 {id: '/fam/tags', name: '标签管理', link: '/fam/tags', uuid: RES_UUID_MAP.CBI.TAG.RES_UUID},
-                {id: '/fam/tagClass', name: '标签分类', link: '/fam/tagClass', uuid: RES_UUID_MAP.CBI.TAG_CLASS.RES_UUID}
+                {id: '/fam/tagClass', name: '标签分类', link: '/fam/tagClass', uuid: RES_UUID_MAP.CBI.TAG_CLASS.RES_UUID},
+                {id: '/fam/baseClass', name: '分类维护', link: '/fam/baseClass', uuid: RES_UUID_MAP.CBI.BASE_CLASS.RES_UUID}
             ]
         }
     ],

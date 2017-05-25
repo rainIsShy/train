@@ -229,7 +229,7 @@ angular.module('IOne-Production').controller('ChannelPromotionController', funct
         });
     };
 
-    $scope.refreshProductList = function (item) {
+    $scope.refreshBrandRelation = function (item) {
         PromotionProductService.get(item.uuid).success(function (data) {
             $scope.prodList = data.content;
             // $scope.productPageOption.totalPage = data.totalPages;
@@ -290,7 +290,7 @@ angular.module('IOne-Production').controller('ChannelPromotionController', funct
         //    $scope.orderDetailList = data.content;
         //});
         // item.detailList = $scope.subItemList;
-        $scope.refreshProductList(item);
+        $scope.refreshBrandRelation(item);
         $scope.refreshChannelList(item);
 
     };
@@ -383,7 +383,7 @@ angular.module('IOne-Production').controller('ChannelPromotionController', funct
                                 $scope.showInfo("新增成功!");
                                 $scope.listItemAction();
                                 $scope.selectedItem = data;
-                                $scope.refreshProductList($scope.selectedItem);
+                                $scope.refreshBrandRelation($scope.selectedItem);
                             });
                         }
                     });
@@ -391,7 +391,7 @@ angular.module('IOne-Production').controller('ChannelPromotionController', funct
                 }
             } else if ($scope.domain == 'OCM_PROM_PRODUCT_DTL') {
                 PromotionProductService.add($scope.selectedItem.uuid, $scope.addDetailItem).success(function () {
-                    $scope.refreshProductList($scope.selectedItem);
+                    $scope.refreshBrandRelation($scope.selectedItem);
                     $scope.showInfo("新增商品成功!");
                     $scope.listItemAction();
                 });
@@ -415,7 +415,7 @@ angular.module('IOne-Production').controller('ChannelPromotionController', funct
                 });
             } else if ($scope.domain == 'OCM_PROM_PRODUCT_DTL') {
                 PromotionProductService.modify($scope.selectedItem.uuid, $scope.addDetailItem.uuid, $scope.addDetailItem).success(function () {
-                    $scope.refreshProductList($scope.selectedItem);
+                    $scope.refreshBrandRelation($scope.selectedItem);
                     $scope.listItemAction();
                     $scope.showInfo("修改商品成功!");
 
@@ -482,11 +482,11 @@ angular.module('IOne-Production').controller('ChannelPromotionController', funct
     /**
      * Delete detail item
      */
-    $scope.deleteProdDetailAction = function (detail) {
+    $scope.deleteDetailAction = function (detail) {
         $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
             if ($scope.selectedItem) {
                 PromotionProductService.delete(detail.promotion.uuid, detail.uuid).success(function () {
-                    $scope.refreshProductList($scope.selectedItem);
+                    $scope.refreshBrandRelation($scope.selectedItem);
                     $scope.showInfo("刪除商品成功!");
                 });
             }
