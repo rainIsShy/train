@@ -573,6 +573,9 @@ RES_UUID_MAP = {
                 RES_UUID: '861acdf6-04ed-46c4-90d9-0583784adf6c',
                 TITLE: '采购单-表单'
             }
+        }, TRANSFER_TYPE: {
+            RES_UUID: 'c5ccff81-8d3d-4405-a888-6ca3dab52074',
+            TITLE: '采购单别维护'
         }
     },
 
@@ -754,6 +757,12 @@ angular.module('IOne-Constant').constant('Constant', {
             isOpen: false,
             icon: 'fa fa-truck',
             subList: [
+                {
+                    id: '/transferType',
+                    name: '采购单别维护',
+                    link: '/transferType',
+                    uuid: RES_UUID_MAP.PO.TRANSFER_TYPE.RES_UUID
+                },
                 {id: '/pmmOrder', name: '采购单', link: '/pmmOrder', uuid: RES_UUID_MAP.PO.PMM_ORDER.RES_UUID}
             ]
         },
@@ -1127,7 +1136,13 @@ angular.module('IOne-Constant').constant('Constant', {
                 },
                 {id: '/fam/tags', name: '标签管理', link: '/fam/tags', uuid: RES_UUID_MAP.CBI.TAG.RES_UUID},
                 {id: '/fam/tagClass', name: '标签分类', link: '/fam/tagClass', uuid: RES_UUID_MAP.CBI.TAG_CLASS.RES_UUID},
-                {id: '/fam/baseClass', name: '分类维护', link: '/fam/baseClass', uuid: RES_UUID_MAP.CBI.BASE_CLASS.RES_UUID}
+                {
+                    id: '/fam/baseClass',
+                    name: '分类维护',
+                    link: '/fam/baseClass',
+                    uuid: RES_UUID_MAP.CBI.BASE_CLASS.RES_UUID
+                },
+
             ]
         }
     ],
