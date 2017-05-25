@@ -917,7 +917,11 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 $scope.showError("请选择经销商!");
                 return;
             }
-            console.log($scope.selectedItem);
+
+            if (!$scope.selectedItem.baseClass) {
+                $scope.showError("请选择跟单分组!");
+                return;
+            }
             PmmOrderMaster.add($scope.selectedItem).success(function (data) {
                 $scope.selectedItem = data;
                 var promises = [];
@@ -971,6 +975,8 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     $scope.openOrderItemsDlg = function () {
         if ($scope.selectedItem.channel == undefined || $scope.selectedItem.channel == null) {
             $scope.showWarn('请选择经销商。');
+        } else if (!$scope.selectedItem.baseClass) {
+            $scope.showWarn('请选择恒大跟单分组。');
         } else {
             $mdDialog.show({
                 controller: 'OrderItemsSearchController',
@@ -979,6 +985,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 targetEvent: event,
                 locals: {
                     channelUuid: $scope.selectedItem.channel.uuid,
+                    baseClassUuid: $scope.selectedItem.baseClass.uuid,
                     saleTypes: $scope.saleTypes
                 }
             }).then(function (data) {
@@ -1412,6 +1419,18 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         });
     };
 
+    $scope.openBaseClassDlg = function () {
+        $mdDialog.show({
+            controller: 'PmmBaseClassSelectController',
+            templateUrl: 'app/src/app/pmm/pmmOrder/selectBaseClass.html',
+            parent: angular.element(document.body),
+            targetEvent: event
+        }).then(function (data) {
+            $scope.selectedItem.baseClass = data;
+            $scope.selectedItem.baseClassUuid = data.uuid;
+        });
+    };
+
     $scope.changePurchaseFlag = function (flag, dtls) {
         if (flag == 2) {
             $scope.showConfirm('确认发出采购吗？', '', function () {
@@ -1640,10 +1659,12 @@ angular.module('IOne-Production').controller('OrderCustomerSearchController', fu
 });
 
 
-angular.module('IOne-Production').controller('OrderItemsSearchController', function ($scope, $q, $mdDialog, OrderItems, ChannelItemInfoService, channelUuid, SaleTypes, Constant) {
+angular.module('IOne-Production').controller('OrderItemsSearchController', function ($scope, $q, $mdDialog, OrderItems, ChannelItemInfoService, channelUuid, baseClassUuid, SaleTypes, Constant) {
     SaleTypes.getAll().success(function (data) {
         $scope.saleTypes = data.content;
     });
+
+    $scope.baseClassUuid = baseClassUuid;
 
     $scope.channelUuid = channelUuid;
     // $scope.saleTypes = saleTypes;
@@ -1662,7 +1683,7 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
     };
 
     $scope.refreshData = function () {
-        OrderItems.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, channelUuid, $scope.searchNo, $scope.searchName, $scope.searchKeyword, $scope.searchStandard).success(function (data) {
+        OrderItems.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, channelUuid, $scope.searchNo, $scope.searchName, $scope.searchKeyword, $scope.searchStandard, $scope.baseClassUuid).success(function (data) {
             $scope.allData = data;
             if ($scope.allData.content.length < 1) {
                 $scope.showWarn('未搜索到该商品，请确认是否维护该商品定价信息！');
@@ -1732,6 +1753,7 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         var errMsgs = [];
         if (null == $scope.addOrderDetail.item) {
             errMsgs.push("请选择商品");
+
         } else if (null == $scope.addOrderDetail.orderQty) {
             errMsgs.push("请输入采购数量");
         } else if (null == $scope.addOrderDetail.oriPurPrice) {
@@ -2233,6 +2255,40 @@ angular.module('IOne-Production').controller('PmmOrderAreaSelectController', fun
         $scope.selectedItem = item;
         $mdDialog.hide($scope.addressName);
     };
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+});
+
+angular.module('IOne-Production').controller('PmmBaseClassSelectController', function ($scope, $mdDialog, BaseClassService) {
+    $scope.pageOption = {
+        sizePerPage: 6,
+        currentPage: 0,
+        totalPage: 0,
+        totalElements: 0,
+        displayModel: 0  //0 : image + text //1 : image
+    };
+
+    $scope.refreshBaseClass = function () {
+
+        BaseClassService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, '', '', $scope.searchKeyword, '').success(function (data) {
+            $scope.itemList = data.content;
+            $scope.pageOption.totalPage = data.totalPages;
+            $scope.pageOption.totalElements = data.totalElements;
+        });
+    };
+
+    $scope.refreshBaseClass();
+
+    $scope.select = function (channel) {
+        $scope.channel = channel;
+        $mdDialog.hide($scope.channel);
+    };
+
+    $scope.hideDlg = function () {
+        $mdDialog.hide($scope.channel);
+    };
+
     $scope.cancelDlg = function () {
         $mdDialog.cancel();
     };

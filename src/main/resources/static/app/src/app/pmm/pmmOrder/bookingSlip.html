@@ -191,6 +191,14 @@
                                             <input type="text" aria-label="..."
                                                    ng-model="selectedItem.employee.department.name" ng-disabled="true">
                                         </md-input-container>
+
+                                        <md-input-container>
+                                            <label class="label" style="color: blue;">恒大跟单分组：</label>
+                                            <input type="text" aria-label="..." ng-model="selectedItem.baseClass.name"
+                                                   ng-disabled="(ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS)"
+                                                   ng-click="openBaseClassDlg()">
+                                        </md-input-container>
+
                                         <md-input-container>
                                             <label class="label" style="color: blue;">备注：</label>
                                             <input type="text"  aria-label="..." ng-model="selectedItem.remark"   md-maxlength="20"

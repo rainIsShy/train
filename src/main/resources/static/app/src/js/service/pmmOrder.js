@@ -156,7 +156,7 @@ angular.module('IOne-Production').service('OrderCustomers', function($http, Cons
 });
 
 angular.module('IOne-Production').service('OrderItems', function($http, Constant) {
-    this.getAll = function (sizePerPage, page, channelUuid, no, name, itemGlobalQuery, itemStandard) {
+    this.getAll = function (sizePerPage, page, channelUuid, no, name, itemGlobalQuery, itemStandard, baseClassUuid) {
         var url = '/channelPrices/' + channelUuid + '/items?size=' + sizePerPage + '&page=' + page;
         if(no !== undefined && no !== null) {
             url = url + '&no=' + no;
@@ -172,6 +172,10 @@ angular.module('IOne-Production').service('OrderItems', function($http, Constant
 
         if (itemStandard !== undefined && itemStandard !== null) {
             url = url + '&itemStandard=' + itemStandard;
+        }
+
+        if (baseClassUuid) {
+            url = url + '&baseClassUuid=' + baseClassUuid;
         }
 
         return $http.get(Constant.BACKEND_BASE + url);
