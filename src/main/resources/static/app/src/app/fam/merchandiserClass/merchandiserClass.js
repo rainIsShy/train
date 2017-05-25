@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('MerchandiserClassController', function ($scope, GroupUserService,CBIGroupEmployeeChanRService, CBIGroupEmployeeClassRService, CBIGroupEmployeeBrandRService,PromotionChannelService, Constant, $mdDialog, $q) {
+angular.module('IOne-Production').controller('MerchandiserClassController', function ($scope, GroupUserService,PromotionChannelService, Constant, $mdDialog, $q) {
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
