@@ -230,12 +230,14 @@ angular.module('IOne-Production').controller('StopSaleController', function ($sc
     $scope.validation = function () {
         var isPass = true;
 
-        if ($scope.listFilterOption.startDate == '' || angular.isUndefined($scope.listFilterOption.startDate)) {
+        if (($scope.listFilterOption.startDate == '' || angular.isUndefined($scope.listFilterOption.startDate))
+            && $scope.listFilterOption.syncType.name != $scope.TIPTOP_SYNC_TYPE.EPS_O2O_AREA.name) {
             $scope.showError('请输入开始日期!');
             isPass = false;
         }
 
-        if ($scope.listFilterOption.endDate == '' || angular.isUndefined($scope.listFilterOption.endDate)) {
+        if (($scope.listFilterOption.endDate == '' || angular.isUndefined($scope.listFilterOption.endDate))
+            && $scope.listFilterOption.syncType.name != $scope.TIPTOP_SYNC_TYPE.EPS_O2O_AREA.name) {
             $scope.showError('请输入截止日期!');
             isPass = false;
         }
