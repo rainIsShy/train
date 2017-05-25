@@ -20,6 +20,11 @@ angular.module('IOne-Production').service('BrandRelationsService', function ($ht
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
+    this.getAllByBaseClassUuid = function (baseClassUuid) {
+        var url = '/baseBrandRelations?baseClassUuid=' + baseClassUuid;
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
 
     this.get = function (uuid) {
         return $http.get(Constant.BACKEND_BASE + '/baseBrandRelations/' + uuid);
