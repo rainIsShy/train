@@ -1,10 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<md-dialog style="padding: 30px;min-width: 700px;min-height:300px;max-height: 700px;">
+    <md-content>
+        <div>
+            <md-input-container flex="20">
+                <label> 采购单别：</label>
+                <md-select placeholder="" ng-model="transferType">
+                    <md-option ng-repeat="value in transferTypeList" ng-value="value.no">
+                        {{value.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div layout="row">
+            <div flex="5" class="verticalLine table-head">
+                <md-checkbox aria-label="Checkbox" ng-click="selectAllAction()"></md-checkbox>
+            </div>
+            <div align="center" flex="10" class=" table-head">项次</div>
+            <div align="center" flex="40" class=" table-head">品名</div>
+            <div align="center" flex="40" class=" table-head">规格</div>
+        </div>
+        <div ng-repeat="data in itemList  | orderBy:'no'">
+            <div layout="row">
+                <div flex="5" style="padding:0px 0px 0px 0px;" layout-align="center" class=" table-item">
+                    <md-checkbox ng-checked="exists(data, selected)"
+                                 ng-click="addToggle(data, selected)">
+                    </md-checkbox>
+                </div>
 
-</body>
-</html>
+                <div align="center" flex="10" class="table-item">{{data.no}}</div>
+                <div align="center" flex="40" class="table-item">{{data.item.name}}</div>
+                <div align="center" flex="40" class="table-item">{{data.item.standard}}</div>
+            </div>
+        </div>
+        <div layout="row">
+            <md-button ng-click="hideDlg(transferType, selected)">
+                <i class="fa fa-check"></i>&nbsp;确定
+            </md-button>
+            <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+        </div>
+    </md-content>
+</md-dialog>

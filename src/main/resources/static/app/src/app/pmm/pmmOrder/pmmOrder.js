@@ -57,7 +57,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         '400-selectAll': {display: true, name: '全选', uuid: 'dfba15d0-55c2-4f32-9f0f-dc7391412b7c'},
         '401-audit': {display: true, name: '审核', uuid: 'a5fd6757-e65a-4adc-af32-d3701f280b36'},
         '402-return': {display: true, name: '退回', uuid: 'eb2036ef-8469-4ee7-b1d0-02c08a28e598'},
-        '403-throw': {display: true, name: '抛转后台', uuid: '0b45d232-28ad-40de-93c1-95636ae6fadc'},
+        '403-throw': {display: false, name: '抛转后台', uuid: '0b45d232-28ad-40de-93c1-95636ae6fadc'},
         '404-effective': {display: true, name: '失效作废', uuid: '1d0983c8-8d11-4a40-8140-d267e03d04a4'},
         '405-query': {display: true, name: '查询', uuid: '992b0fef-abca-461c-91b7-07036d54d3f4'},
         '406-revertAudit': {display: true, name: '取消审核', uuid: 'ab4da1cc-be55-4cd3-8a44-afc74d6237dc'},
@@ -643,44 +643,71 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         }
     };
 
-    $scope.throwMenuAction = function () {
-        if ($scope.selected.length > 0 || $scope.selectedTabIndex == 1) {
-            $scope.showConfirm('确认抛转吗？', '', function () {
-                if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
-                    var transferData = {
-                        'PMM_ORDER_MST_UUID': $scope.selectedItem.uuid,
-                        'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
-                    };
-                    ErpAdapterService.transferErpAdapter('/pmmOrderToOeaTask', transferData, $scope, function (resp) {
-                        console.log(resp);
-                        PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
-                            $scope.selectedItem = data;
-                            $scope.resetButtonDisabled(0);
-                            $scope.changeButtonStatus(data);
-                        });
-                        $scope.refreshDetail($scope.selectedItem.uuid);
-                        $scope.selectedDetail = [];
 
-                        $scope.showInfo('抛转成功。');
-                    });
-                } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
-                    // 多筆拋轉
-                    var orderMasterUuids = '';
-                    angular.forEach($scope.selected, function (item) {
-                        orderMasterUuids += (orderMasterUuids ? ',' : '') + item.uuid;
-                    });
-                    var transferData = {
-                        'PMM_ORDER_MST_UUID': orderMasterUuids,
-                        'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
-                    };
-                    ErpAdapterService.transferErpAdapter('/pmmOrderToOeaTask', transferData, $scope, function (resp) {
-                        console.log(resp);
-                        $scope.queryMenuAction();
-                        $scope.showInfo('抛转成功。');
-                    });
-                }
-            });
-        }
+    $scope.throwMenuAction = function () {
+        $scope.transferItemList = [];
+        angular.forEach($scope.OrderDetailList.content, function (data) {
+            if (data.purchaseFlag == '2' && data.transferFlag == '2') {
+                $scope.transferItemList.push(data);
+            }
+        });
+        console.log($scope.transferItemList);
+        $mdDialog.show({
+            controller: 'PmmTransferSelectController',
+            templateUrl: 'app/src/app/pmm/pmmOrder/openTransferDlg.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            locals: {
+                parentScope: $scope,
+                itemList: $scope.transferItemList
+
+            }
+        }).then(function (data) {
+            console.log(data[0]);
+            console.log(data[1]);
+            if ($scope.selected.length > 0 || $scope.selectedTabIndex == 1) {
+                $scope.showConfirm('确认抛转吗？', '', function () {
+                    if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
+                        var transferData = {
+                            'PMM_ORDER_MST_UUID': $scope.selectedItem.uuid,
+                            'TRANSFER_TYPE': data[0],
+                            'PMM_ORDER_DTL_UUID': data[1],
+                            'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
+                        };
+                        ErpAdapterService.transferErpAdapter('/pmmOrderToOeaTask', transferData, $scope, function (resp) {
+                            console.log(resp);
+                            PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
+                                $scope.selectedItem = data;
+                                $scope.resetButtonDisabled(0);
+                                $scope.changeButtonStatus(data);
+                            });
+                            $scope.refreshDetail($scope.selectedItem.uuid);
+                            $scope.selectedDetail = [];
+
+                            $scope.showInfo('抛转成功。');
+                        });
+                    }
+
+                    // else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
+                    //     // 多筆拋轉
+                    //     var orderMasterUuids = '';
+                    //     angular.forEach($scope.selected, function (item) {
+                    //         orderMasterUuids += (orderMasterUuids ? ',' : '') + item.uuid;
+                    //     });
+                    //     var transferData = {
+                    //         'PMM_ORDER_MST_UUID': orderMasterUuids,
+                    //         'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
+                    //     };
+                    //     ErpAdapterService.transferErpAdapter('/pmmOrderToOeaTask', transferData, $scope, function (resp) {
+                    //         $scope.queryMenuAction();
+                    //         $scope.showInfo('抛转成功。');
+                    //     });
+                    // }
+                });
+            }
+        });
+
+
     };
 
     $scope.revertAuditMenuAction = function () {
@@ -1590,6 +1617,8 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             $scope.selectedItem.receiveAddress = data;
         });
     };
+
+
 });
 
 angular.module('IOne-Production').controller('OrderChannelSearchController', function ($scope, $mdDialog, ChannelService) {
@@ -1807,7 +1836,11 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
 
 
     $scope.hideDlg = function () {
-        $mdDialog.hide($scope.saveData);
+        if ($scope.saveData.length > 0) {
+            $mdDialog.hide($scope.saveData);
+        } else {
+            $scope.showError('请至少新增一项商品!')
+        }
 
     };
 
@@ -2287,6 +2320,59 @@ angular.module('IOne-Production').controller('PmmBaseClassSelectController', fun
 
     $scope.hideDlg = function () {
         $mdDialog.hide($scope.channel);
+    };
+
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+});
+
+angular.module('IOne-Production').controller('PmmTransferSelectController', function ($scope, $mdDialog, TransferTypesService, itemList, parentScope) {
+    $scope.parent = parentScope;
+    $scope.itemList = itemList;
+
+    TransferTypesService.getAllWithNoPage().success(function (data) {
+        $scope.transferTypeList = data.content;
+    });
+
+
+    $scope.selected = [];
+    $scope.addToggle = function (item, selected) {
+        var idx = selected.indexOf(item.uuid);
+        if (idx > -1) {
+            selected.splice(idx, 1);
+        }
+        else {
+            selected.push(item.uuid);
+        }
+    };
+
+    $scope.selectAllAction = function () {
+        angular.forEach($scope.itemList, function (data) {
+            $scope.selected.push(data.uuid);
+        })
+    };
+
+    $scope.exists = function (item, list) {
+        return list.indexOf(item.uuid) > -1;
+    };
+
+
+    $scope.hideDlg = function () {
+        if (!$scope.transferType) {
+            $scope.parent.showError('请选择采购单别!');
+            return;
+        }
+
+        if ($scope.selected.length <= 0) {
+            $scope.parent.showError('请选择采购单别!');
+            return;
+        }
+
+        var data = [];
+        data.push($scope.transferType);
+        data.push($scope.selected);
+        $mdDialog.hide(data);
     };
 
     $scope.cancelDlg = function () {

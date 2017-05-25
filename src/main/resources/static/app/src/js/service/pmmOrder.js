@@ -217,3 +217,9 @@ angular.module('IOne-Production').service('OrderChannelTax', function($http, Con
     };
 });
 
+angular.module('IOne-Production').service('TransferTypesService', function ($http, Constant) {
+    this.getAllWithNoPage = function () {
+        return $http.get(Constant.BACKEND_BASE + '/transferTypes?status=1');
+    };
+});
+
