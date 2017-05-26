@@ -441,6 +441,33 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
         });
     };
 
+
+    $scope.openGroupEmployeeBrandRDlg = function () {
+        $mdDialog.show({
+            controller: 'GroupEmployeeBrandRController',
+            templateUrl: 'app/src/app/fam/merchandiserClass/addGroupEmployeeBrandR.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            locals: {}
+        }).then(function (dataList) {
+            var promises = [];
+            for (var i = 0; i < dataList.length; i++) {
+                var input = {
+                    aamGroupEmployeeUuid: $scope.selectedItem.uuid,
+                    plmBaseBrandFileUuid: dataList[i]
+                };
+                var response = CBIGroupEmployeeBrandRService.add(input).success(function () {
+                });
+                promises.push(response);
+            }
+            $q.all(promises).then(function () {
+                $scope.refreshGroupEmployeeBrandRelation();
+                $scope.showInfo('新增成功!');
+
+            })
+        });
+};
+
 });
 
 angular.module('IOne-Production').controller('GroupEmployeeChanRController', function ($scope, $q, $mdDialog, ChannelService) {
@@ -496,8 +523,51 @@ angular.module('IOne-Production').controller('GroupEmployeeClassRController', fu
     };
 
     $scope.refreshData = function () {
-        BaseClassService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,'', '', $scope.searchNo, $scope.searchName, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
+        BaseClassService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.searchNo, $scope.searchName, '', '', RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
             $scope.allClassData = data.content;
+            $scope.pageOption.totalElements = data.totalElements;
+            $scope.pageOption.totalPage = data.totalPages;
+        });
+    };
+
+    $scope.selected = [];
+    $scope.addToggle = function (item, selected) {
+        var idx = selected.indexOf(item.uuid);
+        if (idx > -1) {
+            selected.splice(idx, 1);
+        }
+        else {
+            selected.push(item.uuid);
+        }
+    };
+
+    $scope.exists = function (item, list) {
+        return list.indexOf(item.uuid) > -1;
+    };
+
+    $scope.refreshData();
+
+    $scope.hideDlg = function () {
+        $mdDialog.hide($scope.selected);
+    };
+
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+
+});
+
+angular.module('IOne-Production').controller('GroupEmployeeBrandRController', function ($scope, $q, $mdDialog, BrandFile) {
+    $scope.pageOption = {
+        sizePerPage: 10,
+        currentPage: 0,
+        totalPage: 0,
+        totalElements: 0
+    };
+
+    $scope.refreshData = function () {
+        BrandFile.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.searchNo, $scope.searchName).success(function (data) {
+            $scope.allBrandData = data.content;
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
         });
