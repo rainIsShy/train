@@ -1,16 +1,13 @@
 angular.module('IOne-Production').service('CBIGroupEmployeeChanRService', function ($http, Constant) {
-    this.getAll = function (sizePerPage, page, confirm, status, theMax, resUuid) {
-        confirm = confirm == 0 ? '' : confirm;
-        status = status == 0 ? '' : status;
+    this.getAll = function (sizePerPage, page, aamGroupEmployeeUuid, resUuid) {
 
         var url = '/groupEmployeeChannelRelations?size=' + sizePerPage
-            + '&page=' + page
-            + '&confirm=' + confirm
-            + '&status=' + status;
+            + '&page=' + page;
 
-        if (theMax !== undefined && theMax !== null) {
-            url = url + '&globalQuery=' + theMax;
+        if (aamGroupEmployeeUuid !== undefined && aamGroupEmployeeUuid !== null) {
+            url = url + '&aamGroupEmployeeUuid=' + aamGroupEmployeeUuid;
         }
+
         if (resUuid !== undefined && resUuid !== null) {
             url = url + '&resUuid=' + resUuid;
         }
@@ -41,24 +38,20 @@ angular.module('IOne-Production').service('CBIGroupEmployeeChanRService', functi
 
 
 angular.module('IOne-Production').service('CBIGroupEmployeeClassRService', function ($http, Constant) {
-    this.getAll = function (sizePerPage, page, confirm, status, theMax, resUuid) {
-        confirm = confirm == 0 ? '' : confirm;
-        status = status == 0 ? '' : status;
+    this.getAll = function (sizePerPage, page, aamGroupEmployeeUuid, resUuid) {
 
         var url = '/groupEmployeeClassRelations?size=' + sizePerPage
-            + '&page=' + page
-            + '&confirm=' + confirm
-            + '&status=' + status;
+            + '&page=' + page;
 
-
-        if (theMax !== undefined && theMax !== null) {
-            url = url + '&globalQuery=' + theMax;
+        if (aamGroupEmployeeUuid !== undefined && aamGroupEmployeeUuid !== null) {
+            url = url + '&aamGroupEmployeeUuid=' + aamGroupEmployeeUuid;
         }
         if (resUuid !== undefined && resUuid !== null) {
             url = url + '&resUuid=' + resUuid;
         }
         return $http.get(Constant.BACKEND_BASE + url);
     };
+
 
     this.get = function (uuid) {
         return $http.get(Constant.BACKEND_BASE + '/groupEmployeeClassRelations/' + uuid);
@@ -79,17 +72,12 @@ angular.module('IOne-Production').service('CBIGroupEmployeeClassRService', funct
 });
 
 angular.module('IOne-Production').service('CBIGroupEmployeeBrandRService', function ($http, Constant) {
-    this.getAll = function (sizePerPage, page, confirm, status, theMax, resUuid) {
-        confirm = confirm == 0 ? '' : confirm;
-        status = status == 0 ? '' : status;
+    this.getAll = function (sizePerPage, page, aamGroupEmployeeUuid, resUuid) {
 
         var url = '/groupEmployeeBrandRelations?size=' + sizePerPage
-            + '&page=' + page
-            + '&confirm=' + confirm
-            + '&status=' + status;
-
-        if (theMax !== undefined && theMax !== null) {
-            url = url + '&globalQuery=' + theMax;
+            + '&page=' + page;
+        if (aamGroupEmployeeUuid !== undefined && aamGroupEmployeeUuid !== null) {
+            url = url + '&aamGroupEmployeeUuid=' + aamGroupEmployeeUuid;
         }
         if (resUuid !== undefined && resUuid !== null) {
             url = url + '&resUuid=' + resUuid;

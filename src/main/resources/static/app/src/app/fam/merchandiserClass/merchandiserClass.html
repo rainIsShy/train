@@ -69,20 +69,18 @@
                         </span>
 
                     </div>
-
                     <md-tabs md-dynamic-height md-border-bottom style="padding-top: 30px;">
                         <md-tab label="经销商">
                             <div layout="row" layout-wrap style="margin-top: 20px;">
-                                <div flex="100" ng-repeat="detail in detailItemList | orderBy:'brand.no'" ng-click=""
-                                     class="prod-item" style="min-height: 80px;">
+                                <div flex="100" ng-repeat="chanDetail in chanDetailItemList | orderBy:'channel.no'"
+                                     ng-click="" class="prod-item"
+                                     style="position: relative;padding-bottom: 0px; min-height: 70px;">
                                     <div layout="row" class="height: 100%;">
-
                                         <div flex="40">
-                                            <div layout-padding>经销商编号 : <span>{{detail.brand.no}}</span></div>
-
+                                            <div layout-padding>经销商编号 : <span>{{chanDetail.channel.no}}</span></div>
                                         </div>
                                         <div flex="40">
-                                            <div layout-padding>经销商名称 : <span>{{detail.brand.name}}</span></div>
+                                            <div layout-padding>经销商名称 : <span>{{chanDetail.channel.name}}</span></div>
                                         </div>
                                         <div flex="20">
                                             <md-button class="md-button close-btn" aria-label="More"
@@ -91,28 +89,93 @@
                                                 <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>
                                                 删除
                                             </md-button>
-
                                         </div>
                                     </div>
-                                    <!-- detail panel -->
+
                                     <div layout="row" ng-show="detail.showMorePanel">
                                         <div layout-margin>Have more stuff here....</div>
                                     </div>
                                     <md-divider style="margin-top: 5px"></md-divider>
                                 </div>
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
-                                     ng-click="openGroupEmployeeChanRDlg();"
+                                     ng-click="openGroupEmployeeChanRDlg()"
                                      ng-if="showDetailAddButton()" ng-disabled="canDetailAction()">
                                     <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
                                 </div>
                             </div>
                         </md-tab>
+                        <md-tab label="分类">
+                            <div layout="row" layout-wrap style="margin-top: 20px;">
+                                <div flex="100" ng-repeat="classDetail in classDetailItemList | orderBy:'class.no'"
+                                     ng-click="" class="prod-item"
+                                     style="position: relative;padding-bottom: 0px; min-height: 70px;">
+                                    <div layout="row" class="height: 100%;">
+                                        <div flex="40">
+                                            <div layout-padding>分类编号 : <span>{{classDetail.baseClass.no}}</span></div>
+                                        </div>
+                                        <div flex="40">
+                                            <div layout-padding>分类名称 : <span>{{classDetail.baseClass.name}}</span></div>
+                                        </div>
+                                        <div flex="20">
+                                            <md-button class="md-button close-btn" aria-label="More"
+                                                       ng-click="deleteDetailAction(detail)"
+                                                       ng-if="showDetailDeleteButton()" ng-disabled="canDetailAction()">
+                                                <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>
+                                                删除
+                                            </md-button>
+                                        </div>
+                                    </div>
 
+                                    <div layout="row" ng-show="detail.showMorePanel">
+                                        <div layout-margin>Have more stuff here....</div>
+                                    </div>
+                                    <md-divider style="margin-top:5px"></md-divider>
+                                </div>
+                                <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
+                                     ng-click="openGroupEmployeeChanRDlg()"
+                                     ng-if="showDetailAddButton()" ng-disabled="canDetailAction()">
+                                    <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
+                                </div>
+                            </div>
+                        </md-tab>
+                        <md-tab label="品牌">
+                            <div layout="row" layout-wrap style="margin-top: 20px;">
+                                <div flex="100" ng-repeat="brandDetail in brandDetailItemList | orderBy:'brand.no'"
+                                     ng-click="" class="prod-item"
+                                     style="position: relative;padding-bottom: 0px; min-height: 70px;">
+                                    <div layout="row" class="height: 100%;">
+                                        <div flex="40">
+                                            <div layout-padding>分类编号 : <span>{{brandDetail.brand.no}}</span></div>
+                                        </div>
+                                        <div flex="40">
+                                            <div layout-padding>分类名称 : <span>{{brandDetail.brand.name}}</span></div>
+                                        </div>
+                                        <div flex="20">
+                                            <md-button class="md-button close-btn" aria-label="More"
+                                                       ng-click="deleteDetailAction(detail)"
+                                                       ng-if="showDetailDeleteButton()" ng-disabled="canDetailAction()">
+                                                <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>
+                                                删除
+                                            </md-button>
+                                        </div>
+                                    </div>
+                                    <div layout="row" ng-show="detail.showMorePanel">
+                                        <div layout-margin>Have more stuff here....</div>
+                                    </div>
+                                    <md-divider style="margin-top:5px"></md-divider>
+                                </div>
+                                <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
+                                     ng-click="openGroupEmployeeClassRDlg()"
+                                     ng-if="showDetailAddButton()" ng-disabled="canDetailAction()">
+                                    <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
+                                </div>
+                            </div>
+                        </md-tab>
                     </md-tabs>
+
                 </div>
             </div>
             <div flex class="right-body">
-                <!-- basic search-->
                 <div class="search-bar" layout="row" style="position: relative">
                     <span style="position: absolute; top: 15px; left: 10px;">
                         <md-checkbox ng-model="selectAllFlag" aria-label="Checkbox"
@@ -130,7 +193,6 @@
                     </md-button>
 
                 </div>
-                <!-- advanced search-->
                 <div layout="row" ng-show="displayAdvancedSearPanel">
                     <!-- fill more searching here.-->
                     <div flex>

@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('MerchandiserClassController', function ($scope, GroupUserService,PromotionChannelService, Constant, $mdDialog, $q) {
+angular.module('IOne-Production').controller('MerchandiserClassController', function ($scope, GroupUserService,PromotionChannelService, CBIGroupEmployeeChanRService, CBIGroupEmployeeClassRService, CBIGroupEmployeeBrandRService, Constant, $mdDialog, $q) {
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
@@ -132,11 +132,23 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
         });
     };
 
-//    $scope.refreshBrandRelation = function () {
-//        BrandRelationsService.getAll($scope.detailPageOption.sizePerPage, $scope.detailPageOption.currentPage, $scope.selectedItem.uuid, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
-//            $scope.detailItemList = data.content;
-//        });
-//    };
+    $scope.refreshGroupEmployeeChanRelation = function () {
+        CBIGroupEmployeeChanRService.getAll($scope.detailPageOption.sizePerPage, $scope.detailPageOption.currentPage, $scope.selectedItem.uuid, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
+            $scope.chanDetailItemList = data.content;
+        });
+    };
+
+    $scope.refreshGroupEmployeeClassRelation = function () {
+        CBIGroupEmployeeClassRService.getAll($scope.detailPageOption.sizePerPage, $scope.detailPageOption.currentPage, $scope.selectedItem.uuid, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
+            $scope.classDetailItemList = data.content;
+        });
+    };
+
+    $scope.refreshGroupEmployeeBrandRelation = function () {
+        CBIGroupEmployeeBrandRService.getAll($scope.detailPageOption.sizePerPage, $scope.detailPageOption.currentPage, $scope.selectedItem.uuid, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
+            $scope.brandDetailItemList = data.content;
+        });
+    };
 
 
     $scope.queryDateFormat = function (date) {
@@ -170,18 +182,15 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
 
     $scope.queryAction = function () {
         $scope.refreshList();
-
     };
 
     $scope.selectAllFlag = false;
 
-    /**
-     * Show left detail panel when clicking the title
-     */
     $scope.showDetailPanelAction = function (item) {
         $scope.selectedItem = item;
-//        $scope.refreshBrandRelation(item);
-
+        $scope.refreshGroupEmployeeChanRelation(item);
+        $scope.refreshGroupEmployeeClassRelation(item);
+        $scope.refreshGroupEmployeeBrandRelation(item);
     };
 
     /**
@@ -391,28 +400,48 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
             var promises = [];
             for (var i = 0; i < dataList.length; i++) {
                 var input = {
-                    baseClassUuid: $scope.selectedItem.uuid,
-                    brandUuid: dataList[i]
+                    aamGroupEmployeeUuid: $scope.selectedItem.uuid,
+                    ocmBaseChanUuid: dataList[i]
                 };
-
-                var response = BrandRelationsService.add(input).success(function () {
-
+                var response = CBIGroupEmployeeChanRService.add(input).success(function () {
                 });
                 promises.push(response);
             }
-
             $q.all(promises).then(function () {
-                $scope.refreshBrandRelation();
+                $scope.refreshGroupEmployeeChanRelation();
                 $scope.showInfo('新增成功!');
 
             })
-
         });
     };
 
+    $scope.openGroupEmployeeChanRDlg = function () {
+        $mdDialog.show({
+            controller: 'GroupEmployeeClassRController',
+            templateUrl: 'app/src/app/fam/merchandiserClass/addGroupEmployeeClassR.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            locals: {}
+        }).then(function (dataList) {
+            var promises = [];
+            for (var i = 0; i < dataList.length; i++) {
+                var input = {
+                    aamGroupEmployeeUuid: $scope.selectedItem.uuid,
+                    ocmBaseClassUuid: dataList[i]
+                };
+                var response = CBIGroupEmployeeClassRService.add(input).success(function () {
+                });
+                promises.push(response);
+            }
+            $q.all(promises).then(function () {
+                $scope.refreshGroupEmployeeChanRelation();
+                $scope.showInfo('新增成功!');
+
+            })
+        });
+    };
 
 });
-
 
 angular.module('IOne-Production').controller('GroupEmployeeChanRController', function ($scope, $q, $mdDialog, ChannelService) {
     $scope.pageOption = {
@@ -423,7 +452,51 @@ angular.module('IOne-Production').controller('GroupEmployeeChanRController', fun
     };
 
     $scope.refreshData = function () {
-        ChannelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.searchNo, $scope.searchName, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
+        ChannelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,'', '', $scope.searchNo, $scope.searchName, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
+            $scope.allData = data.content;
+            $scope.pageOption.totalElements = data.totalElements;
+            $scope.pageOption.totalPage = data.totalPages;
+        });
+    };
+
+    $scope.selected = [];
+    $scope.addToggle = function (item, selected) {
+        var idx = selected.indexOf(item.uuid);
+        if (idx > -1) {
+            selected.splice(idx, 1);
+        }
+        else {
+            selected.push(item.uuid);
+        }
+    };
+
+    $scope.exists = function (item, list) {
+        return list.indexOf(item.uuid) > -1;
+    };
+
+    $scope.refreshData();
+
+    $scope.hideDlg = function () {
+        $mdDialog.hide($scope.selected);
+    };
+
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+
+});
+
+
+angular.module('IOne-Production').controller('GroupEmployeeClassRController', function ($scope, $q, $mdDialog, ChannelService) {
+    $scope.pageOption = {
+        sizePerPage: 10,
+        currentPage: 0,
+        totalPage: 0,
+        totalElements: 0
+    };
+
+    $scope.refreshData = function () {
+        ChannelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,'', '', $scope.searchNo, $scope.searchName, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
             $scope.allData = data.content;
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
