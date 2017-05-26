@@ -44,6 +44,6 @@ angular.module('IOne-Production').service('BrandRelationsService', function ($ht
     };
 
     this.getItemWithMultiClass = function (orderUuid) {
-        return $http.get(Constant.BACKEND_BASE + '/baseClasses?action=getItemWithMultiClass&orderUuid=' + orderUuid);
+        return $http.get(Constant.BACKEND_BASE + '/baseBrandRelations?action=getItemWithMultiClass&orderUuid=' + orderUuid);
     };
 });

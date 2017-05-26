@@ -611,7 +611,7 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
 
                     //判断商品是否存在在多组分类
                     BrandRelationsService.getItemWithMultiClass($scope.selectedItem.uuid).success(function (result) {
-                        if (result.length > 0) {
+                        if (result.totalElements > 0) {
                             angular.forEach(result, function (item) {
                                 $scope.showError('订单号:' + $scope.selectedItem.no + ', 商品:' + item.no + ' ' + item.name + '存在多组分类，不允许抛转!');
                             })
@@ -632,7 +632,7 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                     //判断商品是否存在在多组分类
                     angular.forEach($scope.selected, function (selected) {
                         var response2 = BrandRelationsService.getItemWithMultiClass(selected.uuid).success(function (result) {
-                            if (result.length > 0) {
+                            if (result.totalElements > 0) {
                                 angular.forEach(result, function (item) {
                                     $scope.showError('订单号:' + selected.no + ', 商品:' + item.no + ' ' + item.name + '存在多组分类，不允许抛转!');
                                     isPass = false;
