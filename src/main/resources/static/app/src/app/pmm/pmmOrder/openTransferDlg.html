@@ -1,4 +1,4 @@
-<md-dialog style="padding: 30px;min-width: 700px;min-height:300px;max-height: 700px;">
+<md-dialog style="padding: 30px;min-width: 850px;max-height: 800px;">
     <md-content>
         <div>
             <md-input-container flex="20">
@@ -15,8 +15,10 @@
                 <md-checkbox aria-label="Checkbox" ng-click="selectAllAction()"></md-checkbox>
             </div>
             <div align="center" flex="10" class=" table-head">项次</div>
-            <div align="center" flex="40" class=" table-head">品名</div>
-            <div align="center" flex="40" class=" table-head">规格</div>
+            <div align="center" flex="20" class=" table-head">品项</div>
+            <div align="center" flex="20" class=" table-head">品名</div>
+            <div align="center" flex="20" class=" table-head">规格</div>
+            <div align="center" flex="20" class=" table-head">采购数量</div>
         </div>
         <div ng-repeat="data in itemList  | orderBy:'no'">
             <div layout="row">
@@ -27,8 +29,10 @@
                 </div>
 
                 <div align="center" flex="10" class="table-item">{{data.no}}</div>
-                <div align="center" flex="40" class="table-item">{{data.item.name}}</div>
-                <div align="center" flex="40" class="table-item">{{data.item.standard}}</div>
+                <div align="center" flex="20" class="table-item">{{data.item.no}}</div>
+                <div align="center" flex="20" class="table-item">{{data.item.name}}</div>
+                <div align="center" flex="20" class="table-item">{{data.item.standard}}</div>
+                <div align="center" flex="20" class="table-item">{{data.orderQty}}</div>
             </div>
         </div>
         <div layout="row">

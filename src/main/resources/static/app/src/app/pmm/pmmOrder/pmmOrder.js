@@ -663,8 +663,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
             }
         }).then(function (data) {
-            console.log(data[0]);
-            console.log(data[1]);
+
             if ($scope.selected.length > 0 || $scope.selectedTabIndex == 1) {
                 $scope.showConfirm('确认抛转吗？', '', function () {
                     if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
@@ -675,7 +674,6 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                             'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
                         };
                         ErpAdapterService.transferErpAdapter('/pmmOrderToOeaTask', transferData, $scope, function (resp) {
-                            console.log(resp);
                             PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
                                 $scope.selectedItem = data;
                                 $scope.resetButtonDisabled(0);
@@ -2360,7 +2358,7 @@ angular.module('IOne-Production').controller('PmmTransferSelectController', func
         }
 
         if ($scope.selected.length <= 0) {
-            $scope.parent.showError('请选择采购单别!');
+            $scope.parent.showError('请至少选择一笔商品!');
             return;
         }
 
