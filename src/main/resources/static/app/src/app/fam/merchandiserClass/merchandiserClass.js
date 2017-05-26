@@ -140,6 +140,10 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
     $scope.refreshGroupEmployeeClassRelation = function () {
         CBIGroupEmployeeClassRService.getAll($scope.detailPageOption.sizePerPage, $scope.detailPageOption.currentPage, $scope.selectedItem.uuid, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
             $scope.classDetailItemList = data.content;
+            $scope.groupEmployeeClassRFlag = true;
+            if ($scope.classDetailItemList.length > 0) {
+                $scope.groupEmployeeClassRFlag = false;
+            }
         });
     };
 
@@ -544,7 +548,7 @@ angular.module('IOne-Production').controller('GroupEmployeeChanRController', fun
 });
 
 
-angular.module('IOne-Production').controller('GroupEmployeeClassRController', function ($scope, $q, $mdDialog, BaseClassService) {
+angular.module('IOne-Production').controller('GroupEmployeeClassRController', function ($scope, $q, $mdDialog, $mdToast, BaseClassService) {
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
@@ -587,6 +591,10 @@ angular.module('IOne-Production').controller('GroupEmployeeClassRController', fu
     $scope.refreshData();
 
     $scope.hideDlg = function () {
+        if ($scope.selected.length > 1) {
+            toastr["warning"]('不能添加多条跟单分组。');
+            return;
+        }
         $mdDialog.hide($scope.selected);
     };
 
