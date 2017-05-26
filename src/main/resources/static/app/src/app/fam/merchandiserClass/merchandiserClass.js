@@ -303,7 +303,7 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
     $scope.deleteClassDetailAction = function (detail) {
         $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
             if ($scope.selectedItem) {
-                CBIGroupEmployeeChanRService.delete(detail.uuid).success(function () {
+                CBIGroupEmployeeClassRService.delete(detail.uuid).success(function () {
                     $scope.refreshGroupEmployeeClassRelation($scope.selectedItem);
                     $scope.showInfo("刪除成功!");
                 });
@@ -314,7 +314,7 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
     $scope.deleteBrandDetailAction = function (detail) {
         $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
             if ($scope.selectedItem) {
-                CBIGroupEmployeeChanRService.delete(detail.uuid).success(function () {
+                CBIGroupEmployeeBrandService.delete(detail.uuid).success(function () {
                     $scope.refreshGroupEmployeeBrandRelation($scope.selectedItem);
                     $scope.showInfo("刪除成功!");
                 });
