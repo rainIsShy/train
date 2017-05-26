@@ -42,4 +42,8 @@ angular.module('IOne-Production').service('BrandRelationsService', function ($ht
     this.add = function (AddInput) {
         return $http.post(Constant.BACKEND_BASE + '/baseBrandRelations/', AddInput);
     };
+
+    this.getItemWithMultiClass = function (orderUuid) {
+        return $http.get(Constant.BACKEND_BASE + '/baseClasses?action=getItemWithMultiClass&orderUuid=' + orderUuid);
+    };
 });

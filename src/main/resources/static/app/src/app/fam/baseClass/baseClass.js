@@ -315,7 +315,17 @@ angular.module('IOne-Production').controller('BaseClassController', function ($s
 
         BrandRelationsService.getAllByBaseClassUuid(item.uuid).success(function (data) {
             if (data.totalElements > 0) {
-                $scope.showError('此分类己维护品牌!');
+                $scope.showConfirm('此分类己维护品牌，确认删除吗？', '删除后不可恢复。', function () {
+                    if ($scope.selectedItem) {
+                        BaseClassService.delete(item.uuid).success(function () {
+                            $scope.refreshList();
+
+                            $scope.showInfo("刪除成功!");
+                            $scope.selectedItem = null
+                        });
+                    }
+                });
+
             } else {
                 $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
                     if ($scope.selectedItem) {
@@ -360,38 +370,54 @@ angular.module('IOne-Production').controller('BaseClassController', function ($s
     $scope.deleteAllClickAction = function (event) {
         $scope.stopEventPropagation(event);
         if ($scope.selected.length > 0) {
-            var promises2 = [];
-            var canDelete = true;
-            angular.forEach($scope.selected, function (baseClass) {
-                var response = BrandRelationsService.getAllByBaseClassUuid(baseClass.uuid).success(function (data) {
-                    if (data.totalElements > 0) {
-                        $scope.showError('编号:' + baseClass.no + ' 己维护品牌，不可删除!');
-                        canDelete = false;
-                    }
-                });
-
-                promises2.push(response);
-            });
-
-            $q.all(promises2).then(function () {
-                if (canDelete) {
-                    $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
-                        if ($scope.selected) {
-                            var promises = [];
-                            angular.forEach($scope.selected, function (item) {
-                                var response = BaseClassService.delete(item.uuid).success(function (data) {
-                                });
-                                promises.push(response);
-                            });
-                            $q.all(promises).then(function () {
-                                $scope.showInfo('删除数据成功。');
-                                $scope.refreshList();
-                                $scope.selectItemCount = 0;
-                            });
-                        }
+            $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
+                if ($scope.selected) {
+                    var promises = [];
+                    angular.forEach($scope.selected, function (item) {
+                        var response = BaseClassService.delete(item.uuid).success(function (data) {
+                        });
+                        promises.push(response);
+                    });
+                    $q.all(promises).then(function () {
+                        $scope.showInfo('删除数据成功。');
+                        $scope.refreshList();
+                        $scope.selectItemCount = 0;
                     });
                 }
             });
+
+            // var promises2 = [];
+            // var canDelete = true;
+            // angular.forEach($scope.selected, function (baseClass) {
+            //     var response = BrandRelationsService.getAllByBaseClassUuid(baseClass.uuid).success(function (data) {
+            //         if (data.totalElements > 0) {
+            //             $scope.showError('编号:' + baseClass.no + ' 己维护品牌，不可删除!');
+            //             canDelete = false;
+            //         }
+            //     });
+            //
+            //     promises2.push(response);
+            // });
+            //
+            // $q.all(promises2).then(function () {
+            //     if (canDelete) {
+            //         $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
+            //             if ($scope.selected) {
+            //                 var promises = [];
+            //                 angular.forEach($scope.selected, function (item) {
+            //                     var response = BaseClassService.delete(item.uuid).success(function (data) {
+            //                     });
+            //                     promises.push(response);
+            //                 });
+            //                 $q.all(promises).then(function () {
+            //                     $scope.showInfo('删除数据成功。');
+            //                     $scope.refreshList();
+            //                     $scope.selectItemCount = 0;
+            //                 });
+            //             }
+            //         });
+            //     }
+            // });
 
 
         }
