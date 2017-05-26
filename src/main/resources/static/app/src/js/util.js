@@ -1138,7 +1138,7 @@ angular.module('IOne-Constant').constant('Constant', {
                 {id: '/fam/tagClass', name: '标签分类', link: '/fam/tagClass', uuid: RES_UUID_MAP.CBI.TAG_CLASS.RES_UUID},
                 {
                     id: '/fam/baseClass',
-                    name: '分类维护',
+                    name: '品牌分组维护',
                     link: '/fam/baseClass',
                     uuid: RES_UUID_MAP.CBI.BASE_CLASS.RES_UUID
                 },

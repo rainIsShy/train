@@ -13,6 +13,26 @@ angular.module('IOne-Production').service('BrandFile', function ($http, Constant
 
         return $http.get(Constant.BACKEND_BASE + url);
     };
+
+    this.getAllByBaseClassUuid = function (sizePerPage, page, brandNo, brandName, baseClassUuid) {
+        var url = '/brands?size=' + sizePerPage
+            + '&page=' + page;
+
+        if (brandNo !== undefined && brandNo !== null) {
+            url = url + '&no=' + brandNo;
+        }
+
+        if (brandName !== undefined && brandName !== null) {
+            url = url + '&name=' + brandName;
+        }
+
+        if (baseClassUuid !== undefined && baseClassUuid !== null) {
+            url = url + '&baseClassUuid=' + baseClassUuid;
+        }
+
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
     this.get = function (uuid) {
         return $http.get(Constant.BACKEND_BASE + '/brands/' + uuid);
     };

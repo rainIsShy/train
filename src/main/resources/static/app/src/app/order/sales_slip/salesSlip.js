@@ -7,7 +7,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
 
 angular.module('IOne-Production').controller('OrdersController', function ($scope, $q, $window, OrderMaster, OrderDetail, OrderExtendDetail, OrderExtendDetail2,
                                                                            ReceiptDetail, OrderItemCustomDetail, OrderCustomScope,
-                                                                           $mdDialog, $timeout, Constant, SaleTypes, Parameters, BrandRelationsService) {
+                                                                           $mdDialog, $timeout, Constant, SaleTypes, Parameters, BaseClassService) {
     //initialize model value.
     $scope.orderListMenu = {
         select: {
@@ -609,59 +609,30 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                         transferPsoFlag: '1'
                     };
 
-                    //判断商品是否存在在多组分类
-                    BrandRelationsService.getItemWithMultiClass($scope.selectedItem.uuid).success(function (result) {
-                        if (result.length > 0) {
-                            angular.forEach(result, function (item) {
-                                $scope.showError('订单号:' + $scope.selectedItem.no + ', 商品:' + item.no + ' ' + item.name + '存在多组分类，不允许抛转!');
-                            })
-                        } else {
-                            OrderMaster.modifyBatch(OrderMasterUpdateInput).success(function () {
-                                $scope.selectedItem.transferPsoFlag = Constant.TRANSFER_PSO_FLAG[1].value;
-                                $scope.refreshMasterAndDetail();
-                                $scope.showInfo('修改数据成功。');
-                            }).error(function (data) {
-                                $scope.showError(data.message);
-                            });
-                        }
-                    })
+                    OrderMaster.modifyBatch(OrderMasterUpdateInput).success(function () {
+                        $scope.selectedItem.transferPsoFlag = Constant.TRANSFER_PSO_FLAG[1].value;
+                        $scope.refreshMasterAndDetail();
+                        $scope.showInfo('修改数据成功。');
+                    }).error(function (data) {
+                        $scope.showError(data.message);
+                    });
 
                 } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
-                    var promises2 = [];
-                    var isPass = true;
-                    //判断商品是否存在在多组分类
-                    angular.forEach($scope.selected, function (selected) {
-                        var response2 = BrandRelationsService.getItemWithMultiClass(selected.uuid).success(function (result) {
-                            if (result.length > 0) {
-                                angular.forEach(result, function (item) {
-                                    $scope.showError('订单号:' + selected.no + ', 商品:' + item.no + ' ' + item.name + '存在多组分类，不允许抛转!');
-                                    isPass = false;
-                                })
-                            }
-                        });
-                        promises2.push(response2);
+
+                    var orderMasterUuids = "";
+                    angular.forEach($scope.selected, function (item) {
+                        orderMasterUuids = orderMasterUuids + item.uuid + ","
                     });
-
-                    $q.all(promises2).then(function () {
-                        if (isPass) {
-                            var orderMasterUuids = "";
-                            angular.forEach($scope.selected, function (item) {
-                                orderMasterUuids = orderMasterUuids + item.uuid + ","
-                            });
-                            var OrderMasterUpdateInput = {
-                                uuid: orderMasterUuids,
-                                transferPsoFlag: '1'
-                            };
-                            var response = OrderMaster.modifyBatch(OrderMasterUpdateInput).success(function () {
-                                $scope.queryMenuActionWithPaging();
-                                $scope.showInfo('修改数据成功。');
-                            }).error(function (data) {
-                                $scope.showError(data.message);
-                            });
-                        }
+                    var OrderMasterUpdateInput = {
+                        uuid: orderMasterUuids,
+                        transferPsoFlag: '1'
+                    };
+                    var response = OrderMaster.modifyBatch(OrderMasterUpdateInput).success(function () {
+                        $scope.queryMenuActionWithPaging();
+                        $scope.showInfo('修改数据成功。');
+                    }).error(function (data) {
+                        $scope.showError(data.message);
                     });
-
-
                 }
             });
         }

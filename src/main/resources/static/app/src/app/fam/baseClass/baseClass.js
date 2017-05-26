@@ -439,7 +439,9 @@ angular.module('IOne-Production').controller('BaseClassController', function ($s
             templateUrl: 'app/src/app/fam/baseClass/addBrandRelation.html',
             parent: angular.element(document.body),
             targetEvent: event,
-            locals: {}
+            locals: {
+                baseClassUuid: $scope.selectedItem.uuid
+            }
         }).then(function (dataList) {
             var promises = [];
             for (var i = 0; i < dataList.length; i++) {
@@ -467,7 +469,7 @@ angular.module('IOne-Production').controller('BaseClassController', function ($s
 });
 
 
-angular.module('IOne-Production').controller('BrandRelationSelectController', function ($scope, $q, $mdDialog, BrandFile) {
+angular.module('IOne-Production').controller('BrandRelationSelectController', function ($scope, $q, $mdDialog, BrandFile, baseClassUuid) {
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
@@ -476,7 +478,7 @@ angular.module('IOne-Production').controller('BrandRelationSelectController', fu
     };
 
     $scope.refreshData = function () {
-        BrandFile.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.searchNo, $scope.searchName, RES_UUID_MAP.CBI.BASE_CLASS.RES_UUID).success(function (data) {
+        BrandFile.getAllByBaseClassUuid($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.searchNo, $scope.searchName, baseClassUuid).success(function (data) {
             $scope.allData = data.content;
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
