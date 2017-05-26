@@ -1,5 +1,5 @@
 angular.module('IOne-Production').service('ChannelService', function ($http, Constant) {
-    this.getAll = function (sizePerPage, page, confirm, status, channelName, channelNo, resUuid) {
+    this.getAll = function (sizePerPage, page, confirm, status, channelName, channelNo, resUuid, groupEmployeeUuid) {
         confirm = confirm == 0 ? '' : confirm;
         status = status == 0 ? '' : status;
 
@@ -17,6 +17,10 @@ angular.module('IOne-Production').service('ChannelService', function ($http, Con
 
         if (resUuid !== undefined && resUuid !== null) {
             url = url + '&resUuid=' + resUuid;
+        }
+
+        if (groupEmployeeUuid !== undefined && groupEmployeeUuid !== null) {
+            url = url + '&groupEmployeeUuid=' + groupEmployeeUuid;
         }
         return $http.get(Constant.BACKEND_BASE + url);
     };

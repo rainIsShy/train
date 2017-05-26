@@ -413,7 +413,9 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
             templateUrl: 'app/src/app/fam/merchandiserClass/addGroupEmployeeChanR.html',
             parent: angular.element(document.body),
             targetEvent: event,
-            locals: {}
+            locals: {
+                groupEmployeeUuid: $scope.selectedItem.uuid
+            }
         }).then(function (dataList) {
             var promises = [];
             for (var i = 0; i < dataList.length; i++) {
@@ -466,7 +468,9 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
             templateUrl: 'app/src/app/fam/merchandiserClass/addGroupEmployeeBrandR.html',
             parent: angular.element(document.body),
             targetEvent: event,
-            locals: {}
+            locals: {
+                groupEmployeeUuid: $scope.selectedItem.uuid
+            }
         }).then(function (dataList) {
             var promises = [];
             for (var i = 0; i < dataList.length; i++) {
@@ -488,7 +492,7 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
 
 });
 
-angular.module('IOne-Production').controller('GroupEmployeeChanRController', function ($scope, $q, $mdDialog, ChannelService) {
+angular.module('IOne-Production').controller('GroupEmployeeChanRController', function ($scope, $q, $mdDialog, ChannelService, groupEmployeeUuid) {
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
@@ -498,7 +502,7 @@ angular.module('IOne-Production').controller('GroupEmployeeChanRController', fun
     $scope.searchQuery = {};
 
     $scope.refreshData = function () {
-        ChannelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,'', '', $scope.searchQuery.name, $scope.searchQuery.no, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
+        ChannelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,'', '', $scope.searchQuery.name, $scope.searchQuery.no, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID, groupEmployeeUuid).success(function (data) {
             $scope.allData = data.content;
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
@@ -592,7 +596,7 @@ angular.module('IOne-Production').controller('GroupEmployeeClassRController', fu
 
 });
 
-angular.module('IOne-Production').controller('GroupEmployeeBrandRController', function ($scope, $q, $mdDialog, BrandFile) {
+angular.module('IOne-Production').controller('GroupEmployeeBrandRController', function ($scope, $q, $mdDialog, BrandFile,groupEmployeeUuid) {
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
@@ -603,7 +607,7 @@ angular.module('IOne-Production').controller('GroupEmployeeBrandRController', fu
     $scope.searchBrandQuery = {};
 
     $scope.refreshData = function () {
-        BrandFile.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.searchBrandQuery.no, $scope.searchBrandQuery.name).success(function (data) {
+        BrandFile.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.searchBrandQuery.no, $scope.searchBrandQuery.name,groupEmployeeUuid).success(function (data) {
             $scope.allBrandData = data.content;
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
