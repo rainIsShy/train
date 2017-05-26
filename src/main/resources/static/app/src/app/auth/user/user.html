@@ -71,6 +71,9 @@
                     </md-content>
                 </md-tab-body>
             </md-tab>
+
+            <!------------------>
+
             <md-tab md-on-select="formTabSelected()">
                 <md-tab-label>{{formTabName}}</md-tab-label>
                 <md-tab-body>
@@ -132,6 +135,30 @@
                                     </md-input-container>
                                 </div>
                             </div>
+
+                            <div layout="row" layout-wrap>
+
+                                <div flex="25" flex-sm="100">
+                                    <md-input-container>
+                                        <label>是否业务员</label>
+                                        <md-select ng-model="selectedItem.salesFlag" ng-disabled="!isEditing">
+                                            <md-option ng-value="1">是</md-option>
+                                            <md-option ng-value="2">否</md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
+
+                                <div flex="25" flex-sm="100">
+                                    <md-input-container>
+                                        <label>是否跟单</label>
+                                        <md-select ng-model="selectedItem.merchandiserFlag" ng-disabled="!isEditing">
+                                            <md-option ng-value="1">是</md-option>
+                                            <md-option ng-value="2">否</md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="panel" ng-if="selectedItem && selectedItem.uuid">
