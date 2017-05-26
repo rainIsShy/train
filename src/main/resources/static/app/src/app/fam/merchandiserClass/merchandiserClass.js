@@ -116,7 +116,6 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
 
     $scope.listFilterOption = {
         status: Constant.STATUS[0].value,
-
     };
 
     $scope.sortByAction = function (field) {
@@ -290,19 +289,38 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
     };
 
 
-    /**
-     * Delete detail item
-     */
-//    $scope.deleteDetailAction = function (detail) {
-//        $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
-//            if ($scope.selectedItem) {
-//                BrandRelationsService.delete(detail.uuid).success(function () {
-//                    $scope.refreshBrandRelation($scope.selectedItem);
-//                    $scope.showInfo("刪除成功!");
-//                });
-//            }
-//        });
-//    };
+    $scope.deleteChanDetailAction = function (detail) {
+        $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
+            if ($scope.selectedItem) {
+                CBIGroupEmployeeChanRService.delete(detail.uuid).success(function () {
+                    $scope.refreshGroupEmployeeChanRelation($scope.selectedItem);
+                    $scope.showInfo("刪除成功!");
+                });
+            }
+        });
+    };
+
+    $scope.deleteClassDetailAction = function (detail) {
+        $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
+            if ($scope.selectedItem) {
+                CBIGroupEmployeeChanRService.delete(detail.uuid).success(function () {
+                    $scope.refreshGroupEmployeeClassRelation($scope.selectedItem);
+                    $scope.showInfo("刪除成功!");
+                });
+            }
+        });
+    };
+
+    $scope.deleteBrandDetailAction = function (detail) {
+        $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
+            if ($scope.selectedItem) {
+                CBIGroupEmployeeChanRService.delete(detail.uuid).success(function () {
+                    $scope.refreshGroupEmployeeBrandRelation($scope.selectedItem);
+                    $scope.showInfo("刪除成功!");
+                });
+            }
+        });
+    };
 
 
     $scope.selectItemAction = function (event, item) {
@@ -477,14 +495,22 @@ angular.module('IOne-Production').controller('GroupEmployeeChanRController', fun
         totalPage: 0,
         totalElements: 0
     };
+    $scope.searchQuery = {};
 
     $scope.refreshData = function () {
-        ChannelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,'', '', $scope.searchNo, $scope.searchName, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
+        ChannelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,'', '', $scope.searchQuery.name, $scope.searchQuery.no, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
             $scope.allData = data.content;
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
         });
     };
+
+    $scope.$watch('searchQuery', function () {
+        $scope.pageOption.currentPage = 0;
+        $scope.pageOption.totalPage = 0;
+        $scope.pageOption.totalElements = 0;
+        $scope.refreshData();
+    }, true);
 
     $scope.selected = [];
     $scope.addToggle = function (item, selected) {
@@ -522,13 +548,22 @@ angular.module('IOne-Production').controller('GroupEmployeeClassRController', fu
         totalElements: 0
     };
 
+    $scope.searchClassQuery = {};
+
     $scope.refreshData = function () {
-        BaseClassService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.searchNo, $scope.searchName, '', '', RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
+        BaseClassService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.searchClassQuery.no, $scope.searchClassQuery.name, '', '', RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
             $scope.allClassData = data.content;
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
         });
     };
+
+    $scope.$watch('searchClassQuery', function () {
+        $scope.pageOption.currentPage = 0;
+        $scope.pageOption.totalPage = 0;
+        $scope.pageOption.totalElements = 0;
+        $scope.refreshData();
+    }, true);
 
     $scope.selected = [];
     $scope.addToggle = function (item, selected) {
@@ -565,13 +600,22 @@ angular.module('IOne-Production').controller('GroupEmployeeBrandRController', fu
         totalElements: 0
     };
 
+    $scope.searchBrandQuery = {};
+
     $scope.refreshData = function () {
-        BrandFile.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.searchNo, $scope.searchName).success(function (data) {
+        BrandFile.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.searchBrandQuery.no, $scope.searchBrandQuery.name).success(function (data) {
             $scope.allBrandData = data.content;
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
         });
     };
+
+    $scope.$watch('searchBrandQuery', function () {
+        $scope.pageOption.currentPage = 0;
+        $scope.pageOption.totalPage = 0;
+        $scope.pageOption.totalElements = 0;
+        $scope.refreshData();
+    }, true);
 
     $scope.selected = [];
     $scope.addToggle = function (item, selected) {
