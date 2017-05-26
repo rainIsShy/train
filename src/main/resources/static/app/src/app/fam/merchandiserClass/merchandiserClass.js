@@ -415,7 +415,7 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
         });
     };
 
-    $scope.openGroupEmployeeChanRDlg = function () {
+    $scope.openGroupEmployeeClassRDlg = function () {
         $mdDialog.show({
             controller: 'GroupEmployeeClassRController',
             templateUrl: 'app/src/app/fam/merchandiserClass/addGroupEmployeeClassR.html',
@@ -427,14 +427,14 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
             for (var i = 0; i < dataList.length; i++) {
                 var input = {
                     aamGroupEmployeeUuid: $scope.selectedItem.uuid,
-                    ocmBaseClassUuid: dataList[i]
+                    cbiBaseClassUuid: dataList[i]
                 };
                 var response = CBIGroupEmployeeClassRService.add(input).success(function () {
                 });
                 promises.push(response);
             }
             $q.all(promises).then(function () {
-                $scope.refreshGroupEmployeeChanRelation();
+                $scope.refreshGroupEmployeeClassRelation();
                 $scope.showInfo('新增成功!');
 
             })
@@ -487,7 +487,7 @@ angular.module('IOne-Production').controller('GroupEmployeeChanRController', fun
 });
 
 
-angular.module('IOne-Production').controller('GroupEmployeeClassRController', function ($scope, $q, $mdDialog, ChannelService) {
+angular.module('IOne-Production').controller('GroupEmployeeClassRController', function ($scope, $q, $mdDialog, BaseClassService) {
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
@@ -496,8 +496,8 @@ angular.module('IOne-Production').controller('GroupEmployeeClassRController', fu
     };
 
     $scope.refreshData = function () {
-        ChannelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,'', '', $scope.searchNo, $scope.searchName, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
-            $scope.allData = data.content;
+        BaseClassService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,'', '', $scope.searchNo, $scope.searchName, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
+            $scope.allClassData = data.content;
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
         });
