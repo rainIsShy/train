@@ -317,8 +317,8 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
 
     $scope.deleteBrandDetailAction = function (detail) {
         $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
-            if ($scope.selectedItem) {
-                CBIGroupEmployeeBrandService.delete(detail.uuid).success(function () {
+            if ($scope.selectedItem) {CBIGroupEmployeeBrandRService
+                CBIGroupEmployeeBrandRService.delete(detail.uuid).success(function () {
                     $scope.refreshGroupEmployeeBrandRelation($scope.selectedItem);
                     $scope.showInfo("刪除成功!");
                 });
