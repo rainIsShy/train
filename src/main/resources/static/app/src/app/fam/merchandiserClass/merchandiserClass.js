@@ -707,6 +707,7 @@ angular.module('IOne-Production').controller('GroupEmployeeBrandRController', fu
         }
         else {
             selected.push(item.uuid);
+            $scope.selectOneFlag = true;
         }
     };
 
