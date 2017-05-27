@@ -669,7 +669,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                     if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
                         var transferData = {
                             'PMM_ORDER_MST_UUID': $scope.selectedItem.uuid,
-                            'TRANSFER_TYPE': data[0],
+                            'TRANSFER_TYPE': data,
                             'PMM_ORDER_DTL_UUID': $scope.selectedDetail,
                             'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
                         };
@@ -2357,15 +2357,7 @@ angular.module('IOne-Production').controller('PmmTransferSelectController', func
             return;
         }
 
-        if ($scope.selected.length <= 0) {
-            $scope.parent.showError('请至少选择一笔商品!');
-            return;
-        }
-
-        var data = [];
-        data.push($scope.transferType);
-        data.push($scope.selected);
-        $mdDialog.hide(data);
+        $mdDialog.hide($scope.transferType);
     };
 
     $scope.cancelDlg = function () {
