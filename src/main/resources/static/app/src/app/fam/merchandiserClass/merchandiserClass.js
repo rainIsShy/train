@@ -575,22 +575,23 @@ angular.module('IOne-Production').controller('GroupEmployeeClassRController', fu
 
     $scope.selected = [];
     $scope.addToggle = function (item, selected) {
-        var idx = selected.indexOf(item.uuid);
-        if (idx > -1) {
-            selected.splice(idx, 1);
-        }
-        else {
-            selected.push(item.uuid);
-        }
+//        var idx = selected.indexOf(item.uuid);
+//        if (idx > -1) {
+//            selected.splice(idx, 1);
+//        }
+//        else {
+//            selected.push(item.uuid);
+//        }
+        $scope.tempSelectItem = item;
+        $scope.selectOneFlag = item.uuid;
+
     };
 
-    $scope.exists = function (item, list) {
-        return list.indexOf(item.uuid) > -1;
-    };
 
     $scope.refreshData();
 
     $scope.hideDlg = function () {
+        $scope.selected.push($scope.tempSelectItem.uuid);
         if ($scope.selected.length > 1) {
             toastr["warning"]('不能添加多条跟单分组。');
             return;
