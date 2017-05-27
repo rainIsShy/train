@@ -120,12 +120,9 @@
                                             </md-button>
                                         </div>
                                     </div>
-
-                                    <div layout="row" ng-show="detail.showMorePanel">
-                                        <div layout-margin>Have more stuff here....</div>
-                                    </div>
-                                    <md-divider style="margin-top: 5px"></md-divider>
                                 </div>
+                                <div pagination option="pageOptionChanR"
+                                     callback="refreshGroupEmployeeChanRelation(selectedItem)"></div>
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
                                      ng-click="openGroupEmployeeChanRDlg()"
                                      ng-if="showDetailAddButton()" ng-disabled="canDetailAction()">
@@ -155,11 +152,9 @@
                                             </md-button>
                                         </div>
                                     </div>
-                                    <div layout="row" ng-show="detail.showMorePanel">
-                                        <div layout-margin>Have more stuff here....</div>
-                                    </div>
-                                    <md-divider style="margin-top:5px"></md-divider>
                                 </div>
+                                <div pagination option="pageOptionBrandR"
+                                     callback="refreshGroupEmployeeBrandRelation(selectedItem)"></div>
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
                                      ng-click="openGroupEmployeeBrandRDlg()"
                                      ng-if="showDetailAddButton()" ng-disabled="canDetailAction()">

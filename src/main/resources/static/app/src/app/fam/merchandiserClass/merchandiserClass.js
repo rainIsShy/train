@@ -131,9 +131,18 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
         });
     };
 
+    $scope.pageOptionChanR = {
+        sizePerPage: 10,
+        currentPage: 0,
+        totalPage: 100,
+        totalElements: 100
+    };
+
     $scope.refreshGroupEmployeeChanRelation = function () {
-        CBIGroupEmployeeChanRService.getAll($scope.detailPageOption.sizePerPage, $scope.detailPageOption.currentPage, $scope.selectedItem.uuid, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
+        CBIGroupEmployeeChanRService.getAll($scope.pageOptionChanR.sizePerPage, $scope.pageOptionChanR.currentPage, $scope.selectedItem.uuid, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
             $scope.chanDetailItemList = data.content;
+            $scope.pageOptionChanR.totalPage = data.totalPages;
+            $scope.pageOptionChanR.totalElements = data.totalElements;
         });
     };
 
@@ -147,9 +156,17 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
         });
     };
 
+    $scope.pageOptionBrandR = {
+        sizePerPage: 10,
+        currentPage: 0,
+        totalPage: 100,
+        totalElements: 100
+    };
     $scope.refreshGroupEmployeeBrandRelation = function () {
-        CBIGroupEmployeeBrandRService.getAll($scope.detailPageOption.sizePerPage, $scope.detailPageOption.currentPage, $scope.selectedItem.uuid, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
+        CBIGroupEmployeeBrandRService.getAll($scope.pageOptionBrandR.sizePerPage, $scope.pageOptionBrandR.currentPage, $scope.selectedItem.uuid, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
             $scope.brandDetailItemList = data.content;
+            $scope.pageOptionBrandR.totalPage = data.totalPages;
+            $scope.pageOptionBrandR.totalElements = data.totalElements;
         });
     };
 
@@ -401,16 +418,6 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
         }
     };
 
-    $scope.selectAllAction = function () {
-        angular.forEach($scope.itemList, function (item) {
-            if ($scope.selectAllFlag) {
-                item.selected = true;
-            } else {
-                item.selected = false;
-            }
-        })
-    };
-
     $scope.openGroupEmployeeChanRDlg = function () {
         $mdDialog.show({
             controller: 'GroupEmployeeChanRController',
@@ -521,6 +528,17 @@ angular.module('IOne-Production').controller('GroupEmployeeChanRController', fun
     }, true);
 
     $scope.selected = [];
+    $scope.selectAllAction = function () {
+        angular.forEach($scope.allData, function (item) {
+            if ($scope.selectAllFlag) {
+                item.selected = true;
+                $scope.selected.push(item.uuid);
+            } else {
+                item.selected = false;
+            }
+        })
+    };
+
     $scope.addToggle = function (item, selected) {
         var idx = selected.indexOf(item.uuid);
         if (idx > -1) {
@@ -575,18 +593,9 @@ angular.module('IOne-Production').controller('GroupEmployeeClassRController', fu
 
     $scope.selected = [];
     $scope.addToggle = function (item, selected) {
-//        var idx = selected.indexOf(item.uuid);
-//        if (idx > -1) {
-//            selected.splice(idx, 1);
-//        }
-//        else {
-//            selected.push(item.uuid);
-//        }
         $scope.tempSelectItem = item;
         $scope.selectOneFlag = item.uuid;
-
     };
-
 
     $scope.refreshData();
 
@@ -631,6 +640,17 @@ angular.module('IOne-Production').controller('GroupEmployeeBrandRController', fu
     }, true);
 
     $scope.selected = [];
+    $scope.selectAllAction = function () {
+        angular.forEach($scope.allBrandData, function (item) {
+            if ($scope.selectAllFlag) {
+                item.selected = true;
+                $scope.selected.push(item.uuid);
+            } else {
+                item.selected = false;
+            }
+        })
+    };
+
     $scope.addToggle = function (item, selected) {
         var idx = selected.indexOf(item.uuid);
         if (idx > -1) {
