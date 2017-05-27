@@ -667,10 +667,16 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             if ($scope.selected.length > 0 || $scope.selectedTabIndex == 1) {
                 $scope.showConfirm('确认抛转吗？', '', function () {
                     if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
+
+                        $scope.transferDtlUuid = [];
+                        angular.forEach($scope.selectedDetail, function (item) {
+                            $scope.transferDtlUuid.push(item.uuid);
+                        });
+
                         var transferData = {
                             'PMM_ORDER_MST_UUID': $scope.selectedItem.uuid,
                             'TRANSFER_TYPE': data,
-                            'PMM_ORDER_DTL_UUID': $scope.selectedDetail,
+                            'PMM_ORDER_DTL_UUID': $scope.transferDtlUuid,
                             'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
                         };
                         ErpAdapterService.transferErpAdapter('/pmmOrderToOeaTask', transferData, $scope, function (resp) {
