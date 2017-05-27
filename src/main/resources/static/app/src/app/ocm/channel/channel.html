@@ -184,8 +184,8 @@
                         <span flex="50" flex-sm="100" layout-padding>
                             <span class="item-name">上层渠道</span>
                             <span class="item-content">{{selectedItem.parentOcmBaseChanName}}</span>
-                            <md-button class="md-raised" aria-label="..."
-                                       ng-click="openParentLevelDlg()"> 设置 </md-button>
+                            <md-button class="md-raised" aria-label="..." ng-if="!selectedItem.parentOcmBaseChanUuid"
+                                       ng-click="preAddItemAction({}, 'OCM_BASE_CHAN','新增上级渠道', '1')"> 设置 </md-button>
                         </span>
                     </div>
                     <md-tabs md-dynamic-height md-border-bottom style="padding-top: 30px;">
@@ -213,7 +213,7 @@
                                 </div>
                                 <div pagination option="pageDetailOption" callback="refreshSubList(selectedItem)"></div>
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
-                                     ng-click="preAddItemAction({}, 'OCM_BASE_CHAN_LEVEL', '新增下级渠道')"
+                                     ng-click="preAddItemAction({}, 'OCM_BASE_CHAN', '新增下级渠道', '2')"
                                      ng-if="menuDisplayOption['channelLevel-detailAdd'].display && (menuAuthDataMap[formMenuDisplayOption['channelLevel-detailAdd'].uuid] || isAdmin() || !menuDisplayOption['channelLevel-detailAdd'].uuid)">
                                     <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
                                 </div>
@@ -369,7 +369,7 @@
             </div>
         </div>
     </div>
-    <div ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS && domain == ''">
+    <div ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS">
         <div layout="row" class="top-title">
             <div flex="100" class="left-title">
                 <md-button class="md-icon-button close-btn" aria-label="More" ng-click="listItemAction()"
@@ -385,35 +385,35 @@
         <object-editor class="object-editor" status="status" source="source" domain="domain"></object-editor>
     </div>
 
-    <div ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS && domain == 'OCM_BASE_CHAN_LEVEL'">
-        <div layout="row" class="top-title">
-            <div flex="100" class="left-title">
-                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="listItemAction()"
-                           style="float: left; margin-left: 36px;">
-                    <ng-md-icon icon="chevron_left"></ng-md-icon>
-                </md-button>
-                <span>{{desc}}</span>
-                <md-button class="md-icon-button close-btn" aria-label="More" ng-click="saveChannelLevelAction()">
-                    <ng-md-icon icon="save"></ng-md-icon>
-                </md-button>
-            </div>
-        </div>
-        <div flex="100" layout="column" layout-padding>
-            <md-input-container>
-                <label class="label">渠道：</label>
-                <input type="text" aria-label="..." ng-model="addItem.channelName"
-                       ng-disabled="status == 'edit'"
-                       ng-click="openChannelDlg()">
-            </md-input-container>
-        </div>
+    <!--<div ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS && domain == 'OCM_BASE_CHAN_LEVEL'">-->
+    <!--<div layout="row" class="top-title">-->
+    <!--<div flex="100" class="left-title">-->
+    <!--<md-button class="md-icon-button close-btn" aria-label="More" ng-click="listItemAction()"-->
+    <!--style="float: left; margin-left: 36px;">-->
+    <!--<ng-md-icon icon="chevron_left"></ng-md-icon>-->
+    <!--</md-button>-->
+    <!--<span>{{desc}}</span>-->
+    <!--<md-button class="md-icon-button close-btn" aria-label="More" ng-click="saveChannelLevelAction()">-->
+    <!--<ng-md-icon icon="save"></ng-md-icon>-->
+    <!--</md-button>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div flex="100" layout="column" layout-padding>-->
+    <!--<md-input-container>-->
+    <!--<label class="label">渠道：</label>-->
+    <!--<input type="text" aria-label="..." ng-model="addItem.channelName"-->
+    <!--ng-disabled="status == 'edit'"-->
+    <!--ng-click="openChannelDlg()">-->
+    <!--</md-input-container>-->
+    <!--</div>-->
 
-        <div flex="100" layout="column" layout-padding>
-            <md-input-container>
-                <label class="label">上层渠道：</label>
-                <input type="text" aria-label="..." ng-model="addItem.parentChannelName"
-                       ng-disabled="status == 'add'"
-                       ng-click="openParentChannelDlg()">
-            </md-input-container>
-        </div>
-    </div>
+    <!--<div flex="100" layout="column" layout-padding>-->
+    <!--<md-input-container>-->
+    <!--<label class="label">上层渠道：</label>-->
+    <!--<input type="text" aria-label="..." ng-model="addItem.parentChannelName"-->
+    <!--ng-disabled="status == 'add'"-->
+    <!--ng-click="openParentChannelDlg()">-->
+    <!--</md-input-container>-->
+    <!--</div>-->
+    <!--</div>-->
 </div>

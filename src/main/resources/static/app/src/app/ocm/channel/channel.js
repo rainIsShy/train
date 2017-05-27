@@ -175,22 +175,23 @@ angular.module('IOne-Production').controller('OCMChannelController', function ($
     /**
      * Add new item which will take the ui to the edit page.
      */
-    $scope.preAddItemAction = function (source, domain, desc) {
+    $scope.preAddItemAction = function (source, domain, desc, setLevel) {
         $scope.changeViewStatus(Constant.UI_STATUS.EDIT_UI_STATUS);
         $scope.status = 'add';
         $scope.desc = desc;
         $scope.source = source;
         $scope.domain = domain;
+        $scope.setLevel = setLevel;
 
-        if ($scope.domain == 'OCM_BASE_CHAN_LEVEL') {
-            $scope.addItem = {
-                channelUuid: '',
-                channelName: '',
-                parentOcmBaseChanUuid: $scope.selectedItem.uuid,
-                parentChannelName: $scope.selectedItem.name
-            };
-
-        }
+        // if ($scope.domain == 'OCM_BASE_CHAN_LEVEL') {
+        //     $scope.addItem = {
+        //         channelUuid: '',
+        //         channelName: '',
+        //         parentOcmBaseChanUuid: $scope.selectedItem.uuid,
+        //         parentChannelName: $scope.selectedItem.name
+        //     };
+        //
+        // }
     };
 
     /**
