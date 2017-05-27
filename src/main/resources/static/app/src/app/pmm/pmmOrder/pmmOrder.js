@@ -646,12 +646,12 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
 
     $scope.throwMenuAction = function () {
         $scope.transferItemList = [];
-        angular.forEach($scope.OrderDetailList.content, function (data) {
-            if (data.purchaseFlag == '2' && data.transferFlag == '2') {
-                $scope.transferItemList.push(data);
-            }
-        });
-        console.log($scope.transferItemList);
+
+        if ($scope.selectedDetail.length <= 0) {
+            $scope.showError('请选择要抛转的产品!');
+            return;
+        }
+        console.log($scope.selectedDetail);
         $mdDialog.show({
             controller: 'PmmTransferSelectController',
             templateUrl: 'app/src/app/pmm/pmmOrder/openTransferDlg.html',
@@ -659,7 +659,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             targetEvent: event,
             locals: {
                 parentScope: $scope,
-                itemList: $scope.transferItemList
+                itemList: $scope.selectedDetail
 
             }
         }).then(function (data) {
@@ -670,7 +670,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                         var transferData = {
                             'PMM_ORDER_MST_UUID': $scope.selectedItem.uuid,
                             'TRANSFER_TYPE': data[0],
-                            'PMM_ORDER_DTL_UUID': data[1],
+                            'PMM_ORDER_DTL_UUID': $scope.selectedDetail,
                             'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
                         };
                         ErpAdapterService.transferErpAdapter('/pmmOrderToOeaTask', transferData, $scope, function (resp) {

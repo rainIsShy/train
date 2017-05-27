@@ -74,6 +74,7 @@
         <div align="center" flex="10" class=" table-head">退回备注</div>
         <div align="center" flex="10" class=" table-head">预计送货日</div>
         <div align="center" flex="15" class=" table-head">来源抛转流水号</div>
+        <div align="center" flex="10" class=" table-head">跟单员</div>
     </div>
     <div ng-repeat="orderDetail in OrderDetailList.content  | orderBy:'no'">
         <div layout="row" ng-style="orderDetail.orderQty == 0 && { 'color': 'gray' }">
@@ -144,6 +145,7 @@
             <div align="center" flex="10" class="table-item">{{orderDetail.returnRemark}}</div><!-- 退回备注 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.deliverDate | date: 'yyyy-MM-dd'}}</div><!-- 预计送货日 -->
             <div align="center" flex="15" class="table-item">{{orderDetail.psoTransferNo}}</div><!-- 来源抛转流水号 -->
+            <div align="center" flex="10" class="table-item">{{orderDetail.groupUser.name}}</div><!-- 来源抛转流水号 -->
         </div>
     </div>
 </md-content>

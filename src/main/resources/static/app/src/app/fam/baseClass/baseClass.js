@@ -290,7 +290,7 @@ angular.module('IOne-Production').controller('BaseClassController', function ($s
                 BrandRelationsService.delete(detail.uuid).success(function () {
                     $scope.refreshBrandRelation($scope.selectedItem);
                     $scope.showInfo("刪除成功!");
-                });
+                })
             }
         });
     };
@@ -312,34 +312,46 @@ angular.module('IOne-Production').controller('BaseClassController', function ($s
 
     $scope.deleteClickAction = function (event, item) {
         $scope.stopEventPropagation(event);
-
-        BrandRelationsService.getAllByBaseClassUuid(item.uuid).success(function (data) {
-            if (data.totalElements > 0) {
-                $scope.showConfirm('此分类己维护品牌，确认删除吗？', '删除后不可恢复。', function () {
-                    if ($scope.selectedItem) {
-                        BaseClassService.delete(item.uuid).success(function () {
-                            $scope.refreshList();
-
-                            $scope.showInfo("刪除成功!");
-                            $scope.selectedItem = null
-                        });
+        BaseClassService.checkDelete(item.uuid).success(function (errorList) {
+            if (errorList.length > 0) {
+                angular.forEach(errorList, function (error) {
+                    if (error == 'PMM_ORDER_MST') {
+                        $scope.showError('采购单己使用，无法删除!');
                     }
-                });
 
+                    if (error == 'CBI_GROUP_EMPLOYEE_CLASS_R') {
+                        $scope.showError('CBI_GROUP_EMPLOYEE_CLASS_R己使用，无法删除!');
+                    }
+                })
             } else {
-                $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
-                    if ($scope.selectedItem) {
-                        BaseClassService.delete(item.uuid).success(function () {
-                            $scope.refreshList();
+                BrandRelationsService.getAllByBaseClassUuid(item.uuid).success(function (data) {
+                    if (data.totalElements > 0) {
+                        $scope.showConfirm('此分类己维护品牌，确认删除吗？', '删除后不可恢复。', function () {
+                            if ($scope.selectedItem) {
+                                BaseClassService.delete(item.uuid).success(function () {
+                                    $scope.refreshList();
 
-                            $scope.showInfo("刪除成功!");
-                            $scope.selectedItem = null
+                                    $scope.showInfo("刪除成功!");
+                                    $scope.selectedItem = null
+                                })
+                            }
+                        });
+
+                    } else {
+                        $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
+                            if ($scope.selectedItem) {
+                                BaseClassService.delete(item.uuid).success(function () {
+                                    $scope.refreshList();
+
+                                    $scope.showInfo("刪除成功!");
+                                    $scope.selectedItem = null
+                                });
+                            }
                         });
                     }
-                });
+                })
             }
-        })
-
+        });
     };
 
     $scope.confirmAllClickAction = function (event) {
@@ -370,54 +382,86 @@ angular.module('IOne-Production').controller('BaseClassController', function ($s
     $scope.deleteAllClickAction = function (event) {
         $scope.stopEventPropagation(event);
         if ($scope.selected.length > 0) {
-            $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
-                if ($scope.selected) {
-                    var promises = [];
-                    angular.forEach($scope.selected, function (item) {
-                        var response = BaseClassService.delete(item.uuid).success(function (data) {
-                        });
-                        promises.push(response);
-                    });
-                    $q.all(promises).then(function () {
-                        $scope.showInfo('删除数据成功。');
-                        $scope.refreshList();
-                        $scope.selectItemCount = 0;
-                    });
-                }
-            });
-
-            // var promises2 = [];
-            // var canDelete = true;
-            // angular.forEach($scope.selected, function (baseClass) {
-            //     var response = BrandRelationsService.getAllByBaseClassUuid(baseClass.uuid).success(function (data) {
-            //         if (data.totalElements > 0) {
-            //             $scope.showError('编号:' + baseClass.no + ' 己维护品牌，不可删除!');
-            //             canDelete = false;
-            //         }
-            //     });
+            // $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
+            //     if ($scope.selected) {
+            //         var promises = [];
+            //         var checkDelete = true;
+            //         angular.forEach($scope.selected, function (item) {
             //
-            //     promises2.push(response);
-            // });
+            //             BaseClassService.checkDelete(item.uuid).success(function(errorList) {
+            //                 if (errorList.length > 0) {
+            //                     angular.forEach(errorList, function (error) {
+            //                         if (error == 'PMM_ORDER_MST') {
+            //                             $scope.showError('采购单己使用分类：'+ item.name +'，无法删除!');
+            //                         }
             //
-            // $q.all(promises2).then(function () {
-            //     if (canDelete) {
-            //         $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
-            //             if ($scope.selected) {
-            //                 var promises = [];
-            //                 angular.forEach($scope.selected, function (item) {
+            //                         if (error == 'CBI_GROUP_EMPLOYEE_CLASS_R') {
+            //                             $scope.showError('CBI_GROUP_EMPLOYEE_CLASS_R己分类：'+ item.name +'，无法删除!');
+            //                         }
+            //                         checkDelete = false;
+            //                     })
+            //                 } else {
             //                     var response = BaseClassService.delete(item.uuid).success(function (data) {
+            //
             //                     });
             //                     promises.push(response);
-            //                 });
-            //                 $q.all(promises).then(function () {
-            //                     $scope.showInfo('删除数据成功。');
-            //                     $scope.refreshList();
-            //                     $scope.selectItemCount = 0;
-            //                 });
+            //                 }
+            //             });
+            //
+            //
+            //         });
+            //
+            //         $q.all(promises).then(function () {
+            //             if (checkDelete) {
+            //                 $scope.showInfo('删除数据成功。');
+            //                 $scope.refreshList();
+            //                 $scope.selectItemCount = 0;
             //             }
             //         });
             //     }
             // });
+
+            var promises2 = [];
+            var canDelete = true;
+            angular.forEach($scope.selected, function (baseClass) {
+                var response = BaseClassService.checkDelete(baseClass.uuid).success(function (errorList) {
+                    if (errorList.length > 0) {
+                        canDelete = false;
+                        angular.forEach(errorList, function (error) {
+                            if (error == 'PMM_ORDER_MST') {
+                                $scope.showError('采购单己使用分类：' + baseClass.name + '，无法删除!');
+                            }
+
+                            if (error == 'CBI_GROUP_EMPLOYEE_CLASS_R') {
+                                $scope.showError('CBI_GROUP_EMPLOYEE_CLASS_R己分类：' + baseClass.name + '，无法删除!');
+                            }
+
+                        })
+                    }
+                });
+
+                promises2.push(response);
+            });
+
+            $q.all(promises2).then(function () {
+                if (canDelete) {
+                    $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
+                        if ($scope.selected) {
+                            var promises = [];
+                            angular.forEach($scope.selected, function (item) {
+                                var response = BaseClassService.delete(item.uuid).success(function (data) {
+                                });
+                                promises.push(response);
+                            });
+                            $q.all(promises).then(function () {
+                                $scope.showInfo('删除数据成功。');
+                                $scope.refreshList();
+                                $scope.selectItemCount = 0;
+                            });
+                        }
+                    });
+                }
+            });
 
 
         }
