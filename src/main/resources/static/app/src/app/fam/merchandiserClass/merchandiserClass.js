@@ -517,6 +517,13 @@ angular.module('IOne-Production').controller('GroupEmployeeChanRController', fun
             $scope.allData = data.content;
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
+            if ($scope.alreadyCurrentPage.length > 0) {
+                $scope.selectAllAction();
+            }
+            if ($scope.selectOneFlag) {
+                $scope.canSplitFlag = true;
+            }
+
         });
     };
 
@@ -528,24 +535,42 @@ angular.module('IOne-Production').controller('GroupEmployeeChanRController', fun
     }, true);
 
     $scope.selected = [];
+    $scope.alreadyCurrentPage = [];
     $scope.selectAllAction = function () {
-        angular.forEach($scope.allData, function (item) {
-            if ($scope.selectAllFlag) {
-                item.selected = true;
-                $scope.selected.push(item.uuid);
-            } else {
-                item.selected = false;
-            }
-        })
+        console.log($scope.alreadyCurrentPage.indexOf($scope.pageOption.currentPage));
+        if ($scope.alreadyCurrentPage.indexOf($scope.pageOption.currentPage) > -1) {
+            angular.forEach($scope.allData, function (item) {
+                if ($scope.selectAllFlag) {
+                    item.selected = true;
+                } else {
+                    item.selected = false;
+                }
+            })
+        } else {
+            angular.forEach($scope.allData, function (item) {
+                if ($scope.selectAllFlag) {
+                    item.selected = true;
+                    $scope.selected.push(item.uuid);
+                } else {
+                    item.selected = false;
+                }
+            })
+        }
+        $scope.alreadyCurrentPage.push($scope.pageOption.currentPage);
     };
 
     $scope.addToggle = function (item, selected) {
+
         var idx = selected.indexOf(item.uuid);
         if (idx > -1) {
-            selected.splice(idx, 1);
+            if (!$scope.canSplitFlag) {
+                selected.splice(idx, 1);
+                $scope.canSplitFlag =false;
+            }
         }
         else {
             selected.push(item.uuid);
+            $scope.selectOneFlag = true;
         }
     };
 
@@ -624,13 +649,21 @@ angular.module('IOne-Production').controller('GroupEmployeeBrandRController', fu
 
     $scope.searchBrandQuery = {};
 
+    $scope.maxCurrentPage = [];
     $scope.refreshData = function () {
         BrandFile.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.searchBrandQuery.no, $scope.searchBrandQuery.name,groupEmployeeUuid).success(function (data) {
             $scope.allBrandData = data.content;
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
+            if ($scope.alreadyCurrentPage.length > 0) {
+                $scope.selectAllAction();
+            }
+            if ($scope.selectOneFlag) {
+                $scope.canSplitFlag = true;
+            }
         });
     };
+
 
     $scope.$watch('searchBrandQuery', function () {
         $scope.pageOption.currentPage = 0;
@@ -640,21 +673,37 @@ angular.module('IOne-Production').controller('GroupEmployeeBrandRController', fu
     }, true);
 
     $scope.selected = [];
+    $scope.alreadyCurrentPage = [];
     $scope.selectAllAction = function () {
-        angular.forEach($scope.allBrandData, function (item) {
-            if ($scope.selectAllFlag) {
-                item.selected = true;
-                $scope.selected.push(item.uuid);
-            } else {
-                item.selected = false;
-            }
-        })
+        console.log($scope.alreadyCurrentPage.indexOf($scope.pageOption.currentPage));
+        if ($scope.alreadyCurrentPage.indexOf($scope.pageOption.currentPage) > -1) {
+            angular.forEach($scope.allBrandData, function (item) {
+                if ($scope.selectAllFlag) {
+                    item.selected = true;
+                } else {
+                    item.selected = false;
+                }
+            })
+        } else {
+            angular.forEach($scope.allBrandData, function (item) {
+                if ($scope.selectAllFlag) {
+                    item.selected = true;
+                    $scope.selected.push(item.uuid);
+                } else {
+                    item.selected = false;
+                }
+            })
+        }
+        $scope.alreadyCurrentPage.push($scope.pageOption.currentPage);
     };
 
     $scope.addToggle = function (item, selected) {
         var idx = selected.indexOf(item.uuid);
         if (idx > -1) {
-            selected.splice(idx, 1);
+             if (!$scope.canSplitFlag) {
+                 selected.splice(idx, 1);
+                 $scope.canSplitFlag =false;
+             }
         }
         else {
             selected.push(item.uuid);

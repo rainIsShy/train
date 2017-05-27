@@ -14,7 +14,7 @@
             </div>
 
             <div layout="column">
-                <md-list-item ng-repeat="data in allClassData">
+                <md-list-item ng-repeat="data in allClassData | orderBy:'no'">
                     <div align="center" flex="5">
                         <md-checkbox ng-checked="data.uuid == selectOneFlag" ng-click="addToggle(data, selected)">
                         </md-checkbox>
