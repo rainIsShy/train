@@ -27,6 +27,8 @@ angular.module('IOne-Production').controller('TransferTypeController', function 
 
     $scope.menuDisplayOption = {
         'switchStatus': {display: true, name: '启用/禁用', uuid: 'b61fdba7-d97c-47be-b571-79954270b848'},
+        'enableStatus': {display: true, name: '启用', uuid: 'b0906107-cdce-40c8-92f4-08a3bd889c6b'},
+        'disableStatus': {display: true, name: '禁用', uuid: 'a42c562d-d490-488d-b093-a59d20866575'},
         'batchStatus': {display: true, name: '批量启用', uuid: 'b1b3995a-c6a2-41a5-8679-dbfcf1e20ed3    '},
         'batchRevertStatus': {display: true, name: '批量禁用', uuid: 'eb08e216-ee67-42b4-989a-a7426859404a'},
         'batchDelete': {display: true, name: '批量删除', uuid: '0e72f59d-4f21-40d0-ac3d-aacfaeebb545'},
@@ -97,6 +99,30 @@ angular.module('IOne-Production').controller('TransferTypeController', function 
     $scope.showAdvancedSearchAction = function () {
         $scope.displayAdvancedSearPanel = !$scope.displayAdvancedSearPanel;
         $scope.selectedItem = null;
+    };
+
+    $scope.canBatchEnableStatus = function () {
+        if ($scope.selected.length > 0) {
+            for (var i = 0; i < $scope.selected.length; i++) {
+                if ($scope.selected[i].status == Constant.STATUS[1].value) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    };
+
+    $scope.canBatchDisableStatus = function () {
+        if ($scope.selected.length > 0) {
+            for (var i = 0; i < $scope.selected.length; i++) {
+                if ($scope.selected[i].status == Constant.STATUS[2].value) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     };
 
     /**

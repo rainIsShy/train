@@ -21,6 +21,23 @@
                                 删除
                             </md-button>
                         </md-menu-item>
+                        <md-menu-item
+                                ng-if="menuDisplayOption['enableStatus'].display && (menuAuthDataMap[menuDisplayOption['enableStatus'].uuid] || isAdmin() || !menuDisplayOption['enableStatus'].uuid)">
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="statusClickAction($event, selectedItem)">
+                                <ng-md-icon icon="lock"></ng-md-icon>
+                                &nbsp;{{menuDisplayOption['enableStatus'].name}}
+                            </md-button>
+                        </md-menu-item>
+
+                        <md-menu-item
+                                ng-if="menuDisplayOption['disableStatus'].display && (menuAuthDataMap[menuDisplayOption['disableStatus'].uuid] || isAdmin() || !menuDisplayOption['disableStatus'].uuid)">
+                            <md-button class="md-button" aria-label="More"
+                                       ng-click="statusClickAction($event, selectedItem)">
+                                <ng-md-icon icon="lock_open"></ng-md-icon>
+                                &nbsp;{{menuDisplayOption['disableStatus'].name}}
+                            </md-button>
+                        </md-menu-item>
                     </md-menu-content>
                 </md-menu>
                 <span> 采购单别详细信息</span>
@@ -48,6 +65,22 @@
                                 批量删除
                             </md-button>
                         </md-menu-item>
+                        <md-menu-item
+                                ng-if="menuDisplayOption['batchStatus'].display && (menuAuthDataMap[menuDisplayOption['batchStatus'].uuid] || isAdmin() || !menuDisplayOption['batchStatus'].uuid)">
+                            <md-button class="md-button" aria-label="More" ng-disabled="!canBatchEnableStatus()"
+                                       ng-click="statusAllClickAction($event)">
+                                <ng-md-icon icon="lock"></ng-md-icon>
+                                &nbsp;{{menuDisplayOption['batchStatus'].name}}
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item
+                                ng-if="menuDisplayOption['batchRevertStatus'].display && (menuAuthDataMap[menuDisplayOption['batchRevertStatus'].uuid] || isAdmin() || !menuDisplayOption['batchRevertStatus'].uuid)">
+                            <md-button class="md-button" aria-label="More" ng-disabled="!canBatchDisableStatus()"
+                                       ng-click="releaseAllClickAction($event)">
+                                <ng-md-icon icon="lock_open"></ng-md-icon>
+                                &nbsp;{{menuDisplayOption['batchRevertStatus'].name}}
+                            </md-button>
+                        </md-menu-item>
                     </md-menu-content>
                 </md-menu>
             </div>
@@ -64,6 +97,10 @@
                         <span flex="50" flex-sm="100" layout-padding>
                             <span class="item-name">名称</span>
                             <span class="item-content">{{selectedItem.name}}</span>
+                        </span>
+                        <span flex="50" flex-sm="100" layout-padding>
+                            <span class="item-name">状态</span>
+                            <span class="item-content">{{STATUS[selectedItem.status].name}}</span>
                         </span>
                     </div>
                 </div>
@@ -149,6 +186,13 @@
                                  ng-show="selectedItem">
                                 名称:<span style="font-style: italic">{{item.name}}</span>
                             </div>
+                        </div>
+                        <div layout="row" layout-align="end center">
+                            <md-switch ng-model="item.status" aria-label="Switch 1" class="md-block"
+                                       ng-true-value="'1'" ng-false-value="'2'"
+                                       ng-click="statusClickAction($event, item)">
+                                启用
+                            </md-switch>
                         </div>
                     </div>
                     <!--查看-->
