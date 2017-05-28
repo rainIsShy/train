@@ -183,15 +183,21 @@ angular.module('IOne-Production').controller('OCMChannelController', function ($
         $scope.domain = domain;
         $scope.setLevel = setLevel;
 
-        // if ($scope.domain == 'OCM_BASE_CHAN_LEVEL') {
-        //     $scope.addItem = {
-        //         channelUuid: '',
-        //         channelName: '',
-        //         parentOcmBaseChanUuid: $scope.selectedItem.uuid,
-        //         parentChannelName: $scope.selectedItem.name
-        //     };
-        //
-        // }
+        if ($scope.setLevel == '1') {
+            $scope.addItem = {
+                channelUuid: $scope.selectedItem.uuid,
+                channelName: $scope.selectedItem.name,
+                parentOcmBaseChanUuid: '',
+                parentChannelName: ''
+            };
+        } else if ($scope.setLevel == '2') {
+            $scope.addItem = {
+                channelUuid: '',
+                channelName: '',
+                parentOcmBaseChanUuid: $scope.selectedItem.uuid,
+                parentChannelName: $scope.selectedItem.name
+            };
+        }
     };
 
     /**
@@ -204,13 +210,36 @@ angular.module('IOne-Production').controller('OCMChannelController', function ($
         }
         if ($scope.status == 'add') {
             if ($scope.domain == 'OCM_BASE_CHAN') {
-                console.log($scope.source.no);
                 CBIEmployeeService.getByNo($scope.source.no).success(function (result) {
                     if (result.totalElements > 0) {
                         $scope.showError('渠道商编号不可与于员工编号相同。');
                     } else {
                         OCMChannelService.add($scope.source).success(function (data) {
-                            $scope.showInfo('新增数据成功。');
+                            $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
+                            if ($scope.setLevel == '1' || $scope.setLevel == '2') {
+                                if ($scope.setLevel == '1') {
+                                    $scope.addItem.parentOcmBaseChanUuid = data.uuid;
+                                    $scope.addItem.parentChannelName = data.name
+                                } else if ($scope.setLevel == '2') {
+                                    $scope.addItem.channelUuid = data.uuid;
+                                    $scope.addItem.channelName = data.name
+                                }
+
+                                ChannelLevelService.add($scope.addItem).success(function () {
+                                    if ($scope.setLevel == '1') {
+                                        $scope.showInfo("新增上层渠道成功!");
+                                        $scope.getParentChannel($scope.selectedItem);
+                                    }
+                                    if ($scope.setLevel == '2') {
+                                        $scope.showInfo("新增下层渠道成功!");
+                                        $scope.refreshSubList($scope.selectedItem);
+                                    }
+                                    $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
+
+                                });
+                            } else {
+                                $scope.showInfo('新增数据成功。');
+                            }
                         }).error(function (data) {
                             $scope.showError('新增失败:' + '<br>' + data.message);
                         });
@@ -796,74 +825,7 @@ angular.module('IOne-Production').controller('OCMChannelController', function ($
 
     };
 
-    //设置下层渠道
-    $scope.saveChannelLevelAction = function () {
-        if ($scope.addItem.channelUuid == $scope.addItem.parentOcmBaseChanUuid) {
-            $scope.showError('此上层渠道己存在层级中，无法新增!');
-            return;
-        }
-        if ($scope.status == 'add') {
-            ChannelLevelService.validLoop($scope.addItem.channelUuid, $scope.addItem.parentOcmBaseChanUuid).success(function (data) {
-                if (data) {
-                    if ($scope.domain == 'OCM_BASE_CHAN_LEVEL') {
-                        if ($scope.addItem.channelUuid == $scope.tempParentChannelUuid) {
-                            $scope.showError("此渠道己是上级渠道，无法新增!");
-                            return;
-                        }
-                        ChannelLevelService.add($scope.addItem).success(function () {
-                            $scope.showInfo("新增下层渠道成功!");
-                            $scope.refreshSubList($scope.selectedItem);
-                            $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
-                        });
-                    }
 
-                } else {
-                    $scope.showError("此上层渠道己存在层级中，无法新增!");
-                }
-            });
-        }
-    };
-
-    //设置上层渠道
-    $scope.saveParentChannelLevelAction = function () {
-        if ($scope.addItem.channelUuid == $scope.addItem.parentOcmBaseChanUuid) {
-            $scope.showError('此上层渠道己存在层级中，无法新增!');
-            return;
-        }
-
-        ChannelLevelService.getByChannelUuid($scope.selectedItem.uuid).success(function (channelList) {
-            if (channelList.totalElements > 0) {
-                var channelLevelUpdateInput = channelList.content[0];
-                channelLevelUpdateInput.parentOcmBaseChanUuid = $scope.addItem.parentOcmBaseChanUuid;
-
-                ChannelLevelService.validLoop($scope.addItem.channelUuid, $scope.addItem.parentOcmBaseChanUuid).success(function (data) {
-                    if (data) {
-                        ChannelLevelService.modify(channelLevelUpdateInput.uuid, channelLevelUpdateInput).success(function () {
-                            $scope.showInfo("修改上层渠道成功!");
-                            $scope.getParentChannel($scope.selectedItem);
-                        });
-                    } else {
-                        $scope.showError("不可设置此上层渠道!");
-                    }
-                });
-            } else {
-                ChannelLevelService.validLoop($scope.addItem.channelUuid, $scope.addItem.parentOcmBaseChanUuid).success(function (data) {
-                    if (data) {
-                        if ($scope.addItem.channelUuid == $scope.addItem.parentOcmBaseChanUuid) {
-                            $scope.showError('不可新增此上下级渠道!');
-                            return;
-                        }
-                        ChannelLevelService.add($scope.addItem).success(function () {
-                            $scope.showInfo("新增上层渠道成功!");
-                            $scope.getParentChannel($scope.selectedItem);
-                        });
-                    } else {
-                        $scope.showError("此上层渠道己存在层级中，无法新增!");
-                    }
-                });
-            }
-        });
-    };
 
     $scope.deleteChannelLevelAction = function (detail) {
         $scope.showConfirm('确认删除层级吗？', '删除后不可恢复。', function () {
@@ -877,99 +839,3 @@ angular.module('IOne-Production').controller('OCMChannelController', function ($
 
 });
 
-
-angular.module('IOne-Production').controller('ChannelSelectLevelController', function ($scope, $mdDialog, ChannelService, domain, addItem, itemList) {
-    $scope.pageOption = {
-        sizePerPage: 5,
-        currentPage: 0,
-        totalPage: 0,
-        totalElements: 0,
-        displayModel: 0  //0 : image + text //1 : image
-    };
-    $scope.domain = domain;
-    $scope.addItem = addItem;
-    $scope.itemList = itemList;
-    console.log($scope.domain);
-    $scope.refreshChannel = function () {
-        ChannelService.getWithNoChannelLevel($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, $scope.searchKeyword, $scope.addItem.parentOcmBaseChanUuid).success(function (data) {
-            $scope.allChannel = data;
-            $scope.pageOption.totalElements = data.totalElements;
-            $scope.pageOption.totalPage = data.totalPages;
-        });
-    };
-    $scope.refreshChannel();
-    $scope.selectChannel = function (channel) {
-        $scope.channel = channel;
-        $mdDialog.hide($scope.channel);
-    };
-    $scope.hideDlg = function () {
-        $mdDialog.hide($scope.channel);
-    };
-    $scope.cancelDlg = function () {
-        $mdDialog.cancel();
-    };
-});
-
-angular.module('IOne-Production').controller('ChannelSelectParentLevelController', function ($scope, $mdDialog, ChannelService, ChannelLevelService, addItem, itemList) {
-    $scope.pageOption = {
-        sizePerPage: 5,
-        currentPage: 0,
-        totalPage: 0,
-        totalElements: 0
-    };
-    $scope.addItem = addItem;
-    $scope.itemList = itemList;
-
-
-    $scope.notLowerChannel = function () {
-        ChannelService.getNotLowerChannel($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, $scope.searchKeyword, '', $scope.addItem.channelUuid).success(function (data) {
-            $scope.allChannel = data.content;
-            $scope.pageOption.totalElements = data.totalElements;
-            $scope.pageOption.totalPage = data.totalPages;
-        });
-    };
-    $scope.notLowerChannel();
-
-    $scope.selectChannel = function (channel) {
-        $scope.channel = channel;
-        $mdDialog.hide($scope.channel);
-    };
-    $scope.hideDlg = function () {
-        $mdDialog.hide($scope.channel);
-    };
-    $scope.cancelDlg = function () {
-        $mdDialog.cancel();
-    };
-});
-
-angular.module('IOne-Production').controller('ChannelSelectParentLevel2Controller', function ($scope, $mdDialog, ChannelService, ChannelLevelService, channelUuid, theScope) {
-    $scope.parentScope = theScope;
-    $scope.pageOption = {
-        sizePerPage: 5,
-        currentPage: 0,
-        totalPage: 0,
-        totalElements: 0
-    };
-    $scope.channelUuid = channelUuid;
-
-
-    $scope.notLowerChannel = function () {
-        ChannelService.getNotLowerChannel($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, 0, 0, $scope.searchKeyword, '', $scope.channelUuid).success(function (data) {
-            $scope.allChannel = data.content;
-            $scope.pageOption.totalElements = data.totalElements;
-            $scope.pageOption.totalPage = data.totalPages;
-        });
-    };
-    $scope.notLowerChannel();
-
-    $scope.selectChannel = function (channel) {
-        $scope.channel = channel;
-        $mdDialog.hide($scope.channel);
-    };
-    $scope.hideDlg = function () {
-        $mdDialog.hide($scope.channel);
-    };
-    $scope.cancelDlg = function () {
-        $mdDialog.cancel();
-    };
-});
