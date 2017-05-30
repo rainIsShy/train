@@ -123,8 +123,9 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
         $scope.sortType = '';
     };
 
+    $scope.merchandiserFlag = 'Y';
     $scope.refreshList = function () {
-        GroupUserService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,$scope.listFilterOption.keyword, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
+        GroupUserService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,$scope.listFilterOption.keyword, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID, $scope.merchandiserFlag).success(function (data) {
             $scope.itemList = data.content;
             $scope.pageOption.totalPage = data.totalPages;
             $scope.pageOption.totalElements = data.totalElements;
