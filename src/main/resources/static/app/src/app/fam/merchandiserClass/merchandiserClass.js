@@ -432,7 +432,7 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
             for (var i = 0; i < dataList.length; i++) {
                 var input = {
                     aamGroupEmployeeUuid: $scope.selectedItem.uuid,
-                    ocmBaseChanUuid: dataList[i].uuid
+                    ocmBaseChanUuid: dataList[i]
                 };
                 var response = CBIGroupEmployeeChanRService.add(input).success(function () {
                 });
@@ -487,7 +487,7 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
             for (var i = 0; i < dataList.length; i++) {
                 var input = {
                     aamGroupEmployeeUuid: $scope.selectedItem.uuid,
-                    plmBaseBrandFileUuid: dataList[i].uuid
+                    plmBaseBrandFileUuid: dataList[i]
                 };
                 var response = CBIGroupEmployeeBrandRService.add(input).success(function () {
                 });
@@ -502,94 +502,6 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
 };
 
 });
-
-angular.module('IOne-Production').controller('GroupEmployeeChanRController', function ($scope, $q, $mdDialog, ChannelService, groupEmployeeUuid) {
-    $scope.pageOption = {
-        sizePerPage: 10,
-        currentPage: 0,
-        totalPage: 0,
-        totalElements: 0
-    };
-    $scope.searchQuery = {};
-
-    $scope.refreshData = function () {
-        ChannelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,'', '', $scope.searchQuery.name, $scope.searchQuery.no, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID, groupEmployeeUuid).success(function (data) {
-            $scope.allData = data.content;
-            $scope.pageOption.totalElements = data.totalElements;
-            $scope.pageOption.totalPage = data.totalPages;
-             if ($scope.alreadyCurrentPage.indexOf($scope.pageOption.currentPage) > -1) {
-                 $scope.selectAllAction();
-             }else {
-                 $scope.selectAllFlag =false;
-             }
-            if ($scope.selectOneFlag) {
-                $scope.canSplitFlag = true;
-            }
-
-        });
-    };
-
-    $scope.$watch('searchQuery', function () {
-        $scope.pageOption.currentPage = 0;
-        $scope.pageOption.totalPage = 0;
-        $scope.pageOption.totalElements = 0;
-        $scope.refreshData();
-    }, true);
-
-    $scope.selected = [];
-    $scope.alreadyCurrentPage = [];
-    $scope.selectAllAction = function () {
-        angular.forEach($scope.allData, function (item) {
-            if ($scope.selectAllFlag) {
-                item.selected = true;
-                if ($scope.alreadyCurrentPage.indexOf($scope.pageOption.currentPage) > -1) {
-
-                } else {
-                    $scope.selected.push(item);
-                }
-            } else {
-                item.selected = false;
-                for (var i = $scope.selected.length-1;i > -1 ;i--) {
-                    if ($scope.selected[i].uuid == item.uuid) {
-                        $scope.selected.splice(i,1);
-                    }
-                    console.log($scope.selected);
-                }
-            }
-        })
-        $scope.alreadyCurrentPage.push($scope.pageOption.currentPage);
-    };
-
-    $scope.addToggle = function (item, selected) {
-        var idx = selected.indexOf(item.uuid);
-        if (idx > -1) {
-            if (!$scope.canSplitFlag) {
-                selected.splice(idx, 1);
-                $scope.canSplitFlag =false;
-            }
-        }
-        else {
-            selected.push(item.uuid);
-            $scope.selectOneFlag = true;
-        }
-    };
-
-    $scope.exists = function (item, list) {
-        return list.indexOf(item.uuid) > -1;
-    };
-
-    $scope.refreshData();
-
-    $scope.hideDlg = function () {
-        $mdDialog.hide($scope.selected);
-    };
-
-    $scope.cancelDlg = function () {
-        $mdDialog.cancel();
-    };
-
-});
-
 
 angular.module('IOne-Production').controller('GroupEmployeeClassRController', function ($scope, $q, $mdDialog, $mdToast, BaseClassService) {
     $scope.pageOption = {
@@ -639,6 +551,92 @@ angular.module('IOne-Production').controller('GroupEmployeeClassRController', fu
 
 });
 
+
+angular.module('IOne-Production').controller('GroupEmployeeChanRController', function ($scope, $q, $mdDialog, ChannelService, groupEmployeeUuid) {
+    $scope.pageOption = {
+        sizePerPage: 10,
+        currentPage: 0,
+        totalPage: 0,
+        totalElements: 0
+    };
+    $scope.searchQuery = {};
+
+    $scope.refreshData = function () {
+        ChannelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,'', '', $scope.searchQuery.name, $scope.searchQuery.no, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID, groupEmployeeUuid).success(function (data) {
+            $scope.allData = data.content;
+            $scope.pageOption.totalElements = data.totalElements;
+            $scope.pageOption.totalPage = data.totalPages;
+            if ($scope.selected.length > 0) {
+                angular.forEach($scope.allData, function (itemData) {
+                    if ($scope.selected.indexOf(itemData.uuid) > -1) {
+                        itemData.selected = true;
+                    }
+                });
+            }
+            $scope.selectAllFlag = false;
+            if ($scope.alreadyCurrentPage.indexOf($scope.pageOption.currentPage) > -1) {
+                 $scope.selectAllFlag = true;
+            }
+
+        });
+    };
+
+    $scope.$watch('searchQuery', function () {
+        $scope.pageOption.currentPage = 0;
+        $scope.pageOption.totalPage = 0;
+        $scope.pageOption.totalElements = 0;
+        $scope.refreshData();
+    }, true);
+
+    $scope.selected = [];
+    $scope.alreadyCurrentPage = [];
+    $scope.selectAllAction = function () {
+        angular.forEach($scope.allData, function (item) {
+            if ($scope.selectAllFlag) {
+                item.selected = true;
+                if ($scope.alreadyCurrentPage.indexOf($scope.pageOption.currentPage) > -1) {
+
+                } else {
+                    $scope.selected.push(item.uuid);
+                }
+            } else {
+                item.selected = false;
+                var  indexFalse = $scope.selected.indexOf(item.uuid);
+                if (indexFalse > -1) {
+                    $scope.selected.splice(indexFalse,1);
+                }
+            }
+        })
+        $scope.alreadyCurrentPage.push($scope.pageOption.currentPage);
+    };
+
+    $scope.addToggle = function (item, selected) {
+        var idx = selected.indexOf(item.uuid);
+        if (idx > -1) {
+             selected.splice(idx, 1);
+        }
+        else {
+            selected.push(item.uuid);
+        }
+    };
+
+    $scope.exists = function (item, list) {
+        return list.indexOf(item.uuid) > -1;
+    };
+
+    $scope.refreshData();
+
+    $scope.hideDlg = function () {
+        $mdDialog.hide($scope.selected);
+    };
+
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+
+});
+
+
 angular.module('IOne-Production').controller('GroupEmployeeBrandRController', function ($scope, $q, $mdDialog, BrandFile,groupEmployeeUuid) {
     $scope.pageOption = {
         sizePerPage: 10,
@@ -655,15 +653,17 @@ angular.module('IOne-Production').controller('GroupEmployeeBrandRController', fu
             $scope.allBrandData = data.content;
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
+            if ($scope.selected.length > 0) {
+                angular.forEach($scope.allBrandData, function (itemBrand) {
+                    if ($scope.selected.indexOf(itemBrand.uuid) > -1) {
+                        itemBrand.selected = true;
+                    }
+                });
+            }
+            $scope.selectAllFlag = false;
             if ($scope.alreadyCurrentPage.indexOf($scope.pageOption.currentPage) > -1) {
-                $scope.selectAllAction();
-            }else {
-                $scope.selectAllFlag =false;
+                $scope.selectAllFlag = true;
             }
-            if ($scope.selectOneFlag) {
-                $scope.canSplitFlag = true;
-            }
-
         });
     };
 
@@ -683,33 +683,26 @@ angular.module('IOne-Production').controller('GroupEmployeeBrandRController', fu
                 if ($scope.alreadyCurrentPage.indexOf($scope.pageOption.currentPage) > -1) {
 
                 } else {
-                    $scope.selected.push(item);
+                    $scope.selected.push(item.uuid);
                 }
             } else {
                 item.selected = false;
-                for (var i = $scope.selected.length-1;i > -1 ;i--) {
-                    if ($scope.selected[i].uuid == item.uuid) {
-                        $scope.selected.splice(i,1);
-                    }
-                    console.log($scope.selected);
+                var  indexFalse = $scope.selected.indexOf(item.uuid);
+                if (indexFalse > -1) {
+                    $scope.selected.splice(indexFalse,1);
                 }
             }
         })
-
         $scope.alreadyCurrentPage.push($scope.pageOption.currentPage);
     };
 
     $scope.addToggle = function (item, selected) {
         var idx = selected.indexOf(item.uuid);
         if (idx > -1) {
-             if (!$scope.canSplitFlag) {
-                 selected.splice(idx, 1);
-                 $scope.canSplitFlag =false;
-             }
+             selected.splice(idx, 1);
         }
         else {
-            selected.push(item);
-            $scope.selectOneFlag = true;
+            selected.push(item.uuid);
         }
     };
 
