@@ -432,7 +432,7 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
             for (var i = 0; i < dataList.length; i++) {
                 var input = {
                     aamGroupEmployeeUuid: $scope.selectedItem.uuid,
-                    ocmBaseChanUuid: dataList[i]
+                    ocmBaseChanUuid: dataList[i].uuid
                 };
                 var response = CBIGroupEmployeeChanRService.add(input).success(function () {
                 });
@@ -487,7 +487,7 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
             for (var i = 0; i < dataList.length; i++) {
                 var input = {
                     aamGroupEmployeeUuid: $scope.selectedItem.uuid,
-                    plmBaseBrandFileUuid: dataList[i]
+                    plmBaseBrandFileUuid: dataList[i].uuid
                 };
                 var response = CBIGroupEmployeeBrandRService.add(input).success(function () {
                 });
@@ -505,7 +505,7 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
 
 angular.module('IOne-Production').controller('GroupEmployeeChanRController', function ($scope, $q, $mdDialog, ChannelService, groupEmployeeUuid) {
     $scope.pageOption = {
-        sizePerPage: 10,
+        sizePerPage: 3,
         currentPage: 0,
         totalPage: 0,
         totalElements: 0
@@ -545,10 +545,16 @@ angular.module('IOne-Production').controller('GroupEmployeeChanRController', fun
                 if ($scope.alreadyCurrentPage.indexOf($scope.pageOption.currentPage) > -1) {
 
                 } else {
-                    $scope.selected.push(item.uuid);
+                    $scope.selected.push(item);
                 }
             } else {
                 item.selected = false;
+                for (var i = $scope.selected.length-1;i > -1 ;i--) {
+                    if ($scope.selected[i].uuid == item.uuid) {
+                        $scope.selected.splice(i,1);
+                    }
+                    console.log($scope.selected);
+                }
             }
         })
         $scope.alreadyCurrentPage.push($scope.pageOption.currentPage);
@@ -635,7 +641,7 @@ angular.module('IOne-Production').controller('GroupEmployeeClassRController', fu
 
 angular.module('IOne-Production').controller('GroupEmployeeBrandRController', function ($scope, $q, $mdDialog, BrandFile,groupEmployeeUuid) {
     $scope.pageOption = {
-        sizePerPage: 10,
+        sizePerPage: 3,
         currentPage: 0,
         totalPage: 0,
         totalElements: 0
@@ -677,12 +683,19 @@ angular.module('IOne-Production').controller('GroupEmployeeBrandRController', fu
                 if ($scope.alreadyCurrentPage.indexOf($scope.pageOption.currentPage) > -1) {
 
                 } else {
-                    $scope.selected.push(item.uuid);
+                    $scope.selected.push(item);
                 }
             } else {
                 item.selected = false;
+                for (var i = $scope.selected.length-1;i > -1 ;i--) {
+                    if ($scope.selected[i].uuid == item.uuid) {
+                        $scope.selected.splice(i,1);
+                    }
+                    console.log($scope.selected);
+                }
             }
         })
+
         $scope.alreadyCurrentPage.push($scope.pageOption.currentPage);
     };
 
@@ -695,7 +708,7 @@ angular.module('IOne-Production').controller('GroupEmployeeBrandRController', fu
              }
         }
         else {
-            selected.push(item.uuid);
+            selected.push(item);
             $scope.selectOneFlag = true;
         }
     };
