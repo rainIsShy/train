@@ -505,7 +505,7 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
 
 angular.module('IOne-Production').controller('GroupEmployeeChanRController', function ($scope, $q, $mdDialog, ChannelService, groupEmployeeUuid) {
     $scope.pageOption = {
-        sizePerPage: 3,
+        sizePerPage: 10,
         currentPage: 0,
         totalPage: 0,
         totalElements: 0
@@ -641,7 +641,7 @@ angular.module('IOne-Production').controller('GroupEmployeeClassRController', fu
 
 angular.module('IOne-Production').controller('GroupEmployeeBrandRController', function ($scope, $q, $mdDialog, BrandFile,groupEmployeeUuid) {
     $scope.pageOption = {
-        sizePerPage: 3,
+        sizePerPage: 10,
         currentPage: 0,
         totalPage: 0,
         totalElements: 0
