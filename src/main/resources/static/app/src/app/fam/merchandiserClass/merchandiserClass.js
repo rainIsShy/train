@@ -5,7 +5,8 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('MerchandiserClassController', function ($scope, GroupUserService,PromotionChannelService, CBIGroupEmployeeChanRService, CBIGroupEmployeeClassRService, CBIGroupEmployeeBrandRService, Constant, $mdDialog, $q) {
+angular.module('IOne-Production').controller('MerchandiserClassController', function ($scope, GroupUserService,PromotionChannelService, CBIGroupEmployeeChanRService, CBIGroupEmployeeClassRService, CBIGroupEmployeeBrandRService,
+IoneAdapterService, Constant, $mdDialog, $q) {
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
@@ -436,6 +437,14 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
                     ocmBaseChanUuid: dataList[i]
                 };
                 var response = CBIGroupEmployeeChanRService.add(input).success(function () {
+                    var param = {
+                        'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid,
+                        'SYNC_TYPE': 'cbi_group_employee_chan_r'
+                    };
+                    IoneAdapterService.transferIoneAdapter("/groupUserTask", param, $scope, function (response) {
+                    }).error(function (errResp) {
+                       $scope.showError("经销商同步出错");
+                    });
                 });
                 promises.push(response);
             }
@@ -462,6 +471,14 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
                     cbiBaseClassUuid: dataList[i]
                 };
                 var response = CBIGroupEmployeeClassRService.add(input).success(function () {
+                    var param = {
+                        'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid,
+                        'SYNC_TYPE': 'cbi_group_employee_class_r'
+                    };
+                    IoneAdapterService.transferIoneAdapter("/groupUserTask", param, $scope, function (response) {
+                    }).error(function (errResp) {
+                       $scope.showError("跟单同步出错");
+                    });
                 });
                 promises.push(response);
             }
