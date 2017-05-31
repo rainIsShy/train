@@ -73,6 +73,19 @@ angular.module('IOne-Production').controller('UserController', function($scope, 
 
     $scope.editItem = function(data) {
         $scope.selectedItem = data;
+
+        if (angular.isUndefined($scope.selectedItem.salesFlag) || $scope.selectedItem.salesFlag == null) {
+            $scope.selectedItem.salesFlag = '2';
+        } else {
+            $scope.selectedItem.salesFlag = ($scope.selectedItem.salesFlag == 'Y') ? 1 : 2;
+        }
+
+        if (angular.isUndefined($scope.selectedItem.merchandiserFlag) || $scope.selectedItem.merchandiserFlag == null) {
+            $scope.selectedItem.merchandiserFlag = '2';
+        } else {
+            $scope.selectedItem.merchandiserFlag = ($scope.selectedItem.merchandiserFlag == 'Y') ? 1 : 2;
+        }
+
         $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
         $scope.showUserRoles($scope.selectedItem);
     };
@@ -119,6 +132,15 @@ angular.module('IOne-Production').controller('UserController', function($scope, 
 
     $scope.preAddMenuAction = function() {
         $scope.selectedItem = {};
+
+        if (angular.isUndefined($scope.selectedItem.salesFlag) || $scope.selectedItem.salesFlag == null) {
+            $scope.selectedItem.salesFlag = '2';
+        }
+
+        if (angular.isUndefined($scope.selectedItem.merchandiserFlag) || $scope.selectedItem.merchandiserFlag == null) {
+            $scope.selectedItem.merchandiserFlag = '2';
+        }
+
         $scope.changeViewStatus($scope.UI_STATUS.EDIT_UI_STATUS_ADD, 1);
 
     };
