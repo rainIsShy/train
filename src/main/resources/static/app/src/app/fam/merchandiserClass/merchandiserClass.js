@@ -25,7 +25,7 @@ IoneAdapterService, Constant, $mdDialog, $q) {
 
     $scope.groupEmployeeClassRFlag = true;
     $scope.menuDisplayOption = {
-        '108-detailAddClass': {display: $scope.groupEmployeeClassRFlag, name: '点击新增', uuid: '151045CE-1818-41DB-98A2-06AC67E3AC2F'},
+//        '108-detailAddClass': {display: $scope.groupEmployeeClassRFlag, name: '点击新增', uuid: '151045CE-1818-41DB-98A2-06AC67E3AC2F'},
         '109-detailAdd': {display: true, name: '点击新增', uuid: 'CD40ED57-F398-4273-9296-38392DA1E7C4'},
         '111-detailDelete': {display: true, name: '删除', uuid: '69D7F98C-1D59-449A-A8BE-6771266A3EA5'}
     };
@@ -37,9 +37,6 @@ IoneAdapterService, Constant, $mdDialog, $q) {
 
     // Check authorization
     $scope.isAuthorized = function (option) {
-        if (option == '108-detailAddClass' && $scope.classDetailItemList.length > 0) {
-            return false;
-        }
         if ($scope.menuDisplayOption[option].display &&
             ($scope.menuAuthDataMap[$scope.menuDisplayOption[option].uuid] ||
             $scope.isAdmin() || !$scope.menuDisplayOption[option].uuid)) {
@@ -49,9 +46,9 @@ IoneAdapterService, Constant, $mdDialog, $q) {
         return false;
     };
 
-    $scope.showAddClassButton = function () {
-        return $scope.isAuthorized('108-detailAddClass');
-    };
+//    $scope.showAddClassButton = function () {
+//        return $scope.isAuthorized('108-detailAddClass');
+//    };
 
     $scope.showDetailAddButton = function () {
         return $scope.isAuthorized('109-detailAdd');

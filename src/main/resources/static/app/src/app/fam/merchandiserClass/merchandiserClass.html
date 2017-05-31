@@ -78,7 +78,7 @@
                                         <div flex="20">
                                             <md-button class="md-button close-btn" aria-label="More"
                                                        ng-click="deleteClassDetailAction(classDetail)"
-                                                       ng-if="showDetailDeleteButton()" ng-disabled="canDetailAction()">
+                                                       ng-if="showDetailAddButton()" ng-show="groupEmployeeClassRFlag">
                                                 <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>
                                                 删除
                                             </md-button>
