@@ -100,6 +100,7 @@
                                     </div>
                                     <md-divider style="margin-top: 5px"></md-divider>
                                 </div>
+                                <div pagination option="detailPageOption" callback="refreshBrandRelation()"></div>
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
                                      ng-click="openBrandDlg();"
                                      ng-if="showDetailAddButton()" ng-disabled="canDetailAction()">

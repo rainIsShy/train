@@ -35,11 +35,7 @@ angular.module('IOne-Production').controller('TransferTypeController', function 
         'delete': {display: true, name: '删除', uuid: 'b5712177-6023-470a-bfec-f98aab04acf7'}
     };
 
-    $scope.disabledBatchConfirm = true;
-    $scope.disabledBatchCancelConfirm = true;
-    $scope.disabledBatchStatus = true;
-    $scope.disabledBatchCancelStatus = true;
-    $scope.disabledBatchDelete = true;
+
 
     $scope.sortByField = 'no';
 
@@ -212,55 +208,18 @@ angular.module('IOne-Production').controller('TransferTypeController', function 
         //TODO ...
     };
 
+    $scope.selected = [];
     $scope.selectItemAction = function (event, item) {
-        $scope.stopEventPropagation(event);
-        item.selectedRef = !item.selected;
-
-        if (item.selected == false
-            || item.selected == undefined
-            || item.selected == null) {
-            $scope.selectedItemSize += 1;
-        } else {
-            $scope.selectedItemSize -= 1;
-            $scope.selectAllFlag = false;
+        var idx = $scope.selected.indexOf(item);
+        if (idx > -1) {
+            $scope.selected.splice(idx, 1);
         }
-        $scope.disableBatchMenuButtons();
+        else {
+            $scope.selected.push(item);
+        }
+        $scope.selectItemCount = $scope.selected.length;
     };
 
-    $scope.confirmClickAction = function (event, item) {
-        $scope.stopEventPropagation(event);
-        if (item.confirm == Constant.CONFIRM[2].value) {
-            $scope.showConfirm('确认取消审核吗？', '', function () {
-                var UpdateInput = {
-                    uuid: item.uuid,
-                    confirm: Constant.CONFIRM[1].value
-                };
-                TransferTypesService.modify(item.uuid, UpdateInput).success(function () {
-                    item.confirm = Constant.CONFIRM[1].value;
-                    $scope.disableBatchMenuButtons();
-                    $scope.showInfo('取消审核成功！');
-                }).error(function (response) {
-                    //$scope.showError($scope.getError(response.message));
-                    $scope.showError(response.message);
-                });
-            });
-        } else {
-            $scope.showConfirm('确认审核吗？', '', function () {
-                var UpdateInput = {
-                    uuid: item.uuid,
-                    confirm: Constant.CONFIRM[2].value
-                };
-                TransferTypesService.modify(item.uuid, UpdateInput).success(function () {
-                    item.confirm = Constant.CONFIRM[2].value;
-                    $scope.disableBatchMenuButtons();
-                    $scope.showInfo('审核成功！');
-                }).error(function (response) {
-                    //$scope.showError($scope.getError(response.message));
-                    $scope.showError(response.message);
-                });
-            });
-        }
-    };
 
 
     $scope.statusClickAction = function (event, item) {
@@ -273,8 +232,8 @@ angular.module('IOne-Production').controller('TransferTypeController', function 
                 };
                 TransferTypesService.modify(item.uuid, UpdateInput).success(function () {
                     item.status = Constant.STATUS[2].value;
-                    $scope.disableBatchMenuButtons();
                     $scope.showInfo('修改为失效成功！');
+                    $scope.selected = [];
                 }).error(function (response) {
                     //$scope.showError($scope.getError(response.message));
                     $scope.showError(response.message);
@@ -288,8 +247,8 @@ angular.module('IOne-Production').controller('TransferTypeController', function 
                 };
                 TransferTypesService.modify(item.uuid, UpdateInput).success(function () {
                     item.status = Constant.STATUS[1].value;
-                    $scope.disableBatchMenuButtons();
                     $scope.showInfo('修改为生效成功！');
+                    $scope.selected = [];
                 }).error(function (response) {
                     //$scope.showError($scope.getError(response.message));
                     $scope.showError(response.message);
@@ -307,7 +266,6 @@ angular.module('IOne-Production').controller('TransferTypeController', function 
                     status: Constant.STATUS[1].value
                 };
                 TransferTypesService.modify(UpdateInput.uuid, UpdateInput).success(function () {
-                    $scope.disableBatchMenuButtons();
                     $scope.showInfo('修改数据成功。');
                 });
             }, function () {
@@ -320,7 +278,6 @@ angular.module('IOne-Production').controller('TransferTypeController', function 
                     status: Constant.STATUS[2].value
                 };
                 TransferTypesService.modify(UpdateInput.uuid, UpdateInput).success(function () {
-                    $scope.disableBatchMenuButtons();
                     $scope.showInfo('修改数据成功。');
                 });
             }, function () {
@@ -466,71 +423,7 @@ angular.module('IOne-Production').controller('TransferTypeController', function 
                 $scope.selectedItemSize++;
             })
         }
-        $scope.disableBatchMenuButtons();
     };
 
-    $scope.disableBatchMenuButtons = function () {
-        //console.info("disableBatchMenuButtons");
-        var selectedCount = 0;
-        var confirm = '';
-        var status = '';
-        var diffConfirm = false;
-        var diffStatus = false;
-        angular.forEach($scope.itemList, function (item, index) {
-            if (item.selectedRef) {
-                selectedCount++;
-                if (confirm == '') {
-                    confirm = item.confirm;
-                } else {
-                    if (confirm != item.confirm) {
-                        diffConfirm = true;
-                    }
-                }
-                if (status == '') {
-                    status = item.status;
-                } else {
-                    if (status != item.status) {
-                        diffStatus = true;
-                    }
-                }
-            }
-        });
-
-        if (selectedCount == 0) {
-            $scope.disabledBatchConfirm = true;
-            $scope.disabledBatchCancelConfirm = true;
-            $scope.disabledBatchStatus = true;
-            $scope.disabledBatchCancelStatus = true;
-            $scope.disabledBatchDelete = true;
-        } else {
-            if (diffConfirm == true) {
-                $scope.disabledBatchConfirm = true;
-                $scope.disabledBatchCancelConfirm = true;
-                $scope.disabledBatchDelete = true;
-            } else if (confirm == '2') {
-                $scope.disabledBatchConfirm = true;
-                $scope.disabledBatchCancelConfirm = false;
-                $scope.disabledBatchDelete = true;
-            } else {
-                $scope.disabledBatchConfirm = false;
-                $scope.disabledBatchCancelConfirm = true;
-                $scope.disabledBatchDelete = false;
-            }
-
-            if (diffStatus == true) {
-                $scope.disabledBatchStatus = true;
-                $scope.disabledBatchCancelStatus = true;
-                $scope.disabledBatchDelete = true;
-            } else if (status == '1') {
-                $scope.disabledBatchStatus = true;
-                $scope.disabledBatchCancelStatus = false;
-                $scope.disabledBatchDelete = false;
-            } else {
-                $scope.disabledBatchStatus = false;
-                $scope.disabledBatchCancelStatus = true;
-                $scope.disabledBatchDelete = true;
-            }
-        }
-    };
 
 });

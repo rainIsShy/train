@@ -23,7 +23,7 @@
                         </md-menu-item>
                         <md-menu-item
                                 ng-if="menuDisplayOption['enableStatus'].display && (menuAuthDataMap[menuDisplayOption['enableStatus'].uuid] || isAdmin() || !menuDisplayOption['enableStatus'].uuid)">
-                            <md-button class="md-button" aria-label="More"
+                            <md-button class="md-button" aria-label="More" ng-disabled="selectedItem.status == '1'"
                                        ng-click="statusClickAction($event, selectedItem)">
                                 <ng-md-icon icon="lock"></ng-md-icon>
                                 &nbsp;{{menuDisplayOption['enableStatus'].name}}
@@ -32,7 +32,7 @@
 
                         <md-menu-item
                                 ng-if="menuDisplayOption['disableStatus'].display && (menuAuthDataMap[menuDisplayOption['disableStatus'].uuid] || isAdmin() || !menuDisplayOption['disableStatus'].uuid)">
-                            <md-button class="md-button" aria-label="More"
+                            <md-button class="md-button" aria-label="More" ng-disabled="selectedItem.status == '2'"
                                        ng-click="statusClickAction($event, selectedItem)">
                                 <ng-md-icon icon="lock_open"></ng-md-icon>
                                 &nbsp;{{menuDisplayOption['disableStatus'].name}}
@@ -76,7 +76,7 @@
                         <md-menu-item
                                 ng-if="menuDisplayOption['batchRevertStatus'].display && (menuAuthDataMap[menuDisplayOption['batchRevertStatus'].uuid] || isAdmin() || !menuDisplayOption['batchRevertStatus'].uuid)">
                             <md-button class="md-button" aria-label="More" ng-disabled="!canBatchDisableStatus()"
-                                       ng-click="releaseAllClickAction($event)">
+                                       ng-click="revertStatusAllClickAction($event)">
                                 <ng-md-icon icon="lock_open"></ng-md-icon>
                                 &nbsp;{{menuDisplayOption['batchRevertStatus'].name}}
                             </md-button>

@@ -16,8 +16,8 @@ angular.module('IOne-Production').controller('BaseClassController', function ($s
     $scope.detailPageOption = {
         sizePerPage: 10,
         currentPage: 0,
-        totalPage: 0,
-        totalElements: 0
+        totalPage: 100,
+        totalElements: 100
     };
 
     $scope.selected = [];
@@ -135,6 +135,8 @@ angular.module('IOne-Production').controller('BaseClassController', function ($s
     $scope.refreshBrandRelation = function () {
         BrandRelationsService.getAll($scope.detailPageOption.sizePerPage, $scope.detailPageOption.currentPage, $scope.selectedItem.uuid, RES_UUID_MAP.CBI.BASE_CLASS.RES_UUID).success(function (data) {
             $scope.detailItemList = data.content;
+            $scope.detailPageOption.totalPage = data.totalPages;
+            $scope.detailPageOption.totalElements = data.totalElements;
         });
     };
 
@@ -320,7 +322,7 @@ angular.module('IOne-Production').controller('BaseClassController', function ($s
                     }
 
                     if (error == 'CBI_GROUP_EMPLOYEE_CLASS_R') {
-                        $scope.showError('CBI_GROUP_EMPLOYEE_CLASS_R己使用，无法删除!');
+                        $scope.showError('跟单员权限维护己使用，无法删除!');
                     }
                 })
             } else {
@@ -526,6 +528,8 @@ angular.module('IOne-Production').controller('BrandRelationSelectController', fu
             $scope.allData = data.content;
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
+            $scope.selectAllFlag = false;
+            $scope.checkedAll($scope.allData, $scope.selected);
         });
     };
 
@@ -539,6 +543,29 @@ angular.module('IOne-Production').controller('BrandRelationSelectController', fu
             selected.push(item.uuid);
         }
     };
+
+    $scope.selectAllAction = function () {
+        if ($scope.selectAllFlag) {
+            $scope.selected = [];
+        } else {
+            angular.forEach($scope.allData, function (item) {
+                $scope.selected.push(item.uuid);
+            })
+        }
+
+    };
+
+    $scope.checkedAll = function (itemList, list) {
+        var checked = true;
+        angular.forEach(itemList, function (item) {
+            if (list.indexOf(item.uuid) == -1) {
+                checked = false;
+            }
+        });
+        $scope.selectAllFlag = checked;
+
+    };
+
 
     $scope.exists = function (item, list) {
         return list.indexOf(item.uuid) > -1;

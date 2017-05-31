@@ -12,7 +12,16 @@
                     <input name="no" type="text" ng-model="searchQuery.name" md-maxlength="20">
                 </md-input-container>
             </div>
-
+            <div layout="column">
+                <md-list-item>
+                    <div align="center">
+                        <md-checkbox ng-model="selectAllFlag" ng-click="selectAllAction()">
+                        </md-checkbox>
+                    </div>
+                    <div align="center" flex="45" class="table-head">编号</div>
+                    <div align="center" flex="45" class="table-head">名称</div>
+                </md-list-item>
+            </div>
             <div layout="column">
                 <md-list-item ng-repeat="data in allData">
                     <div align="center" flex="5">
