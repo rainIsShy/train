@@ -575,7 +575,7 @@ RES_UUID_MAP = {
             }
         }, TRANSFER_TYPE: {
             RES_UUID: 'c5ccff81-8d3d-4405-a888-6ca3dab52074',
-            TITLE: '采购单别维护'
+            TITLE: '采购抛转单别维护'
         }
     },
 
