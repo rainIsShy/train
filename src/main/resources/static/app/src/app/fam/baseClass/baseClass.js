@@ -35,7 +35,7 @@ angular.module('IOne-Production').controller('BaseClassController', function ($s
         '205-batchDelete': {display: true, name: '批量刪除', uuid: 'd710408e-fbba-41a6-b340-bd3398b2db15'}
     };
 
-    $scope.getMenuAuthData($scope.RES_UUID_MAP.OCM.PROMOTION.RES_UUID).success(function (data) {
+    $scope.getMenuAuthData($scope.RES_UUID_MAP.CBI.BASE_CLASS.RES_UUID).success(function (data) {
         $scope.menuAuthDataMap = $scope.menuDataMap(data);
     });
 
