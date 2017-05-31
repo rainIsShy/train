@@ -23,26 +23,23 @@ IoneAdapterService, Constant, $mdDialog, $q) {
 
     $scope.selected = [];
 
+    $scope.groupEmployeeClassRFlag = true;
     $scope.menuDisplayOption = {
-        '105-delete': {display: true, name: '删除', uuid: 'cbe0e957-4609-47fa-a793-11efebd32d4b'},
-        '106-query': {display: true, name: '查询', uuid: '726ad142-73bc-4c0e-8fee-4e4873c266e3'},
-        '107-add': {display: true, name: '新增', uuid: 'c5b1baef-8b52-45ee-a055-87f4e88417b7'},
-        '108-edit': {display: true, name: '编辑', uuid: 'aca65674-441b-4859-b1ac-bd4297c64d84'},
-
-        '109-detailAdd': {display: true, name: '点击新增', uuid: '6066e123-a635-47fe-a2ad-7a7d700fd9a0'},
-        '110-detailEdit': {display: true, name: '编辑', uuid: 'f100f38c-267f-4903-b470-dc8e00ac6c7c'},
-        '111-detailDelete': {display: true, name: '删除', uuid: 'fa879963-2aa8-4a1c-b3b8-bf1514f194b0'},
-
-        '205-batchDelete': {display: true, name: '批量刪除', uuid: 'd710408e-fbba-41a6-b340-bd3398b2db15'}
+        '108-detailAddClass': {display: $scope.groupEmployeeClassRFlag, name: '点击新增', uuid: '151045CE-1818-41DB-98A2-06AC67E3AC2F'},
+        '109-detailAdd': {display: true, name: '点击新增', uuid: 'CD40ED57-F398-4273-9296-38392DA1E7C4'},
+        '111-detailDelete': {display: true, name: '删除', uuid: '69D7F98C-1D59-449A-A8BE-6771266A3EA5'}
     };
 
-    $scope.getMenuAuthData($scope.RES_UUID_MAP.OCM.PROMOTION.RES_UUID).success(function (data) {
+    $scope.getMenuAuthData($scope.RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
         $scope.menuAuthDataMap = $scope.menuDataMap(data);
     });
 
 
     // Check authorization
     $scope.isAuthorized = function (option) {
+        if (option == '108-detailAddClass' && $scope.classDetailItemList.length > 0) {
+            return false;
+        }
         if ($scope.menuDisplayOption[option].display &&
             ($scope.menuAuthDataMap[$scope.menuDisplayOption[option].uuid] ||
             $scope.isAdmin() || !$scope.menuDisplayOption[option].uuid)) {
@@ -52,30 +49,12 @@ IoneAdapterService, Constant, $mdDialog, $q) {
         return false;
     };
 
-
-    $scope.showDeleteMenuItem = function () {
-        return $scope.isAuthorized('105-delete');
+    $scope.showAddClassButton = function () {
+        return $scope.isAuthorized('108-detailAddClass');
     };
-
-    $scope.showQueryButton = function () {
-        return $scope.isAuthorized('106-query');
-    };
-
-    $scope.showAddButton = function () {
-        return $scope.isAuthorized('107-add');
-    };
-
-    $scope.showEditButton = function () {
-        return $scope.isAuthorized('108-edit');
-    };
-
 
     $scope.showDetailAddButton = function () {
         return $scope.isAuthorized('109-detailAdd');
-    };
-
-    $scope.showDetailEditButton = function () {
-        return $scope.isAuthorized('110-detailEdit');
     };
 
     $scope.showDetailDeleteButton = function () {
@@ -151,7 +130,6 @@ IoneAdapterService, Constant, $mdDialog, $q) {
     $scope.refreshGroupEmployeeClassRelation = function () {
         CBIGroupEmployeeClassRService.getAll($scope.detailPageOption.sizePerPage, $scope.detailPageOption.currentPage, $scope.selectedItem.uuid, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
             $scope.classDetailItemList = data.content;
-            $scope.groupEmployeeClassRFlag = true;
             if ($scope.classDetailItemList.length > 0) {
                 $scope.groupEmployeeClassRFlag = false;
             }

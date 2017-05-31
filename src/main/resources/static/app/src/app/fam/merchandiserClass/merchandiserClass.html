@@ -92,7 +92,7 @@
                                 </div>
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
                                      ng-click="openGroupEmployeeClassRDlg()"
-                                     ng-if="groupEmployeeClassRFlag">
+                                     ng-if="showAddClassButton()">
                                     <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
                                 </div>
                             </div>
@@ -138,10 +138,10 @@
                                      style="position: relative;padding-bottom: 0px; min-height: 70px;">
                                     <div layout="row" class="height: 100%;">
                                         <div flex="40">
-                                            <div layout-padding>分类编号 : <span>{{brandDetail.brand.no}}</span></div>
+                                            <div layout-padding>品牌编号 : <span>{{brandDetail.brand.no}}</span></div>
                                         </div>
                                         <div flex="40">
-                                            <div layout-padding>分类名称 : <span>{{brandDetail.brand.name}}</span></div>
+                                            <div layout-padding>品牌名称 : <span>{{brandDetail.brand.name}}</span></div>
                                         </div>
                                         <div flex="20">
                                             <md-button class="md-button close-btn" aria-label="More"
