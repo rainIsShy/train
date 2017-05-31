@@ -185,8 +185,13 @@
                             <span class="item-name">上层渠道</span>
                             <span class="item-content">{{selectedItem.parentOcmBaseChanName}}</span>
                             <md-button class="md-raised" aria-label="..."
-                                       ng-disabled="selectedItem.parentOcmBaseChanUuid"
+                                       ng-show="!selectedItem.parentOcmBaseChanUuid"
+                                       ng-if="menuDisplayOption['channelLevel-add'].display && (menuAuthDataMap[formMenuDisplayOption['channelLevel-add'].uuid] || isAdmin() || !menuDisplayOption['channelLevel-add'].uuid)"
                                        ng-click="preAddItemAction({}, 'OCM_BASE_CHAN','新增上级渠道', '1')"> 设置</md-button>
+                            <md-button class="md-raised" aria-label="..."
+                                       ng-if="menuDisplayOption['channelLevel-delete'].display && (menuAuthDataMap[formMenuDisplayOption['channelLevel-delete'].uuid] || isAdmin() || !menuDisplayOption['channelLevel-delete'].uuid)"
+                                       ng-show="selectedItem.parentOcmBaseChanUuid"
+                                       ng-click="deleteParentLevel()"> 删除</md-button>
                         </span>
                     </div>
                     <md-tabs md-dynamic-height md-border-bottom style="padding-top: 30px;">
@@ -335,26 +340,6 @@
                                                ng-if="menuDisplayOption['switchStatus'].display && (menuAuthDataMap[menuDisplayOption['switchStatus'].uuid] || isAdmin() || !menuDisplayOption['switchStatus'].uuid)">
                                         启用
                                     </md-switch>
-                                    <!--<div ng-if="item.confirm != CONFIRM[2].value">
-                                        <md-button class="md-fab md-mini" ng-click="confirmClickAction($event, item)">
-                                            <span>审核</span>
-                                        </md-button>
-                                    </div>
-                                    <div ng-if="item.confirm == CONFIRM[2].value">
-                                        <md-button class="md-fab md-primary md-mini" ng-click="confirmClickAction($event, item)">
-                                            <span>取审</span>
-                                        </md-button>
-                                    </div>
-                                    <div ng-if="item.status != STATUS[1].value">
-                                        <md-button class="md-fab md-mini" ng-click="statusClickAction($event, item)">
-                                            <span>有效</span>
-                                        </md-button>
-                                    </div>
-                                    <div ng-if="item.status == STATUS[1].value">
-                                        <md-button class="md-fab md-primary md-mini" ng-click="statusClickAction($event, item)">
-                                            <span>失效</span>
-                                        </md-button>
-                                    </div>!-->
                                 </div>
                             </div>
                             <div flex="100" style="padding-left: 50px;padding-top: 30px;font-size: 14px;color:#7f8fa4"
@@ -386,35 +371,5 @@
         <object-editor class="object-editor" status="status" source="source" domain="domain"></object-editor>
     </div>
 
-    <!--<div ng-if="ui_status != UI_STATUS.VIEW_UI_STATUS && domain == 'OCM_BASE_CHAN_LEVEL'">-->
-    <!--<div layout="row" class="top-title">-->
-    <!--<div flex="100" class="left-title">-->
-    <!--<md-button class="md-icon-button close-btn" aria-label="More" ng-click="listItemAction()"-->
-    <!--style="float: left; margin-left: 36px;">-->
-    <!--<ng-md-icon icon="chevron_left"></ng-md-icon>-->
-    <!--</md-button>-->
-    <!--<span>{{desc}}</span>-->
-    <!--<md-button class="md-icon-button close-btn" aria-label="More" ng-click="saveChannelLevelAction()">-->
-    <!--<ng-md-icon icon="save"></ng-md-icon>-->
-    <!--</md-button>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div flex="100" layout="column" layout-padding>-->
-    <!--<md-input-container>-->
-    <!--<label class="label">渠道：</label>-->
-    <!--<input type="text" aria-label="..." ng-model="addItem.channelName"-->
-    <!--ng-disabled="status == 'edit'"-->
-    <!--ng-click="openChannelDlg()">-->
-    <!--</md-input-container>-->
-    <!--</div>-->
 
-    <!--<div flex="100" layout="column" layout-padding>-->
-    <!--<md-input-container>-->
-    <!--<label class="label">上层渠道：</label>-->
-    <!--<input type="text" aria-label="..." ng-model="addItem.parentChannelName"-->
-    <!--ng-disabled="status == 'add'"-->
-    <!--ng-click="openParentChannelDlg()">-->
-    <!--</md-input-container>-->
-    <!--</div>-->
-    <!--</div>-->
 </div>

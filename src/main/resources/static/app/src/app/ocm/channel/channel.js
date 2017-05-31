@@ -46,7 +46,9 @@ angular.module('IOne-Production').controller('OCMChannelController', function ($
         'detailDelete': {display: true, name: '删除', uuid: '2e1cd38e-4cf1-44eb-9a79-4ee93bb8a95f'},
         'channelLevel-edit': {display: true, name: '编辑', uuid: '24f3ebb1-33c0-4368-b8bc-4787cc7b848a'},
         'channelLevel-detailDelete': {display: true, name: '删除', uuid: '9d1dd65d-be87-47a5-9d4f-815e21e4196f'},
-        'channelLevel-detailAdd': {display: true, name: '点击新增', uuid: '8a3239a4-2a04-4fb2-ae92-1b75b2d697f0'}
+        'channelLevel-detailAdd': {display: true, name: '点击新增', uuid: '8a3239a4-2a04-4fb2-ae92-1b75b2d697f0'},
+        'channelLevel-add': {display: true, name: '设置', uuid: '3021f22c-1f6b-49f3-810f-d8978e83387a'},
+        'channelLevel-delete': {display: true, name: '删除', uuid: 'f960bde1-fabb-4e30-9467-cdcd0e99000b'}
     };
 
     $scope.disabledBatchConfirm = true;
@@ -814,40 +816,20 @@ angular.module('IOne-Production').controller('OCMChannelController', function ($
 
     };
 
-    $scope.openParentLevelDlg = function () {
-        $mdDialog.show({
-            controller: 'ChannelSelectParentLevel2Controller',
-            templateUrl: 'app/src/app/ocm/channel/selectParentLevel.html',
-            parent: angular.element(document.body),
-            targetEvent: event,
-            locals: {
-                channelUuid: $scope.selectedItem.uuid,
-                theScope: $scope.$new()
-            }
-        }).then(function (data) {
-            if (data) {
-                if (data.uuid) {
-                    $scope.addItem = {
-                        channelUuid: $scope.selectedItem.uuid,
-                        parentOcmBaseChanUuid: data.uuid
-                    };
-
-                    $scope.saveParentChannelLevelAction();
-                } else {
-                    ChannelLevelService.getByChannelUuid($scope.selectedItem.uuid).success(function (channelList) {
-                        if (channelList.totalElements > 0) {
-                            ChannelLevelService.delete(channelList.content[0].uuid).success(function () {
-                                $scope.showInfo("删除层级成功!");
-                                $scope.selectedItem.parentOcmBaseChanUuid = null;
-                                $scope.selectedItem.parentOcmBaseChanName = null;
-                            });
-                        }
+    $scope.deleteParentLevel = function () {
+        $scope.showConfirm('确认删除上级层级吗？', '删除后不可恢复。', function () {
+            ChannelLevelService.getByChannelUuid($scope.selectedItem.uuid).success(function (channelList) {
+                if (channelList.totalElements > 0) {
+                    ChannelLevelService.delete(channelList.content[0].uuid).success(function () {
+                        $scope.showInfo("删除上级层级成功!");
+                        $scope.selectedItem.parentOcmBaseChanUuid = null;
+                        $scope.selectedItem.parentOcmBaseChanName = null;
                     });
                 }
-
-            }
-
+            });
         });
+
+
 
     };
 
