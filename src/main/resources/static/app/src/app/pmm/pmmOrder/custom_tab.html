@@ -12,12 +12,20 @@
 
 
             <div layout="row">
-                <md-button class="md-raised" ng-click="openEditCustomDlg(custom)">编辑</md-button>
-                <md-button class="md-raised" ng-click="deleteItemCustom(custom)">删除</md-button>
+                <md-button class="md-raised" ng-click="openEditCustomDlg(custom)"
+                           ng-if="itemOperationMenuDisplayOption['509-edit'].display && (menuAuthDataMap[itemOperationMenuDisplayOption['509-edit'].uuid] || isAdmin() || !itemOperationMenuDisplayOption['509-edit'].uuid)">
+                    编辑
+                </md-button>
+                <md-button class="md-raised" ng-click="deleteItemCustom(custom)"
+                           ng-if="itemOperationMenuDisplayOption['510-delete'].display && (menuAuthDataMap[itemOperationMenuDisplayOption['510-delete'].uuid] || isAdmin() || !itemOperationMenuDisplayOption['510-delete'].uuid)">
+                    删除
+                </md-button>
             </div>
         </div>
 
-        <span class="right-container add-new" ng-click="openAddCustomDlg()" ng-show="allCustomsScopes != null">
+        <span class="right-container add-new" ng-click="openAddCustomDlg()"
+              ng-if="itemOperationMenuDisplayOption['511-add'].display && (menuAuthDataMap[itemOperationMenuDisplayOption['511-add'].uuid] || isAdmin() || !itemOperationMenuDisplayOption['511-add'].uuid)"
+              ng-show="allCustomsScopes != null">
             <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增自定义属性</a>
         </span>
     </div>

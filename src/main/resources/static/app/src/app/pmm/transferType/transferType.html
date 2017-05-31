@@ -3,7 +3,7 @@
         <div layout="row" class="top-title">
             <div flex="70" hide-sm hide-md class="left-title" ng-show="selectedItem" style="position: relative;">
                 <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
-
+                           ng-if="menuDisplayOption['edit'].display && (menuAuthDataMap[menuDisplayOption['edit'].uuid] || isAdmin() || !menuDisplayOption['edit'].uuid)"
                            ng-click="editItemAction(selectedItem, 'PMM_BASE_TRANSFER_TYPE', ' 采购单别资料: ' + selectedItem.no)">
                     <ng-md-icon icon="edit"></ng-md-icon>
                 </md-button>
@@ -48,6 +48,7 @@
             </div>
             <div flex class="right-title">
                 <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
+                           ng-if="menuDisplayOption['add'].display && (menuAuthDataMap[menuDisplayOption['add'].uuid] || isAdmin() || !menuDisplayOption['add'].uuid)"
                            ng-click="preAddItemAction({}, 'PMM_BASE_TRANSFER_TYPE')">
                     <ng-md-icon icon="add"></ng-md-icon>
                 </md-button>
@@ -181,7 +182,8 @@
                                     <span>名称: <span
                                             style="font-style: italic">{{item.name}}&nbsp;&nbsp;&nbsp;&nbsp;</span></span>
                                 </div>
-                                <div layout="row" layout-align="end center">
+                                <div layout="row" layout-align="end center"
+                                     ng-if="menuDisplayOption['batchRevertStatus'].display && (menuAuthDataMap[menuDisplayOption['batchRevertStatus'].uuid] || isAdmin() || !menuDisplayOption['batchRevertStatus'].uuid)">
                                     <md-switch ng-model="item.status" aria-label="Switch 1" class="md-block"
                                                ng-true-value="'1'" ng-false-value="'2'"
                                                ng-click="statusClickAction($event, item)">

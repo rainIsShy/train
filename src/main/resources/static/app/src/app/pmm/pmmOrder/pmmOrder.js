@@ -67,7 +67,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     };
 
     $scope.itemOperationMenuDisplayOption = {
-        '500-item-edit': {display: true, name: ''},
+        '500-item-edit': {display: true, name: '', uuid: 'ffb8c3b5-1152-46cb-854e-3fd805da5349'},
         '501-item-delete': {display: true, name: ''},
         '502-audit': {display: true, name: '审核', uuid: '42e26f5e-6831-4323-8a6e-4b63ffd86a41'},
         '503-revertAudit': {display: true, name: '取消审核', uuid: '58dd4b20-9d35-4139-9b5d-210c65cb7ff9'},
@@ -77,6 +77,9 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         '506-edit': {display: true, name: '修改', uuid: '022e5a2f-7d33-41be-8bbd-c131ab3a336a'},
         '507-delete': {display: true, name: '删除', uuid: '39f21011-d9cf-46cb-8c44-c8abb031d75f'},
         '508-add': {display: true, name: '新增', uuid: '11bdd478-7f7c-42ae-a38f-8d3bcef66450'},
+        '509-edit': {display: true, name: '自定义修改', uuid: 'b1de10ef-8e15-45ca-86d1-854cc80b1b39'},
+        '510-delete': {display: true, name: '自定义删除', uuid: '222cd693-2f49-49ff-9273-9cd142daffa6'},
+        '511-add': {display: true, name: '自定义新增', uuid: 'd9714328-6959-4c9f-b8ec-e60ddf245a10'}
     };
 
     $scope.orderListMenuAction = function (menuId, $event) {
