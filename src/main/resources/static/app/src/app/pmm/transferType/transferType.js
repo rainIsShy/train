@@ -170,12 +170,30 @@ angular.module('IOne-Production').controller('TransferTypeController', function 
         $scope.domain = domain;
     };
 
+    $scope.validForm = function (item) {
+        var isPass = true;
+        if (!item.no) {
+            $scope.showError('请填写单别编号!');
+            isPass = false;
+        }
+
+        if (!item.name) {
+            $scope.showError('请填写单别名称!');
+            isPass = false;
+        }
+
+        return isPass;
+    };
+
     /**
      * Save object according current status and domain.
      */
     $scope.saveItemAction = function () {
         if ($scope.status == 'add') {
             if ($scope.domain == 'PMM_BASE_TRANSFER_TYPE') {
+                if (!$scope.validForm($scope.source)) {
+                    return;
+                }
                 TransferTypesService.add($scope.source).success(function (data) {
                     $scope.showInfo('新增数据成功。');
                     $scope.listItemAction();

@@ -72,7 +72,11 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         '502-audit': {display: true, name: '审核', uuid: '42e26f5e-6831-4323-8a6e-4b63ffd86a41'},
         '503-revertAudit': {display: true, name: '取消审核', uuid: '58dd4b20-9d35-4139-9b5d-210c65cb7ff9'},
         '504-purchaseSubmit': {display: true, name: '采购发出', uuid: '7a23828e-1b29-4c05-8b53-74e57fd6adbb'},
-        '505-purchaseBack': {display: true, name: '采购退回', uuid: '5af5254f-0491-4e71-8ef5-059a5d0402a5'}
+        '505-purchaseBack': {display: true, name: '采购退回', uuid: '5af5254f-0491-4e71-8ef5-059a5d0402a5'},
+
+        '506-edit': {display: true, name: '修改', uuid: '022e5a2f-7d33-41be-8bbd-c131ab3a336a'},
+        '507-delete': {display: true, name: '删除', uuid: '39f21011-d9cf-46cb-8c44-c8abb031d75f'},
+        '508-add': {display: true, name: '新增', uuid: '11bdd478-7f7c-42ae-a38f-8d3bcef66450'},
     };
 
     $scope.orderListMenuAction = function (menuId, $event) {

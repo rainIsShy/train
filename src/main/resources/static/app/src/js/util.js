@@ -759,7 +759,7 @@ angular.module('IOne-Constant').constant('Constant', {
             subList: [
                 {
                     id: '/transferType',
-                    name: '采购单别维护',
+                    name: '采购抛转单别维护',
                     link: '/transferType',
                     uuid: RES_UUID_MAP.PO.TRANSFER_TYPE.RES_UUID
                 },

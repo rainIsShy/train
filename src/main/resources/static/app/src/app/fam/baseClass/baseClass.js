@@ -384,44 +384,6 @@ angular.module('IOne-Production').controller('BaseClassController', function ($s
     $scope.deleteAllClickAction = function (event) {
         $scope.stopEventPropagation(event);
         if ($scope.selected.length > 0) {
-            // $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
-            //     if ($scope.selected) {
-            //         var promises = [];
-            //         var checkDelete = true;
-            //         angular.forEach($scope.selected, function (item) {
-            //
-            //             BaseClassService.checkDelete(item.uuid).success(function(errorList) {
-            //                 if (errorList.length > 0) {
-            //                     angular.forEach(errorList, function (error) {
-            //                         if (error == 'PMM_ORDER_MST') {
-            //                             $scope.showError('采购单己使用分类：'+ item.name +'，无法删除!');
-            //                         }
-            //
-            //                         if (error == 'CBI_GROUP_EMPLOYEE_CLASS_R') {
-            //                             $scope.showError('CBI_GROUP_EMPLOYEE_CLASS_R己分类：'+ item.name +'，无法删除!');
-            //                         }
-            //                         checkDelete = false;
-            //                     })
-            //                 } else {
-            //                     var response = BaseClassService.delete(item.uuid).success(function (data) {
-            //
-            //                     });
-            //                     promises.push(response);
-            //                 }
-            //             });
-            //
-            //
-            //         });
-            //
-            //         $q.all(promises).then(function () {
-            //             if (checkDelete) {
-            //                 $scope.showInfo('删除数据成功。');
-            //                 $scope.refreshList();
-            //                 $scope.selectItemCount = 0;
-            //             }
-            //         });
-            //     }
-            // });
 
             var promises2 = [];
             var canDelete = true;
@@ -546,7 +508,13 @@ angular.module('IOne-Production').controller('BrandRelationSelectController', fu
 
     $scope.selectAllAction = function () {
         if ($scope.selectAllFlag) {
-            $scope.selected = [];
+            // $scope.selected = [];
+            angular.forEach($scope.allData, function (item) {
+                var idx = $scope.selected.indexOf(item.uuid);
+                if (idx > -1) {
+                    $scope.selected.splice(idx, 1);
+                }
+            })
         } else {
             angular.forEach($scope.allData, function (item) {
                 $scope.selected.push(item.uuid);
