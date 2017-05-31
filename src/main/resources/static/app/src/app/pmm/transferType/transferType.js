@@ -46,7 +46,7 @@ angular.module('IOne-Production').controller('TransferTypeController', function 
 
     $scope.refreshList = function () {
         TransferTypesService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage,
-            $scope.listFilterOption.no, $scope.listFilterOption.name, $scope.listFilterOption.keyWord, $scope.RES_UUID_MAP.CBI.BANK.RES_UUID)
+            $scope.listFilterOption.no, $scope.listFilterOption.name, $scope.listFilterOption.keyWord, $scope.RES_UUID_MAP.PO.TRANSFER_TYPE.RES_UUID)
             .success(function (data) {
                 $scope.itemList = data.content;
                 $scope.pageOption.totalPage = data.totalPages;
@@ -56,7 +56,7 @@ angular.module('IOne-Production').controller('TransferTypeController', function 
             });
     };
 
-    $scope.getMenuAuthData($scope.RES_UUID_MAP.CBI.BANK.RES_UUID).success(function (data) {
+    $scope.getMenuAuthData($scope.RES_UUID_MAP.PO.TRANSFER_TYPE.RES_UUID).success(function (data) {
         $scope.menuAuthDataMap = $scope.menuDataMap(data);
         //console.info($scope.menuAuthDataMap);
     });

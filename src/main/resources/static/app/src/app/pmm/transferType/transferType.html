@@ -181,19 +181,20 @@
                                     <span>名称: <span
                                             style="font-style: italic">{{item.name}}&nbsp;&nbsp;&nbsp;&nbsp;</span></span>
                                 </div>
+                                <div layout="row" layout-align="end center">
+                                    <md-switch ng-model="item.status" aria-label="Switch 1" class="md-block"
+                                               ng-true-value="'1'" ng-false-value="'2'"
+                                               ng-click="statusClickAction($event, item)">
+                                        启用
+                                    </md-switch>
+                                </div>
                             </div>
                             <div flex="100" style="padding-left: 50px;padding-top: 30px;font-size: 14px;color:#7f8fa4"
                                  ng-show="selectedItem">
                                 名称:<span style="font-style: italic">{{item.name}}</span>
                             </div>
                         </div>
-                        <div layout="row" layout-align="end center">
-                            <md-switch ng-model="item.status" aria-label="Switch 1" class="md-block"
-                                       ng-true-value="'1'" ng-false-value="'2'"
-                                       ng-click="statusClickAction($event, item)">
-                                启用
-                            </md-switch>
-                        </div>
+
                     </div>
                     <!--查看-->
                     <md-divider></md-divider>
