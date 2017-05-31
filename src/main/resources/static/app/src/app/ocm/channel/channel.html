@@ -184,8 +184,9 @@
                         <span flex="50" flex-sm="100" layout-padding>
                             <span class="item-name">上层渠道</span>
                             <span class="item-content">{{selectedItem.parentOcmBaseChanName}}</span>
-                            <md-button class="md-raised" aria-label="..." ng-if="!selectedItem.parentOcmBaseChanUuid"
-                                       ng-click="preAddItemAction({}, 'OCM_BASE_CHAN','新增上级渠道', '1')"> 设置 </md-button>
+                            <md-button class="md-raised" aria-label="..."
+                                       ng-disabled="selectedItem.parentOcmBaseChanUuid"
+                                       ng-click="preAddItemAction({}, 'OCM_BASE_CHAN','新增上级渠道', '1')"> 设置</md-button>
                         </span>
                     </div>
                     <md-tabs md-dynamic-height md-border-bottom style="padding-top: 30px;">

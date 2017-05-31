@@ -200,6 +200,27 @@ angular.module('IOne-Production').controller('OCMChannelController', function ($
         }
     };
 
+    $scope.validForm = function (item) {
+        var isFormValid = true;
+        if (!item.no) {
+            $scope.showError('请填写渠道/直营店编号!');
+            isFormValid = false;
+        }
+
+        if (!item.name) {
+            $scope.showError('请填写渠道/直营店名称!');
+            isFormValid = false;
+        }
+
+        if (!item.channelFlag) {
+            $scope.showError('请填写渠道/直营店标志!');
+            isFormValid = false;
+        }
+
+        return isFormValid;
+
+    };
+
     /**
      * Save object according current status and domain.
      */
@@ -214,6 +235,11 @@ angular.module('IOne-Production').controller('OCMChannelController', function ($
                     if (result.totalElements > 0) {
                         $scope.showError('渠道商编号不可与于员工编号相同。');
                     } else {
+
+                        if (!$scope.validForm($scope.source)) {
+                            return;
+                        }
+
                         OCMChannelService.add($scope.source).success(function (data) {
                             $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
                             if ($scope.setLevel == '1' || $scope.setLevel == '2') {
