@@ -435,7 +435,7 @@ angular.module('IOne-Production').controller('BaseClassController', function ($s
                             }
 
                             if (error == 'CBI_GROUP_EMPLOYEE_CLASS_R') {
-                                $scope.showError('CBI_GROUP_EMPLOYEE_CLASS_R己分类：' + baseClass.name + '，无法删除!');
+                                $scope.showError('跟单员权限维护己使用分类：' + baseClass.name + '，无法删除!');
                             }
 
                         })
