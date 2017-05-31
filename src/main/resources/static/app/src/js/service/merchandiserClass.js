@@ -49,6 +49,7 @@ angular.module('IOne-Production').service('CBIGroupEmployeeClassRService', funct
         if (resUuid !== undefined && resUuid !== null) {
             url = url + '&resUuid=' + resUuid;
         }
+        url = url + "&sort=brandNo";
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
@@ -82,6 +83,7 @@ angular.module('IOne-Production').service('CBIGroupEmployeeBrandRService', funct
         if (resUuid !== undefined && resUuid !== null) {
             url = url + '&resUuid=' + resUuid;
         }
+        url = url + "&sort=brandNo";
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
