@@ -301,6 +301,14 @@ IoneAdapterService, Constant, $mdDialog, $q) {
                     });
                     $q.all(promises).then(function () {
                         $scope.showInfo('删除数据成功。');
+                        var param = {
+                            'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid,
+                            'SYNC_TYPE': 'cbi_group_employee_chan_r'
+                        };
+                        IoneAdapterService.transferIoneAdapter("/groupUserTask", param, $scope, function (response) {
+                        }).error(function (errResp) {
+                           $scope.showError("经销商同步出错");
+                        });
                         $scope.refreshGroupEmployeeChanRelation($scope.selectedItem);
                         $scope.selectItemCount = 0;
                     });
@@ -315,6 +323,14 @@ IoneAdapterService, Constant, $mdDialog, $q) {
                 CBIGroupEmployeeChanRService.delete(detail.uuid).success(function () {
                     $scope.refreshGroupEmployeeChanRelation($scope.selectedItem);
                     $scope.showInfo("刪除成功!");
+                     var param = {
+                         'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid,
+                         'SYNC_TYPE': 'cbi_group_employee_chan_r'
+                     };
+                     IoneAdapterService.transferIoneAdapter("/groupUserTask", param, $scope, function (response) {
+                     }).error(function (errResp) {
+                        $scope.showError("经销商同步出错");
+                     });
                 });
             }
         });
@@ -326,6 +342,14 @@ IoneAdapterService, Constant, $mdDialog, $q) {
                 CBIGroupEmployeeClassRService.delete(detail.uuid).success(function () {
                     $scope.refreshGroupEmployeeClassRelation($scope.selectedItem);
                     $scope.showInfo("刪除成功!");
+                    var param = {
+                            'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid,
+                            'SYNC_TYPE': 'cbi_group_employee_chan_r'
+                        };
+                        IoneAdapterService.transferIoneAdapter("/groupUserTask", param, $scope, function (response) {
+                        }).error(function (errResp) {
+                           $scope.showError("经销商同步出错");
+                        });
                 });
             }
         });
