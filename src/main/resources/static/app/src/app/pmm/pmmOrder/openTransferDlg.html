@@ -1,0 +1,20 @@
+<md-dialog style="padding: 30px;min-width: 300px;max-height: 800px;">
+    <md-content>
+        <div>
+            <md-input-container flex="20">
+                <label> 采购单别：</label>
+                <md-select placeholder="" ng-model="transferType">
+                    <md-option ng-repeat="value in transferTypeList" ng-value="value.no">
+                        {{value.no}} {{value.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div layout="row">
+            <md-button ng-click="hideDlg(transferType, selected)">
+                <i class="fa fa-check"></i>&nbsp;确定
+            </md-button>
+            <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+        </div>
+    </md-content>
+</md-dialog>

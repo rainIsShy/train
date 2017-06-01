@@ -38,8 +38,10 @@
             <div flex="5" class=" table-item"
                  ng-show="selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2">
                 <div layout="row" layout-sm="column" layout-align="center center">
-                    <div ng-show="selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.orderTransferNo == null" ng-click="orderExtendDetailEditMenuAction(orderExtendDetail)"><i
-                            class="fa fa-pencil-square-o"></i>&nbsp;{{itemOperationMenuDisplayOption['500-item-edit'].name}}
+                    <div ng-show="selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.orderTransferNo == null"
+                         ng-click="orderExtendDetailEditMenuAction(orderExtendDetail)"
+                         ng-if="itemOperationMenuDisplayOption['500-item-edit'].display && (menuAuthDataMap[itemOperationMenuDisplayOption['500-item-edit'].uuid] || isAdmin() || !itemOperationMenuDisplayOption['500-item-edit'].uuid)">
+                        <i class="fa fa-pencil-square-o"></i>&nbsp;{{itemOperationMenuDisplayOption['500-item-edit'].name}}
                     </div>
                 </div>
             </div>

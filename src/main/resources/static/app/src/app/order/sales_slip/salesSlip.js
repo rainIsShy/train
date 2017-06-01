@@ -7,7 +7,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
 
 angular.module('IOne-Production').controller('OrdersController', function ($scope, $q, $window, OrderMaster, OrderDetail, OrderExtendDetail, OrderExtendDetail2,
                                                                            ReceiptDetail, OrderItemCustomDetail, OrderCustomScope,
-                                                                           $mdDialog, $timeout, Constant, SaleTypes, Parameters) {
+                                                                           $mdDialog, $timeout, Constant, SaleTypes, Parameters, BaseClassService) {
     //initialize model value.
     $scope.orderListMenu = {
         select: {
@@ -608,6 +608,7 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                         uuid: $scope.selectedItem.uuid,
                         transferPsoFlag: '1'
                     };
+
                     OrderMaster.modifyBatch(OrderMasterUpdateInput).success(function () {
                         $scope.selectedItem.transferPsoFlag = Constant.TRANSFER_PSO_FLAG[1].value;
                         $scope.refreshMasterAndDetail();
@@ -617,21 +618,6 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
                     });
 
                 } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
-                    //update $scope.selected
-//                       var promises = [];
-//                       angular.forEach( $scope.selected, function(item) {
-//                            var OrderMasterUpdateInput = {
-//                                uuid:item.uuid,
-//                                transferPsoFlag: '1'
-//                            }
-//                           var response  =  OrderMaster.modify(OrderMasterUpdateInput).success(function() {
-//                            });
-//                            promises.push(response);
-//                       });
-//                        $q.all(promises).then(function(data){
-//                             $scope.queryMenuActionWithPaging();
-//                             $scope.showInfo('修改数据成功。');
-//                        });
 
                     var orderMasterUuids = "";
                     angular.forEach($scope.selected, function (item) {
@@ -737,8 +723,8 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
             $scope.showWarn('请选择待抛转销售单。');
             return;
         } else {
-            $scope.audit_button_disabled = 1
-            $scope.return_button_disabled = 1
+            $scope.audit_button_disabled = 1;
+            $scope.return_button_disabled = 1;
             $scope.audit_transfer_button_disabled = 1;
         }
             OrderMaster.validatePossibility(uuids).success(function () {

@@ -405,10 +405,15 @@ RES_UUID_MAP = {
             RES_UUID: '682ab4ea-7cc8-4be4-af4d-22acc4f3b489',
             TITLE: '标签分类维护'
         },
+        BASE_CLASS: {
+            RES_UUID: '55c5cb3a-8d24-4074-871e-682ef78708b4',
+            TITLE: '分類維護'
+        },
         MERCHANDISER_CLASS: {
             RES_UUID: '76FAB35E-9665-4471-B251-58DCA332C112',
             TITLE: '跟单员经销商分类品牌维护'
         }
+
     },
 
     EPS: {
@@ -572,6 +577,9 @@ RES_UUID_MAP = {
                 RES_UUID: '861acdf6-04ed-46c4-90d9-0583784adf6c',
                 TITLE: '采购单-表单'
             }
+        }, TRANSFER_TYPE: {
+            RES_UUID: 'c5ccff81-8d3d-4405-a888-6ca3dab52074',
+            TITLE: '采购抛转单别维护'
         }
     },
 
@@ -753,6 +761,12 @@ angular.module('IOne-Constant').constant('Constant', {
             isOpen: false,
             icon: 'fa fa-truck',
             subList: [
+                {
+                    id: '/transferType',
+                    name: '采购抛转单别维护',
+                    link: '/transferType',
+                    uuid: RES_UUID_MAP.PO.TRANSFER_TYPE.RES_UUID
+                },
                 {id: '/pmmOrder', name: '采购单', link: '/pmmOrder', uuid: RES_UUID_MAP.PO.PMM_ORDER.RES_UUID}
             ]
         },
@@ -1126,6 +1140,12 @@ angular.module('IOne-Constant').constant('Constant', {
                 },
                 {id: '/fam/tags', name: '标签管理', link: '/fam/tags', uuid: RES_UUID_MAP.CBI.TAG.RES_UUID},
                 {id: '/fam/tagClass', name: '标签分类', link: '/fam/tagClass', uuid: RES_UUID_MAP.CBI.TAG_CLASS.RES_UUID},
+                {
+                    id: '/fam/baseClass',
+                    name: '品牌分组维护',
+                    link: '/fam/baseClass',
+                    uuid: RES_UUID_MAP.CBI.BASE_CLASS.RES_UUID
+                },
                 {id: '/fam/merchandiserClass', name: '跟单员权限维护', link: '/fam/merchandiserClass', uuid: RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID}
             ]
         }

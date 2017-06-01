@@ -1,0 +1,47 @@
+<md-dialog style="padding:20px;min-width: 550px;max-height: 650px; overflow-y:scroll">
+    <md-content layout="column">
+        <form name="addCustomForm" novalidate>
+
+            <div layout="row">
+                <md-input-container flex>
+                    <label>品牌编号</label>
+                    <input name="no" type="text" ng-model="searchQuery.no" md-maxlength="20">
+                </md-input-container>
+                <md-input-container flex>
+                    <label>品牌名称</label>
+                    <input name="no" type="text" ng-model="searchQuery.name" md-maxlength="20">
+                </md-input-container>
+            </div>
+            <div layout="column">
+                <md-list-item>
+                    <div align="center">
+                        <md-checkbox ng-model="selectAllFlag" ng-click="selectAllAction()">
+                        </md-checkbox>
+                    </div>
+                    <div align="center" flex="45" class="table-head">编号</div>
+                    <div align="center" flex="45" class="table-head">名称</div>
+                </md-list-item>
+            </div>
+            <div layout="column">
+                <md-list-item ng-repeat="data in allData">
+                    <div align="center" flex="5">
+                        <md-checkbox ng-checked="exists(data, selected)" ng-click="addToggle(data, selected)">
+                        </md-checkbox>
+                    </div>
+                    <div align="center" flex="45" class="table-item">{{data.no}}</div>
+                    <div align="center" flex="45" class="table-item">{{data.name}}</div>
+                </md-list-item>
+                <div pagination option="pageOption" callback="refreshData()"></div>
+            </div>
+            <div layout="row">
+                <md-button class="md-button" aria-label="More" ng-click="hideDlg()">
+                    确定
+                </md-button>
+                <md-button class="md-icon-button" ng-click="cancelDlg()">
+                    取消
+                </md-button>
+            </div>
+        </form>
+    </md-content>
+</md-dialog>
+

@@ -57,7 +57,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         '400-selectAll': {display: true, name: '全选', uuid: 'dfba15d0-55c2-4f32-9f0f-dc7391412b7c'},
         '401-audit': {display: true, name: '审核', uuid: 'a5fd6757-e65a-4adc-af32-d3701f280b36'},
         '402-return': {display: true, name: '退回', uuid: 'eb2036ef-8469-4ee7-b1d0-02c08a28e598'},
-        '403-throw': {display: true, name: '抛转后台', uuid: '0b45d232-28ad-40de-93c1-95636ae6fadc'},
+        '403-throw': {display: false, name: '抛转后台', uuid: '0b45d232-28ad-40de-93c1-95636ae6fadc'},
         '404-effective': {display: true, name: '失效作废', uuid: '1d0983c8-8d11-4a40-8140-d267e03d04a4'},
         '405-query': {display: true, name: '查询', uuid: '992b0fef-abca-461c-91b7-07036d54d3f4'},
         '406-revertAudit': {display: true, name: '取消审核', uuid: 'ab4da1cc-be55-4cd3-8a44-afc74d6237dc'},
@@ -67,12 +67,19 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     };
 
     $scope.itemOperationMenuDisplayOption = {
-        '500-item-edit': {display: true, name: ''},
+        '500-item-edit': {display: true, name: '', uuid: 'ffb8c3b5-1152-46cb-854e-3fd805da5349'},
         '501-item-delete': {display: true, name: ''},
         '502-audit': {display: true, name: '审核', uuid: '42e26f5e-6831-4323-8a6e-4b63ffd86a41'},
         '503-revertAudit': {display: true, name: '取消审核', uuid: '58dd4b20-9d35-4139-9b5d-210c65cb7ff9'},
         '504-purchaseSubmit': {display: true, name: '采购发出', uuid: '7a23828e-1b29-4c05-8b53-74e57fd6adbb'},
-        '505-purchaseBack': {display: true, name: '采购退回', uuid: '5af5254f-0491-4e71-8ef5-059a5d0402a5'}
+        '505-purchaseBack': {display: true, name: '采购退回', uuid: '5af5254f-0491-4e71-8ef5-059a5d0402a5'},
+
+        '506-edit': {display: true, name: '修改', uuid: '022e5a2f-7d33-41be-8bbd-c131ab3a336a'},
+        '507-delete': {display: true, name: '删除', uuid: '39f21011-d9cf-46cb-8c44-c8abb031d75f'},
+        '508-add': {display: true, name: '新增', uuid: '11bdd478-7f7c-42ae-a38f-8d3bcef66450'},
+        '509-edit': {display: true, name: '自定义修改', uuid: 'b1de10ef-8e15-45ca-86d1-854cc80b1b39'},
+        '510-delete': {display: true, name: '自定义删除', uuid: '222cd693-2f49-49ff-9273-9cd142daffa6'},
+        '511-add': {display: true, name: '自定义新增', uuid: 'd9714328-6959-4c9f-b8ec-e60ddf245a10'}
     };
 
     $scope.orderListMenuAction = function (menuId, $event) {
@@ -643,44 +650,75 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         }
     };
 
-    $scope.throwMenuAction = function () {
-        if ($scope.selected.length > 0 || $scope.selectedTabIndex == 1) {
-            $scope.showConfirm('确认抛转吗？', '', function () {
-                if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
-                    var transferData = {
-                        'PMM_ORDER_MST_UUID': $scope.selectedItem.uuid,
-                        'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
-                    };
-                    ErpAdapterService.transferErpAdapter('/pmmOrderToOeaTask', transferData, $scope, function (resp) {
-                        console.log(resp);
-                        PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
-                            $scope.selectedItem = data;
-                            $scope.resetButtonDisabled(0);
-                            $scope.changeButtonStatus(data);
-                        });
-                        $scope.refreshDetail($scope.selectedItem.uuid);
-                        $scope.selectedDetail = [];
 
-                        $scope.showInfo('抛转成功。');
-                    });
-                } else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
-                    // 多筆拋轉
-                    var orderMasterUuids = '';
-                    angular.forEach($scope.selected, function (item) {
-                        orderMasterUuids += (orderMasterUuids ? ',' : '') + item.uuid;
-                    });
-                    var transferData = {
-                        'PMM_ORDER_MST_UUID': orderMasterUuids,
-                        'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
-                    };
-                    ErpAdapterService.transferErpAdapter('/pmmOrderToOeaTask', transferData, $scope, function (resp) {
-                        console.log(resp);
-                        $scope.queryMenuAction();
-                        $scope.showInfo('抛转成功。');
-                    });
-                }
-            });
+    $scope.throwMenuAction = function () {
+        $scope.transferItemList = [];
+
+        if ($scope.selectedDetail.length <= 0) {
+            $scope.showError('请选择要抛转的产品!');
+            return;
         }
+        console.log($scope.selectedDetail);
+        $mdDialog.show({
+            controller: 'PmmTransferSelectController',
+            templateUrl: 'app/src/app/pmm/pmmOrder/openTransferDlg.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            locals: {
+                parentScope: $scope,
+                itemList: $scope.selectedDetail
+
+            }
+        }).then(function (data) {
+
+            if ($scope.selected.length > 0 || $scope.selectedTabIndex == 1) {
+                $scope.showConfirm('确认抛转吗？', '', function () {
+                    if ($scope.ui_status == Constant.UI_STATUS.PRE_EDIT_UI_STATUS && $scope.selectedTabIndex == 1) {
+
+                        $scope.transferDtlUuid = [];
+                        angular.forEach($scope.selectedDetail, function (item) {
+                            $scope.transferDtlUuid.push(item.uuid);
+                        });
+
+                        var transferData = {
+                            'PMM_ORDER_MST_UUID': $scope.selectedItem.uuid,
+                            'TRANSFER_TYPE': data,
+                            'PMM_ORDER_DTL_UUID': $scope.transferDtlUuid,
+                            'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
+                        };
+                        ErpAdapterService.transferErpAdapter('/pmmOrderToOeaTask', transferData, $scope, function (resp) {
+                            PmmOrderMaster.get($scope.selectedItem.uuid).success(function (data) {
+                                $scope.selectedItem = data;
+                                $scope.resetButtonDisabled(0);
+                                $scope.changeButtonStatus(data);
+                            });
+                            $scope.refreshDetail($scope.selectedItem.uuid);
+                            $scope.selectedDetail = [];
+
+                            $scope.showInfo('抛转成功。');
+                        });
+                    }
+
+                    // else if ($scope.ui_status == Constant.UI_STATUS.VIEW_UI_STATUS && $scope.selectedTabIndex == 0) {
+                    //     // 多筆拋轉
+                    //     var orderMasterUuids = '';
+                    //     angular.forEach($scope.selected, function (item) {
+                    //         orderMasterUuids += (orderMasterUuids ? ',' : '') + item.uuid;
+                    //     });
+                    //     var transferData = {
+                    //         'PMM_ORDER_MST_UUID': orderMasterUuids,
+                    //         'USER_UUID': $scope.$parent.$root.globals.currentUser.userUuid
+                    //     };
+                    //     ErpAdapterService.transferErpAdapter('/pmmOrderToOeaTask', transferData, $scope, function (resp) {
+                    //         $scope.queryMenuAction();
+                    //         $scope.showInfo('抛转成功。');
+                    //     });
+                    // }
+                });
+            }
+        });
+
+
     };
 
     $scope.revertAuditMenuAction = function () {
@@ -917,7 +955,11 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 $scope.showError("请选择经销商!");
                 return;
             }
-            console.log($scope.selectedItem);
+
+            if (!$scope.selectedItem.baseClass) {
+                $scope.showError("请选择跟单分组!");
+                return;
+            }
             PmmOrderMaster.add($scope.selectedItem).success(function (data) {
                 $scope.selectedItem = data;
                 var promises = [];
@@ -971,6 +1013,8 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
     $scope.openOrderItemsDlg = function () {
         if ($scope.selectedItem.channel == undefined || $scope.selectedItem.channel == null) {
             $scope.showWarn('请选择经销商。');
+        } else if (!$scope.selectedItem.baseClass) {
+            $scope.showWarn('请选择恒大跟单分组。');
         } else {
             $mdDialog.show({
                 controller: 'OrderItemsSearchController',
@@ -979,6 +1023,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 targetEvent: event,
                 locals: {
                     channelUuid: $scope.selectedItem.channel.uuid,
+                    baseClassUuid: $scope.selectedItem.baseClass.uuid,
                     saleTypes: $scope.saleTypes
                 }
             }).then(function (data) {
@@ -1158,7 +1203,8 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             targetEvent: event,
             locals: {
                 selectedOrderExtendDetail: orderExtendDetail,
-                channelUuid: $scope.selectedItem.channel.uuid
+                channelUuid: $scope.selectedItem.channel.uuid,
+                baseClassUuid: $scope.selectedItem.baseClass.uuid,
             }
         }).then(function (data) {
             PmmOrderExtendDetail.modify(data.selectedOrderExtendDetail.pmmOrderDetail.uuid, data.selectedOrderExtendDetail.uuid, data.selectedOrderExtendDetail).success(function () {
@@ -1412,6 +1458,18 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
         });
     };
 
+    $scope.openBaseClassDlg = function () {
+        $mdDialog.show({
+            controller: 'PmmBaseClassSelectController',
+            templateUrl: 'app/src/app/pmm/pmmOrder/selectBaseClass.html',
+            parent: angular.element(document.body),
+            targetEvent: event
+        }).then(function (data) {
+            $scope.selectedItem.baseClass = data;
+            $scope.selectedItem.baseClassUuid = data.uuid;
+        });
+    };
+
     $scope.changePurchaseFlag = function (flag, dtls) {
         if (flag == 2) {
             $scope.showConfirm('确认发出采购吗？', '', function () {
@@ -1571,6 +1629,8 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             $scope.selectedItem.receiveAddress = data;
         });
     };
+
+
 });
 
 angular.module('IOne-Production').controller('OrderChannelSearchController', function ($scope, $mdDialog, ChannelService) {
@@ -1640,10 +1700,12 @@ angular.module('IOne-Production').controller('OrderCustomerSearchController', fu
 });
 
 
-angular.module('IOne-Production').controller('OrderItemsSearchController', function ($scope, $q, $mdDialog, OrderItems, ChannelItemInfoService, channelUuid, SaleTypes, Constant) {
+angular.module('IOne-Production').controller('OrderItemsSearchController', function ($scope, $q, $mdDialog, OrderItems, ChannelItemInfoService, channelUuid, baseClassUuid, SaleTypes, Constant) {
     SaleTypes.getAll().success(function (data) {
         $scope.saleTypes = data.content;
     });
+
+    $scope.baseClassUuid = baseClassUuid;
 
     $scope.channelUuid = channelUuid;
     // $scope.saleTypes = saleTypes;
@@ -1662,7 +1724,7 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
     };
 
     $scope.refreshData = function () {
-        OrderItems.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, channelUuid, $scope.searchNo, $scope.searchName, $scope.searchKeyword, $scope.searchStandard).success(function (data) {
+        OrderItems.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, channelUuid, $scope.searchNo, $scope.searchName, $scope.searchKeyword, $scope.searchStandard, $scope.baseClassUuid).success(function (data) {
             $scope.allData = data;
             if ($scope.allData.content.length < 1) {
                 $scope.showWarn('未搜索到该商品，请确认是否维护该商品定价信息！');
@@ -1732,6 +1794,7 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
         var errMsgs = [];
         if (null == $scope.addOrderDetail.item) {
             errMsgs.push("请选择商品");
+
         } else if (null == $scope.addOrderDetail.orderQty) {
             errMsgs.push("请输入采购数量");
         } else if (null == $scope.addOrderDetail.oriPurPrice) {
@@ -1785,7 +1848,11 @@ angular.module('IOne-Production').controller('OrderItemsSearchController', funct
 
 
     $scope.hideDlg = function () {
-        $mdDialog.hide($scope.saveData);
+        if ($scope.saveData.length > 0) {
+            $mdDialog.hide($scope.saveData);
+        } else {
+            $scope.showError('请至少新增一项商品!')
+        }
 
     };
 
@@ -1950,7 +2017,7 @@ angular.module('IOne-Production').controller('PmmOrderExtendDetail2Controller', 
 });
 
 
-angular.module('IOne-Production').controller('PmmOrderExtendDetailController', function ($scope, $mdDialog, selectedOrderExtendDetail, channelUuid) {
+angular.module('IOne-Production').controller('PmmOrderExtendDetailController', function ($scope, $mdDialog, selectedOrderExtendDetail, channelUuid, baseClassUuid) {
     $scope.selectedOrderExtendDetail = angular.copy(selectedOrderExtendDetail);
 
     $scope.openExtItemDlg = function () {
@@ -1963,12 +2030,13 @@ angular.module('IOne-Production').controller('PmmOrderExtendDetailController', f
             skipHide: true,
             locals: {
                 fieldName: '归属补件',
-                channelUuid: channelUuid
+                channelUuid: channelUuid,
+                baseClassUuid: baseClassUuid
             }
         }).then(function (data) {
             if (!data.isCancel) {
-                $scope.selectedOrderExtendDetail.baseItem = {name: data.name};
-                $scope.selectedOrderExtendDetail.plmBaseItemFileBUuid = data.uuid;
+                $scope.selectedOrderExtendDetail.baseItem = {name: data.item.name};
+                $scope.selectedOrderExtendDetail.plmBaseItemFileBUuid = data.item.uuid;
             }
         });
     };
@@ -2097,7 +2165,7 @@ angular.module('IOne-Production').controller('OrderPurchaseReturnController', fu
 });
 
 
-angular.module('IOne-Production').controller('SelectItemsController', function ($scope, $mdDialog, fieldName, channelUuid, OrderItems, ProductionCatalogueDetails) {
+angular.module('IOne-Production').controller('SelectItemsController', function ($scope, $mdDialog, fieldName, channelUuid, OrderItems, ProductionCatalogueDetails, baseClassUuid) {
     $scope.pageOption = {
         sizePerPage: 5,
         currentPage: 0,
@@ -2111,20 +2179,13 @@ angular.module('IOne-Production').controller('SelectItemsController', function (
     };
 
     $scope.refreshList = function () {
-        // OrderItems.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, channelUuid, $scope.searchNo, $scope.searchName).success(function (data) {
-        //     $scope.searchResult = data;
-        //     if ($scope.searchResult.content.length < 1) {
-        //         $scope.showError('当前经销商没有商品，请检查渠道定价是否设置。');
-        //     }
-        //     $scope.pageOption.totalElements = data.totalElements;
-        //     $scope.pageOption.totalPage = data.totalPages;
-        // });
 
         var today = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-        ProductionCatalogueDetails.getAllByAppCatalogue($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, channelUuid, today, $scope.searchNo, $scope.searchName, '').success(function (data) {
+        ProductionCatalogueDetails.getAllByAppCatalogue($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, channelUuid, today, $scope.searchNo, $scope.searchName, '', baseClassUuid).success(function (data) {
             $scope.searchResult = data;
             if ($scope.searchResult.content.length < 1) {
-                $scope.showError('当前经销商没有商品，请检查渠道定价是否设置。');
+                // $scope.showError('当前经销商没有商品，请检查渠道定价是否设置。');
+                toastr["error"]('当前经销商没有商品，请检查渠道定价是否设置。');
             }
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
@@ -2233,6 +2294,85 @@ angular.module('IOne-Production').controller('PmmOrderAreaSelectController', fun
         $scope.selectedItem = item;
         $mdDialog.hide($scope.addressName);
     };
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+});
+
+angular.module('IOne-Production').controller('PmmBaseClassSelectController', function ($scope, $mdDialog, BaseClassService) {
+    $scope.pageOption = {
+        sizePerPage: 6,
+        currentPage: 0,
+        totalPage: 0,
+        totalElements: 0,
+        displayModel: 0  //0 : image + text //1 : image
+    };
+
+    $scope.refreshBaseClass = function () {
+
+        BaseClassService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, '', '', $scope.searchKeyword, '').success(function (data) {
+            $scope.itemList = data.content;
+            $scope.pageOption.totalPage = data.totalPages;
+            $scope.pageOption.totalElements = data.totalElements;
+        });
+    };
+
+    $scope.refreshBaseClass();
+
+    $scope.select = function (channel) {
+        $scope.channel = channel;
+        $mdDialog.hide($scope.channel);
+    };
+
+    $scope.hideDlg = function () {
+        $mdDialog.hide($scope.channel);
+    };
+
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+});
+
+angular.module('IOne-Production').controller('PmmTransferSelectController', function ($scope, $mdDialog, TransferTypesService, itemList, parentScope) {
+    $scope.parent = parentScope;
+    $scope.itemList = itemList;
+
+    TransferTypesService.getAllWithNoPage().success(function (data) {
+        $scope.transferTypeList = data.content;
+    });
+
+
+    $scope.selected = [];
+    $scope.addToggle = function (item, selected) {
+        var idx = selected.indexOf(item.uuid);
+        if (idx > -1) {
+            selected.splice(idx, 1);
+        }
+        else {
+            selected.push(item.uuid);
+        }
+    };
+
+    $scope.selectAllAction = function () {
+        angular.forEach($scope.itemList, function (data) {
+            $scope.selected.push(data.uuid);
+        })
+    };
+
+    $scope.exists = function (item, list) {
+        return list.indexOf(item.uuid) > -1;
+    };
+
+
+    $scope.hideDlg = function () {
+        if (!$scope.transferType) {
+            $scope.parent.showError('请选择采购单别!');
+            return;
+        }
+
+        $mdDialog.hide($scope.transferType);
+    };
+
     $scope.cancelDlg = function () {
         $mdDialog.cancel();
     };

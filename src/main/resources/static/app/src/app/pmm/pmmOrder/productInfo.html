@@ -1,6 +1,7 @@
 <md-content  style="overflow: scroll;">
     <div >
         <md-button ng-show="selectedItem.confirm == 1 && selectedItem.status == 1 && selectedItem.transferFlag == 2"
+                   ng-if="itemOperationMenuDisplayOption['508-add'].display && (menuAuthDataMap[itemOperationMenuDisplayOption['508-add'].uuid] || isAdmin() || !itemOperationMenuDisplayOption['508-add'].uuid)"
                    ng-click="openOrderItemsDlg()" class="md-raised">
             <i class="fa fa-plus"></i>新增产品
         </md-button>
@@ -74,6 +75,7 @@
         <div align="center" flex="10" class=" table-head">退回备注</div>
         <div align="center" flex="10" class=" table-head">预计送货日</div>
         <div align="center" flex="15" class=" table-head">来源抛转流水号</div>
+        <div align="center" flex="10" class=" table-head">跟单员</div>
     </div>
     <div ng-repeat="orderDetail in OrderDetailList.content  | orderBy:'no'">
         <div layout="row" ng-style="orderDetail.orderQty == 0 && { 'color': 'gray' }">
@@ -90,10 +92,12 @@
                 <div layout="row" layout-sm="column" layout-align="center center">
                     <div ng-show="orderDetail.confirm == 1 && orderDetail.status == 1 && orderDetail.transferFlag == 2"
                          align="center" style="color: rgba(0, 0, 0, 0.87)"
+                         ng-if="itemOperationMenuDisplayOption['506-edit'].display && (menuAuthDataMap[itemOperationMenuDisplayOption['506-edit'].uuid] || isAdmin() || !itemOperationMenuDisplayOption['506-edit'].uuid)"
                          ng-click="orderDetailEditMenuAction(orderDetail)"><i class="fa fa-pencil-square-o"></i>&nbsp;{{itemOperationMenuDisplayOption['500-item-edit'].name}}
                     </div>
                     <div ng-show=" orderDetail.confirm == 1 && orderDetail.status == 1 && orderDetail.transferFlag == 2"
                          align="center" style="color: rgba(0, 0, 0, 0.87)"
+                         ng-if="itemOperationMenuDisplayOption['507-delete'].display && (menuAuthDataMap[itemOperationMenuDisplayOption['507-delete'].uuid] || isAdmin() || !itemOperationMenuDisplayOption['507-delete'].uuid)"
                          ng-click="orderDetailDeleteMenuAction(orderDetail)"><i class="fa fa-times"></i>&nbsp;{{itemOperationMenuDisplayOption['500-item-delete'].name}}
                     </div>
                 </div>
@@ -144,6 +148,7 @@
             <div align="center" flex="10" class="table-item">{{orderDetail.returnRemark}}</div><!-- 退回备注 -->
             <div align="center" flex="10" class="table-item">{{orderDetail.deliverDate | date: 'yyyy-MM-dd'}}</div><!-- 预计送货日 -->
             <div align="center" flex="15" class="table-item">{{orderDetail.psoTransferNo}}</div><!-- 来源抛转流水号 -->
+            <div align="center" flex="10" class="table-item">{{orderDetail.groupUser.name}}</div><!-- 来源抛转流水号 -->
         </div>
     </div>
 </md-content>

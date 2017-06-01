@@ -44,4 +44,10 @@ angular.module('IOne-Production').service('BaseClassService', function ($http, C
     this.add = function (AddInput) {
         return $http.post(Constant.BACKEND_BASE + '/baseClasses/', AddInput);
     };
+
+    this.checkDelete = function (uuid) {
+        return $http.get(Constant.BACKEND_BASE + '/baseClasses/' + uuid + '?action=checkDelete');
+    };
+
+
 });
