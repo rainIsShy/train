@@ -129,6 +129,8 @@ IoneAdapterService, Constant, $mdDialog, $q) {
             $scope.classDetailItemList = data.content;
             if ($scope.classDetailItemList.length > 0) {
                 $scope.groupEmployeeClassRFlag = false;
+            } else {
+                $scope.groupEmployeeClassRFlag = true;
             }
         });
     };
