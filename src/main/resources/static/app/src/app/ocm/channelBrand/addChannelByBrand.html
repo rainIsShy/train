@@ -20,11 +20,11 @@
                 <!--</div>-->
                 <div layout="column" flex="35" style=" padding: 10px;">
 
-                    <div style=" padding: 0px 0px 15px 0px;">请选择下级渠道： {{selectedItem.name}}</div>
+                    <div style=" padding: 0px 0px 15px 0px;">请选择品牌： {{selectedItem.name}}</div>
                     <form name="searchData" novalidate="">
                         <div layout="row" flex="50">
                             <md-input-container flex="80">
-                                <label>渠道编号/名称</label>
+                                <label>品牌编号/名称</label>
                                 <input name="no" type="text" ng-model="searchKeyword">
                             </md-input-container>
 
@@ -32,18 +32,18 @@
                                 <i class="fa fa-search"></i>
                             </md-button>
                         </div>
-                        <md-list-item class="md-2-line" ng-repeat="data in allChannel" ng-click="selectData(data)">
+                        <md-list-item class="md-2-line" ng-repeat="data in allBrand" ng-click="selectData(data)">
                             <div class="md-list-item-text">
                                 <div layout="row">
-                                    <div flex="35" layout="column"><span>{{ data.channel.no }}</span></div>
-                                    <div layout="column"><span>{{ data.channel.name }}</span></div>
+                                    <div flex="35" layout="column"><span>{{ data.brand.no }}</span></div>
+                                    <div layout="column"><span>{{ data.brand.name }}</span></div>
                                 </div>
                             </div>
 
                             <md-divider></md-divider>
                         </md-list-item>
                     </form>
-                    <div pagination option="pageOption" callback="refreshChannel()"></div>
+                    <div pagination option="pageOption2" callback="refreshBrand()"></div>
                 </div>
 
                 <div layout="column" flex="65">
@@ -55,11 +55,11 @@
                                              aria-label="全选" ng-true-value="true"
                                              ng-false-value="false"></md-checkbox>
                             </div>
-                            <div align="center" flex="45" class=" table-head">品牌编号</div>
-                            <div align="center" flex="45" class=" table-head">品牌名称</div>
+                            <div align="center" flex="45" class=" table-head">渠道编号</div>
+                            <div align="center" flex="45" class=" table-head">渠道名称</div>
                         </div>
 
-                        <div ng-repeat="item in allBrand | orderBy: 'no'">
+                        <div ng-repeat="item in allChannel | orderBy: 'no'">
                             <div layout="row">
                                 <div flex="5" class=" table-item">
                                     <md-checkbox aria-label="..." ng-checked="exists(item, selected)"
@@ -68,16 +68,16 @@
 
                                 </div>
                                 <div align="center" flex="45" class=" table-item">
-                                    <div style=" padding: 10px 0px 0px 0px;">{{item.brand.no}}</div>
+                                    <div style=" padding: 10px 0px 0px 0px;">{{item.channel.no}}</div>
                                 </div>
                                 <div align="center" flex="45" class=" table-item">
-                                    <div style=" padding: 10px 0px 0px 0px;">{{item.brand.name }}
+                                    <div style=" padding: 10px 0px 0px 0px;">{{item.channel.name }}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div pagination option="pageOption2"
-                             callback="refreshBrand()"></div>
+                        <div pagination option="pageOption"
+                             callback="refreshChannel()"></div>
                     </div>
                 </div>
 
