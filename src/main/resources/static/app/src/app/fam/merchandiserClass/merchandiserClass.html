@@ -78,7 +78,7 @@
                                         <div flex="20">
                                             <md-button class="md-button close-btn" aria-label="More"
                                                        ng-click="deleteClassDetailAction(classDetail)"
-                                                       ng-if="showDetailAddButton()" ng-show="groupEmployeeClassRFlag">
+                                                       ng-if="showDetailDeleteButton()" ng-disabled="canDetailAction()">
                                                 <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>
                                                 删除
                                             </md-button>
@@ -92,7 +92,7 @@
                                 </div>
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
                                      ng-click="openGroupEmployeeClassRDlg()"
-                                     ng-if="showAddClassButton()">
+                                     ng-if="showDetailAddButton()" ng-show="groupEmployeeClassRFlag">
                                     <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
                                 </div>
                             </div>
