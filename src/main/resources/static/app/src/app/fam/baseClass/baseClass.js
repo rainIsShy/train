@@ -29,7 +29,7 @@ angular.module('IOne-Production').controller('BaseClassController', function ($s
         '108-edit': {display: true, name: '编辑', uuid: 'aca65674-441b-4859-b1ac-bd4297c64d84'},
 
         '109-detailAdd': {display: true, name: '点击新增', uuid: '6066e123-a635-47fe-a2ad-7a7d700fd9a0'},
-        '110-detailEdit': {display: true, name: '编辑', uuid: 'f100f38c-267f-4903-b470-dc8e00ac6c7c'},
+        //'110-detailEdit': {display: true, name: '编辑', uuid: 'f100f38c-267f-4903-b470-dc8e00ac6c7c'},
         '111-detailDelete': {display: true, name: '删除', uuid: 'fa879963-2aa8-4a1c-b3b8-bf1514f194b0'},
 
         '205-batchDelete': {display: true, name: '批量刪除', uuid: 'd710408e-fbba-41a6-b340-bd3398b2db15'}

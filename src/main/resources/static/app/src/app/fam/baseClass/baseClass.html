@@ -32,6 +32,7 @@
             </div>
             <div flex class="right-title">
                 <md-button class="md-icon-button close-btn" aria-label="More" style="float: left; margin-left: 36px;"
+                           ng-if="showAddButton()"
                            ng-click="preAddItemAction({}, 'CBI_BASE_CLASS','新增分类')">
                     <ng-md-icon icon="add"></ng-md-icon>
                 </md-button>
@@ -44,7 +45,8 @@
                     <md-menu-content width="2">
 
                         <md-menu-item>
-                            <md-button class="md-button" aria-label="More" ng-click="deleteAllClickAction($event)"
+                            <md-button ng-if="showDeleteMenuItem()" class="md-button" aria-label="More"
+                                       ng-click="deleteAllClickAction($event)"
                                        ng-disabled="!canBatchDelete()">
                                 <ng-md-icon icon="delete"></ng-md-icon>
                                 &nbsp;{{menuDisplayOption['205-batchDelete'].name}}
