@@ -130,6 +130,7 @@
                                 </div>
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
                                      ng-click="deleteAllChan(chanDetailItemList)"
+                                     ng-if="showDeleteAllChanRButton()"
                                      ng-disabled="canDetailAction()">
                                     <ng-md-icon icon="remove_circle_outline"
                                                 size="20"></ng-md-icon>&nbsp;&nbsp;全部删除...</a>

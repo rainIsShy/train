@@ -25,9 +25,9 @@ IoneAdapterService, Constant, $mdDialog, $q) {
 
     $scope.groupEmployeeClassRFlag = true;
     $scope.menuDisplayOption = {
-//        '108-detailAddClass': {display: $scope.groupEmployeeClassRFlag, name: '点击新增', uuid: '151045CE-1818-41DB-98A2-06AC67E3AC2F'},
         '109-detailAdd': {display: true, name: '点击新增', uuid: 'CD40ED57-F398-4273-9296-38392DA1E7C4'},
-        '111-detailDelete': {display: true, name: '删除', uuid: '69D7F98C-1D59-449A-A8BE-6771266A3EA5'}
+        '111-detailDelete': {display: true, name: '删除', uuid: '69D7F98C-1D59-449A-A8BE-6771266A3EA5'},
+        '112-deleteAllChanR': {display: true, name: '全部删除', uuid: '21622D59-E578-4873-9EA8-EF03702FC44D'},
     };
 
     $scope.getMenuAuthData($scope.RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
@@ -46,9 +46,6 @@ IoneAdapterService, Constant, $mdDialog, $q) {
         return false;
     };
 
-//    $scope.showAddClassButton = function () {
-//        return $scope.isAuthorized('108-detailAddClass');
-//    };
 
     $scope.showDetailAddButton = function () {
         return $scope.isAuthorized('109-detailAdd');
@@ -56,6 +53,10 @@ IoneAdapterService, Constant, $mdDialog, $q) {
 
     $scope.showDetailDeleteButton = function () {
         return $scope.isAuthorized('111-detailDelete');
+    };
+
+    $scope.showDeleteAllChanRButton = function () {
+        return $scope.isAuthorized('112-deleteAllChanR');
     };
 
     $scope.showBatchMenu = function () {
