@@ -1,5 +1,5 @@
 angular.module('IOne-Production').service('BrandFile', function ($http, Constant) {
-    this.getAll = function (sizePerPage, page, brandNo, brandName) {
+    this.getAll = function (sizePerPage, page, brandNo, brandName, groupEmployeeUuid) {
         var url = '/brands?size=' + sizePerPage
             + '&page=' + page;
 
@@ -9,6 +9,10 @@ angular.module('IOne-Production').service('BrandFile', function ($http, Constant
 
         if (brandName !== undefined && brandName !== null) {
             url = url + '&name=' + brandName;
+        }
+
+        if (groupEmployeeUuid !== undefined && groupEmployeeUuid !== null) {
+            url = url + '&groupEmployeeUuid=' + groupEmployeeUuid;
         }
 
         return $http.get(Constant.BACKEND_BASE + url);

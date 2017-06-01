@@ -408,6 +408,10 @@ RES_UUID_MAP = {
         BASE_CLASS: {
             RES_UUID: '55c5cb3a-8d24-4074-871e-682ef78708b4',
             TITLE: '分類維護'
+        },
+        MERCHANDISER_CLASS: {
+            RES_UUID: '76FAB35E-9665-4471-B251-58DCA332C112',
+            TITLE: '跟单员经销商分类品牌维护'
         }
 
     },
@@ -1142,7 +1146,7 @@ angular.module('IOne-Constant').constant('Constant', {
                     link: '/fam/baseClass',
                     uuid: RES_UUID_MAP.CBI.BASE_CLASS.RES_UUID
                 },
-
+                {id: '/fam/merchandiserClass', name: '跟单员权限维护', link: '/fam/merchandiserClass', uuid: RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID}
             ]
         }
     ],

@@ -382,6 +382,12 @@ angular.module('IOne-Production').service('GroupUserService', function(Constant,
         });
     };
 
+    this.getAll = function(size, page, keyWord, resUuid, merchandiserFlag) {
+        if(keyWord == undefined) keyWord = '';
+        if(merchandiserFlag == undefined) merchandiserFlag = '';
+        return $http.get(Constant.BACKEND_BASE + '/groupUsers?page=' + page + '&size=' + size + '&keyWord=' + keyWord + '&merchandiserFlag=' + merchandiserFlag);
+    };
+
     this.get = function(uuid) {
         return $http.get(Constant.BACKEND_BASE + '/groupUsers/' + uuid);
     };

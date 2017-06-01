@@ -1,0 +1,40 @@
+<md-dialog style="padding:20px;min-width: 680px;max-height: 680px; overflow-y:scroll">
+    <div layout="column">
+        <div name="addCustomForm" novalidate>
+            <div layout="row">
+                <span style="position: absolute; top: 35px; left: 35px;">
+                    <md-checkbox ng-model="selectAllFlag" aria-label="Checkbox"
+                                 ng-change="selectAllAction()"></md-checkbox>
+                </span>
+                <md-input-container flex="40" style="margin-left: 50px;">
+                    <label>品牌编号</label>
+                    <input name="no" type="text" ng-model="searchBrandQuery.no" md-maxlength="15">
+                </md-input-container>
+                <md-input-container flex style="margin-left: 10px;">
+                    <label>品牌名称</label>
+                    <input name="no" type="text" ng-model="searchBrandQuery.name" md-maxlength="20">
+                </md-input-container>
+            </div>
+
+            <div layout="column">
+                <md-list-item ng-repeat="data in allBrandData">
+                    <div align="center" flex="5">
+                        <md-checkbox ng-model="data.selected" aria-label="Checkbox"
+                                     ng-click="addToggle(data, selected)"></md-checkbox>
+                    </div>
+                    <div align="center" flex="40" class="table-item">{{data.no}}</div>
+                    <div align="center" flex="60" class="table-item">{{data.name}}</div>
+                </md-list-item>
+                <div pagination option="pageOption" callback="refreshData()"></div>
+            </div>
+            <div layout="row">
+                <md-button class="md-button" aria-label="More" ng-click="hideDlg()">
+                    确定
+                </md-button>
+                <md-button class="md-icon-button" ng-click="cancelDlg()">
+                    取消
+                </md-button>
+            </div>
+        </div>
+    </div>
+</md-dialog>
