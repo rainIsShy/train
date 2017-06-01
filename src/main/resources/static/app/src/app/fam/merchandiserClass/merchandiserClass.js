@@ -288,6 +288,25 @@ IoneAdapterService, Constant, $mdDialog, $q) {
         }
     };
 
+    $scope.deleteAllChan = function (allItem) {
+        if (allItem.length > 0) {
+            $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
+                if ($scope.selected) {
+                    var promises = [];
+                    angular.forEach(allItem, function (item) {
+                        var response = CBIGroupEmployeeChanRService.delete(item.uuid).success(function (data) {
+                        });
+                        promises.push(response);
+                    });
+                    $q.all(promises).then(function () {
+                        $scope.showInfo('删除数据成功。');
+                        $scope.refreshGroupEmployeeChanRelation($scope.selectedItem);
+                        $scope.selectItemCount = 0;
+                    });
+                }
+            });
+        }
+    };
 
     $scope.deleteChanDetailAction = function (detail) {
         $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
@@ -349,30 +368,6 @@ IoneAdapterService, Constant, $mdDialog, $q) {
                 });
             }
         });
-    };
-
-    $scope.confirmAllClickAction = function (event) {
-        if ($scope.selected.length > 0) {
-            $scope.showConfirm('确认批量启用吗？', '', function () {
-                var promotionUpdateInput = {
-                    confirm: '2'
-                };
-                if ($scope.selected) {
-                    var promises = [];
-                    angular.forEach($scope.selected, function (item) {
-                        var response = GroupUserService.modify(item.uuid, promotionUpdateInput).success(function () {
-                        });
-                        promises.push(response);
-                    });
-                    $q.all(promises).then(function () {
-                        $scope.showInfo('审核启用成功。');
-                        $scope.refreshList();
-                        $scope.selectItemCount = 0;
-                        $scope.selected = [];
-                    });
-                }
-            });
-        }
     };
 
 
