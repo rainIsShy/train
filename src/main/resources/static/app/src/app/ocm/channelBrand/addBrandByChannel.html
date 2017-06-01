@@ -1,0 +1,105 @@
+<md-dialog style="padding: 30px;min-width: 1000px; max-height:650px;">
+    <style type="text/css">
+        md-input-container {
+            padding-bottom: 16px;
+        }
+    </style>
+    <md-content>
+
+        <div flex layout="column" style="font-size: small">
+            <div layout="row">
+                <div layout="column" flex="25" ng-if="saveData.length > 0"
+                     style=" padding: 10px; height:550px; overflow-x: hidden;">
+                    <div>同步品牌至下级渠道</div>
+                    <md-chips ng-repeat="newData in saveData">
+                        <md-chip>
+                            <span style="font-size: small" ng-click="bindAddData(newData)">{{newData.item.name}}</span>
+                            <md-icon md-svg-icon="md-close" ng-click="removeAddData(data)"></md-icon>
+                        </md-chip>
+                    </md-chips>
+                </div>
+                <div layout="column" flex="35" style=" padding: 10px;">
+
+                    <div style=" padding: 0px 0px 15px 0px;">请选择下级渠道</div>
+                    <form name="searchData" novalidate="">
+                        <div layout="row" flex="40">
+                            <md-input-container flex="40">
+                                <label>渠道编号/名称</label>
+                                <input name="no" type="text" ng-model="searchKeyword">
+                            </md-input-container>
+
+                            <md-button flex="10" ng-click="search()" ng-disabled="searchData.$invalid">
+                                <i class="fa fa-search"></i>
+                            </md-button>
+                        </div>
+                        <md-list-item class="md-2-line" ng-repeat="data in allChannel" ng-click="selectData(data)">
+                            <div class="md-list-item-text">
+                                <div layout="row">
+                                    <div flex="35" layout="column"><span>{{ data.no }}</span></div>
+                                    <div layout="column"><span>{{ data.name }}</span></div>
+                                </div>
+                            </div>
+
+                            <md-divider></md-divider>
+                        </md-list-item>
+                    </form>
+                    <div pagination option="pageOption" callback="refreshChannel()"></div>
+                </div>
+
+                <div layout="column" flex="20">
+
+                    <div ng-class="centre" ng-show="addOrderDetail.item.path != null">
+                        <img class="prod-sm-img"
+                             src="{{getImageFullPath(addOrderDetail.item.path)}}" style="width: 150px;">
+                    </div>
+
+                    <md-input-container>
+                        <label class="label">品号：</label>
+                        <input type="text" ng-model="addOrderDetail.item.no" disabled>
+                    </md-input-container>
+                    <md-input-container>
+                        <label class="label">品名：</label>
+                        <input type="text" ng-model="addOrderDetail.item.name" disabled>
+                    </md-input-container>
+                    <md-input-container>
+                        <label class="label">品牌编号：</label>
+                        <input type="text" ng-model="addOrderDetail.itemCustomScope.no" disabled>
+                    </md-input-container>
+                    <md-input-container>
+                        <label class="label">品牌名称：</label>
+                        <input type="text" ng-model="addOrderDetail.itemCustomScope.name" disabled>
+                    </md-input-container>
+                    <md-input-container>
+                        <label class="label">采购单价：</label>
+                        <input type="number" aria-label="..." string-to-number required
+                               ng-model="addOrderDetail.oriPurPrice" min="0"
+                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                    </md-input-container>
+                    <md-input-container>
+                        <label class="label">采购数量：</label>
+                        <input type="number" ng-model="addOrderDetail.orderQty" string-to-number required min="1"
+                               step="1" ng-change="calcPurAmt()">
+                    </md-input-container>
+                    <md-input-container>
+                        <label class="label">采购金额：</label>
+                        <input type="number" aria-label="..." string-to-number required
+                               ng-model="addOrderDetail.oriPurAmt" min="0"
+                               ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                    </md-input-container>
+                </div>
+
+            </div>
+
+            <div layout="row">
+                <md-button ng-click="addData()">
+                    <i class="fa fa-plus"></i>&nbsp;新增
+                </md-button>
+                <md-button ng-click="hideDlg()">
+                    <i class="fa fa-check"></i>&nbsp;保存
+                </md-button>
+                <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+            </div>
+        </div>
+
+    </md-content>
+</md-dialog>
