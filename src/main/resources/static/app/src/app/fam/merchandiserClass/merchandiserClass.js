@@ -453,14 +453,6 @@ IoneAdapterService, Constant, $mdDialog, $q) {
             $q.all(promises).then(function () {
                 $scope.refreshGroupEmployeeClassRelation();
                 $scope.showInfo('新增成功!');
-                var param = {
-                    'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid,
-                    'SYNC_TYPE': 'cbi_group_employee_class_r'
-                };
-                IoneAdapterService.transferIoneAdapter("/groupUserTask", param, $scope, function (response) {
-                }).error(function (errResp) {
-                   $scope.showError("跟单同步出错");
-                });
             })
         });
     };
@@ -489,7 +481,14 @@ IoneAdapterService, Constant, $mdDialog, $q) {
             $q.all(promises).then(function () {
                 $scope.refreshGroupEmployeeBrandRelation();
                 $scope.showInfo('新增成功!');
-
+                var param = {
+                    'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid,
+                    'SYNC_TYPE': 'cbi_group_employee_class_r'
+                };
+                IoneAdapterService.transferIoneAdapter("/groupUserTask", param, $scope, function (response) {
+                }).error(function (errResp) {
+                   $scope.showError("跟单同步出错");
+                });
             })
         });
 };
