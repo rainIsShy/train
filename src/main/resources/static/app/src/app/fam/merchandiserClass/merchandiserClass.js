@@ -5,8 +5,8 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('MerchandiserClassController', function ($scope, GroupUserService,PromotionChannelService, CBIGroupEmployeeChanRService, CBIGroupEmployeeClassRService, CBIGroupEmployeeBrandRService,
-IoneAdapterService, Constant, $mdDialog, $q) {
+angular.module('IOne-Production').controller('MerchandiserClassController', function ($scope, GroupUserService, PromotionChannelService, CBIGroupEmployeeChanRService, CBIGroupEmployeeClassRService, CBIGroupEmployeeBrandRService,
+                                                                                      IoneAdapterService, Constant, $mdDialog, $q, $timeout) {
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
@@ -311,7 +311,7 @@ IoneAdapterService, Constant, $mdDialog, $q) {
                                 $scope.showError("经销商同步出错");
                             });
 
-                        }, 8000);
+                        }, 20000);
 
 
                         $scope.refreshGroupEmployeeChanRelation($scope.selectedItem);
@@ -339,7 +339,7 @@ IoneAdapterService, Constant, $mdDialog, $q) {
                             $scope.showError("经销商同步出错");
                         });
 
-                    }, 8000);
+                    }, 20000);
 
 
                 });
@@ -350,21 +350,20 @@ IoneAdapterService, Constant, $mdDialog, $q) {
     $scope.deleteClassDetailAction = function (detail) {
         $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
             if ($scope.selectedItem) {
+                $scope.syncing = true;
                 CBIGroupEmployeeClassRService.delete(detail.uuid).success(function () {
-                    $scope.refreshGroupEmployeeClassRelation($scope.selectedItem);
                     $scope.showInfo("刪除成功!");
+                    var param = {
+                        'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid
+                    };
 
-                    setTimeout(function () {
-                        var param = {
-                            'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid
-                        };
+                    IoneAdapterService.transferIoneAdapter("/groupUserClassTask", param, $scope, function (response) {
+                        $scope.refreshGroupEmployeeClassRelation($scope.selectedItem);
+                        $scope.syncing = false;
 
-                        IoneAdapterService.transferIoneAdapter("/groupUserClassTask", param, $scope, function (response) {
-                        }).error(function (errResp) {
-                            $scope.showError("跟單同步出错");
-                        });
-
-                    }, 8000);
+                    }).error(function (errResp) {
+                        $scope.showError("跟單同步出错");
+                    });
 
                 });
             }
@@ -468,7 +467,7 @@ IoneAdapterService, Constant, $mdDialog, $q) {
                         $scope.showError("经销商同步出错");
                     });
 
-                }, 8000);
+                }, 20000);
 
 
 
@@ -484,6 +483,7 @@ IoneAdapterService, Constant, $mdDialog, $q) {
             targetEvent: event,
             locals: {}
         }).then(function (dataList) {
+            $scope.syncing = true;
             var promises = [];
             for (var i = 0; i < dataList.length; i++) {
                 var input = {
@@ -500,17 +500,17 @@ IoneAdapterService, Constant, $mdDialog, $q) {
                 $scope.showInfo('新增成功!');
 
 
-                setTimeout(function () {
+                $timeout(function () {
                     var param = {
                         'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid
                     };
 
                     IoneAdapterService.transferIoneAdapter("/groupUserClassTask", param, $scope, function (response) {
+                        $scope.syncing = false;
                     }).error(function (errResp) {
-                        $scope.showError("跟单同步出错");
+                        $scope.showError("跟單同步出错");
                     });
-
-                }, 8000);
+                }, 20000)
 
             })
         });
