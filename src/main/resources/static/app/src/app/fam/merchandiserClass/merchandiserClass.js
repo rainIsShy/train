@@ -293,6 +293,7 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
         if (allItem.length > 0) {
             $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
                 if ($scope.selected) {
+                    $scope.syncing = true;
                     var promises = [];
                     angular.forEach(allItem, function (item) {
                         var response = CBIGroupEmployeeChanRService.delete(item.uuid).success(function (data) {
@@ -300,21 +301,19 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
                         promises.push(response);
                     });
                     $q.all(promises).then(function () {
-                        $scope.showInfo('删除数据成功。');
 
-                        setTimeout(function () {
-                            var param = {
-                                'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid
-                            };
-                            IoneAdapterService.transferIoneAdapter("/groupUserChanTask", param, $scope, function (response) {
-                            }).error(function (errResp) {
-                                $scope.showError("经销商同步出错");
-                            });
+                        var param = {
+                            'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid
+                        };
+                        IoneAdapterService.transferIoneAdapter("/groupUserChanTask", param, $scope, function (response) {
+                            $scope.refreshGroupEmployeeChanRelation($scope.selectedItem);
+                            $scope.syncing = false;
+                            $scope.showInfo('删除数据成功。');
+                        }).error(function (errResp) {
+                            $scope.showError("经销商同步出错");
+                            $scope.syncing = false;
+                        });
 
-                        }, 20000);
-
-
-                        $scope.refreshGroupEmployeeChanRelation($scope.selectedItem);
                         $scope.selectItemCount = 0;
                     });
                 }
@@ -325,21 +324,22 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
     $scope.deleteChanDetailAction = function (detail) {
         $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
             if ($scope.selectedItem) {
+                $scope.syncing = true;
                 CBIGroupEmployeeChanRService.delete(detail.uuid).success(function () {
-                    $scope.refreshGroupEmployeeChanRelation($scope.selectedItem);
-                    $scope.showInfo("刪除成功!");
 
-                    setTimeout(function () {
+
                         var param = {
                             'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid
                         };
 
                         IoneAdapterService.transferIoneAdapter("/groupUserChanTask", param, $scope, function (response) {
+                            $scope.syncing = true;
+                            $scope.refreshGroupEmployeeChanRelation($scope.selectedItem);
+                            $scope.showInfo("刪除成功!");
                         }).error(function (errResp) {
                             $scope.showError("经销商同步出错");
                         });
 
-                    }, 20000);
 
 
                 });
@@ -352,15 +352,16 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
             if ($scope.selectedItem) {
                 $scope.syncing = true;
                 CBIGroupEmployeeClassRService.delete(detail.uuid).success(function () {
-                    $scope.showInfo("刪除成功!");
+
                     var param = {
                         'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid
                     };
 
                     IoneAdapterService.transferIoneAdapter("/groupUserClassTask", param, $scope, function (response) {
-                        $scope.refreshGroupEmployeeClassRelation($scope.selectedItem);
-                        $scope.syncing = false;
 
+                        $scope.syncing = false;
+                        $scope.refreshGroupEmployeeClassRelation($scope.selectedItem);
+                        $scope.showInfo("刪除成功!");
                     }).error(function (errResp) {
                         $scope.showError("跟單同步出错");
                     });
@@ -454,22 +455,20 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
                 promises.push(response);
             }
             $q.all(promises).then(function () {
-                $scope.refreshGroupEmployeeChanRelation();
-                $scope.showInfo('新增成功!');
+                $scope.syncing = true;
 
-                setTimeout(function () {
-                    var param = {
-                        'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid
-                    };
+                var param = {
+                    'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid
+                };
 
-                    IoneAdapterService.transferIoneAdapter("/groupUserChanTask", param, $scope, function (response) {
-                    }).error(function (errResp) {
-                        $scope.showError("经销商同步出错");
-                    });
-
-                }, 20000);
-
-
+                IoneAdapterService.transferIoneAdapter("/groupUserChanTask", param, $scope, function (response) {
+                    $scope.syncing = false;
+                    $scope.refreshGroupEmployeeChanRelation();
+                    $scope.showInfo('新增成功!');
+                }).error(function (errResp) {
+                    $scope.syncing = false;
+                    $scope.showError("经销商同步出错");
+                });
 
             })
         });
@@ -496,21 +495,18 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
                 promises.push(response);
             }
             $q.all(promises).then(function () {
-                $scope.refreshGroupEmployeeClassRelation();
-                $scope.showInfo('新增成功!');
 
+                var param = {
+                    'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid
+                };
 
-                $timeout(function () {
-                    var param = {
-                        'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid
-                    };
-
-                    IoneAdapterService.transferIoneAdapter("/groupUserClassTask", param, $scope, function (response) {
-                        $scope.syncing = false;
-                    }).error(function (errResp) {
-                        $scope.showError("跟單同步出错");
-                    });
-                }, 20000)
+                IoneAdapterService.transferIoneAdapter("/groupUserClassTask", param, $scope, function (response) {
+                    $scope.refreshGroupEmployeeClassRelation();
+                    $scope.syncing = false;
+                    $scope.showInfo('新增成功!');
+                }).error(function (errResp) {
+                    $scope.showError("跟單同步出错");
+                });
 
             })
         });
