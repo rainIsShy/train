@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('ChannelBrandRelationController', function ($scope, $q, ChannelService, ChannelBrandRelationsService, $mdDialog, Constant) {
+angular.module('IOne-Production').controller('ChannelBrandRelationController', function ($scope, $q, ChannelService, ChannelBrandRelationsService, $mdDialog, Constant, ChannelLevelService) {
     //initial model value
 
     $scope.listFilterItem = {
@@ -24,7 +24,7 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
         '100-add': {display: true, name: '新增', uuid: '10dece1d-3a54-4d23-a41e-9419b42efe66'},
         '101-delete': {display: true, name: '删除', uuid: '58516534-9c0b-46ea-b000-82b03ca79f97'},
         '102-edit': {display: true, name: '编辑', uuid: 'af9c186a-08f5-48d7-9249-36e4985f5cda'},
-        '107-change': {display: true, name: '依品牌同步下级渠道', uuid: '1559e42c-5937-4d77-98d7-0ce396bb6a0d'},
+        // '107-change': {display: true, name: '依品牌同步下级渠道', uuid: '1559e42c-5937-4d77-98d7-0ce396bb6a0d'},
         '109-copy': {display: true, name: '依下级渠道同步品牌', uuid: '1559e42c-5937-4d77-98d7-0ce396bb6a0d'},
 
         '200-cancel': {display: true, name: '取消新增', uuid: '0c637a24-9692-42e6-a431-22fc5c5bdd24'},
@@ -278,25 +278,13 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
                 channelUuid: $scope.selectedItem.uuid,
             }
         }).then(function (dataList) {
-            if (dataList.length > 0) {
-                var promises = [];
-                angular.forEach(dataList, function (addObject) {
-                    var channelRelationResponse = ChannelBrandRelationsService.add(addObject).error(function (data) {
-
-                    });
-                    promises.push(channelRelationResponse);
-                });
-
-                $q.all(promises).then(function () {
-                    $scope.showInfo("新增下級渠道品牌成功");
-                });
-            }
+            $scope.addLowerChannelBrand(dataList);
 
         });
     };
 
     //依品牌同步下级渠道
-    $scope.changeMenuAction = function () {
+    $scope.changeMenuAction = function (channelRelation) {
         $mdDialog.show({
             controller: 'SyncBrandTOLowerChannelController',
             templateUrl: 'app/src/app/ocm/channelBrand/addChannelByBrand.html',
@@ -304,23 +292,29 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
             targetEvent: event,
             locals: {
                 channelUuid: $scope.selectedItem.uuid,
+                channelRelation: channelRelation
             }
         }).then(function (dataList) {
-            if (dataList.length > 0) {
-                var promises = [];
-                angular.forEach(dataList, function (addObject) {
-                    var channelRelationResponse = ChannelBrandRelationsService.add(addObject).error(function (data) {
-
-                    });
-                    promises.push(channelRelationResponse);
-                });
-
-                $q.all(promises).then(function () {
-                    $scope.showInfo("新增下級渠道品牌成功");
-                });
-            }
+            $scope.addLowerChannelBrand(dataList);
 
         });
+
+    };
+
+    $scope.addLowerChannelBrand = function (dataList) {
+        if (dataList.length > 0) {
+            var promises = [];
+            angular.forEach(dataList, function (addObject) {
+                var channelRelationResponse = ChannelBrandRelationsService.add(addObject).error(function (data) {
+
+                });
+                promises.push(channelRelationResponse);
+            });
+
+            $q.all(promises).then(function () {
+                $scope.showInfo("新增下級渠道品牌成功");
+            });
+        }
     };
 
     $scope.populateChannelRelation = function (data) {
@@ -717,9 +711,9 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
     };
 });
 
-angular.module('IOne-Production').controller('SyncBrandTOLowerChannelController', function ($scope, $q, $mdToast, $mdDialog, ChannelLevelService, ChannelBrandRelationsService, BrandFile, channelUuid) {
+angular.module('IOne-Production').controller('SyncBrandTOLowerChannelController', function ($scope, $q, $mdToast, $mdDialog, ChannelLevelService, ChannelBrandRelationsService, BrandFile, channelUuid, channelRelation) {
     $scope.channelUuid = channelUuid;
-
+    $scope.selectedItem = channelRelation.brand;
     $scope.pageOption = {
         sizePerPage: 5,
         currentPage: 0,
@@ -729,6 +723,10 @@ angular.module('IOne-Production').controller('SyncBrandTOLowerChannelController'
 
     $scope.refreshChannel = function () {
         ChannelLevelService.getUnSetBrandByParent($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, '', '1', '', '', '', $scope.channelUuid, $scope.selectedItem.uuid).success(function (data) {
+            if (data.totalElements <= 0) {
+                toastr["warning"]("该品牌己无下级渠道可新增");
+
+            }
             $scope.allChannel = data.content;
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
@@ -742,45 +740,33 @@ angular.module('IOne-Production').controller('SyncBrandTOLowerChannelController'
         totalElements: 0
     };
 
-    $scope.refreshBrand = function () {
-        ChannelBrandRelationsService.getAllWithPaging($scope.pageOption2.sizePerPage, $scope.pageOption2.currentPage, '1', $scope.channelUuid, '', '', '').success(function (data) {
-            $scope.pageOption2.totalPage = data.totalPages;
-            $scope.pageOption2.totalElements = data.totalElements;
-            $scope.allBrand = data.content;
-        });
-    };
 
-    $scope.refreshBrand();
-
-    $scope.selectData = function (item) {
-        $scope.selectedItem = item.brand;
-        $scope.refreshChannel();
-    };
+    $scope.refreshChannel();
 
     $scope.selected = [];
 
     $scope.exists = function (item, list) {
-        return list.indexOf(item) > -1;
+        return list.indexOf(item.uuid) > -1;
     };
 
     $scope.toggle = function (item, selected) {
-        var idx = selected.indexOf(item);
+        var idx = selected.indexOf(item.uuid);
         if (idx > -1) {
             selected.splice(idx, 1);
         }
         else {
-            selected.push(item);
+            selected.push(item.uuid);
         }
     };
 
 
     $scope.selectAllAction = function (checked) {
         if (checked) {
-            for (var i = 0; i < $scope.pageOption2.totalPage; i++) {
+            for (var i = 0; i < $scope.pageOption.totalPage; i++) {
                 ChannelLevelService.getUnSetBrandByParent($scope.pageOption.sizePerPage, i, '', '1', '', '', '', $scope.channelUuid, $scope.selectedItem.uuid).success(function (data) {
                     // ChannelBrandRelationsService.getAllWithPaging($scope.pageOption2.sizePerPage, i, '1',  $scope.channelUuid, '', '', '').success(function (data) {
                     angular.forEach(data.content, function (item) {
-                        $scope.selected.push(item.uuid);
+                        $scope.selected.push(item.channel.uuid);
                     })
                 });
             }
@@ -796,10 +782,10 @@ angular.module('IOne-Production').controller('SyncBrandTOLowerChannelController'
         $scope.addData = [];
         angular.forEach($scope.selected, function (data) {
             var input = {
-                channelUuid: $scope.selectedItem.uuid,
-                brandUuid: data.brand.uuid,
-                priceCoefficient: data.priceCoefficient,
-                status: data.status
+                brandUuid: $scope.selectedItem.uuid,
+                channelUuid: data,
+                priceCoefficient: channelRelation.priceCoefficient,
+                status: channelRelation.status
             };
             $scope.addData.push(input);
         });
