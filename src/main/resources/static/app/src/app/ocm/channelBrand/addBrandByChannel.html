@@ -62,7 +62,7 @@
                         <div ng-repeat="item in allBrand | orderBy: 'no'">
                             <div layout="row">
                                 <div flex="5" class=" table-item">
-                                    <md-checkbox aria-label="..." ng-checked="exists(item, selected)"
+                                    <md-checkbox aria-label="..." ng-checked="{{item.checked}}"
                                                  ng-click="toggle(item, selected)">
                                     </md-checkbox>
 
@@ -85,10 +85,10 @@
 
             <div layout="row">
                 <md-button ng-click="hideDlg()">
-                    <i class="fa fa-plus"></i>&nbsp;新增
+                    <i class="fa fa-plus"></i>&nbsp;保存
                 </md-button>
 
-                <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+                <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;关闭</md-button>
             </div>
         </div>
 

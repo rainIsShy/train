@@ -13,7 +13,7 @@ angular.module('IOne-Production').service('ChannelBrandRelationsService', functi
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
-    this.getAllWithPaging = function (sizePerPage, page, status, channelUuid, brandNo, brandName, excludeChannelUuid) {
+    this.getAllWithPaging = function (sizePerPage, page, status, channelUuid, brandNo, brandName) {
         var url = '/channelBrandRelations?size=' + sizePerPage
             + '&page=' + page
             + '&status=' + status
@@ -25,10 +25,6 @@ angular.module('IOne-Production').service('ChannelBrandRelationsService', functi
 
         if (brandName) {
             url = url + '&brandName=' + brandName;
-        }
-
-        if (excludeChannelUuid) {
-            url = url + '&excludeChannelUuid=' + excludeChannelUuid;
         }
 
 
@@ -44,6 +40,12 @@ angular.module('IOne-Production').service('ChannelBrandRelationsService', functi
         if (resUuid !== undefined && resUuid !== null) {
             url = url + '&resUuid=' + resUuid;
         }
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
+
+    this.getAllByChannelUuidAndBrandUuid = function (channelUuid, brandUuid) {
+        var url = '/channelBrandRelations?channelUuid=' + channelUuid + '&brandUuid=' + brandUuid;
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
@@ -65,5 +67,9 @@ angular.module('IOne-Production').service('ChannelBrandRelationsService', functi
 
     this.updatePrice = function (channelUuid, brandUuids) {
         return $http.patch(Constant.BACKEND_BASE + '/channelBrandRelations?channelUuid=' + channelUuid, brandUuids);
+    };
+
+    this.deleteByChannelAndBrand = function (channelUuid, brandUuid) {
+        return $http.delete(Constant.BACKEND_BASE + '/channelBrandRelations?channelUuid=' + channelUuid + '&brandUuid=' + brandUuid);
     };
 });

@@ -328,7 +328,6 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
     };
 
 
-
     $scope.deleteMenuAction = function () {
         if ($scope.selected.length > 0) {
             $scope.showConfirm('确认删除吗？', '删除的渠道信息不可恢复。', function () {
@@ -643,10 +642,27 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
     };
 
     $scope.refreshBrand = function () {
-        ChannelBrandRelationsService.getAllWithPaging($scope.pageOption2.sizePerPage, $scope.pageOption2.currentPage, '1', $scope.channelUuid, '', '', $scope.selectedItem.uuid).success(function (data) {
+        ChannelBrandRelationsService.getAllWithPaging($scope.pageOption2.sizePerPage, $scope.pageOption2.currentPage, '1', $scope.channelUuid, '', '').success(function (data) {
             $scope.pageOption2.totalPage = data.totalPages;
             $scope.pageOption2.totalElements = data.totalElements;
             $scope.allBrand = data.content;
+            angular.forEach(data.content, function (item) {
+                ChannelBrandRelationsService.getAllByChannelUuidAndBrandUuid($scope.selectedItem.uuid, item.brand.uuid).success(function (y) {
+                    if (y.totalElements > 0) {
+                        item.checked = true;
+                    }
+                });
+            })
+        });
+    };
+
+    $scope.refreshBrandByLowerChannel = function (channel) {
+        $scope.allLowerBrand = [];
+        ChannelBrandRelationsService.getAllByChannelUuid($scope.selectedItem.uuid, '1', '').success(function (data) {
+            angular.forEach(data.content, function (channelBrandRelation) {
+                $scope.allLowerBrand.push(channelBrandRelation.brand.uuid);
+
+            })
         });
     };
 
@@ -655,12 +671,18 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
     $scope.selectData = function (item) {
         $scope.selectedItem = item.channel;
         $scope.refreshBrand();
+        $scope.refreshBrandByLowerChannel($scope.selectedItem);
     };
 
     $scope.selected = [];
 
     $scope.exists = function (item, list) {
-        return list.indexOf(item) > -1;
+        var idx = $scope.allLowerBrand.indexOf(item.brand.uuid);
+        if (idx > -1 || list.indexOf(item) > -1) {
+            return true;
+        } else {
+            return false;
+        }
     };
 
     $scope.toggle = function (item, selected) {
@@ -671,6 +693,7 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
         else {
             selected.push(item);
         }
+
     };
 
 
@@ -723,10 +746,6 @@ angular.module('IOne-Production').controller('SyncBrandTOLowerChannelController'
 
     $scope.refreshChannel = function () {
         ChannelLevelService.getUnSetBrandByParent($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, '', '1', '', '', '', $scope.channelUuid, $scope.selectedItem.uuid).success(function (data) {
-            if (data.totalElements <= 0) {
-                toastr["warning"]("该品牌己无下级渠道可新增");
-
-            }
             $scope.allChannel = data.content;
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
