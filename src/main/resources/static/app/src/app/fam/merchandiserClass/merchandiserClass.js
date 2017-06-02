@@ -306,8 +306,9 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
                             'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid
                         };
                         IoneAdapterService.transferIoneAdapter("/groupUserChanTask", param, $scope, function (response) {
-                            $scope.refreshGroupEmployeeChanRelation($scope.selectedItem);
+
                             $scope.syncing = false;
+                            $scope.refreshGroupEmployeeChanRelation($scope.selectedItem);
                             $scope.showInfo('删除数据成功。');
                         }).error(function (errResp) {
                             $scope.showError("经销商同步出错");
@@ -333,7 +334,7 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
                         };
 
                         IoneAdapterService.transferIoneAdapter("/groupUserChanTask", param, $scope, function (response) {
-                            $scope.syncing = true;
+                            $scope.syncing = false;
                             $scope.refreshGroupEmployeeChanRelation($scope.selectedItem);
                             $scope.showInfo("刪除成功!");
                         }).error(function (errResp) {
@@ -501,8 +502,8 @@ angular.module('IOne-Production').controller('MerchandiserClassController', func
                 };
 
                 IoneAdapterService.transferIoneAdapter("/groupUserClassTask", param, $scope, function (response) {
-                    $scope.refreshGroupEmployeeClassRelation();
                     $scope.syncing = false;
+                    $scope.refreshGroupEmployeeClassRelation();
                     $scope.showInfo('新增成功!');
                 }).error(function (errResp) {
                     $scope.showError("跟單同步出错");
