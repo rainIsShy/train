@@ -65,6 +65,11 @@
                     <md-tabs md-dynamic-height md-border-bottom style="padding-top: 30px;">
                         <md-tab label="跟单分组">
                             <div layout="row" layout-wrap style="margin-top: 20px;">
+                                <div align="center">
+                                    <span ng-if="syncing">
+                                        <img style="width: 20px;padding-top: 13px;" src="app/img/spinner.gif"/>   同步权限中...
+                                    </span>
+                                </div>
 
                                 <div flex="100" ng-repeat="classDetail in classDetailItemList | orderBy:'baseClass.no'"
                                      ng-click="" class="prod-item"
@@ -92,11 +97,6 @@
                                     <md-divider style="margin-top:5px"></md-divider>
                                 </div>
 
-                                <div align="center">
-                                    <span ng-if="syncing">
-                                        <img style="width: 20px;padding-top: 13px;" src="app/img/spinner.gif"/>   同步权限中...
-                                    </span>
-                                </div>
 
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
                                      ng-click="openGroupEmployeeClassRDlg()" ng-disabled="syncing"
@@ -109,6 +109,11 @@
 
                         <md-tab label="经销商">
                             <div layout="row" layout-wrap style="margin-top: 20px;">
+                                <div align="center">
+                                    <span ng-if="syncing">
+                                        <img style="width: 20px;padding-top: 13px;" src="app/img/spinner.gif"/>   同步权限中...
+                                    </span>
+                                </div>
                                 <div flex="100" ng-repeat="chanDetail in chanDetailItemList | orderBy:'channel.no'"
                                      ng-click="" class="prod-item"
                                      style="position: relative;padding-bottom: 0px; min-height: 70px;">
@@ -131,12 +136,6 @@
                                 </div>
                                 <div pagination option="pageOptionChanR"
                                      callback="refreshGroupEmployeeChanRelation(selectedItem)"></div>
-
-                                <div align="center">
-                                    <span ng-if="syncing">
-                                        <img style="width: 20px;padding-top: 13px;" src="app/img/spinner.gif"/>   同步权限中...
-                                    </span>
-                                </div>
 
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
                                      ng-click="openGroupEmployeeChanRDlg()"
