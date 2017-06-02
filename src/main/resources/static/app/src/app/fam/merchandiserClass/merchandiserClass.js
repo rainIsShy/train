@@ -311,7 +311,7 @@ IoneAdapterService, Constant, $mdDialog, $q) {
                                 $scope.showError("经销商同步出错");
                             });
 
-                        }, 5000);
+                        }, 8000);
 
 
                         $scope.refreshGroupEmployeeChanRelation($scope.selectedItem);
@@ -339,7 +339,7 @@ IoneAdapterService, Constant, $mdDialog, $q) {
                             $scope.showError("经销商同步出错");
                         });
 
-                    }, 5000);
+                    }, 8000);
 
 
                 });
@@ -364,7 +364,7 @@ IoneAdapterService, Constant, $mdDialog, $q) {
                             $scope.showError("跟單同步出错");
                         });
 
-                    }, 5000);
+                    }, 8000);
 
                 });
             }
@@ -468,7 +468,7 @@ IoneAdapterService, Constant, $mdDialog, $q) {
                         $scope.showError("经销商同步出错");
                     });
 
-                }, 5000);
+                }, 8000);
 
 
 
@@ -510,7 +510,7 @@ IoneAdapterService, Constant, $mdDialog, $q) {
                         $scope.showError("跟单同步出错");
                     });
 
-                }, 5000);
+                }, 8000);
 
             })
         });
