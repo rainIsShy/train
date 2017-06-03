@@ -97,10 +97,9 @@
                                     <md-divider style="margin-top:5px"></md-divider>
                                 </div>
 
-
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
-                                     ng-click="openGroupEmployeeClassRDlg()" ng-disabled="syncing"
-                                     ng-if="showDetailAddButton()" ng-show="groupEmployeeClassRFlag">
+                                     ng-click="openGroupEmployeeClassRDlg()"
+                                     ng-if="showDetailAddButton()" ng-show="groupEmployeeClassRFlag && !syncing">
                                     <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
                                 </div>
                             </div>
@@ -127,7 +126,7 @@
                                         <div flex="20">
                                             <md-button class="md-button close-btn" aria-label="More"
                                                        ng-click="deleteChanDetailAction(chanDetail)"
-                                                       ng-if="showDetailDeleteButton()" ng-disabled="syncing">
+                                                       ng-if="showDetailDeleteButton()" ng-show="!syncing">
                                                 <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>
                                                 删除
                                             </md-button>
@@ -139,13 +138,12 @@
 
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
                                      ng-click="openGroupEmployeeChanRDlg()"
-                                     ng-if="showDetailAddButton()" ng-disabled="syncing">
+                                     ng-if="showDetailAddButton()" ng-show="!syncing">
                                     <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
                                 </div>
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
                                      ng-click="deleteAllChan(chanDetailItemList)"
-                                     ng-if="showDeleteAllChanRButton()"
-                                     ng-disabled="syncing">
+                                     ng-if="showDeleteAllChanRButton()" ng-show="!syncing">
                                     <ng-md-icon icon="remove_circle_outline"
                                                 size="20"></ng-md-icon>&nbsp;&nbsp;全部删除...</a>
                                 </div>
