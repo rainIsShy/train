@@ -278,7 +278,9 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
                 channelUuid: $scope.selectedItem.uuid,
             }
         }).then(function (dataList) {
-            $scope.addLowerChannelBrand(dataList);
+            if (dataList) {
+                $scope.addLowerChannelBrand(dataList);
+            }
 
         });
     };
@@ -295,24 +297,33 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
                 channelRelation: channelRelation
             }
         }).then(function (dataList) {
-            $scope.addLowerChannelBrand(dataList);
+            if (dataList) {
+                $scope.addLowerChannelBrand(dataList);
+            }
 
         });
 
     };
 
     $scope.addLowerChannelBrand = function (dataList) {
-        if (dataList.length > 0) {
+        if (dataList) {
             var promises = [];
-            angular.forEach(dataList, function (addObject) {
+            angular.forEach(dataList[0], function (addObject) {
                 var channelRelationResponse = ChannelBrandRelationsService.add(addObject).error(function (data) {
 
                 });
                 promises.push(channelRelationResponse);
             });
 
+            angular.forEach(dataList[1], function (obj) {
+                var channelRelationResponse = ChannelBrandRelationsService.deleteByChannelAndBrand(obj.channelUuid, obj.brandUuid).error(function (data) {
+
+                });
+                promises.push(channelRelationResponse);
+            });
+
             $q.all(promises).then(function () {
-                $scope.showInfo("新增下級渠道品牌成功");
+                $scope.showInfo("同步下級渠道品牌成功");
             });
         }
     };
@@ -564,8 +575,6 @@ angular.module('IOne-Production').controller('AddBrandController', function ($sc
                 $scope.cancelDlg();
                 $scope.editItem($scope.channel);
             });
-
-
         }
     };
 
@@ -641,82 +650,108 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
         totalElements: 0
     };
 
+    $scope.savedBrandData = new Set();
+    $scope.selected = new Set();
     $scope.refreshBrand = function () {
         ChannelBrandRelationsService.getAllWithPaging($scope.pageOption2.sizePerPage, $scope.pageOption2.currentPage, '1', $scope.channelUuid, '', '').success(function (data) {
             $scope.pageOption2.totalPage = data.totalPages;
             $scope.pageOption2.totalElements = data.totalElements;
             $scope.allBrand = data.content;
-            angular.forEach(data.content, function (item) {
+            angular.forEach($scope.allBrand, function (item) {
+                $scope.selected.forEach(function (data) {
+                    if (data.brand.uuid == item.brand.uuid) {
+                        item.checked = true;
+                    }
+                });
+
                 ChannelBrandRelationsService.getAllByChannelUuidAndBrandUuid($scope.selectedItem.uuid, item.brand.uuid).success(function (y) {
                     if (y.totalElements > 0) {
+                        //己儲存的勾選起來
+                        if (!$scope.savedBrandData.has(item.brand.uuid)) {
+                            $scope.savedBrandData.add(item.brand.uuid);
+                            $scope.selected.add(item);
+                        }
                         item.checked = true;
+
                     }
                 });
             })
         });
     };
 
-    $scope.refreshBrandByLowerChannel = function (channel) {
-        $scope.allLowerBrand = [];
-        ChannelBrandRelationsService.getAllByChannelUuid($scope.selectedItem.uuid, '1', '').success(function (data) {
-            angular.forEach(data.content, function (channelBrandRelation) {
-                $scope.allLowerBrand.push(channelBrandRelation.brand.uuid);
-
-            })
-        });
-    };
 
     $scope.refreshChannel();
 
     $scope.selectData = function (item) {
+        $scope.selected = new Set();
+        $scope.savedBrandData = new Set();
         $scope.selectedItem = item.channel;
         $scope.refreshBrand();
-        $scope.refreshBrandByLowerChannel($scope.selectedItem);
     };
 
-    $scope.selected = [];
+
 
     $scope.exists = function (item, list) {
-        var idx = $scope.allLowerBrand.indexOf(item.brand.uuid);
-        if (idx > -1 || list.indexOf(item) > -1) {
-            return true;
-        } else {
-            return false;
-        }
+        let result = false;
+        $scope.selected.forEach(function (data) {
+            if (data.brand.uuid == item.brand.uuid) {
+                result = true;
+            }
+        });
+        return result;
+
     };
 
     $scope.toggle = function (item, selected) {
-        var idx = selected.indexOf(item);
-        if (idx > -1) {
-            selected.splice(idx, 1);
-        }
-        else {
-            selected.push(item);
-        }
 
+        if (item.checked) {
+            item.checked = !item.checked;
+            $scope.selected.forEach(function (data) {
+                if (data.brand.uuid == item.brand.uuid) {
+                    selected.delete(data);
+                }
+            })
+        } else {
+            item.checked = true;
+            selected.add(item);
+        }
     };
 
 
     $scope.selectAllAction = function (checked) {
-        if (checked) {
-            for (var i = 0; i < $scope.pageOption2.totalPage; i++) {
-                ChannelBrandRelationsService.getAllWithPaging($scope.pageOption2.sizePerPage, i, '1', $scope.selectedItem.uuid, '', '', $scope.selectedItem.uuid).success(function (data) {
-                    angular.forEach(data.content, function (item) {
-                        $scope.selected.push(item.uuid);
-                    })
-                });
+        angular.forEach($scope.allBrand, function (item) {
+            if (checked) {
+                item.checked = true;
+                $scope.selected.add(item);
+            } else {
+                item.checked = false;
+                $scope.selected.forEach(function (data) {
+                    if (data.brand.uuid == item.brand.uuid) {
+                        $scope.selected.delete(item);
+                    }
+                })
             }
-
-        } else {
-            $scope.selected = [];
-        }
-
+        });
     };
 
 
     $scope.hideDlg = function () {
         $scope.addData = [];
-        angular.forEach($scope.selected, function (data) {
+        $scope.deleteData = [];
+
+        // $scope.savedBrandData2 = Array.from($scope.savedBrandData);
+        // $scope.selected2 = Array.from($scope.selected);
+
+        $scope.selectedUuidSet = [];
+        $scope.selected.forEach(x => $scope.selectedUuidSet.push(x.brand.uuid));
+
+        //原本保存，但取消勾選後，預計要删除的资料
+        $scope.deleteDataSet = Array.from($scope.savedBrandData).filter(x => $scope.selectedUuidSet.indexOf(x) == -1);
+        //此次要新增的资料
+        $scope.addDataSet = Array.from($scope.selected).filter(x => Array.from($scope.savedBrandData).indexOf(x.brand.uuid) == -1);
+
+
+        angular.forEach($scope.addDataSet, function (data) {
             var input = {
                 channelUuid: $scope.selectedItem.uuid,
                 brandUuid: data.brand.uuid,
@@ -726,7 +761,20 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
             $scope.addData.push(input);
         });
 
-        $mdDialog.hide($scope.addData);
+        angular.forEach($scope.deleteDataSet, function (data) {
+            var deleteInput = {
+                channelUuid: $scope.selectedItem.uuid,
+                brandUuid: data,
+
+            };
+            $scope.deleteData.push(deleteInput);
+        });
+
+        var datalist = [];
+        datalist.push($scope.addData);
+        datalist.push($scope.deleteData);
+
+        $mdDialog.hide(datalist);
     };
 
     $scope.cancelDlg = function () {
@@ -744,11 +792,33 @@ angular.module('IOne-Production').controller('SyncBrandTOLowerChannelController'
         totalElements: 0
     };
 
+    $scope.savedChannelData = new Set();
+    $scope.selected = new Set();
+
     $scope.refreshChannel = function () {
-        ChannelLevelService.getUnSetBrandByParent($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, '', '1', '', '', '', $scope.channelUuid, $scope.selectedItem.uuid).success(function (data) {
+        ChannelLevelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, '', '1', '', '', '', '', $scope.channelUuid, $scope.channelUuid).success(function (data) {
             $scope.allChannel = data.content;
             $scope.pageOption.totalElements = data.totalElements;
             $scope.pageOption.totalPage = data.totalPages;
+            angular.forEach($scope.allChannel, function (item) {
+                $scope.selected.forEach(function (data) {
+                    if (data.channel.uuid == item.channel.uuid) {
+                        item.checked = true;
+                    }
+                });
+
+                ChannelBrandRelationsService.getAllByChannelUuidAndBrandUuid(item.channel.uuid, $scope.selectedItem.uuid).success(function (y) {
+                    if (y.totalElements > 0) {
+                        //己儲存的勾選起來
+                        if (!$scope.savedChannelData.has(item.channel.uuid)) {
+                            $scope.savedChannelData.add(item.channel.uuid);
+                            $scope.selected.add(item);
+                        }
+                        item.checked = true;
+
+                    }
+                });
+            })
         });
     };
 
@@ -762,54 +832,86 @@ angular.module('IOne-Production').controller('SyncBrandTOLowerChannelController'
 
     $scope.refreshChannel();
 
-    $scope.selected = [];
 
     $scope.exists = function (item, list) {
-        return list.indexOf(item.uuid) > -1;
+        let result = false;
+        $scope.selected.forEach(function (data) {
+            if (data.channel.uuid == item.channel.uuid) {
+                result = true;
+            }
+        });
+        return result;
     };
 
     $scope.toggle = function (item, selected) {
-        var idx = selected.indexOf(item.uuid);
-        if (idx > -1) {
-            selected.splice(idx, 1);
-        }
-        else {
-            selected.push(item.uuid);
+
+        if (item.checked) {
+            item.checked = !item.checked;
+            $scope.selected.forEach(function (data) {
+                if (data.channel.uuid == item.channel.uuid) {
+                    selected.delete(data);
+                }
+            })
+        } else {
+            item.checked = true;
+            selected.add(item);
         }
     };
 
 
     $scope.selectAllAction = function (checked) {
-        if (checked) {
-            for (var i = 0; i < $scope.pageOption.totalPage; i++) {
-                ChannelLevelService.getUnSetBrandByParent($scope.pageOption.sizePerPage, i, '', '1', '', '', '', $scope.channelUuid, $scope.selectedItem.uuid).success(function (data) {
-                    // ChannelBrandRelationsService.getAllWithPaging($scope.pageOption2.sizePerPage, i, '1',  $scope.channelUuid, '', '', '').success(function (data) {
-                    angular.forEach(data.content, function (item) {
-                        $scope.selected.push(item.channel.uuid);
-                    })
-                });
+        angular.forEach($scope.allChannel, function (item) {
+            if (checked) {
+                item.checked = true;
+                $scope.selected.add(item);
+            } else {
+                item.checked = false;
+                $scope.selected.forEach(function (data) {
+                    if (data.channel.uuid == item.channel.uuid) {
+                        $scope.selected.delete(item);
+                    }
+                })
             }
-
-        } else {
-            $scope.selected = [];
-        }
+        });
 
     };
 
-
     $scope.hideDlg = function () {
         $scope.addData = [];
-        angular.forEach($scope.selected, function (data) {
+        $scope.deleteData = [];
+
+        $scope.selectedUuidSet = [];
+        $scope.selected.forEach(x => $scope.selectedUuidSet.push(x.channel.uuid));
+
+        //原本保存，但取消勾選後，預計要删除的资料
+        $scope.deleteDataSet = Array.from($scope.savedChannelData).filter(x => $scope.selectedUuidSet.indexOf(x) == -1);
+        //此次要新增的资料
+        $scope.addDataSet = Array.from($scope.selected).filter(x => Array.from($scope.savedChannelData).indexOf(x.channel.uuid) == -1);
+
+        angular.forEach($scope.addDataSet, function (data) {
             var input = {
+                channelUuid: data.channel.uuid,
                 brandUuid: $scope.selectedItem.uuid,
-                channelUuid: data,
                 priceCoefficient: channelRelation.priceCoefficient,
                 status: channelRelation.status
             };
             $scope.addData.push(input);
         });
 
-        $mdDialog.hide($scope.addData);
+        angular.forEach($scope.deleteDataSet, function (data) {
+            var deleteInput = {
+                channelUuid: data,
+                brandUuid: $scope.selectedItem.uuid,
+
+            };
+            $scope.deleteData.push(deleteInput);
+        });
+
+        var datalist = [];
+        datalist.push($scope.addData);
+        datalist.push($scope.deleteData);
+
+        $mdDialog.hide(datalist);
     };
 
     $scope.cancelDlg = function () {

@@ -8,33 +8,6 @@
 
         <div flex layout="column" style="font-size: small">
             <div layout="row">
-                <!--<div layout="column" flex="35" style=" padding: 10px;">-->
-
-                <!--<div style=" padding: 0px 0px 15px 0px;">请选择品牌： {{selectedItem.name}}</div>-->
-                <!--<form name="searchData" novalidate="">-->
-                <!--<div layout="row" flex="50">-->
-                <!--<md-input-container flex="80">-->
-                <!--<label>品牌编号/名称</label>-->
-                <!--<input name="no" type="text" ng-model="searchKeyword">-->
-                <!--</md-input-container>-->
-
-                <!--<md-button ng-click="search()" ng-disabled="searchData.$invalid">-->
-                <!--<i class="fa fa-search"></i>-->
-                <!--</md-button>-->
-                <!--</div>-->
-                <!--<md-list-item class="md-2-line" ng-repeat="data in allBrand" ng-click="selectData(data)">-->
-                <!--<div class="md-list-item-text">-->
-                <!--<div layout="row">-->
-                <!--<div flex="35" layout="column"><span>{{ data.brand.no }}</span></div>-->
-                <!--<div layout="column"><span>{{ data.brand.name }}</span></div>-->
-                <!--</div>-->
-                <!--</div>-->
-
-                <!--<md-divider></md-divider>-->
-                <!--</md-list-item>-->
-                <!--</form>-->
-                <!--<div pagination option="pageOption2" callback="refreshBrand()"></div>-->
-                <!--</div>-->
 
                 <div layout="column" flex="100">
                     <div style=" padding: 0px 0px 15px 0px;">品牌：{{}} 己选择渠道數： {{selected.length}}</div>
@@ -52,8 +25,8 @@
                         <div ng-repeat="item in allChannel | orderBy: 'no'">
                             <div layout="row">
                                 <div flex="10" class=" table-item">
-                                    <md-checkbox aria-label="..." ng-checked="exists(item.channel, selected)"
-                                                 ng-click="toggle(item.channel, selected)">
+                                    <md-checkbox aria-label="..." ng-click="toggle(item, selected)"
+                                                 ng-checked="item.checked">
                                     </md-checkbox>
 
                                 </div>
@@ -75,7 +48,7 @@
 
             <div layout="row">
                 <md-button ng-click="hideDlg()">
-                    <i class="fa fa-plus"></i>&nbsp;新增
+                    <i class="fa fa-plus"></i>&nbsp;保存
                 </md-button>
 
                 <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
