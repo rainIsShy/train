@@ -65,6 +65,12 @@
                     <md-tabs md-dynamic-height md-border-bottom style="padding-top: 30px;">
                         <md-tab label="跟单分组">
                             <div layout="row" layout-wrap style="margin-top: 20px;">
+                                <div align="center">
+                                    <span ng-if="syncing">
+                                        <img style="width: 20px;padding-top: 13px;" src="app/img/spinner.gif"/>   同步权限中...
+                                    </span>
+                                </div>
+
                                 <div flex="100" ng-repeat="classDetail in classDetailItemList | orderBy:'baseClass.no'"
                                      ng-click="" class="prod-item"
                                      style="position: relative;padding-bottom: 0px; min-height: 70px;">
@@ -78,7 +84,7 @@
                                         <div flex="20">
                                             <md-button class="md-button close-btn" aria-label="More"
                                                        ng-click="deleteClassDetailAction(classDetail)"
-                                                       ng-if="showDetailDeleteButton()" ng-disabled="canDetailAction()">
+                                                       ng-if="showDetailDeleteButton()" ng-disabled="syncing">
                                                 <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>
                                                 删除
                                             </md-button>
@@ -90,9 +96,10 @@
                                     </div>
                                     <md-divider style="margin-top:5px"></md-divider>
                                 </div>
+
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
                                      ng-click="openGroupEmployeeClassRDlg()"
-                                     ng-if="groupEmployeeClassRFlag">
+                                     ng-if="showDetailAddButton()" ng-show="groupEmployeeClassRFlag && !syncing">
                                     <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
                                 </div>
                             </div>
@@ -101,6 +108,11 @@
 
                         <md-tab label="经销商">
                             <div layout="row" layout-wrap style="margin-top: 20px;">
+                                <div align="center">
+                                    <span ng-if="syncing">
+                                        <img style="width: 20px;padding-top: 13px;" src="app/img/spinner.gif"/>   同步权限中...
+                                    </span>
+                                </div>
                                 <div flex="100" ng-repeat="chanDetail in chanDetailItemList | orderBy:'channel.no'"
                                      ng-click="" class="prod-item"
                                      style="position: relative;padding-bottom: 0px; min-height: 70px;">
@@ -114,7 +126,7 @@
                                         <div flex="20">
                                             <md-button class="md-button close-btn" aria-label="More"
                                                        ng-click="deleteChanDetailAction(chanDetail)"
-                                                       ng-if="showDetailDeleteButton()" ng-disabled="canDetailAction()">
+                                                       ng-if="showDetailDeleteButton()" ng-show="!syncing">
                                                 <ng-md-icon icon="remove_circle_outline" size="20"></ng-md-icon>
                                                 删除
                                             </md-button>
@@ -123,10 +135,17 @@
                                 </div>
                                 <div pagination option="pageOptionChanR"
                                      callback="refreshGroupEmployeeChanRelation(selectedItem)"></div>
+
                                 <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
                                      ng-click="openGroupEmployeeChanRDlg()"
-                                     ng-if="showDetailAddButton()" ng-disabled="canDetailAction()">
+                                     ng-if="showDetailAddButton()" ng-show="!syncing">
                                     <i class="fa fa-plus"></i>&nbsp;&nbsp;点击新增...</a>
+                                </div>
+                                <div flex="100" class="add-new" style="margin: 10px 0 0 0;"
+                                     ng-click="deleteAllChan(chanDetailItemList)"
+                                     ng-if="showDeleteAllChanRButton()" ng-show="!syncing">
+                                    <ng-md-icon icon="remove_circle_outline"
+                                                size="20"></ng-md-icon>&nbsp;&nbsp;全部删除...</a>
                                 </div>
                             </div>
                         </md-tab>
@@ -138,10 +157,10 @@
                                      style="position: relative;padding-bottom: 0px; min-height: 70px;">
                                     <div layout="row" class="height: 100%;">
                                         <div flex="40">
-                                            <div layout-padding>分类编号 : <span>{{brandDetail.brand.no}}</span></div>
+                                            <div layout-padding>品牌编号 : <span>{{brandDetail.brand.no}}</span></div>
                                         </div>
                                         <div flex="40">
-                                            <div layout-padding>分类名称 : <span>{{brandDetail.brand.name}}</span></div>
+                                            <div layout-padding>品牌名称 : <span>{{brandDetail.brand.name}}</span></div>
                                         </div>
                                         <div flex="20">
                                             <md-button class="md-button close-btn" aria-label="More"

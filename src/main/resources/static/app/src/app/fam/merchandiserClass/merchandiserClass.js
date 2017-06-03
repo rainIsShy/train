@@ -5,8 +5,8 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('MerchandiserClassController', function ($scope, GroupUserService,PromotionChannelService, CBIGroupEmployeeChanRService, CBIGroupEmployeeClassRService, CBIGroupEmployeeBrandRService,
-IoneAdapterService, Constant, $mdDialog, $q) {
+angular.module('IOne-Production').controller('MerchandiserClassController', function ($scope, GroupUserService, PromotionChannelService, CBIGroupEmployeeChanRService, CBIGroupEmployeeClassRService, CBIGroupEmployeeBrandRService,
+                                                                                      IoneAdapterService, Constant, $mdDialog, $q, $timeout) {
     $scope.pageOption = {
         sizePerPage: 10,
         currentPage: 0,
@@ -23,20 +23,14 @@ IoneAdapterService, Constant, $mdDialog, $q) {
 
     $scope.selected = [];
 
+    $scope.groupEmployeeClassRFlag = true;
     $scope.menuDisplayOption = {
-        '105-delete': {display: true, name: '删除', uuid: 'cbe0e957-4609-47fa-a793-11efebd32d4b'},
-        '106-query': {display: true, name: '查询', uuid: '726ad142-73bc-4c0e-8fee-4e4873c266e3'},
-        '107-add': {display: true, name: '新增', uuid: 'c5b1baef-8b52-45ee-a055-87f4e88417b7'},
-        '108-edit': {display: true, name: '编辑', uuid: 'aca65674-441b-4859-b1ac-bd4297c64d84'},
-
-        '109-detailAdd': {display: true, name: '点击新增', uuid: '6066e123-a635-47fe-a2ad-7a7d700fd9a0'},
-        '110-detailEdit': {display: true, name: '编辑', uuid: 'f100f38c-267f-4903-b470-dc8e00ac6c7c'},
-        '111-detailDelete': {display: true, name: '删除', uuid: 'fa879963-2aa8-4a1c-b3b8-bf1514f194b0'},
-
-        '205-batchDelete': {display: true, name: '批量刪除', uuid: 'd710408e-fbba-41a6-b340-bd3398b2db15'}
+        '109-detailAdd': {display: true, name: '点击新增', uuid: 'CD40ED57-F398-4273-9296-38392DA1E7C4'},
+        '111-detailDelete': {display: true, name: '删除', uuid: '69D7F98C-1D59-449A-A8BE-6771266A3EA5'},
+        '112-deleteAllChanR': {display: true, name: '全部删除', uuid: '21622D59-E578-4873-9EA8-EF03702FC44D'},
     };
 
-    $scope.getMenuAuthData($scope.RES_UUID_MAP.OCM.PROMOTION.RES_UUID).success(function (data) {
+    $scope.getMenuAuthData($scope.RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
         $scope.menuAuthDataMap = $scope.menuDataMap(data);
     });
 
@@ -53,33 +47,16 @@ IoneAdapterService, Constant, $mdDialog, $q) {
     };
 
 
-    $scope.showDeleteMenuItem = function () {
-        return $scope.isAuthorized('105-delete');
-    };
-
-    $scope.showQueryButton = function () {
-        return $scope.isAuthorized('106-query');
-    };
-
-    $scope.showAddButton = function () {
-        return $scope.isAuthorized('107-add');
-    };
-
-    $scope.showEditButton = function () {
-        return $scope.isAuthorized('108-edit');
-    };
-
-
     $scope.showDetailAddButton = function () {
         return $scope.isAuthorized('109-detailAdd');
     };
 
-    $scope.showDetailEditButton = function () {
-        return $scope.isAuthorized('110-detailEdit');
-    };
-
     $scope.showDetailDeleteButton = function () {
         return $scope.isAuthorized('111-detailDelete');
+    };
+
+    $scope.showDeleteAllChanRButton = function () {
+        return $scope.isAuthorized('112-deleteAllChanR');
     };
 
     $scope.showBatchMenu = function () {
@@ -139,6 +116,7 @@ IoneAdapterService, Constant, $mdDialog, $q) {
         totalPage: 100,
         totalElements: 100
     };
+    $scope.syncing = false;
 
     $scope.refreshGroupEmployeeChanRelation = function () {
         CBIGroupEmployeeChanRService.getAll($scope.pageOptionChanR.sizePerPage, $scope.pageOptionChanR.currentPage, $scope.selectedItem.uuid, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
@@ -151,9 +129,10 @@ IoneAdapterService, Constant, $mdDialog, $q) {
     $scope.refreshGroupEmployeeClassRelation = function () {
         CBIGroupEmployeeClassRService.getAll($scope.detailPageOption.sizePerPage, $scope.detailPageOption.currentPage, $scope.selectedItem.uuid, RES_UUID_MAP.CBI.MERCHANDISER_CLASS.RES_UUID).success(function (data) {
             $scope.classDetailItemList = data.content;
-            $scope.groupEmployeeClassRFlag = true;
             if ($scope.classDetailItemList.length > 0) {
                 $scope.groupEmployeeClassRFlag = false;
+            } else {
+                $scope.groupEmployeeClassRFlag = true;
             }
         });
     };
@@ -311,6 +290,25 @@ IoneAdapterService, Constant, $mdDialog, $q) {
         }
     };
 
+    $scope.deleteAllChan = function (allItem) {
+        if (allItem.length > 0) {
+            $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
+                if ($scope.selected) {
+                    var promises = [];
+                    angular.forEach(allItem, function (item) {
+                        var response = CBIGroupEmployeeChanRService.delete(item.uuid).success(function (data) {
+                        });
+                        promises.push(response);
+                    });
+                    $q.all(promises).then(function () {
+                                $scope.refreshGroupEmployeeChanRelation($scope.selectedItem);
+                                $scope.showInfo('删除数据成功。');
+                        $scope.selectItemCount = 0;
+                    });
+                }
+            });
+        }
+    };
 
     $scope.deleteChanDetailAction = function (detail) {
         $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
@@ -318,6 +316,7 @@ IoneAdapterService, Constant, $mdDialog, $q) {
                 CBIGroupEmployeeChanRService.delete(detail.uuid).success(function () {
                     $scope.refreshGroupEmployeeChanRelation($scope.selectedItem);
                     $scope.showInfo("刪除成功!");
+
                 });
             }
         });
@@ -329,6 +328,7 @@ IoneAdapterService, Constant, $mdDialog, $q) {
                 CBIGroupEmployeeClassRService.delete(detail.uuid).success(function () {
                     $scope.refreshGroupEmployeeClassRelation($scope.selectedItem);
                     $scope.showInfo("刪除成功!");
+
                 });
             }
         });
@@ -336,7 +336,8 @@ IoneAdapterService, Constant, $mdDialog, $q) {
 
     $scope.deleteBrandDetailAction = function (detail) {
         $scope.showConfirm('确认删除吗？', '删除后不可恢复。', function () {
-            if ($scope.selectedItem) {CBIGroupEmployeeBrandRService
+            if ($scope.selectedItem) {
+                CBIGroupEmployeeBrandRService;
                 CBIGroupEmployeeBrandRService.delete(detail.uuid).success(function () {
                     $scope.refreshGroupEmployeeBrandRelation($scope.selectedItem);
                     $scope.showInfo("刪除成功!");
@@ -372,30 +373,6 @@ IoneAdapterService, Constant, $mdDialog, $q) {
                 });
             }
         });
-    };
-
-    $scope.confirmAllClickAction = function (event) {
-        if ($scope.selected.length > 0) {
-            $scope.showConfirm('确认批量启用吗？', '', function () {
-                var promotionUpdateInput = {
-                    confirm: '2'
-                };
-                if ($scope.selected) {
-                    var promises = [];
-                    angular.forEach($scope.selected, function (item) {
-                        var response = GroupUserService.modify(item.uuid, promotionUpdateInput).success(function () {
-                        });
-                        promises.push(response);
-                    });
-                    $q.all(promises).then(function () {
-                        $scope.showInfo('审核启用成功。');
-                        $scope.refreshList();
-                        $scope.selectItemCount = 0;
-                        $scope.selected = [];
-                    });
-                }
-            });
-        }
     };
 
 
@@ -437,20 +414,25 @@ IoneAdapterService, Constant, $mdDialog, $q) {
                     ocmBaseChanUuid: dataList[i]
                 };
                 var response = CBIGroupEmployeeChanRService.add(input).success(function () {
-                    var param = {
-                        'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid,
-                        'SYNC_TYPE': 'cbi_group_employee_chan_r'
-                    };
-                    IoneAdapterService.transferIoneAdapter("/groupUserTask", param, $scope, function (response) {
-                    }).error(function (errResp) {
-                       $scope.showError("经销商同步出错");
-                    });
                 });
                 promises.push(response);
             }
             $q.all(promises).then(function () {
-                $scope.refreshGroupEmployeeChanRelation();
-                $scope.showInfo('新增成功!');
+                $scope.syncing = true;
+                $timeout(function () {
+                    var param = {
+                        'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid
+                    };
+
+                    IoneAdapterService.transferIoneAdapter("/groupUserChanTask", param, $scope, function (response) {
+                        $scope.syncing = false;
+                        $scope.refreshGroupEmployeeChanRelation();
+                        $scope.showInfo('新增成功!');
+                    }).error(function (errResp) {
+                        $scope.syncing = false;
+                        $scope.showError("经销商同步出错");
+                    });
+                }, 5000);
 
             })
         });
@@ -464,6 +446,7 @@ IoneAdapterService, Constant, $mdDialog, $q) {
             targetEvent: event,
             locals: {}
         }).then(function (dataList) {
+            $scope.syncing = true;
             var promises = [];
             for (var i = 0; i < dataList.length; i++) {
                 var input = {
@@ -471,21 +454,24 @@ IoneAdapterService, Constant, $mdDialog, $q) {
                     cbiBaseClassUuid: dataList[i]
                 };
                 var response = CBIGroupEmployeeClassRService.add(input).success(function () {
-                    var param = {
-                        'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid,
-                        'SYNC_TYPE': 'cbi_group_employee_class_r'
-                    };
-                    IoneAdapterService.transferIoneAdapter("/groupUserTask", param, $scope, function (response) {
-                    }).error(function (errResp) {
-                       $scope.showError("跟单同步出错");
-                    });
+
                 });
                 promises.push(response);
             }
             $q.all(promises).then(function () {
-                $scope.refreshGroupEmployeeClassRelation();
-                $scope.showInfo('新增成功!');
 
+                $timeout(function () {
+                    var param = {
+                        'AAM_GROUP_EMPLOYEE_UUID': $scope.selectedItem.uuid
+                    };
+                    IoneAdapterService.transferIoneAdapter("/groupUserClassTask", param, $scope, function (response) {
+                        $scope.syncing = false;
+                        $scope.refreshGroupEmployeeClassRelation();
+                        $scope.showInfo('新增成功!');
+                    }).error(function (errResp) {
+                        $scope.showError("跟單同步出错");
+                    });
+                }, 5000);
             })
         });
     };
@@ -624,7 +610,7 @@ angular.module('IOne-Production').controller('GroupEmployeeChanRController', fun
                     $scope.selected.splice(indexFalse,1);
                 }
             }
-        })
+        });
         $scope.alreadyCurrentPage.push($scope.pageOption.currentPage);
     };
 
@@ -710,7 +696,7 @@ angular.module('IOne-Production').controller('GroupEmployeeBrandRController', fu
                     $scope.selected.splice(indexFalse,1);
                 }
             }
-        })
+        });
         $scope.alreadyCurrentPage.push($scope.pageOption.currentPage);
     };
 
