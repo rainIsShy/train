@@ -121,7 +121,10 @@
                                     <div align="center" flex="10" class=" table-head">品牌名称</div>
                                     <div align="center" flex="10" class=" table-head">定价系数</div>
                                     <div align="center" flex="5" class=" table-head">有效否</div>
-                                    <div align="center" flex="10" class=" table-head">同步至下级渠道</div>
+                                    <div align="center" flex="10" class=" table-head"
+                                         ng-if="formMenuDisplayOption['109-copy'].display && (menuAuthDataMap[formMenuDisplayOption['109-copy'].uuid] || isAdmin() || !formMenuDisplayOption['109-copy'].uuid)">
+                                        同步至下级渠道
+                                    </div>
                                 </div>
 
                                 <div ng-repeat="channelRelation in channelRelationList.content | orderBy: 'series.no'">
@@ -151,9 +154,10 @@
                                                          ng-true-value="'1'" ng-false-value="'2'"></md-checkbox>
                                             </md-input-container>
                                         </div>
-                                        <div align="center" flex="10" class=" table-item">
+                                        <div align="center" flex="10" class=" table-item"
+                                             ng-if="formMenuDisplayOption['109-copy'].display && (menuAuthDataMap[formMenuDisplayOption['109-copy'].uuid] || isAdmin() || !formMenuDisplayOption['109-copy'].uuid)">
                                             <md-button
-                                                    ng-if="formMenuDisplayOption['109-copy'].display && (menuAuthDataMap[formMenuDisplayOption['109-copy'].uuid] || isAdmin() || !formMenuDisplayOption['109-copy'].uuid)"
+
                                                     ng-click="changeMenuAction(channelRelation)"> 执行
                                             </md-button>
                                         </div>
