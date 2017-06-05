@@ -51,9 +51,9 @@
                     <div layout-margin layout-align="center center" ng-if="selectedItem != null">
                         <div layout="row" ng-if="selectedItem != null">
                             <div align="center" flex="5" class=" table-head">
-                                <md-checkbox ng-model="selectAll" ng-change="selectAllAction(selectAll)"
-                                             aria-label="全选" ng-true-value="true"
-                                             ng-false-value="false"></md-checkbox>
+                                <md-checkbox ng-model="selectAllFlag" ng-change="selectAllAction(selectAllFlag)"
+                                             aria-label="全选">{{checkCount}} / {{selectAllFlag}}
+                                </md-checkbox>
                             </div>
                             <div align="center" flex="45" class=" table-head">品牌编号</div>
                             <div align="center" flex="45" class=" table-head">品牌名称</div>

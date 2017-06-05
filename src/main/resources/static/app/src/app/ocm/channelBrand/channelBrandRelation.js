@@ -271,10 +271,11 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
         $mdDialog.show({
             controller: 'SyncLowerChannelBrandController',
             templateUrl: 'app/src/app/ocm/channelBrand/addBrandByChannel.html',
-
             parent: angular.element(document.body),
             targetEvent: event,
+            scope: $scope.$new(),
             locals: {
+
                 channelUuid: $scope.selectedItem.uuid,
             }
         }).then(function (dataList) {
@@ -675,10 +676,14 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
     $scope.savedBrandData = new Set();
     $scope.selected = new Set();
     $scope.refreshBrand = function () {
+        $scope.selectAllFlag = false;
         ChannelBrandRelationsService.getAllWithPaging($scope.pageOption2.sizePerPage, $scope.pageOption2.currentPage, '1', $scope.channelUuid, '', '').success(function (data) {
             $scope.pageOption2.totalPage = data.totalPages;
             $scope.pageOption2.totalElements = data.totalElements;
             $scope.allBrand = data.content;
+
+            var promises = [];
+
             angular.forEach($scope.allBrand, function (item) {
                 $scope.selected.forEach(function (data) {
                     if (data.brand.uuid == item.brand.uuid) {
@@ -686,7 +691,7 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
                     }
                 });
 
-                ChannelBrandRelationsService.getAllByChannelUuidAndBrandUuid($scope.selectedItem.uuid, item.brand.uuid).success(function (y) {
+                var response = ChannelBrandRelationsService.getAllByChannelUuidAndBrandUuid($scope.selectedItem.uuid, item.brand.uuid).success(function (y) {
                     if (y.totalElements > 0) {
                         //己儲存的勾選起來
                         if (!$scope.savedBrandData.has(item.brand.uuid)) {
@@ -696,8 +701,29 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
                         item.checked = true;
 
                     }
+
                 });
-            })
+                promises.push(response);
+
+            });
+
+            $q.all(promises).then(function () {
+                $scope.checkCount = 0;
+                angular.forEach($scope.allBrand, function (data) {
+                    if (data.checked == true) {
+                        $scope.checkCount++
+                    }
+                });
+
+                $scope.$apply();
+                if ($scope.checkCount == $scope.allBrand.length) {
+                    $scope.selectAllFlag = $scope.checkCount == $scope.allBrand.length ? true : false;
+                } else {
+                    $scope.selectAllFlag = false;
+                }
+
+            });
+
         });
     };
 
@@ -721,7 +747,6 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
             }
         });
         return result;
-
     };
 
     $scope.toggle = function (item, selected) {
