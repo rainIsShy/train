@@ -325,9 +325,10 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
             $q.all(promises).then(function () {
 
                 if (dataList[0].length > 0) {
+                    $scope.logining = true;
                     var channelUuidList = "";
                     angular.forEach(dataList[0], function (obj) {
-                        channelUuidList = obj.channelUuid + ","
+                        channelUuidList = channelUuidList + obj.channelUuid + ","
                     });
 
                     var param = {
@@ -335,12 +336,16 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
                     };
 
                     IoneAdapterService.transferIoneAdapter("/chanImaPriceTask", param, $scope, function (response) {
-
+                        $scope.showInfo("同步下級渠道品牌成功");
+                        $scope.logining = false;
                     }).error(function (errResp) {
+                        $scope.logining = false;
                         $scope.showError(errResp.message);
                     });
+                } else {
+                    $scope.showInfo("同步下級渠道品牌成功");
                 }
-                $scope.showInfo("同步下級渠道品牌成功");
+
             });
         }
     };
