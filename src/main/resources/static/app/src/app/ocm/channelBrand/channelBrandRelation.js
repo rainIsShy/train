@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('ChannelBrandRelationController', function ($scope, $q, ChannelService, ChannelBrandRelationsService, $mdDialog, Constant, ChannelLevelService) {
+angular.module('IOne-Production').controller('ChannelBrandRelationController', function ($scope, $q, ChannelService, ChannelBrandRelationsService, $mdDialog, Constant, IoneAdapterService, ChannelLevelService) {
     //initial model value
 
     $scope.listFilterItem = {
@@ -323,6 +323,23 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
             });
 
             $q.all(promises).then(function () {
+
+                if (dataList[0].length > 0) {
+                    var channelUuidList = "";
+                    angular.forEach(dataList[0], function (obj) {
+                        channelUuidList = obj.channelUuid + ","
+                    });
+
+                    var param = {
+                        channelUuidList: channelUuidList
+                    };
+
+                    IoneAdapterService.transferIoneAdapter("/chanImaPriceTask", param, $scope, function (response) {
+
+                    }).error(function (errResp) {
+                        $scope.showError(errResp.message);
+                    });
+                }
                 $scope.showInfo("同步下級渠道品牌成功");
             });
         }
