@@ -11,13 +11,17 @@
                     <label>查询套件</label>
                     <input ng-model="listFilterOption.suite">
                 </md-input-container>
+                <md-button flex="5" ng-click="openQuerylDlg()" style="padding-top: 10px;"
+                           ng-disabled="searchEmployee.$invalid" class="md-icon-button">
+                    <i class="fa fa-search">&nbsp;选择</i>
+                </md-button>
                 <md-input-container flex="20" style="margin-left: 50px;" >
                     <label>可销售库存</label>
                     <input ng-model="itemListTotal" ng-disabled="true">
                 </md-input-container>
                 <md-button class="md-icon-button md-primary" style="position: relative; top: 15px;"
                            ng-click="refreshList()">
-                    <i class="fa fa-search"></i>
+                    <i class="fa fa-search">&nbsp;查询</i>
                 </md-button>
             </div>
             <div layout="row" style="background-color:#BDBDBD;" >
