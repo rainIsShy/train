@@ -256,9 +256,6 @@ angular.module('IOne-Production').service('ChannelPriceService', function ($http
         return $http.delete(Constant.BACKEND_BASE + '/channelPrices?channelUuid=' + channelUuid);
     };
 
-    this.insertByParentChannel = function (channelUuid, brandList) {
-        return $http.post(Constant.BACKEND_BASE + '/channelPrices/' + channelUuid + '/syncParent/', brandList);
-    };
 
 });
 

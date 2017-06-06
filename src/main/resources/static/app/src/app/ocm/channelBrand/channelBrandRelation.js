@@ -279,43 +279,7 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
             }
         }).then(function (dataList) {
             if (dataList) {
-                if (dataList) {
-                    var promises = [];
-                    angular.forEach(dataList[0], function (addObject) {
-                        var channelRelationResponse = ChannelBrandRelationsService.add(addObject).error(function (data) {
-
-                        });
-                        promises.push(channelRelationResponse);
-                    });
-
-                    angular.forEach(dataList[1], function (obj) {
-                        var channelRelationResponse = ChannelBrandRelationsService.deleteByChannelAndBrand(obj.channelUuid, obj.brandUuid).error(function (data) {
-
-                        });
-                        promises.push(channelRelationResponse);
-                    });
-
-                    $q.all(promises).then(function () {
-                        if (dataList[0].length > 0) {
-                            $scope.logining = true;
-                            var channelUuid = "";
-                            var brandUuidList = [];
-                            angular.forEach(dataList[0], function (obj) {
-                                channelUuid = obj.channelUuid;
-                                brandUuidList.push(obj.brandUuid);
-                            });
-
-                            ChannelPriceService.insertByParentChannel(channelUuid, brandUuidList).success(function () {
-                                $scope.logining = false;
-                                $scope.showInfo("同步下級渠道品牌成功");
-                            })
-                        } else {
-
-                            $scope.showInfo("同步下級渠道品牌成功");
-                        }
-
-                    });
-                }
+                $scope.addLowerChannelBrand(dataList);
             }
 
         });
@@ -359,29 +323,7 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
             });
 
             $q.all(promises).then(function () {
-
-                if (dataList[0].length > 0) {
-                    $scope.logining = true;
-                    var channelUuidList = "";
-                    angular.forEach(dataList[0], function (obj) {
-                        channelUuidList = channelUuidList + obj.channelUuid + ","
-                    });
-
-                    var param = {
-                        channelUuidList: channelUuidList
-                    };
-
-                    // IoneAdapterService.transferIoneAdapter("/chanImaPriceTask", param, $scope, function (response) {
-                    //     $scope.showInfo("同步下級渠道品牌成功");
-                    //     $scope.logining = false;
-                    // }).error(function (errResp) {
-                    //     $scope.logining = false;
-                    //     $scope.showError(errResp.message);
-                    // });
-                } else {
-                    $scope.showInfo("同步下級渠道品牌成功");
-                }
-
+                $scope.showInfo("同步下級渠道品牌成功");
             });
         }
     };
@@ -769,7 +711,6 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
         $scope.selectedItem = item.channel;
         $scope.refreshBrand();
     };
-
 
 
     $scope.exists = function (item, list) {
