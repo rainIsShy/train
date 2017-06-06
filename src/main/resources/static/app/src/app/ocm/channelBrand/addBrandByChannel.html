@@ -51,8 +51,8 @@
                     <div layout-margin layout-align="center center" ng-if="selectedItem != null">
                         <div layout="row" ng-if="selectedItem != null">
                             <div align="center" flex="5" class=" table-head">
-                                <md-checkbox ng-model="selectAllFlag" ng-change="selectAllAction(selectAllFlag)"
-                                             aria-label="全选">{{checkCount}} / {{selectAllFlag}}
+                                <md-checkbox ng-click="selectAllAction(selectAllFlag)" ng-checked="selectAllFlag"
+                                             aria-label="全选">
                                 </md-checkbox>
                             </div>
                             <div align="center" flex="45" class=" table-head">品牌编号</div>
@@ -76,8 +76,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div pagination option="pageOption2"
-                             callback="refreshBrand()"></div>
+                        <div pagination option="pageOption2" callback="refreshBrand(selectAllFlag)"></div>
                     </div>
                 </div>
 

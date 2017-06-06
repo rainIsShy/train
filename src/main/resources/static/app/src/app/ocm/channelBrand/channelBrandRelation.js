@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('ChannelBrandRelationController', function ($scope, $q, ChannelService, ChannelBrandRelationsService, $mdDialog, Constant, IoneAdapterService, ChannelLevelService) {
+angular.module('IOne-Production').controller('ChannelBrandRelationController', function ($scope, $q, ChannelService, ChannelBrandRelationsService, $mdDialog, Constant, IoneAdapterService, ChannelLevelService, ChannelPriceService) {
     //initial model value
 
     $scope.listFilterItem = {
@@ -275,12 +275,47 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
             targetEvent: event,
             scope: $scope.$new(),
             locals: {
-
                 channelUuid: $scope.selectedItem.uuid,
             }
         }).then(function (dataList) {
             if (dataList) {
-                $scope.addLowerChannelBrand(dataList);
+                if (dataList) {
+                    var promises = [];
+                    angular.forEach(dataList[0], function (addObject) {
+                        var channelRelationResponse = ChannelBrandRelationsService.add(addObject).error(function (data) {
+
+                        });
+                        promises.push(channelRelationResponse);
+                    });
+
+                    angular.forEach(dataList[1], function (obj) {
+                        var channelRelationResponse = ChannelBrandRelationsService.deleteByChannelAndBrand(obj.channelUuid, obj.brandUuid).error(function (data) {
+
+                        });
+                        promises.push(channelRelationResponse);
+                    });
+
+                    $q.all(promises).then(function () {
+                        if (dataList[0].length > 0) {
+                            $scope.logining = true;
+                            var channelUuid = "";
+                            var brandUuidList = [];
+                            angular.forEach(dataList[0], function (obj) {
+                                channelUuid = obj.channelUuid;
+                                brandUuidList.push(obj.brandUuid);
+                            });
+
+                            ChannelPriceService.insertByParentChannel(channelUuid, brandUuidList).success(function () {
+                                $scope.logining = false;
+                                $scope.showInfo("同步下級渠道品牌成功");
+                            })
+                        } else {
+
+                            $scope.showInfo("同步下級渠道品牌成功");
+                        }
+
+                    });
+                }
             }
 
         });
@@ -336,13 +371,13 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
                         channelUuidList: channelUuidList
                     };
 
-                    IoneAdapterService.transferIoneAdapter("/chanImaPriceTask", param, $scope, function (response) {
-                        $scope.showInfo("同步下級渠道品牌成功");
-                        $scope.logining = false;
-                    }).error(function (errResp) {
-                        $scope.logining = false;
-                        $scope.showError(errResp.message);
-                    });
+                    // IoneAdapterService.transferIoneAdapter("/chanImaPriceTask", param, $scope, function (response) {
+                    //     $scope.showInfo("同步下級渠道品牌成功");
+                    //     $scope.logining = false;
+                    // }).error(function (errResp) {
+                    //     $scope.logining = false;
+                    //     $scope.showError(errResp.message);
+                    // });
                 } else {
                     $scope.showInfo("同步下級渠道品牌成功");
                 }
@@ -650,7 +685,6 @@ angular.module('IOne-Production').controller('AddBrandController', function ($sc
 
 angular.module('IOne-Production').controller('SyncLowerChannelBrandController', function ($scope, $q, $mdToast, $mdDialog, ChannelLevelService, ChannelBrandRelationsService, BrandFile, channelUuid) {
     $scope.channelUuid = channelUuid;
-
     $scope.pageOption = {
         sizePerPage: 5,
         currentPage: 0,
@@ -715,7 +749,6 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
                     }
                 });
 
-                $scope.$apply();
                 if ($scope.checkCount == $scope.allBrand.length) {
                     $scope.selectAllFlag = $scope.checkCount == $scope.allBrand.length ? true : false;
                 } else {
@@ -765,9 +798,10 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
     };
 
 
-    $scope.selectAllAction = function (checked) {
+    $scope.selectAllAction = function () {
+        $scope.selectAllFlag = !$scope.selectAllFlag;
         angular.forEach($scope.allBrand, function (item) {
-            if (checked) {
+            if ($scope.selectAllFlag) {
                 item.checked = true;
                 $scope.selected.add(item);
             } else {
