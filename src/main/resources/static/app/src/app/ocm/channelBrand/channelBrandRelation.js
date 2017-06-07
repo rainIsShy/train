@@ -656,9 +656,7 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
         totalElements: 0
     };
 
-    $scope.savedBrandData = new Set();
-    $scope.selected = new Set();
-    $scope.tempSavedData = new Set();
+
     $scope.refreshBrand = function () {
         $scope.selectAllFlag = false;
         ChannelBrandRelationsService.getAllWithPaging($scope.pageOption2.sizePerPage, $scope.pageOption2.currentPage, '1', $scope.channelUuid, '', '').success(function (data) {
@@ -735,6 +733,10 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
         $scope.selected = new Set();
         $scope.savedBrandData = new Set();
         $scope.selectedItem = item.channel;
+
+        $scope.savedBrandData = new Set();
+        $scope.selected = new Set();
+        $scope.tempSavedData = new Set();
 
         ChannelBrandRelationsService.getBrandUuidByChannelUuid($scope.selectedItem.uuid).success(function (datalist) {
             angular.forEach(datalist, function (data) {
