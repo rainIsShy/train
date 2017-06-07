@@ -23,17 +23,8 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
     $scope.formMenuDisplayOption = {
         '100-add': {display: true, name: '新增', uuid: '10dece1d-3a54-4d23-a41e-9419b42efe66'},
         '101-delete': {display: true, name: '删除', uuid: '58516534-9c0b-46ea-b000-82b03ca79f97'},
-        '102-edit': {display: true, name: '编辑', uuid: 'af9c186a-08f5-48d7-9249-36e4985f5cda'},
-        // '107-change': {display: true, name: '依品牌同步下级渠道', uuid: '1559e42c-5937-4d77-98d7-0ce396bb6a0d'},
         '109-copy': {display: true, name: '依下级渠道同步品牌', uuid: '1559e42c-5937-4d77-98d7-0ce396bb6a0d'},
 
-        '200-cancel': {display: true, name: '取消新增', uuid: '0c637a24-9692-42e6-a431-22fc5c5bdd24'},
-        '201-save': {display: true, name: '保存', uuid: 'aaf72666-02bf-4073-b692-44b42759a029'},
-
-
-        '302-save': {display: true, name: '保存', uuid: 'a4b3b116-409a-49d6-ad05-4237143f9413'},
-        '303-cancel': {display: true, name: '取消修改', uuid: '66b7ae2c-8fae-4f04-a80a-25cb79ce793d'},
-        '304-quit': {display: true, name: '退出编辑', uuid: '0d290203-dc51-4b9f-bf4f-197d80f3e677'},
 
         '600-query': {display: true, name: '查询', uuid: '6d9a8d23-85c8-4bda-a40c-718df09ee765'},
         '601-selectAll': {display: false, name: '全选', uuid: '290387e5-185b-40bc-8534-db2249048ef1'},
@@ -44,6 +35,18 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
         '613-revertAudit': {display: true, name: '取消审核', uuid: '129a721f-e0de-4edf-8567-7d227c0d03d2'},
         '614-valid': {display: true, name: '有效', uuid: '4c064386-ef2c-4738-9e44-ad4b578c45d2'},
         '615-invalid': {display: true, name: '无效', uuid: 'da7f191e-a3bc-47bd-aa0b-f1243aa81a64'}
+    };
+
+    $scope.menuAction = function (menuId, $event) {
+        //Main menu
+        if (menuId == 100) {
+            $scope.preAddMenuAction();
+        } else if (menuId == 101) {
+            $scope.deleteMenuAction();
+        } else if (menuId == 109) {
+            $scope.copyChannelPrice();
+        }
+
     };
 
     $scope.queryPageOption = {
@@ -71,23 +74,13 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
         $scope.queryChannelRelationWithPaging();
 
         //若下級渠道的話就隱藏同步的按鈕
-        ChannelLevelService.getByChannelUuid(channel.uuid).success(function (data) {
+        ChannelLevelService.getByParentOcmBaseChanUuid(channel.uuid).success(function (data) {
             $scope.showSyncButton = data.totalElements > 0 ? true : false;
-            $scope.formMenuDisplayOption['109-copy'].display = data.totalElements > 0 ? true : false;
+
         })
     };
 
     $scope.queryChannelRelationWithPaging = function () {
-        // var status = '';
-        // if ($scope.selectedItem.channelFlag == '1' || $scope.selectedItem.channelFlag == '3') {
-        //     status = '1'
-        // }
-        // ChannelBrandRelationsService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, status, $scope.selectedItem.uuid, '', '')
-        //     .success(function (data) {
-        //         $scope.channelRelationList = data;
-        //         $scope.pageOption.totalPage = data.totalPages;
-        //         $scope.pageOption.totalElements = data.totalElements;
-        //     });
         $scope.searchChannelRelationWithPaging('', '')
     };
 
@@ -674,56 +667,32 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
                 });
 
                 if ($scope.savedBrandData.has(item.brand.uuid)) {
-                    // if ($scope.selected.size > 0 && !$scope.exists(item)) {
-                    //     console.log(item.brand.name)
-                    //     item.checked = false;
-                    // } else {
                     if (!$scope.tempSavedData.has(item.brand.uuid)) {
                         $scope.savedBrandData.add(item.brand.uuid);
                         $scope.selected.add(item);
                         item.checked = true;
                         $scope.tempSavedData.add(item.brand.uuid);
                     }
-                    // }
                 }
 
             });
 
 
-            // $q.all(promises).then(function () {
-                $scope.checkCount = 0;
-                angular.forEach($scope.allBrand, function (data) {
-                    if (data.checked == true) {
-                        $scope.checkCount++
-                    }
-                });
-
-                if ($scope.checkCount == $scope.allBrand.length) {
-                    $scope.selectAllFlag = $scope.checkCount == $scope.allBrand.length ? true : false;
-                } else {
-                    $scope.selectAllFlag = false;
+            $scope.checkCount = 0;
+            angular.forEach($scope.allBrand, function (data) {
+                if (data.checked == true) {
+                    $scope.checkCount++
                 }
+            });
 
-            // });
+            if ($scope.checkCount == $scope.allBrand.length) {
+                $scope.selectAllFlag = $scope.checkCount == $scope.allBrand.length ? true : false;
+            } else {
+                $scope.selectAllFlag = false;
+            }
+
 
         });
-    };
-
-    $scope.checkDeleteSavedData = function (brandUuid) {
-        if ($scope.selected.size > 0) {
-            $scope.selectedUuidSet = [];
-            $scope.selected.forEach(x => $scope.selectedUuidSet.push(x.brand.uuid));
-
-            //原本保存，但取消勾選後，預計要删除的资料
-            $scope.deleteDataSet = Array.from($scope.savedBrandData).filter(x => $scope.selectedUuidSet.indexOf(x) == -1);
-            if ($scope.deleteDataSet.length > 0) {
-                return $scope.deleteDataSet.indexOf(brandUuid) != -1 ? true : false;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
     };
 
 
@@ -865,6 +834,7 @@ angular.module('IOne-Production').controller('SyncBrandTOLowerChannelController'
 
     $scope.savedChannelData = new Set();
     $scope.selected = new Set();
+    $scope.tempSavedData = new Set();
 
     $scope.refreshChannel = function () {
         ChannelLevelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, '', '1', '', '', '', '', $scope.channelUuid, $scope.channelUuid).success(function (data) {
@@ -878,30 +848,43 @@ angular.module('IOne-Production').controller('SyncBrandTOLowerChannelController'
                     }
                 });
 
-                ChannelBrandRelationsService.getAllByChannelUuidAndBrandUuid(item.channel.uuid, $scope.selectedItem.uuid).success(function (y) {
-                    if (y.totalElements > 0) {
-                        //己儲存的勾選起來
-                        if (!$scope.savedChannelData.has(item.channel.uuid)) {
-                            $scope.savedChannelData.add(item.channel.uuid);
-                            $scope.selected.add(item);
-                        }
+                if ($scope.savedChannelData.has(item.channel.uuid)) {
+                    if (!$scope.tempSavedData.has(item.channel.uuid)) {
+                        $scope.savedChannelData.add(item.channel.uuid);
+                        $scope.selected.add(item);
                         item.checked = true;
-
+                        $scope.tempSavedData.add(item.channel.uuid);
                     }
-                });
-            })
+                }
+
+
+            });
+
+            $scope.checkCount = 0;
+            angular.forEach($scope.allChannel, function (data) {
+                if (data.checked == true) {
+                    $scope.checkCount++
+                }
+            });
+
+            if ($scope.checkCount == $scope.allChannel.length) {
+                $scope.selectAllFlag = $scope.checkCount == $scope.allChannel.length ? true : false;
+            } else {
+                $scope.selectAllFlag = false;
+            }
         });
     };
 
-    $scope.pageOption2 = {
-        sizePerPage: 10,
-        currentPage: 0,
-        totalPage: 0,
-        totalElements: 0
-    };
+
+    ChannelBrandRelationsService.findChannelUuidByBrandUuid($scope.selectedItem.uuid).success(function (datalist) {
+        angular.forEach(datalist, function (data) {
+            $scope.savedChannelData.add(data);
+
+        });
+        $scope.refreshChannel();
+    });
 
 
-    $scope.refreshChannel();
 
 
     $scope.exists = function (item, list) {
@@ -912,6 +895,8 @@ angular.module('IOne-Production').controller('SyncBrandTOLowerChannelController'
             }
         });
         return result;
+
+
     };
 
     $scope.toggle = function (item, selected) {
@@ -930,19 +915,33 @@ angular.module('IOne-Production').controller('SyncBrandTOLowerChannelController'
     };
 
 
-    $scope.selectAllAction = function (checked) {
+    $scope.selectAllAction = function () {
+        let allChecked = true;
         angular.forEach($scope.allChannel, function (item) {
-            if (checked) {
+            if (!item.checked) {
+                allChecked = false;
+            }
+        });
+        $scope.selectAllFlag = !allChecked;
+        let tempDeleteSet = new Set(); //暫存要刪除的筆數
+
+        angular.forEach($scope.allChannel, function (item) {
+            if ($scope.selectAllFlag) {
                 item.checked = true;
                 $scope.selected.add(item);
             } else {
                 item.checked = false;
                 $scope.selected.forEach(function (data) {
                     if (data.channel.uuid == item.channel.uuid) {
-                        $scope.selected.delete(item);
+                        tempDeleteSet.add(data);
                     }
                 })
             }
+        });
+
+        //把之前勾選的筆數刪除掉
+        tempDeleteSet.forEach(function (data) {
+            $scope.selected.delete(data);
         });
 
     };

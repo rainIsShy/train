@@ -77,4 +77,9 @@ angular.module('IOne-Production').service('ChannelBrandRelationsService', functi
         var url = '/channelBrandRelations?action=getBrand&channelUuid=' + channelUuid;
         return $http.get(Constant.BACKEND_BASE + url);
     };
+
+    this.findChannelUuidByBrandUuid = function (brandUuid) {
+        var url = '/channelBrandRelations?action=getChannel&brandUuid=' + brandUuid;
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
 });

@@ -14,9 +14,9 @@
                     <div layout-margin layout-align="center center" ng-if="selectedItem != null">
                         <div layout="row" ng-if="selectedItem != null">
                             <div align="center" flex="10" class=" table-head">
-                                <md-checkbox ng-model="selectAll" ng-change="selectAllAction(selectAll)"
-                                             aria-label="全选" ng-true-value="true"
-                                             ng-false-value="false"></md-checkbox>
+                                <md-checkbox ng-click="selectAllAction(selectAllFlag)" ng-checked="selectAllFlag"
+                                             aria-label="全选">
+                                </md-checkbox>
                             </div>
                             <div align="center" flex="45" class=" table-head">渠道编号</div>
                             <div align="center" flex="45" class=" table-head">渠道名称</div>
