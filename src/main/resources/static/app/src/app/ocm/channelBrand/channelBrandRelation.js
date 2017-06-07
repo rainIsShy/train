@@ -689,32 +689,6 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
                     // }
                 }
 
-                // if ($scope.checkDeleteSavedData(item.brand.uuid)) {
-                //     item.checked = false;
-                // } else {
-
-                // }
-
-
-                // var response = ChannelBrandRelationsService.getAllByChannelUuidAndBrandUuid($scope.selectedItem.uuid, item.brand.uuid).success(function (y) {
-                //     if (y.totalElements > 0) {
-                //
-                //         if (!$scope.exists(item,$scope.selected )) {
-                //             //己儲存的勾選起來
-                //             if (!$scope.savedBrandData.has(item.brand.uuid)) {
-                //                 $scope.savedBrandData.add(item.brand.uuid);
-                //                 $scope.selected.add(item);
-                //             }
-                //             item.checked = true;
-                //             console.log(item.brand.name)
-                //         }
-                //     }
-                //
-                // });
-                // promises.push(response);
-                // if ($scope.checkDeleteSavedData(item.brand.uuid)) {
-                //     item.checked = false
-                // }
             });
 
 
@@ -918,7 +892,7 @@ angular.module('IOne-Production').controller('SyncBrandTOLowerChannelController'
     };
 
     $scope.pageOption2 = {
-        sizePerPage: 5,
+        sizePerPage: 10,
         currentPage: 0,
         totalPage: 0,
         totalElements: 0
