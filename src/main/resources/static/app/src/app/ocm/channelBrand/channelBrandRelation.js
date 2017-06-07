@@ -60,8 +60,8 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
         totalElements: 100
     };
 
-    $scope.editItem = function (channelRelation) {
-        $scope.selectedItem = channelRelation;
+    $scope.editItem = function (channel) {
+        $scope.selectedItem = channel;
         $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
         $scope.pageOption.currentPage = 0;
         $scope.pageOption.totalPage = 0;
@@ -69,6 +69,12 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
         $scope.pageOption.totalElements = 0;
         $scope.listFilterItem.itemUuids.length = 0;
         $scope.queryChannelRelationWithPaging();
+
+        //若下級渠道的話就隱藏同步的按鈕
+        ChannelLevelService.getByChannelUuid(channel.uuid).success(function (data) {
+            $scope.showSyncButton = data.totalElements > 0 ? true : false;
+            $scope.formMenuDisplayOption['109-copy'].display = data.totalElements > 0 ? true : false;
+        })
     };
 
     $scope.queryChannelRelationWithPaging = function () {
@@ -503,6 +509,7 @@ angular.module('IOne-Production').controller('AddBrandController', function ($sc
         $scope.pageOption.currentPage = 0;
         $scope.pageOption.totalPage = 0;
         $scope.pageOption.totalElements = 0;
+
     };
 
 
@@ -651,6 +658,7 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
 
     $scope.savedBrandData = new Set();
     $scope.selected = new Set();
+    $scope.tempSavedData = new Set();
     $scope.refreshBrand = function () {
         $scope.selectAllFlag = false;
         ChannelBrandRelationsService.getAllWithPaging($scope.pageOption2.sizePerPage, $scope.pageOption2.currentPage, '1', $scope.channelUuid, '', '').success(function (data) {
@@ -658,7 +666,7 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
             $scope.pageOption2.totalElements = data.totalElements;
             $scope.allBrand = data.content;
 
-            var promises = [];
+            // var promises = [];
 
             angular.forEach($scope.allBrand, function (item) {
                 $scope.selected.forEach(function (data) {
@@ -667,23 +675,50 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
                     }
                 });
 
-                var response = ChannelBrandRelationsService.getAllByChannelUuidAndBrandUuid($scope.selectedItem.uuid, item.brand.uuid).success(function (y) {
-                    if (y.totalElements > 0) {
-                        //己儲存的勾選起來
-                        if (!$scope.savedBrandData.has(item.brand.uuid)) {
-                            $scope.savedBrandData.add(item.brand.uuid);
-                            $scope.selected.add(item);
-                        }
+                if ($scope.savedBrandData.has(item.brand.uuid)) {
+                    // if ($scope.selected.size > 0 && !$scope.exists(item)) {
+                    //     console.log(item.brand.name)
+                    //     item.checked = false;
+                    // } else {
+                    if (!$scope.tempSavedData.has(item.brand.uuid)) {
+                        $scope.savedBrandData.add(item.brand.uuid);
+                        $scope.selected.add(item);
                         item.checked = true;
-
+                        $scope.tempSavedData.add(item.brand.uuid);
                     }
+                    // }
+                }
 
-                });
-                promises.push(response);
+                // if ($scope.checkDeleteSavedData(item.brand.uuid)) {
+                //     item.checked = false;
+                // } else {
 
+                // }
+
+
+                // var response = ChannelBrandRelationsService.getAllByChannelUuidAndBrandUuid($scope.selectedItem.uuid, item.brand.uuid).success(function (y) {
+                //     if (y.totalElements > 0) {
+                //
+                //         if (!$scope.exists(item,$scope.selected )) {
+                //             //己儲存的勾選起來
+                //             if (!$scope.savedBrandData.has(item.brand.uuid)) {
+                //                 $scope.savedBrandData.add(item.brand.uuid);
+                //                 $scope.selected.add(item);
+                //             }
+                //             item.checked = true;
+                //             console.log(item.brand.name)
+                //         }
+                //     }
+                //
+                // });
+                // promises.push(response);
+                // if ($scope.checkDeleteSavedData(item.brand.uuid)) {
+                //     item.checked = false
+                // }
             });
 
-            $q.all(promises).then(function () {
+
+            // $q.all(promises).then(function () {
                 $scope.checkCount = 0;
                 angular.forEach($scope.allBrand, function (data) {
                     if (data.checked == true) {
@@ -697,9 +732,26 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
                     $scope.selectAllFlag = false;
                 }
 
-            });
+            // });
 
         });
+    };
+
+    $scope.checkDeleteSavedData = function (brandUuid) {
+        if ($scope.selected.size > 0) {
+            $scope.selectedUuidSet = [];
+            $scope.selected.forEach(x => $scope.selectedUuidSet.push(x.brand.uuid));
+
+            //原本保存，但取消勾選後，預計要删除的资料
+            $scope.deleteDataSet = Array.from($scope.savedBrandData).filter(x => $scope.selectedUuidSet.indexOf(x) == -1);
+            if ($scope.deleteDataSet.length > 0) {
+                return $scope.deleteDataSet.indexOf(brandUuid) != -1 ? true : false;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     };
 
 
@@ -709,11 +761,19 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
         $scope.selected = new Set();
         $scope.savedBrandData = new Set();
         $scope.selectedItem = item.channel;
-        $scope.refreshBrand();
+
+        ChannelBrandRelationsService.getBrandUuidByChannelUuid($scope.selectedItem.uuid).success(function (datalist) {
+            angular.forEach(datalist, function (data) {
+                $scope.savedBrandData.add(data);
+
+            });
+            $scope.refreshBrand();
+        })
+
     };
 
 
-    $scope.exists = function (item, list) {
+    $scope.exists = function (item) {
         let result = false;
         $scope.selected.forEach(function (data) {
             if (data.brand.uuid == item.brand.uuid) {
@@ -726,7 +786,7 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
     $scope.toggle = function (item, selected) {
 
         if (item.checked) {
-            item.checked = !item.checked;
+            item.checked = false;
             $scope.selected.forEach(function (data) {
                 if (data.brand.uuid == item.brand.uuid) {
                     selected.delete(data);
@@ -740,7 +800,15 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
 
 
     $scope.selectAllAction = function () {
-        $scope.selectAllFlag = !$scope.selectAllFlag;
+        let allChecked = true;
+        angular.forEach($scope.allBrand, function (item) {
+            if (!item.checked) {
+                allChecked = false;
+            }
+        });
+        $scope.selectAllFlag = !allChecked;
+        let tempDeleteSet = new Set(); //暫存要刪除的筆數
+
         angular.forEach($scope.allBrand, function (item) {
             if ($scope.selectAllFlag) {
                 item.checked = true;
@@ -749,10 +817,15 @@ angular.module('IOne-Production').controller('SyncLowerChannelBrandController', 
                 item.checked = false;
                 $scope.selected.forEach(function (data) {
                     if (data.brand.uuid == item.brand.uuid) {
-                        $scope.selected.delete(item);
+                        tempDeleteSet.add(data);
                     }
                 })
             }
+        });
+
+        //把之前勾選的筆數刪除掉
+        tempDeleteSet.forEach(function (data) {
+            $scope.selected.delete(data);
         });
     };
 

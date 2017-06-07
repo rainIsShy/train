@@ -72,4 +72,9 @@ angular.module('IOne-Production').service('ChannelBrandRelationsService', functi
     this.deleteByChannelAndBrand = function (channelUuid, brandUuid) {
         return $http.delete(Constant.BACKEND_BASE + '/channelBrandRelations?channelUuid=' + channelUuid + '&brandUuid=' + brandUuid);
     };
+
+    this.getBrandUuidByChannelUuid = function (channelUuid) {
+        var url = '/channelBrandRelations?action=getBrand&channelUuid=' + channelUuid;
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
 });
