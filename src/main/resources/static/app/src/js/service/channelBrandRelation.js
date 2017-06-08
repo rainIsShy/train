@@ -78,8 +78,8 @@ angular.module('IOne-Production').service('ChannelBrandRelationsService', functi
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
-    this.findChannelUuidByBrandUuid = function (brandUuid) {
-        var url = '/channelBrandRelations?action=getChannel&brandUuid=' + brandUuid;
+    this.findChannelUuidByBrandUuid = function (brandUuid, channelUuid) {
+        var url = '/channelBrandRelations?action=getChannel&brandUuid=' + brandUuid + '&channelUuid=' + channelUuid;
         return $http.get(Constant.BACKEND_BASE + url);
     };
 });

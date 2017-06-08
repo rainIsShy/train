@@ -876,7 +876,7 @@ angular.module('IOne-Production').controller('SyncBrandTOLowerChannelController'
     };
 
 
-    ChannelBrandRelationsService.findChannelUuidByBrandUuid($scope.selectedItem.uuid).success(function (datalist) {
+    ChannelBrandRelationsService.findChannelUuidByBrandUuid($scope.selectedItem.uuid, $scope.channelUuid).success(function (datalist) {
         angular.forEach(datalist, function (data) {
             $scope.savedChannelData.add(data);
 
