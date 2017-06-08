@@ -41,7 +41,30 @@
                     <md-content class="formList">
                         <form name="mainForm" novalidate>
 
-                            <div ng-if="selectedItem != null" channel-series-relation-table1></div>
+                            <div ng-if="selectedItem != null">
+                                <div class="menu">
+                                    <md-content>
+                                        <div class="menu-bar" layout="row" layout-sm="column" layout-align="center left"
+                                             ng-if="ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                            <md-button ng-click="menuAction(100)"
+                                                       ng-if="formMenuDisplayOption['100-add'].display && (menuAuthDataMap[formMenuDisplayOption['100-add'].uuid] || isAdmin() || !formMenuDisplayOption['100-add'].uuid)">
+                                                <i class="fa fa-plus"></i>&nbsp;{{formMenuDisplayOption['100-add'].name}}
+                                            </md-button>
+
+                                            <md-button ng-click="menuAction(101)"
+                                                       ng-if="formMenuDisplayOption['101-delete'].display && (menuAuthDataMap[formMenuDisplayOption['101-delete'].uuid] || isAdmin() || !formMenuDisplayOption['101-delete'].uuid)"
+                                                       ng-disabled="form_delete_button_disabled == 1">
+                                                <i class="fa fa-times"></i>&nbsp;{{formMenuDisplayOption['101-delete'].name}}
+                                            </md-button>
+                                            <md-button ng-click="menuAction(109)" ng-disabled="!showSyncButton"
+                                                       ng-if="formMenuDisplayOption['109-copy'].display && (menuAuthDataMap[formMenuDisplayOption['109-copy'].uuid] || isAdmin() || !formMenuDisplayOption['109-copy'].uuid)">
+                                                <i class="fa fa-files-o"></i>&nbsp;{{formMenuDisplayOption['109-copy'].name}}
+                                            </md-button>
+                                        </div>
+                                    </md-content>
+                                </div>
+
+                            </div>
                             <div ng-if="selectedItem != null" channel-series-relation-table2></div>
                             <div layout="column">
                                 <div flex layout="column" class="order-item-background"
@@ -100,7 +123,6 @@
                                            min="0"/>
                                 </md-input-container>
                                 <md-button class="md-raised"
-                                           ng-if="formMenuDisplayOption['602-execute'].display && (menuAuthDataMap[formMenuDisplayOption['602-execute'].uuid] || isAdmin() || !formMenuDisplayOption['602-execute'].uuid)"
                                            ng-click="updateInBatch()" style="margin-top: 22px;height: 20px;"> 执行
                                 </md-button>
                             </div>
@@ -120,7 +142,11 @@
                                     <div align="center" flex="10" class=" table-head">品牌编号</div>
                                     <div align="center" flex="10" class=" table-head">品牌名称</div>
                                     <div align="center" flex="10" class=" table-head">定价系数</div>
-                                    <div align="center" flex="10" class=" table-head">有效否</div>
+                                    <div align="center" flex="5" class=" table-head">有效否</div>
+                                    <div align="center" flex="10" class=" table-head"
+                                         ng-if="formMenuDisplayOption['109-copy'].display && (menuAuthDataMap[formMenuDisplayOption['109-copy'].uuid] || isAdmin() || !formMenuDisplayOption['109-copy'].uuid)">
+                                        同步至下级渠道
+                                    </div>
                                 </div>
 
                                 <div ng-repeat="channelRelation in channelRelationList.content | orderBy: 'series.no'">
@@ -144,12 +170,20 @@
                                                 }}
                                             </div>
                                         </div>
-                                        <div align="center" flex="10" class=" table-item">
-                                            <md-checkbox style=" padding: 0px 0px 0px 20px;" aria-label="..."
+                                        <div align="center" flex="5" class=" table-item">
+                                            <md-checkbox aria-label="..."
                                                          ng-model="channelRelation.status" ng-disabled="true"
                                                          ng-true-value="'1'" ng-false-value="'2'"></md-checkbox>
                                             </md-input-container>
                                         </div>
+                                        <div align="center" flex="10" class=" table-item"
+                                             ng-if="formMenuDisplayOption['109-copy'].display && (menuAuthDataMap[formMenuDisplayOption['109-copy'].uuid] || isAdmin() || !formMenuDisplayOption['109-copy'].uuid)">
+                                            <md-button
+                                                    ng-disabled="!showSyncButton"
+                                                    ng-click="changeMenuAction(channelRelation)"> 执行
+                                            </md-button>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div pagination option="pageOption"

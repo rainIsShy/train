@@ -27,9 +27,6 @@ angular.module('IOne-Production').service('ChannelBrandRelationsService', functi
             url = url + '&brandName=' + brandName;
         }
 
-        // if (dealerFlag) {
-        //     url = url + '&dealerFlag=' + dealerFlag;
-        // }
 
         return $http.get(Constant.BACKEND_BASE + url);
     };
@@ -43,6 +40,12 @@ angular.module('IOne-Production').service('ChannelBrandRelationsService', functi
         if (resUuid !== undefined && resUuid !== null) {
             url = url + '&resUuid=' + resUuid;
         }
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
+
+    this.getAllByChannelUuidAndBrandUuid = function (channelUuid, brandUuid) {
+        var url = '/channelBrandRelations?channelUuid=' + channelUuid + '&brandUuid=' + brandUuid;
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
@@ -64,5 +67,19 @@ angular.module('IOne-Production').service('ChannelBrandRelationsService', functi
 
     this.updatePrice = function (channelUuid, brandUuids) {
         return $http.patch(Constant.BACKEND_BASE + '/channelBrandRelations?channelUuid=' + channelUuid, brandUuids);
+    };
+
+    this.deleteByChannelAndBrand = function (channelUuid, brandUuid) {
+        return $http.delete(Constant.BACKEND_BASE + '/channelBrandRelations?channelUuid=' + channelUuid + '&brandUuid=' + brandUuid);
+    };
+
+    this.getBrandUuidByChannelUuid = function (channelUuid) {
+        var url = '/channelBrandRelations?action=getBrand&channelUuid=' + channelUuid;
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
+    this.findChannelUuidByBrandUuid = function (brandUuid, channelUuid) {
+        var url = '/channelBrandRelations?action=getChannel&brandUuid=' + brandUuid + '&channelUuid=' + channelUuid;
+        return $http.get(Constant.BACKEND_BASE + url);
     };
 });

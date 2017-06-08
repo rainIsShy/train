@@ -73,8 +73,8 @@ angular.module('IOne-Production').service('ChannelService', function ($http, Con
     };
 
     this.modify = function (channelUuid, channelUpdateInput) {
-            return $http.patch(Constant.BACKEND_BASE + '/channels/' + channelUuid, channelUpdateInput);
-        };
+        return $http.patch(Constant.BACKEND_BASE + '/channels/' + channelUuid, channelUpdateInput);
+    };
     this.getNotLowerChannel = function (sizePerPage, page, confirm, status, searchKeyword, resUuid, channelUuid) {
         confirm = confirm == 0 ? '' : confirm;
         status = status == 0 ? '' : status;
@@ -564,43 +564,43 @@ angular.module('IOne-Production').service('ChannelLevelService', function ($http
 
 
     this.getAllNoPage = function (confirm, status, no, name, keyword, parentKeyword, parentOcmBaseChanUuid, excludeChannelUuid, resUuid) {
-            confirm = confirm == 0 ? '' : confirm;
-            status = status == 0 ? '' : status;
+        confirm = confirm == 0 ? '' : confirm;
+        status = status == 0 ? '' : status;
 
-            var url = '/channelLevels?'
-                + '&confirm=' + confirm
-                + '&status=' + status;
+        var url = '/channelLevels?'
+            + '&confirm=' + confirm
+            + '&status=' + status;
 
-            if (no != undefined && no != null && no != '') {
-                url = url + '&no=' + no;
-            }
+        if (no != undefined && no != null && no != '') {
+            url = url + '&no=' + no;
+        }
 
-            if (name != undefined && name != null && name != '') {
-                url = url + '&name=' + name;
-            }
+        if (name != undefined && name != null && name != '') {
+            url = url + '&name=' + name;
+        }
 
 
-            if (keyword != undefined && keyword != null && keyword != '') {
-                url = url + '&keyword=' + keyword;
-            }
+        if (keyword != undefined && keyword != null && keyword != '') {
+            url = url + '&keyword=' + keyword;
+        }
 
-            if (parentKeyword != undefined && parentKeyword != null && parentKeyword != '') {
-                url = url + '&parentKeyword=' + parentKeyword;
-            }
+        if (parentKeyword != undefined && parentKeyword != null && parentKeyword != '') {
+            url = url + '&parentKeyword=' + parentKeyword;
+        }
 
-            if (parentOcmBaseChanUuid != undefined && parentOcmBaseChanUuid != null && parentOcmBaseChanUuid != '') {
-                url = url + '&parentOcmBaseChanUuid=' + parentOcmBaseChanUuid;
-            }
+        if (parentOcmBaseChanUuid != undefined && parentOcmBaseChanUuid != null && parentOcmBaseChanUuid != '') {
+            url = url + '&parentOcmBaseChanUuid=' + parentOcmBaseChanUuid;
+        }
 
-            if (excludeChannelUuid != undefined && excludeChannelUuid != null && excludeChannelUuid != '') {
-                url = url + '&excludeChannelUuid=' + excludeChannelUuid;
-            }
+        if (excludeChannelUuid != undefined && excludeChannelUuid != null && excludeChannelUuid != '') {
+            url = url + '&excludeChannelUuid=' + excludeChannelUuid;
+        }
 
-            if (resUuid != undefined && resUuid != null) {
-                url = url + '&resUuid=' + resUuid;
-            }
-            return $http.get(Constant.BACKEND_BASE + url);
-        };
+        if (resUuid != undefined && resUuid != null) {
+            url = url + '&resUuid=' + resUuid;
+        }
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
 
 
     this.getByChannelUuid = function (channelUuid) {
@@ -625,7 +625,42 @@ angular.module('IOne-Production').service('ChannelLevelService', function ($http
 
     this.validLoop = function (uuid, parentOcmBaseChanUuid) {
         return $http.get(Constant.BACKEND_BASE + '/channelLevels/' + uuid + '?action=valid&parentOcmBaseChanUuid=' + parentOcmBaseChanUuid);
-    }
+    };
+
+    this.getUnSetBrandByParent = function (sizePerPage, page, confirm, status, no, name, keyword, parentOcmBaseChanUuid, excludeBrandUUid) {
+        confirm = confirm == 0 ? '' : confirm;
+        status = status == 0 ? '' : status;
+
+        var url = '/channelLevels?size=' + sizePerPage
+            + '&page=' + page
+            + '&confirm=' + confirm
+            + '&status=' + status;
+
+        if (no != undefined && no != null && no != '') {
+            url = url + '&no=' + no;
+        }
+
+        if (name != undefined && name != null && name != '') {
+            url = url + '&name=' + name;
+        }
+
+
+        if (keyword != undefined && keyword != null && keyword != '') {
+            url = url + '&keyword=' + keyword;
+        }
+
+
+        if (parentOcmBaseChanUuid != undefined && parentOcmBaseChanUuid != null && parentOcmBaseChanUuid != '') {
+            url = url + '&parentOcmBaseChanUuid=' + parentOcmBaseChanUuid;
+        }
+
+        if (excludeBrandUUid) {
+            url = url + '&excludeBrandUUid=' + excludeBrandUUid;
+        }
+
+
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
 
 });
 
@@ -751,7 +786,6 @@ angular.module('IOne-Production').service('ChannelWarehouseRelationService', fun
         return $http.delete(Constant.BACKEND_BASE + '/channelWarehouseRelations/' + channelRelationUuid);
     };
 });
-
 
 
 angular.module('IOne-Production').service('ChannelPromotionService', function ($http, Constant) {

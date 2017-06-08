@@ -1,0 +1,59 @@
+<md-dialog style="padding: 30px;min-width: 500px; max-height:550px;">
+    <style type="text/css">
+        md-input-container {
+            padding-bottom: 16px;
+        }
+    </style>
+    <md-content>
+
+        <div flex layout="column" style="font-size: small">
+            <div layout="row">
+
+                <div layout="column" flex="100">
+                    <div style=" padding: 0px 0px 15px 0px;">品牌：{{}} 己选择渠道數： {{selected.length}}</div>
+                    <div layout-margin layout-align="center center" ng-if="selectedItem != null">
+                        <div layout="row" ng-if="selectedItem != null">
+                            <div align="center" flex="10" class=" table-head">
+                                <md-checkbox ng-click="selectAllAction(selectAllFlag)" ng-checked="selectAllFlag"
+                                             aria-label="全选">
+                                </md-checkbox>
+                            </div>
+                            <div align="center" flex="45" class=" table-head">渠道编号</div>
+                            <div align="center" flex="45" class=" table-head">渠道名称</div>
+                        </div>
+
+                        <div ng-repeat="item in allChannel | orderBy: 'no'">
+                            <div layout="row">
+                                <div flex="10" class=" table-item">
+                                    <md-checkbox aria-label="..." ng-click="toggle(item, selected)"
+                                                 ng-checked="item.checked">
+                                    </md-checkbox>
+
+                                </div>
+                                <div align="center" flex="45" class=" table-item">
+                                    <div style=" padding: 10px 0px 0px 0px;">{{item.channel.no}}</div>
+                                </div>
+                                <div align="center" flex="45" class=" table-item">
+                                    <div style=" padding: 10px 0px 0px 0px;">{{item.channel.name }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div pagination option="pageOption"
+                             callback="refreshChannel()"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div layout="row">
+                <md-button ng-click="hideDlg()">
+                    <i class="fa fa-plus"></i>&nbsp;保存
+                </md-button>
+
+                <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+            </div>
+        </div>
+
+    </md-content>
+</md-dialog>
