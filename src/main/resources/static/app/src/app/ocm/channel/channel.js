@@ -233,66 +233,51 @@ angular.module('IOne-Production').controller('OCMChannelController', function ($
         }
         if ($scope.status == 'add') {
             if ($scope.domain == 'OCM_BASE_CHAN') {
-                CBIEmployeeService.getByNo($scope.source.no).success(function (result) {
-                    if (result.totalElements > 0) {
-                        $scope.showError('渠道商编号不可与于员工编号相同。');
-                    } else {
+                if (!$scope.validForm($scope.source)) {
+                    return;
+                }
 
-                        if (!$scope.validForm($scope.source)) {
-                            return;
+                OCMChannelService.add($scope.source).success(function (data) {
+                    $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
+                    if ($scope.setLevel == '1' || $scope.setLevel == '2') {
+                        if ($scope.setLevel == '1') {
+                            $scope.addItem.parentOcmBaseChanUuid = data.uuid;
+                            $scope.addItem.parentChannelName = data.name
+                        } else if ($scope.setLevel == '2') {
+                            $scope.addItem.channelUuid = data.uuid;
+                            $scope.addItem.channelName = data.name
                         }
 
-                        OCMChannelService.add($scope.source).success(function (data) {
-                            $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
-                            if ($scope.setLevel == '1' || $scope.setLevel == '2') {
-                                if ($scope.setLevel == '1') {
-                                    $scope.addItem.parentOcmBaseChanUuid = data.uuid;
-                                    $scope.addItem.parentChannelName = data.name
-                                } else if ($scope.setLevel == '2') {
-                                    $scope.addItem.channelUuid = data.uuid;
-                                    $scope.addItem.channelName = data.name
-                                }
-
-                                ChannelLevelService.add($scope.addItem).success(function () {
-                                    if ($scope.setLevel == '1') {
-                                        $scope.showInfo("新增上层渠道成功!");
-                                        $scope.getParentChannel($scope.selectedItem);
-                                    }
-                                    if ($scope.setLevel == '2') {
-                                        $scope.showInfo("新增下层渠道成功!");
-                                        $scope.refreshSubList($scope.selectedItem);
-                                    }
-                                    $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
-
-                                });
-                            } else {
-                                $scope.showInfo('新增数据成功。');
+                        ChannelLevelService.add($scope.addItem).success(function () {
+                            if ($scope.setLevel == '1') {
+                                $scope.showInfo("新增上层渠道成功!");
+                                $scope.getParentChannel($scope.selectedItem);
                             }
-                        }).error(function (data) {
-                            $scope.showError('新增失败:' + '<br>' + data.message);
+                            if ($scope.setLevel == '2') {
+                                $scope.showInfo("新增下层渠道成功!");
+                                $scope.refreshSubList($scope.selectedItem);
+                            }
+                            $scope.changeViewStatus(Constant.UI_STATUS.VIEW_UI_STATUS);
+
                         });
+                    } else {
+                        $scope.showInfo('新增数据成功。');
                     }
+                }).error(function (data) {
+                    $scope.showError('新增失败:' + '<br>' + data.message);
                 });
-
-
             }
         } else if ($scope.status == 'edit') {
             if ($scope.domain == 'OCM_BASE_CHAN') {
-                CBIEmployeeService.getByNo($scope.source.no).success(function (result) {
-                    if (result.totalElements > 0) {
-                        $scope.showError('渠道商编号不可与于员工编号相同。');
-                    } else {
-                        OCMChannelService.modify($scope.source.uuid, $scope.source).success(function (data) {
-                            $scope.showInfo('修改数据成功。');
-                            $scope.source = data;
-                            $scope.selectedItem = data;
-                            $scope.selectedItemBackUp = angular.copy($scope.selectedItem);
-                        }).error(function (data) {
-                            $scope.showError('修改失败:' + '<br>' + data.message);
-                            $scope.source = angular.copy($scope.selectedItemBackUp);
-                            $scope.selectedItem = angular.copy($scope.selectedItemBackUp);
-                        });
-                    }
+                OCMChannelService.modify($scope.source.uuid, $scope.source).success(function (data) {
+                    $scope.showInfo('修改数据成功。');
+                    $scope.source = data;
+                    $scope.selectedItem = data;
+                    $scope.selectedItemBackUp = angular.copy($scope.selectedItem);
+                }).error(function (data) {
+                    $scope.showError('修改失败:' + '<br>' + data.message);
+                    $scope.source = angular.copy($scope.selectedItemBackUp);
+                    $scope.selectedItem = angular.copy($scope.selectedItemBackUp);
                 });
             }
         }
