@@ -113,7 +113,7 @@
                                     <input  aria-label="..." ng-model="selectedItem.name" ng-disabled="true"/>
                                 </md-input-container>
                                 <md-input-container >
-                                    <label>目录名称：</label>
+                                    <label>品牌信息：</label>
                                     <input aria-label="..." ng-model="catalogueName"
                                            ng-keydown="$event.which === 13 && searchChannelPriceWithPaging()"/>
                                 </md-input-container>
@@ -166,9 +166,10 @@
                             <div  ng-if="selectedItem != null">
                                 <div   layout="row"    ng-if="selectedItem != null">
                                     <div align="center" flex="5"  class=" table-head" ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"></div>
-                                    <div align="center" flex="15" class=" table-head">目录</div>
-                                    <div align="center" flex="10"  class=" table-head">商品名称</div>
+                                    <div align="center" flex="5" class=" table-head">品牌编号</div>
+                                    <div align="center" flex="10" class=" table-head">品牌名称</div>
                                     <div align="center" flex="10"  class=" table-head">商品编号</div>
+                                    <div align="center" flex="10"  class=" table-head">商品名称</div>
                                     <div align="center" flex="15" class=" table-head">规格</div>
                                     <div align="center" flex="5" class=" table-head">成本价</div>
                                     <div align="center" flex="10"  class=" table-head">标准价</div>
@@ -180,21 +181,24 @@
                                     <div align="center" flex="5"  class=" table-head">有效否</div>
                                 </div>
 
-                                <div ng-repeat="channelPrice in ChannelPriceList.content "  >
-                                    <div  layout="row"   >
+                                <div ng-repeat="channelPrice in ChannelPriceList.content | orderBy:['item.brand.no','item.no']">
+                                <div  layout="row"   >
                                         <div flex="5" class=" table-item"  ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                                             <md-checkbox aria-label="..." ng-checked="exists(channelPrice, selected)" ng-click="toggle(channelPrice, selected)">
                                             </md-checkbox>
 
                                         </div>
-                                        <div align="center" flex="15" class=" table-item">
-                                            <div style=" padding: 10px 0px 0px 0px;">{{channelPrice.catalogueName}}</div>
+                                        <div align="center" flex="5" class=" table-item">
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelPrice.item.brand.no}}</div>
                                         </div>
-                                        <div  align="center" flex="10" class=" table-item">
-                                            <div style=" padding: 10px 0px 0px 0px;">{{channelPrice.item.name }}</div>
+                                        <div align="center" flex="10" class=" table-item">
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelPrice.item.brand.name}}</div>
                                         </div>
                                         <div  align="center" flex="10" class=" table-item">
                                             <div style=" padding: 10px 0px 0px 0px;">{{channelPrice.item.no }}</div>
+                                        </div>
+                                        <div  align="center" flex="10" class=" table-item">
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelPrice.item.name}}</div>
                                         </div>
                                         <div align="center" flex="15" class=" table-item">
                                             <div style=" padding: 10px 0px 0px 0px;">{{channelPrice.item.standard }}</div>
