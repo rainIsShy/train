@@ -2299,18 +2299,16 @@ angular.module('IOne-Production').controller('PmmOrderAreaSelectController', fun
     };
 });
 
-angular.module('IOne-Production').controller('PmmBaseClassSelectController', function ($scope, $mdDialog, BaseClassService) {
+angular.module('IOne-Production').controller('PmmBaseClassSelectController', function ($scope, $mdDialog, PmmOrderGroupEmployeeClassRService) {
     $scope.pageOption = {
-        sizePerPage: 6,
+        sizePerPage: 5,
         currentPage: 0,
         totalPage: 0,
-        totalElements: 0,
-        displayModel: 0  //0 : image + text //1 : image
+        totalElements: 0
     };
 
     $scope.refreshBaseClass = function () {
-
-        BaseClassService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, '', '', $scope.searchKeyword, '').success(function (data) {
+        PmmOrderGroupEmployeeClassRService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage , $scope.searchUser, $scope.searchClass, '').success(function (data) {
             $scope.itemList = data.content;
             $scope.pageOption.totalPage = data.totalPages;
             $scope.pageOption.totalElements = data.totalElements;
