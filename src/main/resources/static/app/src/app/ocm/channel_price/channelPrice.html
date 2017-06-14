@@ -139,13 +139,13 @@
                                  ng-show="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY ">
                                 <md-input-container>
                                     <label>批量价格系数维护：</label>
-                                    <input type="number" aria-label="..." ng-model="standardPriceDiscountRate"  string-to-number   min="0"   step="0.01"/>
+                                    <input type="number" aria-label="..." ng-model="standardPriceDiscountRate"  string-to-number   min="0"   step="0.01" ng-keypress="enterUpdateStandardPriceInBatch($event)"/>
                                 </md-input-container>
                                 <md-button class="md-raised"    ng-click="updateStandardPriceInBatch()" style="margin-top: 22px;height: 20px;"> 执行
                                 </md-button>
                                 <md-input-container >
                                     <label>批量最低折扣率维护：</label>
-                                    <input type="number" aria-label="..." ng-model="saleDiscountRate" string-to-number      max="1" min="0"   step="0.01" />
+                                    <input type="number" aria-label="..." ng-model="saleDiscountRate" string-to-number      max="1" min="0"   step="0.01" ng-keypress="enterUpdateSalePriceInBatch($event)"/>
                                 </md-input-container>
                                 <md-button class="md-raised" aria-label="..."   ng-click="updateSalePriceInBatch()" style="margin-top: 22px;height: 20px;"> 执行
                                 </md-button>

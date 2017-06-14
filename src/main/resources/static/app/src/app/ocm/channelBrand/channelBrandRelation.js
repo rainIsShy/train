@@ -76,9 +76,6 @@ angular.module('IOne-Production').controller('ChannelBrandRelationController', f
     $scope.queryEnterBrand = function (e) {
         if (e.keyCode === 13) {
             e.preventDefault();
-            $scope.pageOption.currentPage = 0;
-            $scope.pageOption.totalPage = 0;
-            $scope.pageOption.totalElements = 0;
             $scope.searchChannelRelationWithPaging($scope.selectedItem.brandNo, $scope.selectedItem.brandName);
         }
     };
