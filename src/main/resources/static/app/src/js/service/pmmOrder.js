@@ -261,3 +261,20 @@ angular.module('IOne-Production').service('TransferTypesService', function ($htt
     };
 });
 
+angular.module('IOne-Production').service('PmmOrderGroupEmployeeClassRService', function ($http, Constant) {
+    this.getAll = function (sizePerPage, page, employee, baseClass, resUuid) {
+        var url = '/groupEmployeeClassRelations?size=' + sizePerPage
+            + '&page=' + page;
+        if (employee !== undefined && employee !== null) {
+            url = url + '&employee=' + employee;
+        }
+        if (baseClass !== undefined && baseClass !== null) {
+            url = url + '&baseClass=' + baseClass;
+        }
+        if (resUuid !== undefined && resUuid !== null) {
+            url = url + '&resUuid=' + resUuid;
+        }
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+});
+
