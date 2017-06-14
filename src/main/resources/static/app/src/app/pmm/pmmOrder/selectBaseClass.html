@@ -1,31 +1,53 @@
-<md-dialog style="padding: 30px;min-width: 400px;max-height: 700px;">
+<md-dialog style="padding: 10px;min-width: 600px;max-height: 800px;">
     <md-content layout="column">
         <div>
             <form name="searchChannel" novalidate="">
                 <div layout="row">
-                    <md-input-container flex>
-                        <label>查询分类</label>
-                        <input name="no" type="text" ng-model="searchKeyword" md-maxlength="20">
+                    <md-input-container flex="40">
+                        <label>查询跟单员:</label>
+                        <input name="no" type="text" ng-model="searchUser" md-maxlength="20">
                     </md-input-container>
-                    <md-button ng-click="refreshChannel()" ng-disabled="searchChannel.$invalid"
-                               style="padding-top: 20px;">
+                    <md-input-container flex="40">
+                        <label>查询分组:</label>
+                        <input name="no" type="text" ng-model="searchClass" md-maxlength="20">
+                    </md-input-container>
+
+                    <md-button ng-click="refreshBaseClass()" ng-disabled="searchChannel.$invalid"
+                               style="padding-top: 0px;">
                         <i class="fa fa-search"></i>
                     </md-button>
                 </div>
-                <md-list-item class="md-2-line" ng-repeat="item in itemList | orderBy:'no'" ng-click="select(item)">
-                    <div class="md-list-item-text">
-                        <h3> {{item.no}} | {{ item.name }} </h3>
-                    </div>
-                    <md-divider></md-divider>
-                </md-list-item>
+                <table md-data-table md-row-select="selected">
+                    <thead>
+                    <tr>
+                        <th style="width:auto;"><span class="md-subhead">跟单员编号</span></th>
+                        <th style="width:auto;"><span class="md-subhead">跟单员名称</span></th>
+                        <th style="width:auto;"><span class="md-subhead">跟单分组</span></th>
+                        <th style="width:auto;"><span class="md-subhead">分组说明</span></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in itemList | orderBy:['item.baseClass.no','item.groupUser.no']" ng-click="select(item.baseClass)">
+                        <td style="width:auto;"><span class="table-item">{{item.groupUser.no}}</span></td>
+                        <td style="width:auto;"><span class="table-item">{{item.groupUser.name}}</span></td>
+                        <td style="width:auto;"><span class="table-item">{{item.baseClass.no}}</span></td>
+                        <td style="width:auto;"><span class="table-item">{{item.baseClass.name}}</span></td>
+                    </tr>
+                    </tbody>
+                </table>
             </form>
-            <div pagination option="pageOption" callback="refreshBaseClass()"></div>
+            <div>
+                <div pagination option="pageOption" callback="refreshBaseClass()"></div>
+            </div>
+
         </div>
-        <div layout="row">
+        <div layout="row" layout-align="end center">
             <md-button ng-click="hideDlg()">
                 <i class="fa fa-check"></i>&nbsp;确定
             </md-button>
-            <md-button ng-click="cancelDlg()"><i class="fa fa-times"></i>&nbsp;取消</md-button>
+            <md-button ng-click="cancelDlg()">
+                <i class="fa fa-times"></i>&nbsp;取消
+            </md-button>
         </div>
 
     </md-content>
