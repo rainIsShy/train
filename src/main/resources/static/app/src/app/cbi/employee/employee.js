@@ -182,22 +182,11 @@ angular.module('IOne-Production').controller('EmployeeController', function ($sc
                     $scope.showError("离职日小于当前时间,若该员工已离职,请将员工状态设为离职后保存");
                     return;
                 }
-
-                OCMChannelService.getByNo($scope.source.no).success(function (result) {
-                    if (result.totalElements > 0) {
-                        $scope.showError('员工编号不可与渠道商编号相同。');
-                    } else {
-                        CBIEmployeeService.add($scope.source).success(function (data) {
-                            $scope.showInfo('新增数据成功。');
-                        }).error(function (response) {
-                            $scope.showError('新增数据失败: ' + response.message);
-                        });
-                    }
-
-
+                CBIEmployeeService.add($scope.source).success(function (data) {
+                    $scope.showInfo('新增数据成功。');
+                }).error(function (response) {
+                    $scope.showError('新增数据失败: ' + response.message);
                 });
-
-
             }
         } else if ($scope.status == 'edit') {
             if ($scope.domain == 'CBI_BASE_EMPL') {
@@ -210,23 +199,16 @@ angular.module('IOne-Production').controller('EmployeeController', function ($sc
                     return;
                 }
                 $scope.source.password = null;
-                OCMChannelService.getByNo($scope.source.no).success(function (result) {
-                    if (result.totalElements > 0) {
-                        $scope.showError('员工编号不可与渠道商编号相同。');
-                    } else {
-                        CBIEmployeeService.modify($scope.source.uuid, $scope.source).success(function (data) {
-                            $scope.showInfo('修改数据成功。');
-                            $scope.source = data;
-                            $scope.selectedItem = data;
-                            $scope.selectedItemBackUp = angular.copy($scope.selectedItem);
-                        }).error(function (response) {
-                            $scope.showError('修改数据失败: ' + response.message);
-                            $scope.source = angular.copy($scope.selectedItemBackUp);
-                            $scope.selectedItem = angular.copy($scope.selectedItemBackUp);
-                        });
-                    }
+                CBIEmployeeService.modify($scope.source.uuid, $scope.source).success(function (data) {
+                    $scope.showInfo('修改数据成功。');
+                    $scope.source = data;
+                    $scope.selectedItem = data;
+                    $scope.selectedItemBackUp = angular.copy($scope.selectedItem);
+                }).error(function (response) {
+                    $scope.showError('修改数据失败: ' + response.message);
+                    $scope.source = angular.copy($scope.selectedItemBackUp);
+                    $scope.selectedItem = angular.copy($scope.selectedItemBackUp);
                 });
-
             }
         }
     };
