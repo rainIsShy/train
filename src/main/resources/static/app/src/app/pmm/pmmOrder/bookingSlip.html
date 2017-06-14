@@ -172,8 +172,13 @@
                                             <label class="label" style="color: red;">经销商：</label>
                                             <input type="text" aria-label="..." ng-model="selectedItem.channel.name"
                                                    ng-disabled="(ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS) || currentUser != 'admin'"
-                                                   ng-click="openOrderChannelDlg()"
-                                                   next-focus id="field1">
+                                                   next-focus id="field1"/>
+                                            <md-button class="md-icon-button close-btn float-right"
+                                                       style="margin-top: 10px;" aria-label="More"
+                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
+                                                       ng-click="openOrderChannelDlg();">
+                                                <ng-md-icon icon="search"></ng-md-icon>
+                                            </md-button>
                                         </md-input-container>
                                         <md-input-container >
                                             <label class="label" style="color: red;">开单日期：</label>
@@ -198,8 +203,13 @@
                                             <label class="label" style="color: blue;">跟单分组：</label>
                                             <input type="text" aria-label="..." ng-model="selectedItem.baseClass.name"
                                                    ng-disabled="(ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS)"
-                                                   ng-click="openBaseClassDlg()"
-                                                   next-focus id="field3">
+                                                   next-focus id="field3"/>
+                                            <md-button class="md-icon-button close-btn float-right"
+                                                       style="margin-top: 10px;" aria-label="More"
+                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
+                                                       ng-click="openBaseClassDlg();">
+                                                <ng-md-icon icon="search"></ng-md-icon>
+                                            </md-button>
                                         </md-input-container>
 
                                         <md-input-container>
@@ -261,7 +271,7 @@
                                             <label class="label">收货人地址：</label>
                                             <input type="text" aria-label="..." ng-model="selectedItem.receiveAddress"
                                                    ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
-                                                   id="field10">
+                                                   next-focus id="field10">
                                             <md-button class="md-icon-button close-btn float-right"
                                                        style="margin-top: 10px;" aria-label="More"
                                                        ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"

@@ -115,12 +115,12 @@
                                 <md-input-container >
                                     <label>品牌信息：</label>
                                     <input aria-label="..." ng-model="brand"
-                                           ng-keydown="$event.which === 13 && searchChannelPriceWithPaging()"/>
+                                           ng-keypress="queryEnterChannelPrice($event)"/>
                                 </md-input-container>
                                 <md-input-container >
                                     <label>商品信息：</label>
                                     <input aria-label="..." ng-model="itemName"
-                                           ng-keydown="$event.which === 13 && searchChannelPriceWithPaging()"/>
+                                           ng-keypress="queryEnterChannelPrice($event)"/>
                                 </md-input-container>
                                 <!--<md-input-container layout="row" style=" height: 79px;">-->
                                 <!--<div style=" padding: 20px 0px 0px 0px;"><label>仓库：</label></div>-->

@@ -126,6 +126,14 @@ angular.module('IOne-Production').controller('ChannelPriceController', function 
         }
     };
 
+    $scope.queryEnterChannelPrice = function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $scope.searchChannelPriceWithPaging();
+        }
+    };
+
+
     $scope.enterUpdateStandardPriceInBatch = function (e) {
         if (e.keyCode === 13) {
             e.preventDefault();
@@ -552,7 +560,7 @@ angular.module('IOne-Production').controller('ChannelPriceController', function 
 
     $scope.updateStandardPriceInBatch = function () {
         if (undefined != $scope.standardPriceDiscountRate && null != $scope.standardPriceDiscountRate) {
-            var msg = $scope.createPromptMsg();
+            var msg = "";
 
             $scope.showConfirm('确认批量价格维护吗？', msg, function () {
                 $scope.logining = true;
@@ -570,7 +578,7 @@ angular.module('IOne-Production').controller('ChannelPriceController', function 
     };
     $scope.updateSalePriceInBatch = function () {
         if (undefined != $scope.saleDiscountRate && null != $scope.saleDiscountRate) {
-            var msg = $scope.createPromptMsg();
+            var msg = "";
             $scope.showConfirm('确认批量折扣维护吗？', msg, function () {
                 $scope.logining = true;
                 ChannelPriceService.updateSalePriceInBatch($scope.selectedItem.uuid, $scope.catalogueName, $scope.itemName, $scope.warehouseUuid, $scope.saleDiscountRate)
