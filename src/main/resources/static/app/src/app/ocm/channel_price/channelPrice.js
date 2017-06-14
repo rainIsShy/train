@@ -116,6 +116,38 @@ angular.module('IOne-Production').controller('ChannelPriceController', function 
         totalElements: 100
     };
 
+    $scope.queryEnter = function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $scope.pageOption.currentPage = 0;
+            $scope.pageOption.totalPage = 0;
+            $scope.pageOption.totalElements = 0;
+            $scope.queryMenuAction();
+        }
+    };
+
+    $scope.queryEnterChannelPrice = function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $scope.searchChannelPriceWithPaging();
+        }
+    };
+
+
+    $scope.enterUpdateStandardPriceInBatch = function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $scope.updateStandardPriceInBatch();
+        }
+    };
+
+    $scope.enterUpdateSalePriceInBatch = function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $scope.updateSalePriceInBatch();
+        }
+    };
+
     $scope.editItem = function (channel) {
         $scope.selectedItem = channel;
         $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
@@ -149,7 +181,7 @@ angular.module('IOne-Production').controller('ChannelPriceController', function 
         $scope.selected = [];
         $scope.resetInitialValue();
 
-        ChannelPriceService.getAllWithPaging($scope.pageOptionOfChannelPrice.sizePerPage, $scope.pageOptionOfChannelPrice.currentPage, $scope.selectedItem.uuid, $scope.catalogueName, $scope.itemName, $scope.warehouseUuid)
+        ChannelPriceService.getAllWithPaging($scope.pageOptionOfChannelPrice.sizePerPage, $scope.pageOptionOfChannelPrice.currentPage, $scope.selectedItem.uuid, $scope.brand, $scope.itemName, $scope.warehouseUuid)
             .success(function (data) {
                 $scope.parseCatalogueName(data);
                 $scope.ChannelPriceList = data;
@@ -163,7 +195,7 @@ angular.module('IOne-Production').controller('ChannelPriceController', function 
         $scope.selected = [];
         $scope.resetInitialValue();
 
-        ChannelPriceService.getAllWithPaging($scope.pageOptionOfChannelPrice.sizePerPage, $scope.pageOptionOfChannelPrice.currentPage, $scope.selectedItem.uuid, $scope.catalogueName, $scope.itemName)
+        ChannelPriceService.getAllWithPaging($scope.pageOptionOfChannelPrice.sizePerPage, $scope.pageOptionOfChannelPrice.currentPage, $scope.selectedItem.uuid, $scope.brand, $scope.itemName)
             .success(function (data) {
                 $scope.parseCatalogueName(data);
                 $scope.ChannelPriceList = data;
@@ -236,6 +268,7 @@ angular.module('IOne-Production').controller('ChannelPriceController', function 
         $scope.catalogueName = null;
         $scope.standardPriceDiscountRate = null;
         $scope.saleDiscountRate = null;
+        $scope.brand = null;
 
         $scope.getMenuAuthData($scope.RES_UUID_MAP.OCM.CHANNEL_PRICE.LIST_PAGE.RES_UUID).success(function (data) {
             $scope.menuAuthDataMap = $scope.menuDataMap(data);
@@ -527,7 +560,7 @@ angular.module('IOne-Production').controller('ChannelPriceController', function 
 
     $scope.updateStandardPriceInBatch = function () {
         if (undefined != $scope.standardPriceDiscountRate && null != $scope.standardPriceDiscountRate) {
-            var msg = $scope.createPromptMsg();
+            var msg = "";
 
             $scope.showConfirm('确认批量价格维护吗？', msg, function () {
                 $scope.logining = true;
@@ -545,7 +578,7 @@ angular.module('IOne-Production').controller('ChannelPriceController', function 
     };
     $scope.updateSalePriceInBatch = function () {
         if (undefined != $scope.saleDiscountRate && null != $scope.saleDiscountRate) {
-            var msg = $scope.createPromptMsg();
+            var msg = "";
             $scope.showConfirm('确认批量折扣维护吗？', msg, function () {
                 $scope.logining = true;
                 ChannelPriceService.updateSalePriceInBatch($scope.selectedItem.uuid, $scope.catalogueName, $scope.itemName, $scope.warehouseUuid, $scope.saleDiscountRate)

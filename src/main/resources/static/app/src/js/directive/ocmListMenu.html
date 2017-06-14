@@ -3,11 +3,11 @@
         <div  class="menu"  layout="row" layout-md="column" layout-sm="column">
             <md-input-container>
                 <label>渠道店/直营编号：</label>
-                <input ng-model="ocmListMenu.channelNo"/>
+                <input ng-model="ocmListMenu.channelNo" ng-keypress="queryEnter($event)"/>
             </md-input-container>
             <md-input-container >
                 <label   >渠道店/直营店：</label>
-                <input ng-model="ocmListMenu.channelName" />
+                <input ng-model="ocmListMenu.channelName" ng-keypress="queryEnter($event)"/>
             </md-input-container>
             <div layout="row" layout-md="column" layout-sm="column">
                 <label class="label">启用状态：</label>

@@ -113,14 +113,14 @@
                                     <input  aria-label="..." ng-model="selectedItem.name" ng-disabled="true"/>
                                 </md-input-container>
                                 <md-input-container >
-                                    <label>目录名称：</label>
-                                    <input aria-label="..." ng-model="catalogueName"
-                                           ng-keydown="$event.which === 13 && searchChannelPriceWithPaging()"/>
+                                    <label>品牌信息：</label>
+                                    <input aria-label="..." ng-model="brand"
+                                           ng-keypress="queryEnterChannelPrice($event)"/>
                                 </md-input-container>
                                 <md-input-container >
                                     <label>商品信息：</label>
                                     <input aria-label="..." ng-model="itemName"
-                                           ng-keydown="$event.which === 13 && searchChannelPriceWithPaging()"/>
+                                           ng-keypress="queryEnterChannelPrice($event)"/>
                                 </md-input-container>
                                 <!--<md-input-container layout="row" style=" height: 79px;">-->
                                 <!--<div style=" padding: 20px 0px 0px 0px;"><label>仓库：</label></div>-->
@@ -139,13 +139,13 @@
                                  ng-show="ui_status == UI_STATUS.EDIT_UI_STATUS_MODIFY ">
                                 <md-input-container>
                                     <label>批量价格系数维护：</label>
-                                    <input type="number" aria-label="..." ng-model="standardPriceDiscountRate"  string-to-number   min="0"   step="0.01"/>
+                                    <input type="number" aria-label="..." ng-model="standardPriceDiscountRate"  string-to-number   min="0"   step="0.01" ng-keypress="enterUpdateStandardPriceInBatch($event)"/>
                                 </md-input-container>
                                 <md-button class="md-raised"    ng-click="updateStandardPriceInBatch()" style="margin-top: 22px;height: 20px;"> 执行
                                 </md-button>
                                 <md-input-container >
                                     <label>批量最低折扣率维护：</label>
-                                    <input type="number" aria-label="..." ng-model="saleDiscountRate" string-to-number      max="1" min="0"   step="0.01" />
+                                    <input type="number" aria-label="..." ng-model="saleDiscountRate" string-to-number      max="1" min="0"   step="0.01" ng-keypress="enterUpdateSalePriceInBatch($event)"/>
                                 </md-input-container>
                                 <md-button class="md-raised" aria-label="..."   ng-click="updateSalePriceInBatch()" style="margin-top: 22px;height: 20px;"> 执行
                                 </md-button>
@@ -166,9 +166,10 @@
                             <div  ng-if="selectedItem != null">
                                 <div   layout="row"    ng-if="selectedItem != null">
                                     <div align="center" flex="5"  class=" table-head" ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"></div>
-                                    <div align="center" flex="15" class=" table-head">目录</div>
-                                    <div align="center" flex="10"  class=" table-head">商品名称</div>
+                                    <div align="center" flex="5" class=" table-head">品牌编号</div>
+                                    <div align="center" flex="10" class=" table-head">品牌名称</div>
                                     <div align="center" flex="10"  class=" table-head">商品编号</div>
+                                    <div align="center" flex="10"  class=" table-head">商品名称</div>
                                     <div align="center" flex="15" class=" table-head">规格</div>
                                     <div align="center" flex="5" class=" table-head">成本价</div>
                                     <div align="center" flex="10"  class=" table-head">标准价</div>
@@ -180,21 +181,24 @@
                                     <div align="center" flex="5"  class=" table-head">有效否</div>
                                 </div>
 
-                                <div ng-repeat="channelPrice in ChannelPriceList.content "  >
-                                    <div  layout="row"   >
+                                <div ng-repeat="channelPrice in ChannelPriceList.content | orderBy:['item.brand.no','item.no']">
+                                <div  layout="row"   >
                                         <div flex="5" class=" table-item"  ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                                             <md-checkbox aria-label="..." ng-checked="exists(channelPrice, selected)" ng-click="toggle(channelPrice, selected)">
                                             </md-checkbox>
 
                                         </div>
-                                        <div align="center" flex="15" class=" table-item">
-                                            <div style=" padding: 10px 0px 0px 0px;">{{channelPrice.catalogueName}}</div>
+                                        <div align="center" flex="5" class=" table-item">
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelPrice.item.brand.no}}</div>
                                         </div>
-                                        <div  align="center" flex="10" class=" table-item">
-                                            <div style=" padding: 10px 0px 0px 0px;">{{channelPrice.item.name }}</div>
+                                        <div align="center" flex="10" class=" table-item">
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelPrice.item.brand.name}}</div>
                                         </div>
                                         <div  align="center" flex="10" class=" table-item">
                                             <div style=" padding: 10px 0px 0px 0px;">{{channelPrice.item.no }}</div>
+                                        </div>
+                                        <div  align="center" flex="10" class=" table-item">
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelPrice.item.name}}</div>
                                         </div>
                                         <div align="center" flex="15" class=" table-item">
                                             <div style=" padding: 10px 0px 0px 0px;">{{channelPrice.item.standard }}</div>
