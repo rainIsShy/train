@@ -173,7 +173,7 @@ angular.module('IOne-Production').controller('ChannelPriceController', function 
         $scope.selected = [];
         $scope.resetInitialValue();
 
-        ChannelPriceService.getAllWithPaging($scope.pageOptionOfChannelPrice.sizePerPage, $scope.pageOptionOfChannelPrice.currentPage, $scope.selectedItem.uuid, $scope.catalogueName, $scope.itemName, $scope.warehouseUuid)
+        ChannelPriceService.getAllWithPaging($scope.pageOptionOfChannelPrice.sizePerPage, $scope.pageOptionOfChannelPrice.currentPage, $scope.selectedItem.uuid, $scope.brand, $scope.itemName, $scope.warehouseUuid)
             .success(function (data) {
                 $scope.parseCatalogueName(data);
                 $scope.ChannelPriceList = data;
@@ -187,7 +187,7 @@ angular.module('IOne-Production').controller('ChannelPriceController', function 
         $scope.selected = [];
         $scope.resetInitialValue();
 
-        ChannelPriceService.getAllWithPaging($scope.pageOptionOfChannelPrice.sizePerPage, $scope.pageOptionOfChannelPrice.currentPage, $scope.selectedItem.uuid, $scope.catalogueName, $scope.itemName)
+        ChannelPriceService.getAllWithPaging($scope.pageOptionOfChannelPrice.sizePerPage, $scope.pageOptionOfChannelPrice.currentPage, $scope.selectedItem.uuid, $scope.brand, $scope.itemName)
             .success(function (data) {
                 $scope.parseCatalogueName(data);
                 $scope.ChannelPriceList = data;
@@ -260,6 +260,7 @@ angular.module('IOne-Production').controller('ChannelPriceController', function 
         $scope.catalogueName = null;
         $scope.standardPriceDiscountRate = null;
         $scope.saleDiscountRate = null;
+        $scope.brand = null;
 
         $scope.getMenuAuthData($scope.RES_UUID_MAP.OCM.CHANNEL_PRICE.LIST_PAGE.RES_UUID).success(function (data) {
             $scope.menuAuthDataMap = $scope.menuDataMap(data);

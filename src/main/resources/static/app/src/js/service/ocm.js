@@ -123,13 +123,13 @@ angular.module('IOne-Production').service('ChannelPriceService', function ($http
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
-    this.getAllWithPaging = function (sizePerPage, page, channelUuid, catalogueName, itemName, warehouseQueryUuid) {
+    this.getAllWithPaging = function (sizePerPage, page, channelUuid, brand, itemName, warehouseQueryUuid) {
         var url = '/channelPrices?size=' + sizePerPage
             + '&page=' + page
             + '&channelUuid=' + channelUuid;
 
-        if (catalogueName !== undefined && catalogueName !== null) {
-            url = url + '&catalogueName=' + catalogueName;
+        if (brand !== undefined && brand !== null) {
+            url = url + '&brand=' + brand;
         }
 
         if (itemName !== undefined && itemName !== null) {
