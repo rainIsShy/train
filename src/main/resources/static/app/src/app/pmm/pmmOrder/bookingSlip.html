@@ -172,13 +172,15 @@
                                             <label class="label" style="color: red;">经销商：</label>
                                             <input type="text" aria-label="..." ng-model="selectedItem.channel.name"
                                                    ng-disabled="(ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS) || currentUser != 'admin'"
-                                                   ng-click="openOrderChannelDlg()">
+                                                   ng-click="openOrderChannelDlg()"
+                                                   next-focus id="field1">
                                         </md-input-container>
                                         <md-input-container >
                                             <label class="label" style="color: red;">开单日期：</label>
                                             <input type="date" aria-label="..." ng-model="selectedItem.orderDate"
                                                    ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
-                                                   ng-disabled="true">
+                                                   ng-disabled="true"
+                                                   next-focus id="field2">
                                         </md-input-container>
 
                                         <md-input-container >
@@ -196,19 +198,22 @@
                                             <label class="label" style="color: blue;">恒大跟单分组：</label>
                                             <input type="text" aria-label="..." ng-model="selectedItem.baseClass.name"
                                                    ng-disabled="(ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS)"
-                                                   ng-click="openBaseClassDlg()">
+                                                   ng-click="openBaseClassDlg()"
+                                                   next-focus id="field3">
                                         </md-input-container>
 
                                         <md-input-container>
                                             <label class="label" style="color: blue;">备注：</label>
                                             <input type="text"  aria-label="..." ng-model="selectedItem.remark"   md-maxlength="20"
-                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
+                                                   next-focus id="field4">
                                         </md-input-container>
                                         <md-input-container>
                                             <label class="label">促销活动：</label>
                                             <input type="text" ng-model="selectedItem.promotion.no"
                                                    ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
-                                                   ng-click="openOrderPromotionDlg()">
+                                                   ng-click="openOrderPromotionDlg()"
+                                                   next-focus id="field5">
                                         </md-input-container>
                                     </div>
 
@@ -229,29 +234,34 @@
                                         <md-input-container>
                                             <label class="label" style="color: blue;">其它费用：</label>
                                             <input type="number" aria-label="..." ng-model="selectedItem.oriOtherAmt"
-                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
+                                                   next-focus id="field6">
                                         </md-input-container>
 
                                         <md-input-container>
                                             <label class="label">商场合同号：</label>
                                             <input type="text" aria-label="..." ng-model="selectedItem.contractNo"
-                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
+                                                   next-focus id="field7">
                                         </md-input-container>
 
                                         <md-input-container>
                                             <label class="label">收货人电话：</label>
                                             <input type="text" aria-label="..." ng-model="selectedItem.receivePhone"
-                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
+                                                   next-focus id="field8">
                                         </md-input-container>
                                         <md-input-container>
                                             <label class="label">收货人姓名：</label>
                                             <input type="text" aria-label="..." ng-model="selectedItem.receiveName"
-                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
+                                                   next-focus id="field9">
                                         </md-input-container>
                                         <md-input-container>
                                             <label class="label">收货人地址：</label>
                                             <input type="text" aria-label="..." ng-model="selectedItem.receiveAddress"
-                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
+                                                   ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
+                                                   id="field10">
                                             <md-button class="md-icon-button close-btn float-right"
                                                        style="margin-top: 10px;" aria-label="More"
                                                        ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
