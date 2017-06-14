@@ -271,7 +271,8 @@
                                             <label class="label">收货人地址：</label>
                                             <input type="text" aria-label="..." ng-model="selectedItem.receiveAddress"
                                                    ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS"
-                                                   next-focus id="field10">
+                                                   ng-keypress="$event.which === 13 && $event.preventDefault();"
+                                                   id="field10">
                                             <md-button class="md-icon-button close-btn float-right"
                                                        style="margin-top: 10px;" aria-label="More"
                                                        ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
