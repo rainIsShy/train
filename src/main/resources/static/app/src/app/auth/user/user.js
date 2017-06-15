@@ -264,7 +264,7 @@ angular.module('IOne-Production').controller('AuthUserDepartmentSelectController
 
     $scope.filter = {
         confirm: '',
-        status: '',
+        status: '1',
         searchKeyWord: ''
     }
 

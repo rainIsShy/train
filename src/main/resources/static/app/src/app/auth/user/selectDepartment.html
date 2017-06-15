@@ -16,14 +16,12 @@
                     <tr>
                         <th style="width:auto;"><span class="md-subhead">编号</span></th>
                         <th style="width:auto;"><span class="md-subhead">名称</span></th>
-                        <th style="width:auto;"><span class="md-subhead">状态</span></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="item in itemList | orderBy:'no'" ng-click="select(item)">
                         <td style="width:auto;"><span class="table-item">{{item.no}}</span></td>
                         <td style="width:auto;"><span class="table-item">{{item.name}}</span></td>
-                        <td style="width:auto;"><span class="table-item">{{item.status == '1' ? '有效' : '失效'}}</span></td>
                     </tr>
                     </tbody>
                 </table>
