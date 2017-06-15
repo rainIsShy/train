@@ -38,6 +38,7 @@
                                     <th><span class="md-subhead">编号</span></th>
                                     <th><span class="md-subhead">名称</span></th>
                                     <th><span class="md-subhead">类型</span></th>
+                                    <th><span class="md-subhead">所属部门</span></th>
                                     <th><span class="md-subhead">是否有效</span></th>
                                     <th><span class="md-subhead">角色</span></th>
                                     <th><span class="md-subhead" style="padding-left: 8px;">操作</span></th>
@@ -48,6 +49,7 @@
                                     <td><span class="md-body-1">{{user.no}}</span></td>
                                     <td><span class="md-body-1">{{user.name}}</span></td>
                                     <td><span class="md-body-1">集团</span></td>
+                                    <td><span class="md-body-1">{{user.department.name}}</span></td>
                                     <td><span class="md-body-1">{{user.status == '1' ? '是' : '否'}}</span></td>
                                     <td ng-if="user.userRoleList == undefined">
                                         <span class="md-body-1" style="color: #EBE3E3">点击查看角色</span>
@@ -102,6 +104,18 @@
                                         <input type="text" required ng-model="selectedItem.name" ng-disabled="!isEditing">
                                     </md-input-container>
                                 </div>
+                                <div flex="25" flex-sm="100">
+                                    <md-input-container>
+                                        <label class="label">所属部门:</label>
+                                        <input type="text" aria-label="department" ng-model="selectedItem.department.name" ng-disabled="!isEditing">
+                                        <md-button class="md-icon-button close-btn float-right"
+                                                   style="margin-top: 10px;" aria-label="More"
+                                                   ng-if="isEditing"
+                                                   ng-click="openDepartmentDlg();">
+                                            <ng-md-icon icon="search"></ng-md-icon>
+                                        </md-button>
+                                    </md-input-container>
+                                </div>
                                 <!--<div flex="25" flex-sm="100">-->
                                     <!--<md-input-container>-->
                                         <!--<label>类型</label>-->
@@ -110,15 +124,6 @@
                                         <!--</md-select>-->
                                     <!--</md-input-container>-->
                                 <!--</div>-->
-                                <div flex="25" flex-sm="100">
-                                    <md-input-container>
-                                        <label>生效</label>
-                                        <md-select required ng-model="selectedItem.status" ng-disabled="!isEditing">
-                                            <md-option ng-value="1">是</md-option>
-                                            <md-option ng-value="2">否</md-option>
-                                        </md-select>
-                                    </md-input-container>
-                                </div>
                             </div>
 
                             <div layout="row" layout-wrap>
@@ -132,6 +137,15 @@
                                     <md-input-container>
                                         <label>再次输入密码:</label>
                                         <input type="password" ng-required="ui_status == UI_STATUS.EDIT_UI_STATUS_ADD" ng-model="selectedItem.confirmPassword" ng-disabled="!isEditing">
+                                    </md-input-container>
+                                </div>
+                                <div flex="25" flex-sm="100">
+                                    <md-input-container>
+                                        <label>生效</label>
+                                        <md-select required ng-model="selectedItem.status" ng-disabled="!isEditing">
+                                            <md-option ng-value="1">是</md-option>
+                                            <md-option ng-value="2">否</md-option>
+                                        </md-select>
                                     </md-input-container>
                                 </div>
                             </div>

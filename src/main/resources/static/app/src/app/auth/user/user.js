@@ -218,7 +218,19 @@ angular.module('IOne-Production').controller('UserController', function($scope, 
             $scope.selectedItem.status = '1';
         }
         $scope.modifyMenuAction();
-    }
+    };
+
+    $scope.openDepartmentDlg = function () {
+        $mdDialog.show({
+            controller: 'AuthUserDepartmentSelectController',
+            templateUrl: 'app/src/app/auth/user/selectDepartment.html',
+            parent: angular.element(document.body),
+            targetEvent: event
+        }).then(function (data) {
+            $scope.selectedItem.department = data;
+            $scope.selectedItem.departmentUuid = data.uuid;
+        });
+    };
 });
 
 
@@ -238,6 +250,44 @@ angular.module('IOne-Production').controller('RoleListController', function($sco
     };
 
     $scope.cancelDlg = function() {
+        $mdDialog.cancel();
+    };
+});
+
+angular.module('IOne-Production').controller('AuthUserDepartmentSelectController', function ($scope, $mdDialog, Department) {
+    $scope.pageOption = {
+        sizePerPage: 5,
+        currentPage: 0,
+        totalPage: 0,
+        totalElements: 0
+    };
+
+    $scope.filter = {
+        confirm: '',
+        status: '',
+        searchKeyWord: ''
+    }
+
+    $scope.refresh = function () {
+        Department.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.filter).success(function (data) {
+            $scope.itemList = data.content;
+            $scope.pageOption.totalPage = data.totalPages;
+            $scope.pageOption.totalElements = data.totalElements;
+        });
+    };
+
+    $scope.refresh();
+
+    $scope.select = function (item) {
+        $scope.item = item;
+        $mdDialog.hide($scope.item);
+    };
+
+    $scope.hideDlg = function () {
+        $mdDialog.hide($scope.item);
+    };
+
+    $scope.cancelDlg = function () {
         $mdDialog.cancel();
     };
 });
