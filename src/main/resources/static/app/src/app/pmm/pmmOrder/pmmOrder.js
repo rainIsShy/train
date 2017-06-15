@@ -1463,10 +1463,13 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             controller: 'PmmBaseClassSelectController',
             templateUrl: 'app/src/app/pmm/pmmOrder/selectBaseClass.html',
             parent: angular.element(document.body),
-            targetEvent: event
+            targetEvent: event,
+            locals: {channelUuid: $scope.selectedItem.channel.uuid}
         }).then(function (data) {
-            $scope.selectedItem.baseClass = data;
-            $scope.selectedItem.baseClassUuid = data.uuid;
+            $scope.selectedItem.baseClass = data.channel;
+            $scope.selectedItem.baseClassUuid = data.channel.uuid;
+            $scope.selectedItem.groupUser = data.groupUser;
+            $scope.selectedItem.groupUserUuid = data.groupUser.uuid;
         });
     };
 
@@ -2299,7 +2302,7 @@ angular.module('IOne-Production').controller('PmmOrderAreaSelectController', fun
     };
 });
 
-angular.module('IOne-Production').controller('PmmBaseClassSelectController', function ($scope, $mdDialog, PmmOrderGroupEmployeeClassRService) {
+angular.module('IOne-Production').controller('PmmBaseClassSelectController', function ($scope, $mdDialog, locals, PmmOrderGroupEmployeeClassRService) {
     $scope.pageOption = {
         sizePerPage: 5,
         currentPage: 0,
@@ -2308,22 +2311,26 @@ angular.module('IOne-Production').controller('PmmBaseClassSelectController', fun
     };
 
     $scope.refreshBaseClass = function () {
-        PmmOrderGroupEmployeeClassRService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage , $scope.searchUser, $scope.searchClass, '').success(function (data) {
+        PmmOrderGroupEmployeeClassRService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.searchUser, $scope.searchClass, locals.channelUuid, '').success(function (data) {
             $scope.itemList = data.content;
             $scope.pageOption.totalPage = data.totalPages;
             $scope.pageOption.totalElements = data.totalElements;
+            if ($scope.itemList.length == 1) {
+                $scope.select($scope.itemList[0].baseClass, $scope.itemList[0].groupUser);
+            }
         });
     };
 
     $scope.refreshBaseClass();
 
-    $scope.select = function (channel) {
+    $scope.select = function (channel, groupUser) {
         $scope.channel = channel;
-        $mdDialog.hide($scope.channel);
+        $scope.groupUser = groupUser;
+        $mdDialog.hide({'channel': $scope.channel, 'groupUser': $scope.groupUser});
     };
 
     $scope.hideDlg = function () {
-        $mdDialog.hide($scope.channel);
+        $mdDialog.hide({'channel': $scope.channel, 'groupUser': $scope.groupUser});
     };
 
     $scope.cancelDlg = function () {

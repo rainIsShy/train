@@ -27,7 +27,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="item in itemList | orderBy:['baseClass.no','groupUser.no']" ng-click="select(item.baseClass)">
+                    <tr ng-repeat="item in itemList | orderBy:['baseClass.no','groupUser.no']" ng-click="select(item.baseClass, item.groupUser)">
                         <td style="width:auto;"><span class="table-item">{{item.groupUser.no}}</span></td>
                         <td style="width:auto;"><span class="table-item">{{item.groupUser.name}}</span></td>
                         <td style="width:auto;"><span class="table-item">{{item.baseClass.no}}</span></td>
