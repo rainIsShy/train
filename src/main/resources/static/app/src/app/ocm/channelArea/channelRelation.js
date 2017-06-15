@@ -51,34 +51,65 @@ angular.module('IOne-Production').controller('ChannelRelationController', functi
 
 
      $scope.pageOption = {
-       sizePerPage: 14,
+       sizePerPage: 10,
        currentPage: 0,
        totalPage: 100,
        totalElements: 100
      };
 
+    $scope.pageOptionOfChannelRelation= {
+        sizePerPage: 10,
+        currentPage: 0,
+        totalPage: 100,
+        totalElements: 100
+    };
+
+    $scope.queryEnter = function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $scope.pageOption.currentPage = 0;
+            $scope.pageOption.totalPage = 0;
+            $scope.pageOption.totalElements = 0;
+            $scope.queryMenuAction();
+        }
+    };
+
+    $scope.queryEnterRelation = function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $scope.searchChannelRelationWithPaging();
+        }
+    };
+
      $scope.editItem = function (channelRelation) {
          $scope.selectedItem = channelRelation;
          $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
-         $scope.pageOption.currentPage = 0;
-         $scope.pageOption.totalPage = 0;
-         $scope.pageOption.totalElements = 0;
+         $scope.pageOptionOfChannelRelation.currentPage = 0;
+         $scope.pageOptionOfChannelRelation.totalPage = 0;
+         $scope.pageOptionOfChannelRelation.totalElements = 0;
          $scope.listFilterItem.itemUuids.length = 0;
          $scope.queryChannelRelationWithPaging();
 
 
      };
 
+    $scope.searchChannelRelationWithPaging = function () {
+        $scope.pageOptionOfChannelRelation.currentPage = 0;
+        $scope.pageOptionOfChannelRelation.totalPage = 0;
+        $scope.pageOptionOfChannelRelation.totalElements = 0;
+        $scope.queryChannelRelationWithPaging();
+    };
+
      $scope.queryChannelRelationWithPaging = function () {
          $scope.ocmListMenu.selectAll = false;
          $scope.selected = [];
          $scope.resetInitialValue();
 
-         ChannelRelationService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.selectedItem.uuid)
+         ChannelRelationService.getAllWithPagingAndConditions($scope.pageOptionOfChannelRelation.sizePerPage, $scope.pageOptionOfChannelRelation.currentPage, $scope.selectedItem.uuid, $scope.areaKeyWord)
              .success(function (data) {
                  $scope.channelRelationList = data;
-                 $scope.pageOption.totalPage = data.totalPages;
-                 $scope.pageOption.totalElements = data.totalElements;
+                 $scope.pageOptionOfChannelRelation.totalPage = data.totalPages;
+                 $scope.pageOptionOfChannelRelation.totalElements = data.totalElements;
              });
      };
 
@@ -94,6 +125,12 @@ angular.module('IOne-Production').controller('ChannelRelationController', functi
         $scope.resetInitialValue();
         $scope.selected = [];
         $scope.ocmListMenu.selectAll = false;
+        if ($scope.ocmListMenu.channelNo !== undefined) {
+            channelNo = $scope.ocmListMenu.channelNo;
+        } else {
+            channelNo = null;
+        }
+
         if ($scope.ocmListMenu.channelName !== undefined) {
             channelName = $scope.ocmListMenu.channelName;
         } else {
@@ -104,7 +141,7 @@ angular.module('IOne-Production').controller('ChannelRelationController', functi
         status = $scope.ocmListMenu.status;
 
         ChannelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, confirm,
-            status, channelName, RES_UUID_MAP.OCM.CHANNEL_RELATION.LIST_PAGE.RES_UUID)
+            status, channelName, channelNo, RES_UUID_MAP.OCM.CHANNEL_RELATION.LIST_PAGE.RES_UUID)
             .success(function (data) {
                 $scope.ChannelList = data;
                 $scope.pageOption.totalPage = data.totalPages;
@@ -138,6 +175,7 @@ angular.module('IOne-Production').controller('ChannelRelationController', functi
         $scope.selectedItem = null;
         $scope.areaCode = null;
         $scope.areaName = null;
+        $scope.areaKeyWord = null;
 
         $scope.getMenuAuthData($scope.RES_UUID_MAP.OCM.CHANNEL_RELATION.LIST_PAGE.RES_UUID).success(function (data) {
             $scope.menuAuthDataMap = $scope.menuDataMap(data);

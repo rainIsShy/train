@@ -30,14 +30,14 @@
                                 </md-input-container>
 
                                 <md-input-container>
-                                    <label>商品名称：</label>
-                                    <input aria-label="..." ng-model="itemName"/>
+                                    <label>商品信息：</label>
+                                    <input aria-label="..." ng-model="itemName" ng-keypress="queryEnterChannelItemInfo($event)"/>
                                 </md-input-container>
 
 
                                 <md-button class="md-raised" aria-label="..."
                                            ng-if="ocmListMenuDisplayOption['600-query'].display"
-                                           ng-click="searchchannelInfoWithPaging()"
+                                           ng-click="queryChannelPriceWithPaging()"
                                            style="margin-top: 22px;height: 20px;"> 查找
                                 </md-button>
                             </div>
@@ -48,8 +48,8 @@
                                     <div align="center" flex="5" class=" table-head"
                                          ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                                     </div>
-                                    <div align="center" flex="10" class=" table-head">商品名称</div>
                                     <div align="center" flex="10" class=" table-head">商品编号</div>
+                                    <div align="center" flex="10" class=" table-head">商品名称</div>
                                     <div align="center" flex="10" class=" table-head">规格</div>
                                     <div align="center" flex="10" class=" table-head">停售状态</div>
                                     <div align="center" flex="10" class=" table-head">销售价格</div>
@@ -57,7 +57,7 @@
                                     <div align="center" flex="10" class=" table-head">销售单位</div>
                                 </div>
 
-                                <div ng-repeat="channelInfo in ChannelInfoList.content ">
+                                <div ng-repeat="channelInfo in ChannelInfoList.content | orderBy:'item.no' ">
                                     <div layout="row">
                                         <div flex="5" class=" table-item"
                                              ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
@@ -68,10 +68,10 @@
                                         </div>
                                         <div align="center" flex="10" class=" table-item"
                                              ng-init="listFilterItem.itemUuids.push(channelInfo.item.uuid)">
-                                            <div style=" padding: 10px 0px 0px 0px;">{{channelInfo.item.name }}</div>
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelInfo.item.no }}</div>
                                         </div>
                                         <div align="center" flex="10" class=" table-item">
-                                            <div style=" padding: 10px 0px 0px 0px;">{{channelInfo.item.no }}</div>
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelInfo.item.name }}</div>
                                         </div>
                                         <div align="center" flex="10" class=" table-item">
                                             <div style=" padding: 10px 0px 0px 0px;">{{channelInfo.item.standard }}
@@ -112,8 +112,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div pagination option="pageOptionOfchannelInfo"
-                                     callback="querychannelInfoWithPaging()"
+                                <div pagination option="pageOptionOfChannelPrice"
+                                     callback="queryChannelPriceWithPaging()"
                                      ng-show="ui_status != UI_STATUS.EDIT_UI_STATUS_ADD"></div>
                             </div>
                         </form>

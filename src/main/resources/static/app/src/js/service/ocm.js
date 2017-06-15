@@ -487,11 +487,18 @@ angular.module('IOne-Production').service('ChannelItemInfoService', function ($h
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
+    this.getAllWithPagingAndConditions = function (sizePerPage, page, channelUuid, itemKeyWord) {
+        var url = '/itemChannelRelations?size=' + sizePerPage
+            + '&page=' + page
+            + '&channelUuid=' + channelUuid;
+        if (itemKeyWord !== undefined && itemKeyWord !== null && itemKeyWord !== '') {
+            url = url + '&itemKeyWord=' + itemKeyWord;
+        }
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
     this.getAllCountByChannelUuid = function (channelUuid) {
-        var ChannelPriceQuery = {
-            channelUuid: channelUuid
-        };
-        var url = '/channels/' + channelUuid + '/count/';
+        var url = '/itemChannelRelations/count?channelUuids=' + channelUuid;
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
@@ -679,10 +686,17 @@ angular.module('IOne-Production').service('ChannelRelationService', function ($h
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
+    this.getAllWithPagingAndConditions = function (sizePerPage, page, channelUuid, areaKeyWord) {
+        var url = '/channelRelations?size=' + sizePerPage
+            + '&page=' + page
+            + '&channelUuid=' + channelUuid;
+        if (areaKeyWord !== undefined && areaKeyWord !== null && areaKeyWord !== '') {
+            url = url + '&areaKeyWord=' + areaKeyWord;
+        }
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
     this.getAllCountByChannelUuid = function (channelUuid) {
-        var ChannelPriceQuery = {
-            channelUuid: channelUuid
-        };
         var url = '/channelRelations/count?channelUuids=' + channelUuid;
         return $http.get(Constant.BACKEND_BASE + url);
     };
@@ -723,6 +737,19 @@ angular.module('IOne-Production').service('ChannelSeriesRelationService', functi
             + '&channelUuid=' + channelUuid;
 
 
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
+    this.getAllWithPagingAndConditions = function (sizePerPage, page, channelUuid, seriesNo, seriesName) {
+        var url = '/channelSeriesRelations?size=' + sizePerPage
+            + '&page=' + page
+            + '&channelUuid=' + channelUuid;
+        if (seriesNo !== undefined && seriesNo !== null && seriesNo !== '') {
+            url = url + '&seriesNo=' + seriesNo;
+        }
+        if (seriesName !== undefined && seriesName !== null && seriesName !== '') {
+            url = url + '&seriesName=' + seriesName;
+        }
         return $http.get(Constant.BACKEND_BASE + url);
     };
 

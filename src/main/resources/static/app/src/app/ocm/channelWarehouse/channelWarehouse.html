@@ -33,11 +33,11 @@
                                 </md-input-container>
                                 <md-input-container>
                                     <label>仓库编号：</label>
-                                    <input aria-label="..." ng-model="selectedItem.seriesNo"/>
+                                    <input aria-label="..." ng-model="selectedItem.seriesNo" ng-keypress="queryEnterWarehouse($event)"/>
                                 </md-input-container>
                                 <md-input-container>
                                     <label>仓库名称：</label>
-                                    <input aria-label="..." ng-model="selectedItem.seriesName"/>
+                                    <input aria-label="..." ng-model="selectedItem.seriesName" ng-keypress="queryEnterWarehouse($event)"/>
                                 </md-input-container>
 
                                 <md-button class="md-raised" aria-label="..."

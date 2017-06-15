@@ -50,17 +50,34 @@ angular.module('IOne-Production').controller('ChannelItemInfoController', functi
     };
 
     $scope.pageOption = {
-        sizePerPage: 14,
+        sizePerPage: 10,
         currentPage: 0,
         totalPage: 100,
         totalElements: 100
     };
 
     $scope.pageOptionOfChannelPrice = {
-        sizePerPage: 14,
+        sizePerPage: 10,
         currentPage: 0,
         totalPage: 100,
         totalElements: 100
+    };
+
+    $scope.queryEnter = function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $scope.pageOption.currentPage = 0;
+            $scope.pageOption.totalPage = 0;
+            $scope.pageOption.totalElements = 0;
+            $scope.queryMenuAction();
+        }
+    };
+
+    $scope.queryEnterChannelItemInfo = function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $scope.queryChannelPriceWithPaging();
+        }
     };
 
     $scope.editItem = function (channel) {
@@ -86,7 +103,7 @@ angular.module('IOne-Production').controller('ChannelItemInfoController', functi
         $scope.selected = [];
         $scope.resetInitialValue();
 
-        ChannelItemInfoService.getAllWithPaging($scope.pageOptionOfChannelPrice.sizePerPage, $scope.pageOptionOfChannelPrice.currentPage, $scope.selectedItem.uuid)
+        ChannelItemInfoService.getAllWithPagingAndConditions($scope.pageOptionOfChannelPrice.sizePerPage, $scope.pageOptionOfChannelPrice.currentPage, $scope.selectedItem.uuid, $scope.itemName)
             .success(function (data) {
                 $scope.ChannelInfoList = data;
                 $scope.pageOptionOfChannelPrice.totalPage = data.totalPages;
@@ -98,7 +115,7 @@ angular.module('IOne-Production').controller('ChannelItemInfoController', functi
         $scope.selected = [];
         $scope.resetInitialValue();
 
-        ChannelItemInfoService.getAllWithPaging($scope.pageOptionOfChannelPrice.sizePerPage, $scope.pageOptionOfChannelPrice.currentPage, $scope.selectedItem.uuid)
+        ChannelItemInfoService.getAllWithPagingAndConditions($scope.pageOptionOfChannelPrice.sizePerPage, $scope.pageOptionOfChannelPrice.currentPage, $scope.selectedItem.uuid, $scope.itemName)
             .success(function (data) {
                 $scope.ChannelInfoList = data;
                 $scope.pageOptionOfChannelPrice.totalPage = data.totalPages;
@@ -110,6 +127,12 @@ angular.module('IOne-Production').controller('ChannelItemInfoController', functi
         $scope.resetInitialValue();
         $scope.selected = [];
         $scope.ocmListMenu.selectAll = false;
+        if ($scope.ocmListMenu.channelNo !== undefined) {
+            channelNo = $scope.ocmListMenu.channelNo;
+        } else {
+            channelNo = null;
+        }
+
         if ($scope.ocmListMenu.channelName !== undefined) {
             channelName = $scope.ocmListMenu.channelName;
         } else {
@@ -120,7 +143,7 @@ angular.module('IOne-Production').controller('ChannelItemInfoController', functi
         status = $scope.ocmListMenu.status;
 
         ChannelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, confirm,
-            status, channelName, '', RES_UUID_MAP.OCM.CHANNEL_PRICE.LIST_PAGE.RES_UUID)
+            status, channelName, channelNo, RES_UUID_MAP.OCM.CHANNEL_PRICE.LIST_PAGE.RES_UUID)
             .success(function (data) {
                 $scope.ChannelList = data;
                 $scope.pageOption.totalPage = data.totalPages;
@@ -131,14 +154,14 @@ angular.module('IOne-Production').controller('ChannelItemInfoController', functi
                 });
                 ChannelItemInfoService.getAllCountByChannelUuid(channelUuid).success(function (data) {
                     var map = [];
-                    angular.forEach(data, function (channelItemCount) {
-                        map[channelItemCount.uuid] = channelItemCount.itemCount;
+                    angular.forEach(data, function (item) {
+                        map[item.uuid] = item.count;
                     });
                     angular.forEach($scope.ChannelList.content, function (channel) {
                         if (undefined != map[channel.uuid]) {
-                            channel.channelPriceCount = map[channel.uuid];
+                            channel.count = map[channel.uuid];
                         } else {
-                            channel.channelPriceCount = 0;
+                            channel.count = 0;
                         }
                     });
                 });

@@ -51,11 +51,18 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
 
 
      $scope.pageOption = {
-       sizePerPage: 14,
+       sizePerPage: 10,
        currentPage: 0,
        totalPage: 100,
        totalElements: 100
      };
+
+    $scope.pageOptionOfChannelSeriesRelation= {
+        sizePerPage: 10,
+        currentPage: 0,
+        totalPage: 100,
+        totalElements: 100
+    };
 
     $scope.queryEnter = function (e) {
         if (e.keyCode === 13) {
@@ -70,16 +77,16 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
     $scope.queryEnterSeries = function (e) {
         if (e.keyCode === 13) {
             e.preventDefault();
-            $scope.searchChannelRelationWithPaging($scope.selectedItem.seriesNo, $scope.selectedItem.seriesName)
+            $scope.searchChannelRelationWithPaging();
         }
     };
 
      $scope.editItem = function (channelRelation) {
          $scope.selectedItem = channelRelation;
          $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
-         $scope.pageOption.currentPage = 0;
-         $scope.pageOption.totalPage = 0;
-         $scope.pageOption.totalElements = 0;
+         $scope.pageOptionOfChannelSeriesRelation.currentPage = 0;
+         $scope.pageOptionOfChannelSeriesRelation.totalPage = 0;
+         $scope.pageOptionOfChannelSeriesRelation.totalElements = 0;
          $scope.listFilterItem.itemUuids.length = 0;
          $scope.queryChannelRelationWithPaging();
      };
@@ -89,40 +96,19 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
          $scope.selected = [];
          $scope.resetInitialValue();
 
-         ChannelSeriesRelationService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.selectedItem.uuid)
+         ChannelSeriesRelationService.getAllWithPagingAndConditions($scope.pageOptionOfChannelSeriesRelation.sizePerPage, $scope.pageOptionOfChannelSeriesRelation.currentPage, $scope.selectedItem.uuid, $scope.seriesNo, $scope.seriesName)
              .success(function (data) {
                  $scope.channelRelationList = data;
-                 $scope.pageOption.totalPage = data.totalPages;
-                 $scope.pageOption.totalElements = data.totalElements;
+                 $scope.pageOptionOfChannelSeriesRelation.totalPage = data.totalPages;
+                 $scope.pageOptionOfChannelSeriesRelation.totalElements = data.totalElements;
              });
      };
 
-     $scope.searchChannelRelationWithPaging=function(no,name){
-         ChannelSeriesRelationService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.selectedItem.uuid)
-              .success(function (data) {
-                  var dataResult = [];
-                  angular.forEach(data.content,function(item){
-                     if(no == item.series.no || name == item.series.name){
-                         dataResult.push(item);
-                     }
-                     if(no == undefined && name == undefined){
-                         dataResult.push(item);
-                     }
-                     if(no == "" && name == undefined){
-                         dataResult.push(item);
-                     }
-                     if(no == undefined && name == ""){
-                          dataResult.push(item);
-                     }
-                     if(no == "" && name == ""){
-                           dataResult.push(item);
-                     }
-
-                 });
-                 $scope.channelRelationList.content = dataResult;
-                 $scope.pageOption.totalPage = data.totalPages;
-                 $scope.pageOption.totalElements = data.totalElements;
-              });
+     $scope.searchChannelRelationWithPaging = function () {
+         $scope.pageOptionOfChannelSeriesRelation.currentPage = 0;
+         $scope.pageOptionOfChannelSeriesRelation.totalPage = 0;
+         $scope.pageOptionOfChannelSeriesRelation.totalElements = 0;
+         $scope.queryChannelRelationWithPaging();
      }
 
 
