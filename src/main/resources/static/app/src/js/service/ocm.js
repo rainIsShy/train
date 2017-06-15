@@ -488,10 +488,7 @@ angular.module('IOne-Production').service('ChannelItemInfoService', function ($h
     };
 
     this.getAllCountByChannelUuid = function (channelUuid) {
-        var ChannelPriceQuery = {
-            channelUuid: channelUuid
-        };
-        var url = '/channels/' + channelUuid + '/count/';
+        var url = '/itemChannelRelations/count?channelUuids=' + channelUuid;
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
@@ -680,9 +677,6 @@ angular.module('IOne-Production').service('ChannelRelationService', function ($h
     };
 
     this.getAllCountByChannelUuid = function (channelUuid) {
-        var ChannelPriceQuery = {
-            channelUuid: channelUuid
-        };
         var url = '/channelRelations/count?channelUuids=' + channelUuid;
         return $http.get(Constant.BACKEND_BASE + url);
     };

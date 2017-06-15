@@ -50,14 +50,14 @@ angular.module('IOne-Production').controller('ChannelItemInfoController', functi
     };
 
     $scope.pageOption = {
-        sizePerPage: 14,
+        sizePerPage: 10,
         currentPage: 0,
         totalPage: 100,
         totalElements: 100
     };
 
     $scope.pageOptionOfChannelPrice = {
-        sizePerPage: 14,
+        sizePerPage: 10,
         currentPage: 0,
         totalPage: 100,
         totalElements: 100
@@ -147,14 +147,14 @@ angular.module('IOne-Production').controller('ChannelItemInfoController', functi
                 });
                 ChannelItemInfoService.getAllCountByChannelUuid(channelUuid).success(function (data) {
                     var map = [];
-                    angular.forEach(data, function (channelItemCount) {
-                        map[channelItemCount.uuid] = channelItemCount.itemCount;
+                    angular.forEach(data, function (item) {
+                        map[item.uuid] = item.count;
                     });
                     angular.forEach($scope.ChannelList.content, function (channel) {
                         if (undefined != map[channel.uuid]) {
-                            channel.channelPriceCount = map[channel.uuid];
+                            channel.count = map[channel.uuid];
                         } else {
-                            channel.channelPriceCount = 0;
+                            channel.count = 0;
                         }
                     });
                 });
