@@ -96,7 +96,7 @@ angular.module('IOne-Production').controller('ChannelItemInfoController', functi
         $scope.selected = [];
         $scope.resetInitialValue();
 
-        ChannelItemInfoService.getAllWithPaging($scope.pageOptionOfChannelPrice.sizePerPage, $scope.pageOptionOfChannelPrice.currentPage, $scope.selectedItem.uuid)
+        ChannelItemInfoService.getAllWithPagingAndConditions($scope.pageOptionOfChannelPrice.sizePerPage, $scope.pageOptionOfChannelPrice.currentPage, $scope.selectedItem.uuid, $scope.itemName)
             .success(function (data) {
                 $scope.ChannelInfoList = data;
                 $scope.pageOptionOfChannelPrice.totalPage = data.totalPages;
@@ -108,7 +108,7 @@ angular.module('IOne-Production').controller('ChannelItemInfoController', functi
         $scope.selected = [];
         $scope.resetInitialValue();
 
-        ChannelItemInfoService.getAllWithPaging($scope.pageOptionOfChannelPrice.sizePerPage, $scope.pageOptionOfChannelPrice.currentPage, $scope.selectedItem.uuid)
+        ChannelItemInfoService.getAllWithPagingAndConditions($scope.pageOptionOfChannelPrice.sizePerPage, $scope.pageOptionOfChannelPrice.currentPage, $scope.selectedItem.uuid, $scope.itemName)
             .success(function (data) {
                 $scope.ChannelInfoList = data;
                 $scope.pageOptionOfChannelPrice.totalPage = data.totalPages;

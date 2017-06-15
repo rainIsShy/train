@@ -48,8 +48,8 @@
                                     <div align="center" flex="5" class=" table-head"
                                          ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">
                                     </div>
-                                    <div align="center" flex="10" class=" table-head">商品名称</div>
                                     <div align="center" flex="10" class=" table-head">商品编号</div>
+                                    <div align="center" flex="10" class=" table-head">商品名称</div>
                                     <div align="center" flex="10" class=" table-head">规格</div>
                                     <div align="center" flex="10" class=" table-head">停售状态</div>
                                     <div align="center" flex="10" class=" table-head">销售价格</div>
@@ -68,10 +68,10 @@
                                         </div>
                                         <div align="center" flex="10" class=" table-item"
                                              ng-init="listFilterItem.itemUuids.push(channelInfo.item.uuid)">
-                                            <div style=" padding: 10px 0px 0px 0px;">{{channelInfo.item.name }}</div>
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelInfo.item.no }}</div>
                                         </div>
                                         <div align="center" flex="10" class=" table-item">
-                                            <div style=" padding: 10px 0px 0px 0px;">{{channelInfo.item.no }}</div>
+                                            <div style=" padding: 10px 0px 0px 0px;">{{channelInfo.item.name }}</div>
                                         </div>
                                         <div align="center" flex="10" class=" table-item">
                                             <div style=" padding: 10px 0px 0px 0px;">{{channelInfo.item.standard }}
