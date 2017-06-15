@@ -5,7 +5,7 @@ angular.module('IOne-Production').config(['$routeProvider', function ($routeProv
     })
 }]);
 
-angular.module('IOne-Production').controller('PmmOrderController', function ($scope, $q, PmmOrderMaster, PmmOrderDetail, PmmOrderExtendDetail, PmmOrderExtendDetail2, OrderItemCustomDetail, OrderCustomScope, OrderChannelCurrency, OrderChannelTax, SaleTypes, CBIEmployeeService, $mdDialog, $timeout, Constant, ErpAdapterService, OCMChannelService) {
+angular.module('IOne-Production').controller('PmmOrderController', function ($scope, $q, PmmOrderMaster, PmmOrderDetail, PmmOrderExtendDetail, PmmOrderExtendDetail2, OrderItemCustomDetail, OrderCustomScope, OrderChannelCurrency, OrderChannelTax, SaleTypes, CBIEmployeeService, $mdDialog, $timeout, Constant, ErpAdapterService, OCMChannelService, PmmOrderGroupEmployeeClassRService) {
 
     //initialize model value.
     $scope.orderListMenu = {
@@ -935,6 +935,16 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
                 $scope.selectedItem.channelUuid = data.content[0].channel.uuid;
                 $scope.selectedItem.department = $scope.selectedItem.employee.department;
                 $scope.findAreaAddress($scope.selectedItem.channelUuid);
+
+                PmmOrderGroupEmployeeClassRService.getAll(5, 0, null, null, $scope.selectedItem.channelUuid, '').success(function (data) {
+                    console.log(data);
+                    if (data.content.length == 1) {
+                        $scope.selectedItem.baseClass = data.content[0].baseClass;
+                        $scope.selectedItem.baseClassUuid = data.content[0].baseClass.uuid;
+                        $scope.selectedItem.groupUser = data.content[0].groupUser;
+                        $scope.selectedItem.groupUserUuid = data.content[0].groupUser.uuid;
+                    }
+                });
             }
         });
 
@@ -1464,7 +1474,7 @@ angular.module('IOne-Production').controller('PmmOrderController', function ($sc
             templateUrl: 'app/src/app/pmm/pmmOrder/selectBaseClass.html',
             parent: angular.element(document.body),
             targetEvent: event,
-            locals: {channelUuid: $scope.selectedItem.channel.uuid}
+            locals: { channelUuid: $scope.selectedItem.channel.uuid }
         }).then(function (data) {
             $scope.selectedItem.baseClass = data.channel;
             $scope.selectedItem.baseClassUuid = data.channel.uuid;
@@ -2315,9 +2325,6 @@ angular.module('IOne-Production').controller('PmmBaseClassSelectController', fun
             $scope.itemList = data.content;
             $scope.pageOption.totalPage = data.totalPages;
             $scope.pageOption.totalElements = data.totalElements;
-            if ($scope.itemList.length == 1) {
-                $scope.select($scope.itemList[0].baseClass, $scope.itemList[0].groupUser);
-            }
         });
     };
 
