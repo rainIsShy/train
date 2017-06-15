@@ -686,6 +686,16 @@ angular.module('IOne-Production').service('ChannelRelationService', function ($h
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
+    this.getAllWithPagingAndConditions = function (sizePerPage, page, channelUuid, areaKeyWord) {
+        var url = '/channelRelations?size=' + sizePerPage
+            + '&page=' + page
+            + '&channelUuid=' + channelUuid;
+        if (areaKeyWord !== undefined && areaKeyWord !== null && areaKeyWord !== '') {
+            url = url + '&areaKeyWord=' + areaKeyWord;
+        }
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
     this.getAllCountByChannelUuid = function (channelUuid) {
         var url = '/channelRelations/count?channelUuids=' + channelUuid;
         return $http.get(Constant.BACKEND_BASE + url);

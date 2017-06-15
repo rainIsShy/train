@@ -70,7 +70,7 @@ angular.module('IOne-Production').controller('ChannelRelationController', functi
     $scope.queryEnterRelation = function (e) {
         if (e.keyCode === 13) {
             e.preventDefault();
-            $scope.searchChannelRelationWithPaging();
+            $scope.queryChannelRelationWithPaging();
         }
     };
 
@@ -91,7 +91,7 @@ angular.module('IOne-Production').controller('ChannelRelationController', functi
          $scope.selected = [];
          $scope.resetInitialValue();
 
-         ChannelRelationService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.selectedItem.uuid)
+         ChannelRelationService.getAllWithPagingAndConditions($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.selectedItem.uuid, $scope.areaKeyWord)
              .success(function (data) {
                  $scope.channelRelationList = data;
                  $scope.pageOption.totalPage = data.totalPages;
@@ -161,6 +161,7 @@ angular.module('IOne-Production').controller('ChannelRelationController', functi
         $scope.selectedItem = null;
         $scope.areaCode = null;
         $scope.areaName = null;
+        $scope.areaKeyWord = null;
 
         $scope.getMenuAuthData($scope.RES_UUID_MAP.OCM.CHANNEL_RELATION.LIST_PAGE.RES_UUID).success(function (data) {
             $scope.menuAuthDataMap = $scope.menuDataMap(data);

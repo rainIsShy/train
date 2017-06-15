@@ -31,16 +31,12 @@
                                     <input  aria-label="..." ng-model="selectedItem.name" ng-disabled="true"/>
                                 </md-input-container>
                                 <md-input-container >
-                                    <label>区域编码：</label>
-                                    <input  aria-label="..."  ng-model="areaCode" ng-keypress="queryEnterRelation($event)"/>
-                                </md-input-container>
-                                <md-input-container >
-                                    <label>区域名称：</label>
-                                    <input aria-label="..."  ng-model="areaName" ng-keypress="queryEnterRelation($event)"/>
+                                    <label>区域信息：</label>
+                                    <input  aria-label="..."  ng-model="areaKeyWord" ng-keypress="queryEnterRelation($event)"/>
                                 </md-input-container>
 
                                 <md-button class="md-raised" aria-label="..."  ng-if="ocmListMenuDisplayOption['600-query'].display"
-                                           ng-click="searchChannelRelationWithPaging()" style="margin-top: 22px;height: 20px;"> 查找
+                                           ng-click="queryChannelRelationWithPaging()" style="margin-top: 22px;height: 20px;"> 查找
                                 </md-button>
                             </div>
 
