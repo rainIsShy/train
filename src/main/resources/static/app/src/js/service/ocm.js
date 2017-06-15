@@ -740,6 +740,19 @@ angular.module('IOne-Production').service('ChannelSeriesRelationService', functi
         return $http.get(Constant.BACKEND_BASE + url);
     };
 
+    this.getAllWithPagingAndConditions = function (sizePerPage, page, channelUuid, seriesNo, seriesName) {
+        var url = '/channelSeriesRelations?size=' + sizePerPage
+            + '&page=' + page
+            + '&channelUuid=' + channelUuid;
+        if (seriesNo !== undefined && seriesNo !== null && seriesNo !== '') {
+            url = url + '&seriesNo=' + seriesNo;
+        }
+        if (seriesName !== undefined && seriesName !== null && seriesName !== '') {
+            url = url + '&seriesName=' + seriesName;
+        }
+        return $http.get(Constant.BACKEND_BASE + url);
+    };
+
 
     this.get = function (channelRelationUuid) {
         return $http.get(Constant.BACKEND_BASE + '/channelSeriesRelations/' + channelRelationUuid);

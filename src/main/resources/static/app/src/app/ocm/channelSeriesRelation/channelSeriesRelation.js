@@ -70,7 +70,7 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
     $scope.queryEnterSeries = function (e) {
         if (e.keyCode === 13) {
             e.preventDefault();
-            $scope.searchChannelRelationWithPaging($scope.selectedItem.seriesNo, $scope.selectedItem.seriesName)
+            $scope.queryChannelRelationWithPaging();
         }
     };
 
@@ -89,7 +89,7 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
          $scope.selected = [];
          $scope.resetInitialValue();
 
-         ChannelSeriesRelationService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.selectedItem.uuid)
+         ChannelSeriesRelationService.getAllWithPagingAndConditions($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.selectedItem.uuid, $scope.seriesNo, $scope.seriesName)
              .success(function (data) {
                  $scope.channelRelationList = data;
                  $scope.pageOption.totalPage = data.totalPages;
@@ -97,29 +97,10 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
              });
      };
 
-     $scope.searchChannelRelationWithPaging=function(no,name){
-         ChannelSeriesRelationService.getAllWithPaging($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.selectedItem.uuid)
+     $scope.searchChannelRelationWithPaging = function () {
+         ChannelSeriesRelationService.getAllWithPagingAndConditions($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.selectedItem.uuid, $scope.seriesNo, $scope.seriesName)
               .success(function (data) {
-                  var dataResult = [];
-                  angular.forEach(data.content,function(item){
-                     if(no == item.series.no || name == item.series.name){
-                         dataResult.push(item);
-                     }
-                     if(no == undefined && name == undefined){
-                         dataResult.push(item);
-                     }
-                     if(no == "" && name == undefined){
-                         dataResult.push(item);
-                     }
-                     if(no == undefined && name == ""){
-                          dataResult.push(item);
-                     }
-                     if(no == "" && name == ""){
-                           dataResult.push(item);
-                     }
-
-                 });
-                 $scope.channelRelationList.content = dataResult;
+                 $scope.channelRelationList = data;
                  $scope.pageOption.totalPage = data.totalPages;
                  $scope.pageOption.totalElements = data.totalElements;
               });
