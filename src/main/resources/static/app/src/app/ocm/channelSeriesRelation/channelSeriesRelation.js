@@ -58,7 +58,7 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
      };
 
     $scope.pageOptionOfChannelSeriesRelation= {
-        sizePerPage: 3,
+        sizePerPage: 10,
         currentPage: 0,
         totalPage: 100,
         totalElements: 100
