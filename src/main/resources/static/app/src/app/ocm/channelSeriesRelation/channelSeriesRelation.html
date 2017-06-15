@@ -40,7 +40,7 @@
                                 </md-input-container>
 
                                 <md-button class="md-raised" aria-label="..."  ng-if="ocmListMenuDisplayOption['600-query'].display"
-                                           ng-click="queryChannelRelationWithPaging()" style="margin-top: 22px;height: 20px;"> 查找
+                                           ng-click="searchChannelRelationWithPaging()" style="margin-top: 22px;height: 20px;"> 查找
                                 </md-button>
                             </div>
 
@@ -74,6 +74,9 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div pagination option="pageOptionOfChannelSeriesRelation"
+                                     callback="queryChannelRelationWithPaging()"
+                                     ng-show="ui_status != UI_STATUS.EDIT_UI_STATUS_ADD"></div>
                             </div>
                         </form>
                     </md-content>
