@@ -175,7 +175,7 @@
                                                    next-focus id="field1"/>
                                             <md-button class="md-icon-button close-btn float-right"
                                                        style="margin-top: 10px;" aria-label="More"
-                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
+                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || currentUser != 'admin'"
                                                        ng-click="openOrderChannelDlg();">
                                                 <ng-md-icon icon="search"></ng-md-icon>
                                             </md-button>
@@ -200,16 +200,23 @@
                                         </md-input-container>
 
                                         <md-input-container>
-                                            <label class="label" style="color: blue;">跟单分组：</label>
-                                            <input type="text" aria-label="..." ng-model="selectedItem.baseClass.name"
+                                            <label class="label" style="color: blue;">跟单员：</label>
+                                            <input type="text" aria-label="..." ng-model="selectedItem.groupUser.name"
                                                    ng-disabled="(ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS)"
-                                                   next-focus id="field3"/>
+                                            />
                                             <md-button class="md-icon-button close-btn float-right"
                                                        style="margin-top: 10px;" aria-label="More"
                                                        ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
                                                        ng-click="openBaseClassDlg();">
                                                 <ng-md-icon icon="search"></ng-md-icon>
                                             </md-button>
+                                        </md-input-container>
+
+                                        <md-input-container>
+                                            <label class="label" style="color: blue;">跟单分组：</label>
+                                            <input type="text" aria-label="..." ng-model="selectedItem.baseClass.name"
+                                                   ng-disabled="(ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS)"
+                                                   next-focus id="field3"/>
                                         </md-input-container>
 
                                         <md-input-container>

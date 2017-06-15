@@ -262,9 +262,9 @@ angular.module('IOne-Production').service('TransferTypesService', function ($htt
 });
 
 angular.module('IOne-Production').service('PmmOrderGroupEmployeeClassRService', function ($http, Constant) {
-    this.getAll = function (sizePerPage, page, employee, baseClass, resUuid) {
+    this.getAll = function (sizePerPage, page, employee, baseClass, channelUuid, resUuid) {
         var url = '/groupEmployeeClassRelations?size=' + sizePerPage
-            + '&page=' + page;
+            + '&page=' + page + '&channelUuid=' + channelUuid;
         if (employee !== undefined && employee !== null) {
             url = url + '&employee=' + employee;
         }
