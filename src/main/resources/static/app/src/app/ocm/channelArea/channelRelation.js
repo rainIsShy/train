@@ -57,6 +57,23 @@ angular.module('IOne-Production').controller('ChannelRelationController', functi
        totalElements: 100
      };
 
+    $scope.queryEnter = function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $scope.pageOption.currentPage = 0;
+            $scope.pageOption.totalPage = 0;
+            $scope.pageOption.totalElements = 0;
+            $scope.queryMenuAction();
+        }
+    };
+
+    $scope.queryEnterChannelItemInfo = function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $scope.searchChannelRelationWithPaging();
+        }
+    };
+
      $scope.editItem = function (channelRelation) {
          $scope.selectedItem = channelRelation;
          $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
@@ -94,6 +111,12 @@ angular.module('IOne-Production').controller('ChannelRelationController', functi
         $scope.resetInitialValue();
         $scope.selected = [];
         $scope.ocmListMenu.selectAll = false;
+        if ($scope.ocmListMenu.channelNo !== undefined) {
+            channelNo = $scope.ocmListMenu.channelNo;
+        } else {
+            channelNo = null;
+        }
+
         if ($scope.ocmListMenu.channelName !== undefined) {
             channelName = $scope.ocmListMenu.channelName;
         } else {
@@ -104,7 +127,7 @@ angular.module('IOne-Production').controller('ChannelRelationController', functi
         status = $scope.ocmListMenu.status;
 
         ChannelService.getAll($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, confirm,
-            status, channelName, RES_UUID_MAP.OCM.CHANNEL_RELATION.LIST_PAGE.RES_UUID)
+            status, channelName, channelNo, RES_UUID_MAP.OCM.CHANNEL_RELATION.LIST_PAGE.RES_UUID)
             .success(function (data) {
                 $scope.ChannelList = data;
                 $scope.pageOption.totalPage = data.totalPages;

@@ -67,7 +67,7 @@ angular.module('IOne-Production').controller('ChannelSeriesRelationController', 
         }
     };
 
-    $scope.queryEnterSeries = function (e) {
+    $scope.queryEnterRelation = function (e) {
         if (e.keyCode === 13) {
             e.preventDefault();
             $scope.searchChannelRelationWithPaging($scope.selectedItem.seriesNo, $scope.selectedItem.seriesName)

@@ -32,11 +32,11 @@
                                 </md-input-container>
                                 <md-input-container >
                                     <label>区域编码：</label>
-                                    <input  aria-label="..."  ng-model="areaCode"/>
+                                    <input  aria-label="..."  ng-model="areaCode" ng-keypress="queryEnterRelation($event)"/>
                                 </md-input-container>
                                 <md-input-container >
                                     <label>区域名称：</label>
-                                    <input aria-label="..."  ng-model="areaName"/>
+                                    <input aria-label="..."  ng-model="areaName" ng-keypress="queryEnterRelation($event)"/>
                                 </md-input-container>
 
                                 <md-button class="md-raised" aria-label="..."  ng-if="ocmListMenuDisplayOption['600-query'].display"
