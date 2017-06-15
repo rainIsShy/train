@@ -57,6 +57,13 @@ angular.module('IOne-Production').controller('ChannelWarehouseRelationController
        totalElements: 100
     };
 
+    $scope.queryEnterWarehouse = function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $scope.searchChannelRelationWithPaging();
+        }
+    };
+
     $scope.editItem = function (channelRelation) {
          $scope.selectedItem = channelRelation;
          $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
