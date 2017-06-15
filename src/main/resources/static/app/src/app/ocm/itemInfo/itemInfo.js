@@ -73,6 +73,13 @@ angular.module('IOne-Production').controller('ChannelItemInfoController', functi
         }
     };
 
+    $scope.queryEnterChannelItemInfo = function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $scope.queryChannelPriceWithPaging();
+        }
+    };
+
     $scope.editItem = function (channel) {
         $scope.selectedItem = channel;
         $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
