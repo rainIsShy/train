@@ -175,7 +175,7 @@
                                                    next-focus id="field1"/>
                                             <md-button class="md-icon-button close-btn float-right"
                                                        style="margin-top: 10px;" aria-label="More"
-                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS"
+                                                       ng-disabled="ui_status == UI_STATUS.VIEW_UI_STATUS || currentUser != 'admin'"
                                                        ng-click="openOrderChannelDlg();">
                                                 <ng-md-icon icon="search"></ng-md-icon>
                                             </md-button>
