@@ -57,7 +57,7 @@
                                     <div align="center" flex="10" class=" table-head">销售单位</div>
                                 </div>
 
-                                <div ng-repeat="channelInfo in ChannelInfoList.content ">
+                                <div ng-repeat="channelInfo in ChannelInfoList.content | orderBy:'item.no' ">
                                     <div layout="row">
                                         <div flex="5" class=" table-item"
                                              ng-show="ui_status == UI_STATUS.VIEW_UI_STATUS || ui_status == UI_STATUS.PRE_EDIT_UI_STATUS">

@@ -63,6 +63,16 @@ angular.module('IOne-Production').controller('ChannelItemInfoController', functi
         totalElements: 100
     };
 
+    $scope.queryEnter = function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $scope.pageOption.currentPage = 0;
+            $scope.pageOption.totalPage = 0;
+            $scope.pageOption.totalElements = 0;
+            $scope.queryMenuAction();
+        }
+    };
+
     $scope.editItem = function (channel) {
         $scope.selectedItem = channel;
         $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
