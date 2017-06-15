@@ -51,11 +51,18 @@ angular.module('IOne-Production').controller('ChannelRelationController', functi
 
 
      $scope.pageOption = {
-       sizePerPage: 14,
+       sizePerPage: 10,
        currentPage: 0,
        totalPage: 100,
        totalElements: 100
      };
+
+    $scope.pageOptionOfChannelRelation= {
+        sizePerPage: 10,
+        currentPage: 0,
+        totalPage: 100,
+        totalElements: 100
+    };
 
     $scope.queryEnter = function (e) {
         if (e.keyCode === 13) {
@@ -77,25 +84,32 @@ angular.module('IOne-Production').controller('ChannelRelationController', functi
      $scope.editItem = function (channelRelation) {
          $scope.selectedItem = channelRelation;
          $scope.changeViewStatus(Constant.UI_STATUS.PRE_EDIT_UI_STATUS, 1);
-         $scope.pageOption.currentPage = 0;
-         $scope.pageOption.totalPage = 0;
-         $scope.pageOption.totalElements = 0;
+         $scope.pageOptionOfChannelRelation.currentPage = 0;
+         $scope.pageOptionOfChannelRelation.totalPage = 0;
+         $scope.pageOptionOfChannelRelation.totalElements = 0;
          $scope.listFilterItem.itemUuids.length = 0;
          $scope.queryChannelRelationWithPaging();
 
 
      };
 
+    $scope.searchChannelRelationWithPaging = function () {
+        $scope.pageOptionOfChannelRelation.currentPage = 0;
+        $scope.pageOptionOfChannelRelation.totalPage = 0;
+        $scope.pageOptionOfChannelRelation.totalElements = 0;
+        $scope.queryChannelRelationWithPaging();
+    };
+
      $scope.queryChannelRelationWithPaging = function () {
          $scope.ocmListMenu.selectAll = false;
          $scope.selected = [];
          $scope.resetInitialValue();
 
-         ChannelRelationService.getAllWithPagingAndConditions($scope.pageOption.sizePerPage, $scope.pageOption.currentPage, $scope.selectedItem.uuid, $scope.areaKeyWord)
+         ChannelRelationService.getAllWithPagingAndConditions($scope.pageOptionOfChannelRelation.sizePerPage, $scope.pageOptionOfChannelRelation.currentPage, $scope.selectedItem.uuid, $scope.areaKeyWord)
              .success(function (data) {
                  $scope.channelRelationList = data;
-                 $scope.pageOption.totalPage = data.totalPages;
-                 $scope.pageOption.totalElements = data.totalElements;
+                 $scope.pageOptionOfChannelRelation.totalPage = data.totalPages;
+                 $scope.pageOptionOfChannelRelation.totalElements = data.totalElements;
              });
      };
 
