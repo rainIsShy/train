@@ -133,6 +133,10 @@ angular.module('IOne-Production').controller('UserController', function($scope, 
     $scope.preAddMenuAction = function() {
         $scope.selectedItem = {};
 
+        if (angular.isUndefined($scope.selectedItem.status) || $scope.selectedItem.status == null) {
+            $scope.selectedItem.status = '1';
+        }
+
         if (angular.isUndefined($scope.selectedItem.salesFlag) || $scope.selectedItem.salesFlag == null) {
             $scope.selectedItem.salesFlag = '2';
         }
