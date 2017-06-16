@@ -1,12 +1,21 @@
 <md-content  style="overflow: scroll;">
     <div layout="row"    >
         <!--<div flex="5"  class="verticalLine table-head"></div>-->
-        <div align="center" flex="5"  class=" table-head"  >操作</div>
+        <div align="center" flex="5" class=" table-head"
+             ng-if="formMenuDisplayOption['423-detailModify'].display && (menuAuthDataMap[formMenuDisplayOption['423-detailModify'].uuid] || isAdmin() || !formMenuDisplayOption['423-detailModify'].uuid)"
+             ng-show="selectedItem.channel.channelFlag == '1' || selectedItem.channel.channelFlag == '3'">操作
+        </div>
         <div align="center" flex="5"  class=" table-head">项次</div>
         <div align="center" flex="10"  class=" table-head">品名</div>
         <div align="center" flex="10"  class=" table-head">规格</div>
         <div align="center" flex="10"  class=" table-head">品牌</div>
         <div align="center" flex="10"  class=" table-head">品牌名称</div>
+        <div align="center" flex="10" class=" table-head"
+             ng-show="selectedItem.channel.channelFlag == '1' || selectedItem.channel.channelFlag == '3'">跟单员
+        </div>
+        <div align="center" flex="10" class=" table-head"
+             ng-show="selectedItem.channel.channelFlag == '1' || selectedItem.channel.channelFlag == '3'">跟单分组
+        </div>
         <div align="center" flex="10"  class=" table-head">是否定制</div>
         <div align="center" flex="10"  class=" table-head">商品属性</div>
         <div align="center" flex="10"  class=" table-head">销售类型</div>
@@ -41,7 +50,9 @@
             <!--</md-checkbox>-->
             <!--</div>-->
 
-            <div  flex="5" class=" table-item"   >
+            <div flex="5" class=" table-item"
+                 ng-if="formMenuDisplayOption['423-detailModify'].display && (menuAuthDataMap[formMenuDisplayOption['423-detailModify'].uuid] || isAdmin() || !formMenuDisplayOption['423-detailModify'].uuid)"
+                 ng-show="selectedItem.channel.channelFlag == '1' || selectedItem.channel.channelFlag == '3'">
                 <div layout="row" layout-sm="column" layout-align="center center">
                     <div  ng-show="orderDetail.confirm == 1 && orderDetail.status == 1 " align="center" ng-click="orderDetailEditMenuAction(orderDetail)"  ><i   class="fa fa-pencil-square-o"></i>&nbsp;{{itemOperationMenuDisplayOption['500-item-edit'].name}}</div>
                 </div>
@@ -51,6 +62,14 @@
             <div  align="center" flex="10" class=" table-item">{{orderDetail.item.standard}} </div>
             <div  align="center" flex="10" class=" table-item">{{orderDetail.item.brand.no}} </div>
             <div  align="center" flex="10" class=" table-item">{{orderDetail.item.brand.name}} </div>
+            <div align="center" flex="10" class=" table-item"
+                 ng-show="selectedItem.channel.channelFlag == '1' || selectedItem.channel.channelFlag == '3'">
+                {{orderDetail.groupUser.name}}
+            </div>
+            <div align="center" flex="10" class=" table-item"
+                 ng-show="selectedItem.channel.channelFlag == '1' || selectedItem.channel.channelFlag == '3'">
+                {{orderDetail.baseClass.name}}
+            </div>
             <div  align="center" flex="10" class=" table-item">{{CUSTOMIZE_FLAG[orderDetail.customizeFlag].name}}</div>
             <div  align="center" flex="10" class=" table-item">{{orderDetail.itemAttribute}} </div>
             <div  align="center" flex="10" class=" table-item">{{orderDetail.saleType.name}} </div>

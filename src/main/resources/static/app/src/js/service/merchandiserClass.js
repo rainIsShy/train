@@ -70,6 +70,10 @@ angular.module('IOne-Production').service('CBIGroupEmployeeClassRService', funct
         return $http.post(Constant.BACKEND_BASE + '/groupEmployeeClassRelations/', EmployeeInput);
     };
 
+    this.getByChannelUuidAndBrandUuid = function (channelUuid, brandUuid) {
+        return $http.get(Constant.BACKEND_BASE + '/groupEmployeeClassRelations?action=getOrderDetailClass&channelUuid=' + channelUuid + '&brandUuid=' + brandUuid);
+    };
+
 });
 
 angular.module('IOne-Production').service('CBIGroupEmployeeBrandRService', function ($http, Constant) {

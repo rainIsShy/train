@@ -36,7 +36,8 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
         '417-print': {display: true, name: '打印', uuid: '31964B09-78B1-4C27-A2CD-DC0837E746B8'},
         '418-oneOffSync': {display: true, name: '一键抛转', uuid: '71E103D7-D859-401F-8F0C-6154234AD4F0'},
         '419-rollbackTransfer': {display: true, name: '抛转还原', uuid: 'D7A760B7-576F-41AD-938A-E4FFAD2D1012'},
-        '422-auditTransfer': {display: true, name: '审核抛转', uuid: 'e63bbabc-b6c2-46c6-a541-416dedb7ed00'}
+        '422-auditTransfer': {display: true, name: '审核抛转', uuid: 'e63bbabc-b6c2-46c6-a541-416dedb7ed00'},
+        '423-detailModify': {display: true, name: '操作', uuid: '65f7e9c9-564e-4292-a8fd-9c326b7f46fb'},
     };
 
     $scope.orderListMenuDisplayOption = {
@@ -1024,21 +1025,46 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
     };
 
 
-    //修改产品信息
+    //修改产品信息(不再使用)
+    // $scope.orderDetailEditMenuAction = function (orderDetail) {
+    //     $mdDialog.show({
+    //         controller: 'OrderDetailController',
+    //         templateUrl: 'app/src/app/order/sales_slip/orderDetailEditDlg.html',
+    //         parent: angular.element(document.body),
+    //         targetEvent: event,
+    //         locals: {
+    //             selectedOrderDetail: orderDetail,
+    //             saleTypes: $scope.saleTypes
+    //         }
+    //     }).then(function (data) {
+    //
+    //         OrderDetail.modify(data.selectedOrderDetail.orderMaster.uuid, data.selectedOrderDetail.uuid, data.selectedOrderDetail).success(function () {
+    //             OrderDetail.get(data.selectedOrderDetail.orderMaster.uuid).success(function (data) {
+    //                 $scope.OrderDetailList = data;
+    //                 $scope.updateOrderDetaiDeliverDate($scope.OrderDetailList);
+    //             });
+    //             $scope.showInfo('修改成功。');
+    //         })
+    //     });
+    // };
+
     $scope.orderDetailEditMenuAction = function (orderDetail) {
         $mdDialog.show({
-            controller: 'OrderDetailController',
-            templateUrl: 'app/src/app/order/sales_slip/orderDetailEditDlg.html',
+            controller: 'OrderDetailGroupClassController',
+            templateUrl: 'app/src/app/order/sales_slip/orderDetailUserClassDlg.html',
             parent: angular.element(document.body),
             targetEvent: event,
             locals: {
-                selectedOrderDetail: orderDetail,
-                saleTypes: $scope.saleTypes
+                channel: $scope.selectedItem.channel,
+                item: orderDetail.item
             }
         }).then(function (data) {
-
-            OrderDetail.modify(data.selectedOrderDetail.orderMaster.uuid, data.selectedOrderDetail.uuid, data.selectedOrderDetail).success(function () {
-                OrderDetail.get(data.selectedOrderDetail.orderMaster.uuid).success(function (data) {
+            var updateInput = {
+                baseClassUuid: data.baseClass.uuid,
+                groupUserUuid: data.groupUser.uuid,
+            };
+            OrderDetail.modify($scope.selectedItem.uuid, orderDetail.uuid, updateInput).success(function () {
+                OrderDetail.get($scope.selectedItem.uuid).success(function (data) {
                     $scope.OrderDetailList = data;
                     $scope.updateOrderDetaiDeliverDate($scope.OrderDetailList);
                 });
@@ -1478,6 +1504,40 @@ angular.module('IOne-Production').controller('OrderDetailController', function (
         $mdDialog.hide({
             'selectedOrderDetail': $scope.selectedOrderDetail
         });
+    };
+    $scope.cancelDlg = function () {
+        $mdDialog.cancel();
+    };
+});
+
+angular.module('IOne-Production').controller('OrderDetailGroupClassController', function ($scope, $mdDialog, channel, item, CBIGroupEmployeeClassRService) {
+    console.log(channel);
+    $scope.channel = channel;
+    $scope.item = item;
+
+    $scope.pageOption = {
+        sizePerPage: 10,
+        currentPage: 0,
+        totalPage: 100,
+        totalElements: 100
+    };
+
+    $scope.refreshBaseClass = function () {
+        CBIGroupEmployeeClassRService.getByChannelUuidAndBrandUuid(channel.uuid, item.brand.uuid).success(function (data) {
+            $scope.itemList = data.content;
+            $scope.pageOption.totalPage = data.totalPages;
+            $scope.pageOption.totalElements = data.totalElements;
+        })
+    };
+
+    $scope.refreshBaseClass();
+
+    $scope.select = function (item) {
+        $mdDialog.hide(item);
+    };
+
+    $scope.hideDlg = function (item) {
+        $mdDialog.hide(item);
     };
     $scope.cancelDlg = function () {
         $mdDialog.cancel();
