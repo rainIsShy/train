@@ -36,7 +36,8 @@ angular.module('IOne-Production').controller('OrdersController', function ($scop
         '417-print': {display: true, name: '打印', uuid: '31964B09-78B1-4C27-A2CD-DC0837E746B8'},
         '418-oneOffSync': {display: true, name: '一键抛转', uuid: '71E103D7-D859-401F-8F0C-6154234AD4F0'},
         '419-rollbackTransfer': {display: true, name: '抛转还原', uuid: 'D7A760B7-576F-41AD-938A-E4FFAD2D1012'},
-        '422-auditTransfer': {display: true, name: '审核抛转', uuid: 'e63bbabc-b6c2-46c6-a541-416dedb7ed00'}
+        '422-auditTransfer': {display: true, name: '审核抛转', uuid: 'e63bbabc-b6c2-46c6-a541-416dedb7ed00'},
+        '423-detailModify': {display: true, name: '操作', uuid: '65f7e9c9-564e-4292-a8fd-9c326b7f46fb'},
     };
 
     $scope.orderListMenuDisplayOption = {
