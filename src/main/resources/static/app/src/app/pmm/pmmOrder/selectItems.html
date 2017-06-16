@@ -14,7 +14,7 @@
                     <md-chips ng-repeat="newData in saveData">
                         <md-chip>
                             <span style="font-size: small" ng-click="bindAddData(newData)">{{newData.item.name}}</span>
-                            <md-icon md-svg-icon="md-close" ng-click="removeAddData(data)"></md-icon>
+                            <md-icon md-svg-icon="md-close" ng-click="removeAddData(newData)"></md-icon>
                         </md-chip>
                     </md-chips>
                 </div>
