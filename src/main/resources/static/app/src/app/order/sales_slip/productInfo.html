@@ -10,8 +10,12 @@
         <div align="center" flex="10"  class=" table-head">规格</div>
         <div align="center" flex="10"  class=" table-head">品牌</div>
         <div align="center" flex="10"  class=" table-head">品牌名称</div>
-        <div align="center" flex="10" class=" table-head">跟单员</div>
-        <div align="center" flex="10" class=" table-head">跟单分组</div>
+        <div align="center" flex="10" class=" table-head"
+             ng-show="selectedItem.channel.channelFlag == '1' || selectedItem.channel.channelFlag == '3'">跟单员
+        </div>
+        <div align="center" flex="10" class=" table-head"
+             ng-show="selectedItem.channel.channelFlag == '1' || selectedItem.channel.channelFlag == '3'">跟单分组
+        </div>
         <div align="center" flex="10"  class=" table-head">是否定制</div>
         <div align="center" flex="10"  class=" table-head">商品属性</div>
         <div align="center" flex="10"  class=" table-head">销售类型</div>
@@ -58,8 +62,14 @@
             <div  align="center" flex="10" class=" table-item">{{orderDetail.item.standard}} </div>
             <div  align="center" flex="10" class=" table-item">{{orderDetail.item.brand.no}} </div>
             <div  align="center" flex="10" class=" table-item">{{orderDetail.item.brand.name}} </div>
-            <div align="center" flex="10" class=" table-item">{{orderDetail.groupUser.name}}</div>
-            <div align="center" flex="10" class=" table-item">{{orderDetail.baseClass.name}}</div>
+            <div align="center" flex="10" class=" table-item"
+                 ng-show="selectedItem.channel.channelFlag == '1' || selectedItem.channel.channelFlag == '3'">
+                {{orderDetail.groupUser.name}}
+            </div>
+            <div align="center" flex="10" class=" table-item"
+                 ng-show="selectedItem.channel.channelFlag == '1' || selectedItem.channel.channelFlag == '3'">
+                {{orderDetail.baseClass.name}}
+            </div>
             <div  align="center" flex="10" class=" table-item">{{CUSTOMIZE_FLAG[orderDetail.customizeFlag].name}}</div>
             <div  align="center" flex="10" class=" table-item">{{orderDetail.itemAttribute}} </div>
             <div  align="center" flex="10" class=" table-item">{{orderDetail.saleType.name}} </div>
